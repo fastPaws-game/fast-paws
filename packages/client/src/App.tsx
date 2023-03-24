@@ -6,10 +6,10 @@ import React from 'react'
 import { H1, H2, H3, P1, P2, P3, P4 } from './assets/styles/texts'
 import { media } from './assets/styles/media'
 import Button from './ui/button'
-import Input from './ui/input'
+import InputForm from './ui/input'
 
 function App() {
-  useFetchServerData()
+  // useFetchServerData()
   const {theme, themeToggler} = useChangeTheme()
 
   return (
@@ -22,7 +22,15 @@ function App() {
       </button>
       {/* компоненты */}
       <Button/>
-      <Input/>
+      <InputForm
+        id='inputForm'
+        name='inputForm'
+        type='text'
+        placeholder='Login'
+        pattern='^[a-zA-Z][a-zA-Z0-9-_]{3,20}$'
+        disabled={false}
+        required={false}
+      />
       <Flex>
         <Root>
           {/*пример работы с текстом*/}
@@ -66,7 +74,7 @@ const Root1 = styled.div`
 `
 
 const Flex = styled.div`
-  display: flex
+  display: flex;
 `
 
 export default App
