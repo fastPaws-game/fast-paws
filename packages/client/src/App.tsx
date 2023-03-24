@@ -7,6 +7,7 @@ import { H1, H2, H3, P1, P2, P3, P4 } from './assets/styles/texts'
 import { media } from './assets/styles/media'
 import Button from './ui/button'
 import Input from './ui/input'
+import Link from './ui/link'
 
 function App() {
   useFetchServerData()
@@ -21,7 +22,7 @@ function App() {
         Toggle Theme
       </button>
       {/* компоненты */}
-      <Button/>
+      <Button children='Sign up'/>
       <Input/>
       <Flex>
         <Root>
@@ -33,6 +34,7 @@ function App() {
           <P2>Hello</P2>
           <P3>Hello</P3>
           <P4>Hello</P4>
+          <Link href='#'>Go back</Link>
         </Root>
         <Root1 />
       </Flex>
