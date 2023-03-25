@@ -1,4 +1,4 @@
-import styled, { ThemeProvider} from 'styled-components'
+import styled, { ThemeProvider } from 'styled-components'
 import { useChangeTheme } from './hooks/useChangeTheme'
 import { useFetchServerData } from './hooks/useFetchServerData'
 import { GlobalStyles } from './assets/styles/globalStyle'
@@ -45,12 +45,10 @@ const Root = styled.div`
   height: 100vh;
   background: ${props => props.theme.colors.primary};
   color: ${props => props.theme.text.textInvert};
-  // все селекторы работают как обычно
   & > * {
     display: block;
   }
 
-  // медиа запросы вот так, есть large, middle и small
   ${media.small} {
     background: ${props => props.theme.colors.secondary};;
   }
@@ -59,9 +57,7 @@ const Root = styled.div`
 const Root1 = styled.div`
   width: 50vw;
   height: 100vh;
-  // можно так
   background: ${({ theme }) => theme.colors.accent};
-  // или так
   color: ${props => props.theme.text.textInvert};
 `
 
