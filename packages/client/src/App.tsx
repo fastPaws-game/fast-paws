@@ -23,13 +23,22 @@ function App() {
       {/* компоненты */}
       <Button/>
       <InputForm
-        id='inputForm'
-        name='inputForm'
+        id='LoginForm'
+        name='Login'
         type='text'
         placeholder='Login'
         pattern='^[a-zA-Z][a-zA-Z0-9-_]{3,20}$'
         disabled={false}
-        required={false}
+        required={true}
+      />
+      <InputForm
+        id='PasswordForm'
+        name='Password'
+        type='password'
+        placeholder='Password'
+        pattern='^.*(?=.{8,40})(?!.*\s)(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$'
+        disabled={false}
+        required={true}
       />
       <Flex>
         <Root>
