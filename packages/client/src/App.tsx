@@ -43,7 +43,7 @@ function App() {
       <Flex>
         <Root>
           {/*пример работы с текстом*/}
-          <H1 accent>Hello</H1>
+          <H1 accent>Text for test</H1>
           <H2 base>Hello</H2>
           <H3>Hello</H3>
           <P1>Hello</P1>
