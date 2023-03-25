@@ -1,88 +1,52 @@
-import styled from 'styled-components'
-import {useState} from 'react'
+import styled from 'styled-components';
+import React, { ForwardedRef, forwardRef, FC, InputHTMLAttributes } from 'react';
 
-type OuterProps = {
+type Props = {
   id: string;
-  name: string;
-  type: string;
-  placeholder: string;
-  pattern: string;
-  disabled: boolean;
-  required: boolean;
+  errorOn?: boolean;
+  errorMessage?: string;
 }
 
-type styleProps = {
-  isValidate: boolean;
-}
+const InputForm: FC<Props & InputHTMLAttributes<HTMLInputElement>> = forwardRef(
+  (props, ref?: ForwardedRef<HTMLInputElement>) => {
+    const {
+      id,
+      errorOn,
+      errorMessage,
+      ...rest
+    } = props;
 
-function InputForm(props: OuterProps) {
-  const [value, setValue] = useState('');
-  const [error, setError] = useState({
-    isInputValid: true
-  });
-  
-  const pattern = props.pattern;
-
-  const validateInput = (pattern: string, checkingText: string): { isInputValid: boolean; } => {
-    const regExp = new RegExp(pattern);
-    
-      if(regExp.test(checkingText) === true) {
-        return {
-          isInputValid: true
-        };
-      } else {
-        return {
-          isInputValid: false
-        };
-      }
+    return (
+      <div>
+        <label htmlFor={id}></label>
+        <Input
+          id={id}
+          ref={ref}
+          {...rest}
+        />
+        {errorMessage && <p>{errorMessage}</p>}
+      </div>
+    );
   }
+);
 
-  const handleInput = (event: React.FormEvent<HTMLInputElement>) => {
-    const {value} = (event.target as HTMLInputElement);
-    setValue(value);
-  }
-
-  const handleInputValidation = (event: React.FormEvent<HTMLInputElement>) => {
-    const isInputValid = validateInput(pattern, value);
-    setError(isInputValid);
-  }
-
-  return (
-  <>
-    <label htmlFor={props.id}></label>
-    <Input 
-    id={props.id}
-    name={props.name}
-    type={props.type}
-    placeholder={props.placeholder}
-    disabled={props.disabled}
-    required={props.required}
-    onChange={handleInput}
-    onBlur={handleInputValidation}
-    isValidate={error.isInputValid}
-    ></Input>
-  </>
-  )
-};
-
-const Input = styled.input<styleProps>`
+const Input = styled.input<{errorOn?: boolean}>`
   width: 246px;
   height: 34px;
-  display: block;
   box-sizing: border-box;
   background: ${props => props.theme.colors.backgroundInput};
   border: none;
-  border-left: 3px solid ${props => props.isValidate ? props.theme.colors.accent : props.theme.colors.error};
+  border-left: 3px solid ${props => !props.errorOn ? props.theme.colors.accent : props.theme.colors.error};
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.05);
   border-radius: 0px 15px 15px 0px;
-  color: ${props => props.isValidate ? props.theme.text.textInvert : props.theme.text.error};
+  color: ${props => !props.errorOn ? props.theme.colors.textInvert : props.theme.colors.error};
   caret-color: ${props => props.theme.text.caretColor};
   ::placeholder {
     color: ${props => props.theme.text.placeholder};
     padding-left: 5px;
   }
   :hover, :focus {
-    border-left: 5px solid ${props => props.theme.colors.accent};
+    border-left: 5px solid ${props => !props.errorOn ? props.theme.colors.accent : props.theme.colors.error};
     ::placeholder {
     color: ${props => props.theme.text.placeholder};
     }
@@ -95,9 +59,11 @@ const Input = styled.input<styleProps>`
   :disabled {
     border-left: 3px solid ${props => props.theme.colors.disabled};
   }
-
-  //delete margin
-  margin: 10px;
+  +p {
+    font-size: ${props => props.theme.vars.fontSize.xxs};
+    color: ${props => props.theme.text.error};
+    margin: 0;
+  }
 `
 
-export default InputForm
+export default InputForm;
