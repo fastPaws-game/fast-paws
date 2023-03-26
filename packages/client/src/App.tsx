@@ -4,7 +4,7 @@ import { useFetchServerData } from './hooks/useFetchServerData'
 import { GlobalStyles } from './assets/styles/globalStyle'
 import { BrowserRouter } from 'react-router-dom'
 
-function App() {
+const App = () => {
   useFetchServerData()
   const { theme, themeToggler } = useChangeTheme()
 
@@ -17,5 +17,6 @@ function App() {
     </BrowserRouter>
   )
 }
+
 
 export default App
