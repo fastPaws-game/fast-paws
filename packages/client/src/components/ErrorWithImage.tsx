@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import { H2, H3 } from '../assets/styles/texts'
 import styled from 'styled-components'
 import { media } from '../assets/styles/media'
-import Icon from '../assets/images/errorImage.png'
+import ErrorImage from '../assets/images/errorImage.svg'
 
 type Props = {
   type: 'notFound' | 'serverError'
@@ -23,7 +23,7 @@ const ErrorWithImage: FC<Props> = (props) => {
         </H3>
       </Header>
       <ImageContainer>
-        <Image src={Icon} />
+        <Image src={ErrorImage} />
         <ErrorCode>{type === 'notFound' ? '404' : '500'}</ErrorCode>
       </ImageContainer>
       <button>Back</button>
