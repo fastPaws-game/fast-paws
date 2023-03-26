@@ -19,8 +19,9 @@ const InputForm: FC<Props & InputHTMLAttributes<HTMLInputElement>> = forwardRef(
     return (
       <div>
         <label htmlFor={id}></label>
-        <Input
+        <InputStyled
           id={id}
+          errorOn={errorOn}
           ref={ref}
           {...rest}
         />
@@ -30,7 +31,7 @@ const InputForm: FC<Props & InputHTMLAttributes<HTMLInputElement>> = forwardRef(
   }
 );
 
-const Input = styled.input<{errorOn?: boolean}>`
+const InputStyled = styled.input<{errorOn?: boolean}>`
   width: 246px;
   height: 34px;
   box-sizing: border-box;
@@ -39,7 +40,7 @@ const Input = styled.input<{errorOn?: boolean}>`
   border-left: 3px solid ${props => !props.errorOn ? props.theme.colors.accent : props.theme.colors.error};
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.05);
   border-radius: 0px 15px 15px 0px;
-  color: ${props => !props.errorOn ? props.theme.colors.textInvert : props.theme.colors.error};
+  color: ${props => !props.errorOn ? props.theme.text.textInvert : props.theme.text.error};
   caret-color: ${props => props.theme.text.caretColor};
   ::placeholder {
     color: ${props => props.theme.text.placeholder};
