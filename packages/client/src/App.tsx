@@ -2,9 +2,10 @@ import { ThemeProvider } from 'styled-components'
 import { useChangeTheme } from './hooks/useChangeTheme'
 import { useFetchServerData } from './hooks/useFetchServerData'
 import { GlobalStyles } from './assets/styles/globalStyle'
+import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 
-const App = () => {
+function App() {
   useFetchServerData()
   const { theme, themeToggler } = useChangeTheme()
 
@@ -17,6 +18,5 @@ const App = () => {
     </BrowserRouter>
   )
 }
-
 
 export default App

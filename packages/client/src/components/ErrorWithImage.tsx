@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import { H2, H3 } from '../assets/styles/texts'
 import styled from 'styled-components'
 import { media } from '../assets/styles/media'
-import ErrorImage from '../assets/images/errorImage.svg'
+import ErrorIcon from '../assets/icons/ErrorIcon'
 
 type Props = {
   type: 'notFound' | 'serverError'
@@ -17,13 +17,15 @@ const ErrorWithImage: FC<Props> = (props) => {
         <H3 weight={'normal'}>
           {
             type === 'notFound'
-              ? 'The Page You Requested Could Not Be Found'
+              ? 'The page you requested could not be found'
               : 'A server error has occurred'
           }
         </H3>
       </Header>
       <ImageContainer>
-        <Image src={ErrorImage} />
+        <IconContainer>
+          <ErrorIcon />
+        </IconContainer>
         <ErrorCode>{type === 'notFound' ? '404' : '500'}</ErrorCode>
       </ImageContainer>
       <button>Back</button>
@@ -52,7 +54,7 @@ const ImageContainer = styled.div`
 const ErrorCode = styled.span`
   position: absolute;
   color: ${({ theme }) => theme.text.error};
-  bottom: 72px;
+  bottom: 40px;
   font-size: 70px;
   font-weight: bold;
   left: calc(50% - 57px);
@@ -64,7 +66,7 @@ const ErrorCode = styled.span`
   }
 `
 
-const Image = styled.img`
+const IconContainer = styled.div`
   width: 100%;
   max-width: 455px;
 
