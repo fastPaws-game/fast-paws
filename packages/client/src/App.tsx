@@ -3,6 +3,7 @@ import { useChangeTheme } from './hooks/useChangeTheme'
 import { useFetchServerData } from './hooks/useFetchServerData'
 import { GlobalStyles } from './assets/styles/globalStyle'
 import React from 'react'
+import { BrowserRouter } from 'react-router-dom'
 import { H1, H2, H3, P1, P2, P3, P4 } from './assets/styles/texts'
 import { media } from './assets/styles/media'
 import Button from './ui/button'
@@ -14,6 +15,7 @@ function App() {
   const {theme, themeToggler} = useChangeTheme()
 
   return (
+    <BrowserRouter>
     <ThemeProvider theme={theme}>
       {/* GlobalStyles сброс стилей дефолтный шрифт и прочее*/}
       <GlobalStyles />
@@ -22,7 +24,12 @@ function App() {
         Toggle Theme
       </button>
       {/* компоненты */}
-      <Button children='Sign up'/>
+      {/* форма кнопки задается через пропс form; если кнопка с иконкой, путь задается через src */}
+      <Button>Sign up</Button>
+      <Button form='play'>Play</Button>
+      <Button form='icon-big' src='..\public\IconSettings.png'/>
+      <Button form='icon-big' src='..\public\IconMedal.png'/>
+      <Button form='icon-small' src='..\public\IconPause.png'/>
       <Input/>
       <Flex>
         <Root>
@@ -34,11 +41,12 @@ function App() {
           <P2>Hello</P2>
           <P3>Hello</P3>
           <P4>Hello</P4>
-          <Link href='#'>Go back</Link>
+          <Link to='/back'>Go back</Link>
         </Root>
         <Root1 />
       </Flex>
     </ThemeProvider>
+    </BrowserRouter>
   )
 }
 

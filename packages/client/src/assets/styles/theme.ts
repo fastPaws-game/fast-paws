@@ -17,6 +17,7 @@ export const lightTheme = {
     primary: '#FFDD87',
     secondary: '#FFF',
     accent: '#E4640A',
+    play: '#E4640A',
     white: '#FFF',
     black: '#000',
     focus: '#808080',
@@ -48,11 +49,12 @@ export const darkTheme = {
   colors: {
     primary: '#294383',
     secondary: '#233153',
-    accent: '#82A5FF',
+    accent: '#6D96FF',
+    play: '#294383',
     white: '#FFF',
     black: '#000',
     focus: '#808080',
-    accentHover: '#ACC3FF',
+    accentHover: '#4D6FC4',
     link: '#EAECF3',
   },
   text: {
