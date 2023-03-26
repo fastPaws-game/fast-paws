@@ -6,7 +6,7 @@ import React from 'react'
 import { H1, H2, H3, P1, P2, P3, P4 } from './assets/styles/texts'
 import { media } from './assets/styles/media'
 import Button from './ui/button'
-import InputForm from './ui/input/index'
+import Input from './ui/input/index'
 
 function App() {
   // useFetchServerData()
@@ -23,19 +23,23 @@ function App() {
       {/* компоненты */}
       <Button/>
       <form>
-        <InputForm
+        <Input
           id='LoginForm'
           name='Login'
           type='text'
           placeholder='Login'
           errorOn={true}
           errorMessage='error'
+          typeStyle='form'
         />
-        <InputForm
+        <Input
           id='PasswordForm'
           name='Password'
           type='password'
           placeholder='Password'
+          typeStyle='profile'
+          errorOn={false}
+          errorMessage='error'
         />
       </form>
       <Flex>
