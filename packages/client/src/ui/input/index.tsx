@@ -1,15 +1,15 @@
-import styled from 'styled-components';
-import React, { ForwardedRef, forwardRef, FC, InputHTMLAttributes } from 'react';
-import { P4 } from '../../assets/styles/texts';
+import styled from 'styled-components'
+import React, { ForwardedRef, forwardRef, FC, InputHTMLAttributes } from 'react'
+import { P4 } from '../../assets/styles/texts'
 
 type Props = {
   id: string;
   typeStyle: 'form' | 'profile';
   errorOn?: boolean;
   errorMessage?: string;
-}
+} & InputHTMLAttributes<HTMLInputElement>
 
-const Input: FC<Props & InputHTMLAttributes<HTMLInputElement>> = forwardRef(
+const Input: FC<Props> = forwardRef(
   (props, ref?: ForwardedRef<HTMLInputElement>) => {
     const {
       id,
@@ -17,37 +17,24 @@ const Input: FC<Props & InputHTMLAttributes<HTMLInputElement>> = forwardRef(
       errorMessage,
       typeStyle,
       ...rest
-    } = props;
+    } = props
+    const InputStyled = typeStyle === 'form' ? InputFormStyled : InputProfileStyled
 
-    const result = typeStyle === 'form'
-      ?
-        <div>
-          <label htmlFor={id}></label>
-          <InputFormStyled
+    return (
+      <div>
+        <label htmlFor={id}></label>
+        <InputStyled
           id={id}
           errorOn={errorOn}
           ref={ref}
           {...rest}
-          />
-          {errorOn && <P4>{errorMessage}</P4>}
-        </div> 
-      :
-        <div>
-          <label htmlFor={id}></label>
-          <InputProfileStyled
-          id={id}
-          errorOn={errorOn}
-          ref={ref}
-          {...rest}
-          />
-          {errorOn && <P4>{errorMessage}</P4>}
-        </div>
-
-    return result
+        />
+        {errorOn && <P4>{errorMessage}</P4>}
+      </div>)
   }
-);
+)
 
-const InputFormStyled = styled.input<{errorOn?: boolean}>`
+const InputFormStyled = styled.input<{ errorOn?: boolean }>`
   width: 246px;
   height: 34px;
   background: ${props => props.theme.colors.backgroundInput};
@@ -56,49 +43,59 @@ const InputFormStyled = styled.input<{errorOn?: boolean}>`
   border-radius: 0px 15px 15px 0px;
   color: ${props => !props.errorOn ? props.theme.text.textInvert : props.theme.text.error};
   caret-color: ${props => props.theme.text.caretColor};
+
   &::placeholder {
     color: ${props => props.theme.text.placeholder};
     padding-left: 5px;
   }
+
   &:hover, :focus {
     border-left: 5px solid ${props => !props.errorOn ? props.theme.colors.accent : props.theme.colors.error};
+
     ::placeholder {
-    color: ${props => props.theme.text.placeholder};
+      color: ${props => props.theme.text.placeholder};
     }
   }
+
   &:focus {
     ::placeholder {
-    color: ${props => props.theme.text.placeholderFocus};
+      color: ${props => props.theme.text.placeholderFocus};
     }
   }
+
   &:disabled {
     border-left: 3px solid ${props => props.theme.colors.disabled};
   }
+
   + p {
     color: ${props => props.theme.text.error};
     margin: 0;
   }
 `
 
-const InputProfileStyled = styled.input<{errorOn?: boolean}>`
+const InputProfileStyled = styled.input<{ errorOn?: boolean }>`
   width: 315px;
   height: 22px;
   border-bottom: 1px solid ${props => props.theme.colors.accent};
   color: ${props => !props.errorOn ? props.theme.text.textInvert : props.theme.text.error};
   caret-color: ${props => props.theme.text.caretColor};
+
   &::placeholder {
     color: ${props => props.theme.text.placeholder};
   }
+
   &:focus {
-      border-bottom: 1px solid ${props => props.theme.colors.accent};
-      ::placeholder {
+    border-bottom: 1px solid ${props => props.theme.colors.accent};
+
+    ::placeholder {
       color: ${props => props.theme.text.placeholderFocus};
     }
   }
+
   + p {
     color: ${props => props.theme.text.error};
     margin: 0;
   }
 `
 
-export default Input;
+export default Input
