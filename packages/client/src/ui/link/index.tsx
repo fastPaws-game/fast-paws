@@ -1,23 +1,23 @@
-import React, { FC, RefAttributes } from 'react'
+import React, { FC } from 'react'
 import styled from 'styled-components'
 import { Link as ReactLink, LinkProps } from 'react-router-dom'
 
-type OuterProps = LinkProps & RefAttributes<HTMLAnchorElement>
+type Props = LinkProps
 
-const Link: FC<OuterProps> = ({children, ...props}) => {
+const Link: FC<Props> = ({ children, ...props }) => {
   return (
     <LinkStyled {...props}>{children}</LinkStyled>
   )
 }
 
 const LinkStyled = styled(ReactLink)`
-&:link,
-&:visited {
-  color: ${props => props.theme.colors.link};
-  text-decoration: none;
+  &:link,
+  &:visited {
+    color: ${props => props.theme.colors.link};
+    text-decoration: none;
 }
-&:hover,
-&:active {
+  &:hover,
+  &:active {
     text-decoration: underline;
 }
 `

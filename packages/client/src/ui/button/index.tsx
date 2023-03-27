@@ -1,45 +1,33 @@
-import React, { FC, ButtonHTMLAttributes } from 'react'
+import React, { FC, ButtonHTMLAttributes, ReactElement } from 'react'
 import styled from 'styled-components'
 import { media } from '../../assets/styles/media';
 
-type OuterProps = {
-  src?: string;
+type Props = {
+  icon?: ReactElement;
+  size?: string
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
-const Button: FC<OuterProps> = ({ children, ...props }) => {
-  let {form} = props;
-  if (form === 'icon-big') {
+const Button: FC<Props> = ({ children, ...props }) => {
+  const {icon} = props;
+  if (icon) {
     return (
-      <ButtonIconStyled {...props}>
-        <img src={props.src}/>
-      </ButtonIconStyled>
+      <ButtonIconStyled {...props}>{icon}</ButtonIconStyled>
       )
-  } else if (form === 'icon-small') {
-    return (
-      <ButtonIconStyled {...props}>
-        <img src={props.src}/>
-      </ButtonIconStyled>
-      )
-  } else if (form === 'play') {
-    return (
-      <ButtonMainStyled {...props}>{children}</ButtonMainStyled>
-      )
-    } else {
-      console.log(children);
+  } else {
     return (
       <ButtonMainStyled {...props}>{children}</ButtonMainStyled>
       )
     }
 }
 
-const ButtonMainStyled = styled.button`
-  width: ${props => props.form === 'play' ? '395px' : '145px'};
-  height: ${props => props.form === 'play' ? '100px' : '35px'};
-  border-radius: ${props => props.form === 'play' ? '56px' : props.theme.borders.primary};
+const ButtonMainStyled = styled.button<{size?: string}>`
+  width: ${props => props.size === 'big' ? '395px' : '145px'};
+  height: ${props => props.size === 'big' ? '100px' : '35px'};
+  border-radius: ${props => props.size === 'big' ? props.theme.borders.secondary : props.theme.borders.primary};
   border: none;
   box-shadow: ${props => props.theme.shadows.secondary};
-  background-color: ${props => props.form === 'play' ? props.theme.colors.play : props.theme.colors.accent};
-  font-size: ${props => props.form === 'play' ? '30px' : '15px'};
+  background-color: ${props => props.size === 'big' ? props.theme.colors.play : props.theme.colors.accent};
+  font-size: ${props => props.size === 'big' ? props.theme.vars.fontSize.xl : props.theme.vars.fontSize.s};
   color: ${props => props.theme.text.everWhite};
   &:hover,
   &:focus{
@@ -52,15 +40,15 @@ const ButtonMainStyled = styled.button`
   }
 
   ${media.small} {
-    width: ${props => props.form === 'play' ? '244px' : '110px'};
-    height: ${props => props.form === 'play' ? '62px' : '30px'};
+    width: ${props => props.size === 'big' ? '244px' : '110px'};
+    height: ${props => props.size === 'big' ? '62px' : '30px'};
   }
 `
 
-const ButtonIconStyled = styled.button`
-  width: ${props => props.form === 'icon-big' ? '100px' : '70px'};
-  height: ${props => props.form === 'icon-big' ? '100px' : '70px'};
-  border-radius: 50%;
+const ButtonIconStyled = styled.button<{size?: string}>`
+  width: ${props => props.size === 'big' ? '100px' : '70px'};
+  height: ${props => props.size === 'big' ? '100px' : '70px'};
+  border-radius: ${props => props.theme.borders.round};;
   border: none;
   background-color: ${props => props.theme.colors.play};
   color: ${props => props.theme.text.textBase};
@@ -75,8 +63,8 @@ const ButtonIconStyled = styled.button`
   }
 
   ${media.small} {
-    width: ${props => props.form === 'icon-big' ? '85px' : '45px'};
-    height: ${props => props.form === 'icon-big' ? '85px' : '45px'};
+    width: ${props => props.size === 'big' ? '85px' : '45px'};
+    height: ${props => props.size === 'big' ? '85px' : '45px'};
   }
 `
 

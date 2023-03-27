@@ -9,6 +9,9 @@ import { media } from './assets/styles/media'
 import Button from './ui/button'
 import Input from './ui/input'
 import Link from './ui/link'
+import IconPause from './assets/icons/IconPause'
+import IconSettings from './assets/icons/IconSettings'
+import IconStar from './assets/icons/IconStar'
 
 function App() {
   useFetchServerData()
@@ -24,12 +27,11 @@ function App() {
         Toggle Theme
       </button>
       {/* компоненты */}
-      {/* форма кнопки задается через пропс form; если кнопка с иконкой, путь задается через src */}
       <Button>Sign up</Button>
-      <Button form='play'>Play</Button>
-      <Button form='icon-big' src='..\public\IconSettings.png'/>
-      <Button form='icon-big' src='..\public\IconMedal.png'/>
-      <Button form='icon-small' src='..\public\IconPause.png'/>
+      <Button size='big'>Play</Button>
+      <Button size='big' icon={IconSettings}/>
+      <Button size='big' icon={IconStar}/>
+      <Button icon={IconPause}/>
       <Input/>
       <Flex>
         <Root>

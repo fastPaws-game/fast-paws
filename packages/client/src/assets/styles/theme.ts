@@ -41,7 +41,8 @@ export const lightTheme = {
   },
   borders: {
     primary: '15px',
-    secondary: '50%'
+    secondary: '56px',
+    round: '50%'
   }
 };
 export const darkTheme = {
@@ -74,6 +75,7 @@ export const darkTheme = {
   },
   borders: {
     primary: '15px',
-    secondary: '50%'
+    secondary: '56px',
+    round: '50%'
   }
 };
