@@ -17,9 +17,12 @@ export const lightTheme = {
     primary: '#FFDD87',
     secondary: '#FFF',
     accent: '#E4640A',
+    play: '#E4640A',
     white: '#FFF',
     black: '#000',
-    accentHover: '#FF9900',
+    focus: '#808080',
+    accentHover: '#E9833B',
+    link: '#170A01',
   },
   text: {
     textInvert: '#000',
@@ -38,7 +41,8 @@ export const lightTheme = {
   },
   borders: {
     primary: '15px',
-    secondary: '50%'
+    secondary: '56px',
+    round: '50%'
   }
 };
 export const darkTheme = {
@@ -46,15 +50,18 @@ export const darkTheme = {
   colors: {
     primary: '#294383',
     secondary: '#233153',
-    accent: '#82A5FF',
+    accent: '#6D96FF',
+    play: '#294383',
     white: '#FFF',
     black: '#000',
-    accentHover: '#ACC3FF',
+    focus: '#808080',
+    accentHover: '#4D6FC4',
+    link: '#EAECF3',
   },
   text: {
     textInvert: '#FFF',
     everWhite: '#FFF',
-    textBase: '#000',
+    textBase: '#000025',
     everBlack: '#000',
     accent: '#FFF',
     placeholder: '#6C6C6C',
@@ -68,6 +75,7 @@ export const darkTheme = {
   },
   borders: {
     primary: '15px',
-    secondary: '50%'
+    secondary: '56px',
+    round: '50%'
   }
 };
