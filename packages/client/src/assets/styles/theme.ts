@@ -1,4 +1,3 @@
-
 export const vars = {
   fontFamily: 'PT Sans, sans-serif',
   fontSize: {
@@ -8,7 +7,7 @@ export const vars = {
     m: '20px',
     l: '23px',
     xl: '30px',
-    xxl: '43px'
+    xxl: '43px',
   },
 }
 export const lightTheme = {
@@ -20,6 +19,10 @@ export const lightTheme = {
     play: '#E4640A',
     white: '#FFF',
     black: '#000',
+    accentHoverInput: '#FF9900',
+    error: '#FF0000',
+    backgroundInput: '#F0F0F0',
+    disabled: '#E7A679',
     focus: '#808080',
     accentHover: '#E9833B',
     link: '#170A01',
@@ -31,20 +34,22 @@ export const lightTheme = {
     everBlack: '#000',
     accent: '#E4640A',
     placeholder: '#6C6C6C',
+    placeholderFocus: '#000',
     error: '#FF0000',
-    minorText: '#F0F0F0'
+    minorText: '#F0F0F0',
+    caretColor: '#000',
   },
   shadows: {
     primary: '0px 8px 24px rgba(0, 0, 0, 0.08)',
     secondary: '0px 4px 15px rgba(0, 0, 0, 0.25)',
-    hover: '0px 4px 35px rgba(0, 0, 0, 0.35)'
+    hover: '0px 4px 35px rgba(0, 0, 0, 0.35)',
   },
   borders: {
     primary: '15px',
     secondary: '56px',
-    round: '50%'
-  }
-};
+    round: '50%',
+  },
+}
 export const darkTheme = {
   vars: vars,
   colors: {
@@ -54,6 +59,10 @@ export const darkTheme = {
     play: '#294383',
     white: '#FFF',
     black: '#000',
+    accentHoverInput: '#ACC3FF',
+    error: '#FF0000',
+    backgroundInput: '#000',
+    disabled: '#87CEEB',
     focus: '#808080',
     accentHover: '#4D6FC4',
     link: '#EAECF3',
@@ -64,18 +73,20 @@ export const darkTheme = {
     textBase: '#000025',
     everBlack: '#000',
     accent: '#FFF',
-    placeholder: '#6C6C6C',
+    placeholder: '#B6B6B6',
+    placeholderFocus: '#B6B6B6',
     error: '#FF0000',
-    minorText: '#000'
+    minorText: '#000',
+    caretColor: '#FFF',
   },
   shadows: {
     primary: '0px 8px 24px rgba(0, 0, 0, 0.08);',
     secondary: '0px 4px 15px rgba(0, 0, 0, 0.25);',
-    hover: '0px 4px 35px rgba(0, 0, 0, 0.35)'
+    hover: '0px 4px 35px rgba(0, 0, 0, 0.35)',
   },
   borders: {
     primary: '15px',
     secondary: '56px',
-    round: '50%'
-  }
-};
+    round: '50%',
+  },
+}

@@ -65,6 +65,11 @@ export const GlobalStyles = createGlobalStyle`
     line-height: 1.15;
     margin: 0;
   }
+  input, input:focus {
+    border: none;
+    box-sizing: border-box;
+    outline: thin;
+  }
   button,input {
     overflow: visible;
   }
