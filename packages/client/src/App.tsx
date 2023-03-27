@@ -1,18 +1,24 @@
-import styled, { ThemeProvider} from 'styled-components'
+import styled, { ThemeProvider } from 'styled-components'
 import { useChangeTheme } from './hooks/useChangeTheme'
 import { useFetchServerData } from './hooks/useFetchServerData'
 import { GlobalStyles } from './assets/styles/globalStyle'
 import React from 'react'
+import { BrowserRouter } from 'react-router-dom'
 import { H1, H2, H3, P1, P2, P3, P4 } from './assets/styles/texts'
 import { media } from './assets/styles/media'
 import Button from './ui/button'
 import Input from './ui/input'
+import Link from './ui/link'
+import IconPause from './assets/icons/IconPause'
+import IconSettings from './assets/icons/IconSettings'
+import IconStar from './assets/icons/IconStar'
 
 function App() {
   useFetchServerData()
   const {theme, themeToggler} = useChangeTheme()
 
   return (
+    <BrowserRouter>
     <ThemeProvider theme={theme}>
       {/* GlobalStyles сброс стилей дефолтный шрифт и прочее*/}
       <GlobalStyles />
@@ -21,7 +27,11 @@ function App() {
         Toggle Theme
       </button>
       {/* компоненты */}
-      <Button/>
+      <Button>Sign up</Button>
+      <Button size='big'>Play</Button>
+      <Button size='big' icon={IconSettings}/>
+      <Button size='big' icon={IconStar}/>
+      <Button icon={IconPause}/>
       <Input/>
       <Flex>
         <Root>
@@ -33,10 +43,12 @@ function App() {
           <P2>Hello</P2>
           <P3>Hello</P3>
           <P4>Hello</P4>
+          <Link to='/back'>Go back</Link>
         </Root>
         <Root1 />
       </Flex>
     </ThemeProvider>
+    </BrowserRouter>
   )
 }
 
@@ -45,12 +57,10 @@ const Root = styled.div`
   height: 100vh;
   background: ${props => props.theme.colors.primary};
   color: ${props => props.theme.text.textInvert};
-  // все селекторы работают как обычно
   & > * {
     display: block;
   }
 
-  // медиа запросы вот так, есть large, middle и small
   ${media.small} {
     background: ${props => props.theme.colors.secondary};;
   }
@@ -59,9 +69,7 @@ const Root = styled.div`
 const Root1 = styled.div`
   width: 50vw;
   height: 100vh;
-  // можно так
   background: ${({ theme }) => theme.colors.accent};
-  // или так
   color: ${props => props.theme.text.textInvert};
 `
 
