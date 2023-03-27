@@ -3,6 +3,7 @@ import { H2, H3 } from '../assets/styles/texts'
 import styled from 'styled-components'
 import { media } from '../assets/styles/media'
 import ErrorIcon from '../assets/icons/ErrorIcon'
+import Button from '../ui/button'
 
 type Props = {
   type: 'notFound' | 'serverError'
@@ -28,7 +29,7 @@ const ErrorWithImage: FC<Props> = (props) => {
         </IconContainer>
         <ErrorCode>{type === 'notFound' ? '404' : '500'}</ErrorCode>
       </ImageContainer>
-      <button>Back</button>
+      <Button size='small'>Back</Button>
     </Content>
   )
 }
@@ -37,6 +38,7 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   gap: 22px;
+  align-items: center;
 `
 
 const Header = styled.div`

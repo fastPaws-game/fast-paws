@@ -4,7 +4,6 @@ export const GlobalStyles = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap');
 
   body {
-    transition: all 0.50s linear;
     font-family: 'PT Sans', sans-serif;
   }
 
@@ -85,13 +84,18 @@ export const GlobalStyles = createGlobalStyle`
     line-height: 1.15;
     margin: 0;
   }
-  
+
   input, input:focus {
     border: none;
     box-sizing: border-box;
     outline: thin;
   }
-  button,input {
+
+  button {
+    cursor: pointer;
+  }
+
+  button, input {
     overflow: visible;
   }
 
