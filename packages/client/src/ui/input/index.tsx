@@ -1,10 +1,16 @@
 import styled from 'styled-components'
 import React, { ForwardedRef, forwardRef, FC, InputHTMLAttributes } from 'react'
 import { P4 } from '../../assets/styles/texts'
+import { media } from '../../assets/styles/media';
+
+export enum typeStyleInput {
+  form = 'form',
+  profile = 'profile'
+}
 
 type Props = {
   id: string;
-  typeStyle: 'form' | 'profile';
+  typeStyle: 'form' | 'profile' | typeStyleInput; //TODO удалить 'form' | 'profile' строки из типа
   errorOn?: boolean;
   errorMessage?: string;
 } & InputHTMLAttributes<HTMLInputElement>
@@ -35,7 +41,8 @@ const Input: FC<Props> = forwardRef(
 )
 
 const InputFormStyled = styled.input<{ errorOn?: boolean }>`
-  width: 246px;
+  max-width: 246px;
+  width: 100%;
   height: 34px;
   background: ${props => props.theme.colors.backgroundInput};
   border-left: 3px solid ${props => !props.errorOn ? props.theme.colors.accent : props.theme.colors.error};
@@ -43,10 +50,14 @@ const InputFormStyled = styled.input<{ errorOn?: boolean }>`
   border-radius: 0px 15px 15px 0px;
   color: ${props => !props.errorOn ? props.theme.text.textInvert : props.theme.text.error};
   caret-color: ${props => props.theme.text.caretColor};
+  padding: 5px;
+
+  ${media.middle} {
+    max-width: 279px;
+  }
 
   &::placeholder {
     color: ${props => props.theme.text.placeholder};
-    padding-left: 5px;
   }
 
   &:hover, :focus {

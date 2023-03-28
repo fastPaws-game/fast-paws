@@ -71,5 +71,4 @@ const ButtonIconStyled = styled.button<{ size?: string }>`
     height: ${props => props.size === 'big' ? '85px' : '45px'};
   }
 `
-
 export default Button
