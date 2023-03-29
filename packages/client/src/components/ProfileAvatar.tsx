@@ -2,10 +2,10 @@ import React, {Component, ChangeEvent} from 'react'
 import styled from 'styled-components';
 // import DefaultAvatar from '../assets/icons/DefaultAvatar';
 
-export default class ProfileAvatar extends Component{
-	private fileUpload = React.createRef<HTMLInputElement>();
+export default function ProfileAvatar(){
+	const fileUpload = React.createRef<HTMLInputElement>();
 
-	fileChange(event:ChangeEvent<HTMLInputElement>){
+	function fileChange(event:ChangeEvent<HTMLInputElement>){
 		const target=event.target as HTMLInputElement;
 		const file=target.files? target.files[0] : null;
 		if(file){
@@ -18,18 +18,16 @@ export default class ProfileAvatar extends Component{
 		}
 	}
 
-	fileChoose=()=>{
-		const node=this.fileUpload.current;
+	const fileChoose=()=>{
+		const node=fileUpload.current;
 		if(node) node.click();
 	}
 
-	render(){
-		return (
-		<Avatar onClick={this.fileChoose}>
-			<input type="file" ref={this.fileUpload} onChange={this.fileChange} name="file" hidden accept="image/png, image/jpeg, image/gif"/>
-		</Avatar>
-		);
-	}
+	return (
+	<Avatar onClick={fileChoose}>
+		<input type="file" ref={fileUpload} onChange={fileChange} name="file" hidden accept="image/png, image/jpeg, image/gif"/>
+	</Avatar>
+	);
 }
 
 const Avatar=styled.div`
