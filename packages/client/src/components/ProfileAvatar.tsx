@@ -1,9 +1,9 @@
-import React, {Component, ChangeEvent} from 'react'
+import {createRef, ChangeEvent} from 'react'
 import styled from 'styled-components';
 // import DefaultAvatar from '../assets/icons/DefaultAvatar';
 
 export default function ProfileAvatar(){
-	const fileUpload = React.createRef<HTMLInputElement>();
+	const fileUpload = createRef<HTMLInputElement>();
 
 	function fileChange(event:ChangeEvent<HTMLInputElement>){
 		const target=event.target as HTMLInputElement;
