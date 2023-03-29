@@ -3,12 +3,12 @@ import Input from '../ui/input';
 import Button from '../ui/button';
 import Link from '../ui/link';
 import styled, { ThemeProvider } from 'styled-components';
-import ErrorBoundary from '../components/ErrorBoundary';
 import ProfileAvatar from '../components/ProfileAvatar';
 import { useChangeTheme } from '../hooks/useChangeTheme';
 import BaseLayout from '../layouts/BaseLayout';
-// import { media } from '../assets/styles/media';
+import { media } from '../assets/styles/media';
 import { H3 } from '../assets/styles/texts';
+import { useNavigate } from 'react-router'
 
 const defaultValues={
 	first_name:		'',
@@ -30,59 +30,70 @@ const validation={
 
 const ProfilePage = () => {
 	const { register, handleSubmit, formState: { errors } } = useForm({defaultValues});
-	const { theme, themeToggler } = useChangeTheme()
+	const { theme, themeToggler } = useChangeTheme();
+	const navigate = useNavigate();
 
 	//Profile change
 	const onSubmit:SubmitHandler<FieldValues> = (data) => {
 		alert(JSON.stringify(data));
 	};
 
+	const handleClick = (path?: string) => () => {
+		console.log(path);
+		if (path) navigate(path);
+	}
+
 	return (
 		<BaseLayout>
-		<ErrorBoundary>
-			<Wrapper>
-			<H3>Profile</H3>
+			<Back icon={<h1>◄</h1>} size={'small'} onClick={handleClick('/')}/>
 			<Profile>
-			<form onSubmit={handleSubmit(onSubmit)}>
-			<FormFields>
-				<Input id='first_name' typeStyle='profile' placeholder='First name'
-					{...errors.first_name && {errorOn:true, errorMessage:'Name is incorrect'}}
-					{...register('first_name', validation.first_name)}/>
-				<Input id='second_name' typeStyle='profile' placeholder='Second name'
-					{...errors.second_name && {errorOn:true, errorMessage:'Name is incorrect'}}
-					{...register('second_name', validation.second_name)}/>
-				<Input id='display_name' typeStyle='profile' placeholder='Display name'
-					{...errors.display_name && {errorOn:true, errorMessage:'Name is incorrect'}}
-					{...register('display_name', validation.display_name)}/>
-				<Input id='login' typeStyle='profile' placeholder='Login*'
-					{...errors.login && {errorOn:true, errorMessage:'Login is incorrect'}}
-					{...register('login', validation.login)}/>
-				<Input id='email' typeStyle='profile' placeholder='E-mail*'
-					{...errors.email && {errorOn:true, errorMessage:'Wrong e-mail'}}
-					{...register('email', validation.email)}/>
-				<Input id='phone' typeStyle='profile' placeholder='Phone'
-					{...errors.phone && {errorOn:true, errorMessage:'Wrong phone number'}}
-					{...register('phone', validation.phone)}/>
-				<Button type='submit'>Update</Button>
-				<Link to={'#'}>Change password</Link>
-			</FormFields>
-			</form>
-			<Settings>
-				<ProfileAvatar/>
-				<div><input type={'checkbox'} onClick={themeToggler}/><label> Dark theme</label></div> {/* ToDo: Theme check state */}
-			</Settings>
+				<Settings>
+					<ProfileAvatar/>
+					{/* <div><input type={'checkbox'} onClick={themeToggler}/><label> Dark theme</label></div> ToDo: Theme check state */}
+				</Settings>
+				<Wrapper>
+				<H3>Profile</H3>
+				<form onSubmit={handleSubmit(onSubmit)}>
+				<FormFields>
+					<Input id='first_name' typeStyle='profile' placeholder='First name'
+						{...errors.first_name && {errorOn:true, errorMessage:'Name is incorrect'}}
+						{...register('first_name', validation.first_name)}/>
+					<Input id='second_name' typeStyle='profile' placeholder='Second name'
+						{...errors.second_name && {errorOn:true, errorMessage:'Name is incorrect'}}
+						{...register('second_name', validation.second_name)}/>
+					<Input id='display_name' typeStyle='profile' placeholder='Display name'
+						{...errors.display_name && {errorOn:true, errorMessage:'Name is incorrect'}}
+						{...register('display_name', validation.display_name)}/>
+					<Input id='login' typeStyle='profile' placeholder='Login*'
+						{...errors.login && {errorOn:true, errorMessage:'Login is incorrect'}}
+						{...register('login', validation.login)}/>
+					<Input id='email' typeStyle='profile' placeholder='E-mail*'
+						{...errors.email && {errorOn:true, errorMessage:'Wrong e-mail'}}
+						{...register('email', validation.email)}/>
+					<Input id='phone' typeStyle='profile' placeholder='Phone'
+						{...errors.phone && {errorOn:true, errorMessage:'Wrong phone number'}}
+						{...register('phone', validation.phone)}/>
+					<Button type='submit'>Update</Button>
+					<Link to={'#'}>Change password</Link>
+				</FormFields>
+				</form>
+				</Wrapper>
 			</Profile>
-		</Wrapper>
-		</ErrorBoundary>
 		</BaseLayout>
 	);
 }
 
+const Back=styled(Button)`
+	position: absolute;
+	left: 2em;
+	top: 2em;
+`;
+
 const FormFields = styled.div`
 	display: flex;
 	flex-direction: column;
-	gap: 10px;
-	margin: 10px;
+	gap: 1em;
+	margin: 1em;
 	align-items: center;
 `;
 
@@ -90,13 +101,17 @@ const Settings=styled.div`
 	width: 120px;
 	display: flex;
 	flex-direction: column;
-	gap: 10px;
-	margin: 10px;
+	gap: 1em;
+	margin: 2em;
 `;
 
 const Profile=styled.div`
 	display: flex;
 	justify-content: center;
+	${media.small} {
+		flex-direction: column;
+		align-items: center;
+	}
 `;
 
 const Wrapper = styled.div`
