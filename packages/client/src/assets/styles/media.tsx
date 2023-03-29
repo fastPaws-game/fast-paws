@@ -6,7 +6,7 @@ type Breakpoints<T = number> = {
 
 export const breakpoints: Breakpoints = {
   large: 1050,
-  middle: 769,
+  middle: 800,
   small: 481,
 };
 
