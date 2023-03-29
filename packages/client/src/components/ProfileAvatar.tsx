@@ -11,9 +11,6 @@ export default class ProfileAvatar extends Component{
 		if(file){
 			const data=new FormData();
 			data.append('avatar', file);
-			target.parentElement!.style.backgroundImage='';
-			// target.parentElement!.style.display = 'none';
-			// console.log(target.parentElement!.nodeName);
 			console.log(file);
 			/* Change profile avatar API
 				alert(JSON.stringify(data));
