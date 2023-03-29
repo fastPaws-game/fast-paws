@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import IconSettings from '../assets/icons/IconSettings'
 import IconStar from '../assets/icons/IconStar'
 import { useNavigate } from 'react-router'
+import IconForum from '../assets/icons/IconForum'
 
 type Props = {
   visible: boolean
@@ -23,8 +24,9 @@ const GamePause: FC<Props> = (props) => {
       <Content>
         <Button size={'big'} onClick={handleClick()}>Continue</Button>
         <Footer>
-          <Button icon={IconSettings} size={'big'} onClick={handleClick('/settings')} />
-          <Button icon={IconStar} size={'big'} onClick={handleClick('/leaderboard')} />
+          <Button icon={<IconForum />} size={'big'} onClick={handleClick('/forum')} />
+          <Button icon={<IconSettings />} size={'big'} onClick={handleClick('/settings')} />
+          <Button icon={<IconStar />} size={'big'} onClick={handleClick('/leaderboard')} />
         </Footer>
       </Content>
     </Modal>
@@ -39,7 +41,7 @@ const Content = styled.div`
 
 const Footer = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
 `
 
