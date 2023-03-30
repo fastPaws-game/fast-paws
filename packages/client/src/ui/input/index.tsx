@@ -11,7 +11,7 @@ type Props = {
 } & InputHTMLAttributes<HTMLInputElement>
 
 const Input: FC<Props> = forwardRef((props, ref) => {
-  const {errorOn, errorMessage, typeStyle, ...rest } = props
+  const { errorOn, errorMessage, typeStyle, ...rest } = props
 
   const InputStyled =
     typeStyle === 'form' ? InputFormStyled : InputProfileStyled
@@ -33,8 +33,7 @@ const InputFormStyled = styled.input<{ errorOn?: boolean }>`
       !props.errorOn ? props.theme.colors.accent : props.theme.colors.error};
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.05);
   border-radius: 0px 15px 15px 0px;
-  color: ${props =>
-    !props.errorOn ? props.theme.text.textInvert : props.theme.text.error};
+  color: ${props => !props.errorOn ? props.theme.text.textInvert : props.theme.text.error};
   caret-color: ${props => props.theme.text.caretColor};
   padding-left: 10px;
   transition: width 0.3s;
@@ -54,8 +53,7 @@ const InputFormStyled = styled.input<{ errorOn?: boolean }>`
   :focus {
     transition: 0.3s;
     border-left: 5px solid
-      ${props =>
-        !props.errorOn ? props.theme.colors.accent : props.theme.colors.error};
+      ${props => !props.errorOn ? props.theme.colors.accent : props.theme.colors.error};
 
     ::placeholder {
       color: ${props => props.theme.text.placeholder};
