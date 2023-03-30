@@ -10,6 +10,10 @@ class AuthApi {
   public signin(data: AuthFormValues) {
     return this.fetchApi.post('/signin', {body: JSON.stringify(data)})
   }
+
+  public logout() {
+    return this.fetchApi.post('/logout')
+  }
 }
 
 export default new AuthApi()

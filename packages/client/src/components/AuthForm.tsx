@@ -38,7 +38,6 @@ const AuthForm: FC<Props> = props => {
     defaultValues: defaultAuthFormValues,
   })
   const onSubmit: SubmitHandler<AuthFormValues> = data => {
-    console.log(data)
     authController(data)
     reset()
   }
