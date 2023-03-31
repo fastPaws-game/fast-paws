@@ -38,11 +38,11 @@ const InputFormStyled = styled.input<{ errorOn?: boolean }>`
   background: ${props => props.theme.colors.backgroundInput};
   border-left: 3px solid
     ${props =>
-      !props.errorOn ? props.theme.colors.accent : props.theme.colors.error};
+    props.errorOn ? props.theme.colors.error : props.theme.colors.accent};
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.05);
   border-radius: 0px 15px 15px 0px;
   color: ${props =>
-    !props.errorOn ? props.theme.text.textInvert : props.theme.text.error};
+    props.errorOn ? props.theme.text.error : props.theme.text.textInvert};
   caret-color: ${props => props.theme.text.caretColor};
   padding: 5px;
 
@@ -58,7 +58,7 @@ const InputFormStyled = styled.input<{ errorOn?: boolean }>`
   :focus {
     border-left: 5px solid
       ${props =>
-        !props.errorOn ? props.theme.colors.accent : props.theme.colors.error};
+    props.errorOn ? props.theme.colors.error : props.theme.colors.accent};
 
     ::placeholder {
       color: ${props => props.theme.text.placeholder};
@@ -86,7 +86,7 @@ const InputProfileStyled = styled.input<{ errorOn?: boolean }>`
   height: 22px;
   border-bottom: 1px solid ${props => props.theme.colors.accent};
   color: ${props =>
-    !props.errorOn ? props.theme.text.textInvert : props.theme.text.error};
+    props.errorOn ? props.theme.text.error : props.theme.text.textInvert};
   caret-color: ${props => props.theme.text.caretColor};
 
   &::placeholder {

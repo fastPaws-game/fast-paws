@@ -20,16 +20,14 @@ export async function registration(valuesForm: SignUpFormValues) {
     const result = response.json()
     if (response.ok) {
       return result
-    }
-    else {
+    } else {
       return result.then(data => {
         //TODO заменить на new httpError, когда Ильфат сольет МР
         const message = `Что-то пошло не так... ${data.message}`
         return Promise.reject(new Error(message))
       })
     }
-  }
-  catch (err) {
+  } catch (err) {
     console.log(err)
   }
 }
