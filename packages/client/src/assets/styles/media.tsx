@@ -7,12 +7,12 @@ type Breakpoints<T = number> = {
 export const breakpoints: Breakpoints = {
   large: 1050,
   middle: 800,
-  small: 460
+  small: 481
 }
 
 export const media = Object.entries(breakpoints).reduce<Breakpoints<string>>(
   (acc, [key, value]) => {
-    acc[key as keyof Breakpoints] = `@media screen and (max-height: ${value}px)`
+    acc[key as keyof Breakpoints] = `@media screen and (max-width: ${value}px)`
     return acc
   },
   {}
