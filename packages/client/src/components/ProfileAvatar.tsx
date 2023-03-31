@@ -52,7 +52,6 @@ const Avatar = styled.div`
   justify-content: center;
   align-items: center;
   position: relative;
-  transition: all 0.3s ease;
   width: 120px;
   height: 120px;
   border-radius: 50%;
