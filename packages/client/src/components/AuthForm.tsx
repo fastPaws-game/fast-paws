@@ -24,17 +24,18 @@ type Props = {
 const VALIDATIONS = {
   LOGIN: {
     required: true,
-    pattern: /^[a-zA-Z][a-zA-Z0-9-_]{3,20}$/
+    pattern: {value: /^[a-zA-Z][a-zA-Z0-9-_]{3,20}$/, message: 'Login incorrect'}
   },
   PASSWORD: {
     required: true,
-    pattern: /^.*(?=.{8,40})(?!.*\s)(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$/
+    pattern: {value: /^.*(?=.{8,40})(?!.*\s)(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$/, message: 'Password incorrect'}
   }
 }
 
 const AuthForm: FC<Props> = props => {
   const { authController } = props
   const { register, handleSubmit, reset, formState: { errors } } = useForm<AuthFormValues>({
+    mode: 'onChange',
     defaultValues: defaultAuthFormValues,
   })
   const onSubmit: SubmitHandler<AuthFormValues> = data => {
@@ -50,13 +51,13 @@ const AuthForm: FC<Props> = props => {
           typeStyle="form"
           placeholder="Login"
           {...register('login', VALIDATIONS.LOGIN)}
-          {...errors.login && {errorOn:true, errorMessage:'Login is incorrect'}}
+          {...errors.login && {errorOn: true, errorMessage: errors.login.message}}
         />
         <Input
           typeStyle="form"
           placeholder="Password"
           {...register('password', VALIDATIONS.PASSWORD)}
-          {...errors.password && {errorOn:true, errorMessage:'Password is incorrect'}}
+          {...errors.password && {errorOn:true, errorMessage: errors.password.message}}
         />
       </InputContainer>
       <ButtonContainer>

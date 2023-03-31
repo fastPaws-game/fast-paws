@@ -1,10 +1,35 @@
-import { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle } from 'styled-components';
+import PTSans400Woff from '../fonts/pt-sans-v17-cyrillic_latin-regular.woff';
+import PTSans400Woff2 from '../fonts/pt-sans-v17-cyrillic_latin-regular.woff2';
+import PTSans700Woff from '../fonts/pt-sans-v17-cyrillic_latin-700.woff';
+import PTSans700Woff2 from '../fonts/pt-sans-v17-cyrillic_latin-700.woff2';
 
+/* @import url('https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap'); */
 export const GlobalStyles = createGlobalStyle`
-  @import url('https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap');
+  /* pt-sans-regular - cyrillic_latin */
+  @font-face {
+    font-family: 'PT Sans';
+    font-display: swap;
+    font-style: normal;
+    font-weight: 400;
+    src: url(${PTSans400Woff2}) format('woff2'),
+         url(${PTSans400Woff}) format('woff');
+  }
+  
+  /* pt-sans-700 - cyrillic_latin */
+  @font-face {
+    font-family: 'PT Sans';
+    font-display: swap;
+    font-style: normal;
+    font-weight: 700;
+    src: url(${PTSans700Woff2}) format('woff2'),
+         url(${PTSans700Woff}) format('woff');
+  }
 
   body {
     font-family: 'PT Sans', sans-serif;
+    font-style: normal;
+    font-weight: 400;
   }
 
   * {
