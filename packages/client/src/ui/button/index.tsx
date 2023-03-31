@@ -39,8 +39,8 @@ const ButtonMainStyled = styled.button<{ size?: string }>`
   }
 
   ${media.small} {
-    width: ${props => props.size === 'big' ? '244px' : '110px'};
-    height: ${props => props.size === 'big' ? '62px' : '30px'};
+    width: ${props => props.size === 'big' ? '332px' : '110px'};
+    height: ${props => props.size === 'big' ? '85px' : '30px'};
   }
 `
 
@@ -49,6 +49,9 @@ const ButtonIconStyled = styled.button<{ size?: string }>`
   height: ${props => props.size === 'big' ? '100px' : '70px'};
   border-radius: ${props => props.theme.borders.round};;
   border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: .3s;
   background-color: ${props => props.theme.colors.play};
   color: ${props => props.theme.text.textBase};

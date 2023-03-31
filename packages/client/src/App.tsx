@@ -1,7 +1,6 @@
 import { ThemeProvider } from 'styled-components'
 import { useChangeTheme } from './hooks/useChangeTheme'
 import { GlobalStyles } from './assets/styles/globalStyle'
-import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import AuthPage from './pages/AuthPage'
 import AuthController from './modules/authModule/authController'
