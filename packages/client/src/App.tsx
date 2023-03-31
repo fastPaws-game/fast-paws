@@ -1,27 +1,30 @@
 import { ThemeProvider } from 'styled-components'
 import { useChangeTheme } from './hooks/useChangeTheme'
 import { GlobalStyles } from './assets/styles/globalStyle'
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import AuthPage from './pages/AuthPage'
-import AuthController from './modules/authModule/authController'
-// import NotFoundPage from './pages/NotFoundPage'
-
+import MainPage from './pages/MainPage'
+import RequireAuth from './modules/authModule/RequireAuth'
 
 function App() {
   const { theme, themeToggler } = useChangeTheme()
-
-  const logout = () => {
-    AuthController.logout()
-  }
 
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <GlobalStyles />
         <button onClick={themeToggler}>Toggle Theme</button>
-        <button onClick={logout}>Logout</button>
-        {/*<Router/>*/}
-        <AuthPage />
+        <Routes>
+          <Route path="/" element={<AuthPage />} />
+          <Route
+            path="/main"
+            element={
+              <RequireAuth>
+                <MainPage />
+              </RequireAuth>
+            }
+          />
+        </Routes>
       </ThemeProvider>
     </BrowserRouter>
   )

@@ -24,7 +24,7 @@ const AuthContext: AuthContextType = {
 }
 
 export class AuthController {
-  async signin(data: AuthFormValues) {
+  async signin(data: AuthFormValues, navigate: () => void) {
     try {
       const response = await AuthApi.signin(data);
 
@@ -38,8 +38,7 @@ export class AuthController {
       AuthContext.isAuth = true;
       const user = await GetUserController.getUser();
       AuthContext.user = user;
-      //Todo переходим на нужную страницу
-
+      navigate();
     } catch(e) {
       if(e instanceof httpError && e.status == 401) {
         console.log(e.message);
@@ -56,7 +55,7 @@ export class AuthController {
     AuthContext.user = user
   }
 
-  async logout() {
+  async logout(navigate: () => void) {
     try {
       const response = await AuthApi.logout();
       
@@ -68,6 +67,7 @@ export class AuthController {
       }
 
       AuthContext.isAuth = false;
+      navigate()
     } catch(e) {
       if(e instanceof httpError && e.status == 401) {
         console.log(e.message);

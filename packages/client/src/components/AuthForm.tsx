@@ -3,9 +3,10 @@ import Input from '../ui/input'
 import Button from '..//ui/button'
 import Link from '..//ui/link'
 import { H3 } from '../assets/styles/texts'
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { media } from '../assets/styles/media'
 import { useForm, SubmitHandler } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 
 export type AuthFormValues = {
   login: string
@@ -18,7 +19,7 @@ const defaultAuthFormValues = {
 }
 
 type Props = {
-  authController: (data: AuthFormValues) => void
+  authController: (data: AuthFormValues, callback: VoidFunction) => void
 }
 
 const VALIDATIONS = {
@@ -33,13 +34,15 @@ const VALIDATIONS = {
 }
 
 const AuthForm: FC<Props> = props => {
+  const navigate = useNavigate()
+
   const { authController } = props
   const { register, handleSubmit, reset, formState: { errors } } = useForm<AuthFormValues>({
     mode: 'onChange',
     defaultValues: defaultAuthFormValues,
   })
   const onSubmit: SubmitHandler<AuthFormValues> = data => {
-    authController(data)
+    authController(data, () => navigate('/main'))
     reset()
   }
 
@@ -62,7 +65,7 @@ const AuthForm: FC<Props> = props => {
       </InputContainer>
       <ButtonContainer>
         <Button type="submit">Log in</Button>
-        <Link to="/">Registration</Link>
+        <Link to="/registration">Registration</Link>
       </ButtonContainer>
     </Form>
   )
