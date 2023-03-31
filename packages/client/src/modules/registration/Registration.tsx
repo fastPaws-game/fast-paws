@@ -1,13 +1,17 @@
-import RegistrationForm from '../../components/RegistrationForm';
-import AuthFormWrapper from '../../components/AuthFormWrapper';
-import { registration } from './api';
+import RegistrationForm from '../../components/RegistrationForm'
+import ContrastingWrapper from '../../components/ContrastingWrapper'
+import { registration } from './registrationApi'
+import { H3 } from '../../assets/styles/texts'
 
 const Registration = () => {
-	return (
-		<AuthFormWrapper title='Sign up'>
-			<RegistrationForm handleRegistration={registration}/>
-		</AuthFormWrapper>
-	);
+  return (
+    <ContrastingWrapper padding={25}>
+      <H3 accent shadow weight="700">
+        'Sign up'
+      </H3>
+      <RegistrationForm handleRegistration={registration} />
+    </ContrastingWrapper>
+  )
 }
 
-export default Registration;
+export default Registration
