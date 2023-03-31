@@ -4,7 +4,6 @@ import { useChangeTheme } from './hooks/useChangeTheme'
 import { useFetchServerData } from './hooks/useFetchServerData'
 import { GlobalStyles } from './assets/styles/globalStyle'
 import { BrowserRouter } from 'react-router-dom'
-import NotFoundPage from './pages/NotFoundPage'
 import RegistrationPage from './pages/RegistrationPage'
 
 function App() {

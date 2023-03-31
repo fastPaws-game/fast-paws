@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import { H2, H3 } from '../assets/styles/texts'
 import styled from 'styled-components'
 import { media } from '../assets/styles/media'
-import ErrorIcon from '../assets/icons/ErrorIcon'
+import IconError from '../assets/icons/IconError'
 import Button from '../ui/button'
 
 type Props = {
@@ -25,7 +25,7 @@ const ErrorWithImage: FC<Props> = (props) => {
       </Header>
       <ImageContainer>
         <IconContainer>
-          <ErrorIcon />
+          <IconError />
         </IconContainer>
         <ErrorCode>{type === 'notFound' ? '404' : '500'}</ErrorCode>
       </ImageContainer>
@@ -61,7 +61,7 @@ const ErrorCode = styled.span`
   font-weight: bold;
   left: calc(50% - 57px);
 
-  ${media.middle} {
+  ${media.small} {
     color: ${({ theme }) => theme.text.textInvert};
     position: initial;
     font-size: 50px;
@@ -72,7 +72,7 @@ const IconContainer = styled.div`
   width: 100%;
   max-width: 455px;
 
-  ${media.middle} {
+  ${media.small} {
     display: none;
   }
 `

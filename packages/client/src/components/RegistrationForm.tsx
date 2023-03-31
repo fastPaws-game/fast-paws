@@ -37,7 +37,7 @@ const RegistrationForm: FC<Props> = (props) => {
 
     const onSubmit: SubmitHandler<SignUpFormValues> = (data: SignUpFormValues) => {
         alert(JSON.stringify(data));
-        handleRegistration(data );
+        handleRegistration(data);
         reset();
     };
 
@@ -47,12 +47,12 @@ const RegistrationForm: FC<Props> = (props) => {
                 <Input placeholder="Login" typeStyle={typeStyleInput.form} id="login" {...register('login')} />
                 <Input placeholder="Email" typeStyle={typeStyleInput.form} id="email" {...register('email')} />
                 <Input placeholder="Name" typeStyle={typeStyleInput.form} id="name"   {...register('first_name')} />
-                <Input placeholder="Surname" typeStyle={typeStyleInput.form}  {...register('second_name')} id="surname" {...register} />
+                <Input placeholder="Surname" typeStyle={typeStyleInput.form}  {...register('second_name')} id="surname" />
             </Column>
             <Column>
-                <Input placeholder="Phone" typeStyle={typeStyleInput.form}  {...register('phone')} id="phone" {...register} />
-                <Input placeholder="Password" typeStyle={typeStyleInput.form}  {...register('password')} id="password" {...register} />
-                <Input placeholder="Repeat password" typeStyle={typeStyleInput.form} {...register('repeated_password')} id="repeated_password" {...register} />
+                <Input placeholder="Phone" typeStyle={typeStyleInput.form} id="phone"  {...register('phone')} />
+                <Input placeholder="Password" typeStyle={typeStyleInput.form} id="password"  {...register('password')} />
+                <Input placeholder="Repeat password" typeStyle={typeStyleInput.form} id="repeated_password"  {...register('repeated_password')} />
                 <Button type='submit'>Sign up</Button>
                 <Link to={routes.signin}>Log in</Link>
             </Column>
