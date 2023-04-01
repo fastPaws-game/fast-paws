@@ -1,12 +1,12 @@
-import { SubmitHandler, FieldValues, useForm } from 'react-hook-form'
-import Input, { typeStyleInput } from '../ui/input'
-import Button from '../ui/button'
-import Link from '../ui/link'
-import styled from 'styled-components'
-import { routes } from '../constants/routes'
-import { media } from '../assets/styles/media'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import Input, { typeStyleInput } from '../../ui/input'
+import Button from '../../ui/button'
+import Link from '../../ui/link'
+import styled from 'styled-components/macro'
+import { routes } from '../../constants/routes'
+import { media } from '../../assets/styles/media'
 import { FC } from 'react'
-import { SignUpFormValues } from '../modules/registration/registrationApi'
+import { SignUpFormValues } from './registrationApi'
 
 //TODO добавить валидацию
 

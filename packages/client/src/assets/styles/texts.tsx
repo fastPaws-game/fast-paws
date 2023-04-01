@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components'
+import styled, { css } from 'styled-components/macro'
 
 const BaseTitle = css<{ base?: boolean; accent?: boolean }>`
   color: ${({ theme, base, accent }) =>

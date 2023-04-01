@@ -4,7 +4,7 @@ import { useChangeTheme } from './hooks/useChangeTheme'
 import { useFetchServerData } from './hooks/useFetchServerData'
 import { GlobalStyles } from './assets/styles/globalStyle'
 import { BrowserRouter } from 'react-router-dom'
-import RegistrationPage from './pages/RegistrationPage'
+import LiderBordPage from './pages/LiderBordPage'
 
 function App() {
   useFetchServerData()
@@ -16,7 +16,7 @@ function App() {
         <GlobalStyles />
         <button onClick={themeToggler}>Toggle Theme</button>
         {/*<Router/>*/}
-        <RegistrationPage />
+        <LiderBordPage />
       </ThemeProvider>
     </BrowserRouter>
   )

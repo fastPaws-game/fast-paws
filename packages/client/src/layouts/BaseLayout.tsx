@@ -1,5 +1,5 @@
 import React, { FC, PropsWithChildren } from 'react'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
 const BaseLayout: FC<PropsWithChildren> = props => {
   const { children } = props

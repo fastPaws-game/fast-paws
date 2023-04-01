@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import Modal from './modal'
 import Button from '../ui/button'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import IconSettings from '../assets/icons/IconSettings'
 import IconStar from '../assets/icons/IconStar'
 import { useNavigate } from 'react-router'
