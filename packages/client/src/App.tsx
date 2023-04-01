@@ -6,15 +6,14 @@ import { GlobalStyles } from './assets/styles/globalStyle'
 import { BrowserRouter } from 'react-router-dom'
 import LiderBordPage from './pages/LiderBordPage'
 
+
 function App() {
-  useFetchServerData()
   const { theme, themeToggler } = useChangeTheme()
 
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <GlobalStyles />
-        <button onClick={themeToggler}>Toggle Theme</button>
         {/*<Router/>*/}
         <LiderBordPage />
       </ThemeProvider>
