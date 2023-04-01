@@ -3,8 +3,13 @@ import { ForwardedRef, forwardRef, FC, InputHTMLAttributes } from 'react'
 import { media } from '../../assets/styles/media'
 import { P4 } from '../../assets/styles/texts'
 
+export enum typeStyleInput {
+  form = 'form',
+  profile = 'profile',
+}
+
 type Props = {
-  typeStyle: 'form' | 'profile'
+  typeStyle: typeStyleInput
   errorOn?: boolean
   errorMessage?: string
   ref?: ForwardedRef<HTMLInputElement>
@@ -25,7 +30,8 @@ const Input: FC<Props> = forwardRef((props, ref) => {
 })
 
 const InputFormStyled = styled.input<{ errorOn?: boolean }>`
-  width: 246px;
+  max-width: 246px;
+  width: 100%;
   height: 34px;
   background: ${props => props.theme.colors.backgroundInput};
   border-left: 3px solid
@@ -43,11 +49,13 @@ const InputFormStyled = styled.input<{ errorOn?: boolean }>`
   ${media.small} {
     width: 200px;
     height: 30px;
-  }
+
+  /* ${media.middle} {
+    max-width: 279px;
+  } */
 
   &::placeholder {
     color: ${props => props.theme.text.placeholder};
-    padding-left: 5px;
   }
 
   &:hover,
@@ -83,8 +91,10 @@ const InputProfileStyled = styled.input<{ errorOn?: boolean }>`
   height: 22px;
   border-bottom: 1px solid ${props => props.theme.colors.accent};
   color: ${props =>
-    !props.errorOn ? props.theme.text.everBlack : props.theme.text.error};
+    props.errorOn ? props.theme.text.error :  props.theme.text.everBlack};
   caret-color: ${props => props.theme.text.everBlack};
+    /* props.errorOn ? props.theme.text.error : props.theme.text.textInvert};
+  caret-color: ${props => props.theme.text.caretColor}; */
 
   &::placeholder {
     color: ${props => props.theme.text.placeholder};

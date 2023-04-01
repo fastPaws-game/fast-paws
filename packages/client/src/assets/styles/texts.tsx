@@ -33,10 +33,13 @@ export const H3 = styled.h3<{
   weight?: string
   base?: boolean
   accent?: boolean
+  shadow?: boolean
 }>`
   ${BaseTitle};
   font-size: ${props => props.theme.vars.fontSize.l};
   font-weight: ${({ weight }) => weight || 'bold'};
+  text-shadow: ${({ shadow }) =>
+    shadow ? '0px 4px 4px rgba(0, 0, 0, 0.25)' : null};
 `
 
 export const P1 = styled.p<{

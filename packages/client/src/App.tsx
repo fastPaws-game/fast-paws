@@ -2,9 +2,10 @@ import { ThemeProvider } from 'styled-components'
 import { useChangeTheme } from './hooks/useChangeTheme'
 import { GlobalStyles } from './assets/styles/globalStyle'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import AuthPage from './pages/AuthPage'
-import MainPage from './pages/MainPage'
 import RequireAuth from './modules/authModule/RequireAuth'
+import AuthPage from './pages/AuthPage'
+import RegistrationPage from './pages/RegistrationPage'
+import MainPage from './pages/MainPage'
 
 function App() {
   const { theme, themeToggler } = useChangeTheme()
@@ -24,6 +25,7 @@ function App() {
               </RequireAuth>
             }
           />
+          <Route path='registration' element={<RegistrationPage />} />
         </Routes>
       </ThemeProvider>
     </BrowserRouter>
