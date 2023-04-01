@@ -72,7 +72,7 @@ const AvatarImage = styled.div<{ avatarUrl: string | null }>`
   img {
     width: 100%;
     height: ${({ avatarUrl }) =>
-    typeof avatarUrl === 'string' ? '100%' : `auto`};
+      typeof avatarUrl === 'string' ? '100%' : `auto`};
     object-fit: cover;
   }
 `
