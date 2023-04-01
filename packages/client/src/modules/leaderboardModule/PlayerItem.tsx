@@ -42,9 +42,7 @@ const Wrapper = styled.div`
   display: flex;
   background-color: ${({ theme }) => theme.colors.secondary};
   min-height: 142px;
-  width: 100%;
   max-width: 503px;
-  display: flex;
   align-items: center;
   padding: 3% 4%;
   margin: 3%;
