@@ -32,13 +32,17 @@ const ButtonMainStyled = styled.button<{ size?: string }>`
       : props.theme.vars.fontSize.s};
   color: ${props => props.theme.text.everWhite};
 
-  &:hover,
-  &:focus {
+  &:disabled {
+    opacity: 0.6;
+  }
+
+  &:not([disabled]):hover,
+  &:not([disabled]):focus {
     background-color: ${props => props.theme.colors.accentHover};
     transition: 0.3s;
   }
 
-  &:focus {
+  &:not([disabled]):focus {
     box-shadow: ${props => props.theme.shadows.hover};
     outline-color: ${props => props.theme.colors.focus};
     outline-width: 1px;
@@ -63,13 +67,13 @@ const ButtonIconStyled = styled.button<{ size?: string }>`
   background-color: ${props => props.theme.colors.play};
   color: ${props => props.theme.text.textBase};
 
-  &:hover,
-  &:focus {
+  &:not([disabled]):hover,
+  &:not([disabled]):focus {
     background-color: ${props => props.theme.colors.accentHover};
     transition: 0.3s;
   }
 
-  &:focus {
+  &:not([disabled]):focus {
     box-shadow: ${props => props.theme.shadows.hover};
     outline-color: ${props => props.theme.colors.focus};
     outline-width: 1px;
