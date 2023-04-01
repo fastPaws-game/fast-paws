@@ -1,1 +1,1 @@
-export { LeaderBoard } from './Leaderboard'
+export { LeaderBoard } from './LeaderBoard'
