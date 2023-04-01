@@ -1,4 +1,4 @@
-import { SubmitHandler, FieldValues, useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import Input, { typeStyleInput } from '../../ui/input'
 import Button from '../../ui/button'
@@ -57,7 +57,6 @@ const RegistrationForm: FC<Props> = props => {
         <Input
           placeholder="Login"
           typeStyle={typeStyleInput.form}
-          id="login"
           {...register('login')}
           errorOn={!!errors.login}
           errorMessage={errors.login?.message}
@@ -65,7 +64,6 @@ const RegistrationForm: FC<Props> = props => {
         <Input
           placeholder="Email"
           typeStyle={typeStyleInput.form}
-          id="email"
           {...register('email')}
           errorOn={!!errors.email}
           errorMessage={errors.email?.message}
@@ -73,7 +71,6 @@ const RegistrationForm: FC<Props> = props => {
         <Input
           placeholder="Name"
           typeStyle={typeStyleInput.form}
-          id="name"
           {...register('first_name')}
           errorOn={!!errors.first_name}
           errorMessage={errors.first_name?.message}
@@ -82,7 +79,6 @@ const RegistrationForm: FC<Props> = props => {
           placeholder="Surname"
           typeStyle={typeStyleInput.form}
           {...register('second_name')}
-          id="surname"
           errorOn={!!errors.second_name}
           errorMessage={errors.second_name?.message}
         />
@@ -91,7 +87,6 @@ const RegistrationForm: FC<Props> = props => {
         <Input
           placeholder="Phone"
           typeStyle={typeStyleInput.form}
-          id="phone"
           {...register('phone')}
           errorOn={!!errors.phone}
           errorMessage={errors.phone?.message}
@@ -99,7 +94,6 @@ const RegistrationForm: FC<Props> = props => {
         <Input
           placeholder="Password"
           typeStyle={typeStyleInput.form}
-          id="password"
           type="password"
           {...register('password')}
           errorOn={!!errors.password}
@@ -108,7 +102,6 @@ const RegistrationForm: FC<Props> = props => {
         <Input
           placeholder="Repeat password"
           typeStyle={typeStyleInput.form}
-          id="repeated_password"
           type="password"
           {...register('repeated_password')}
           errorOn={!!errors.repeated_password}
