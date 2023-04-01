@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import Input from '../ui/input'
+import Input, { typeStyleInput } from '../ui/input'
 import Button from '..//ui/button'
 import Link from '..//ui/link'
 import { H3 } from '../assets/styles/texts'
@@ -7,6 +7,7 @@ import { FC } from 'react'
 import { media } from '../assets/styles/media'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
 
 export type AuthFormValues = {
   login: string
@@ -40,8 +41,11 @@ const VALIDATIONS = {
 }
 
 const AuthForm: FC<Props> = props => {
+  useEffect(() => {
+    window.localStorage.setItem('isAuth', 'false') 
+  }, [])
+  
   const navigate = useNavigate()
-
   const { authController } = props
   const {
     register,
@@ -62,7 +66,7 @@ const AuthForm: FC<Props> = props => {
       <H3 accent>Login</H3>
       <InputContainer>
         <Input
-          typeStyle="form"
+          typeStyle={typeStyleInput.form}
           placeholder="Login"
           {...register('login', VALIDATIONS.LOGIN)}
           {...(errors.login && {
@@ -71,7 +75,7 @@ const AuthForm: FC<Props> = props => {
           })}
         />
         <Input
-          typeStyle="form"
+          typeStyle={typeStyleInput.form}
           placeholder="Password"
           {...register('password', VALIDATIONS.PASSWORD)}
           {...(errors.password && {
@@ -101,6 +105,7 @@ const Form = styled.form`
   background-color: ${props => props.theme.colors.secondary};
   border-radius: ${props => props.theme.borders.primary};
   transition: 0.3s;
+  padding: 15px 0;
 
   ${media.small} {
     width: 245px;

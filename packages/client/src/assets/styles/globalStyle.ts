@@ -4,7 +4,6 @@ import PTSans400Woff2 from '../fonts/pt-sans-v17-cyrillic_latin-regular.woff2'
 import PTSans700Woff from '../fonts/pt-sans-v17-cyrillic_latin-700.woff'
 import PTSans700Woff2 from '../fonts/pt-sans-v17-cyrillic_latin-700.woff2'
 
-/* @import url('https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap'); */
 export const GlobalStyles = createGlobalStyle`
   /* pt-sans-regular - cyrillic_latin */
   @font-face {

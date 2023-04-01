@@ -36,6 +36,7 @@ export class AuthController {
       }
 
       AuthContext.isAuth = true
+      localStorage.setItem('isAuth', 'true')
       const user = await GetUserController.getUser()
       AuthContext.user = user
       navigate()
@@ -67,6 +68,7 @@ export class AuthController {
       }
 
       AuthContext.isAuth = false
+      localStorage.setItem('isAuth', 'false')
       navigate()
     } catch (e) {
       if (e instanceof httpError && e.status == 401) {

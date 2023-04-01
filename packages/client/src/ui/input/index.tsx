@@ -46,13 +46,9 @@ const InputFormStyled = styled.input<{ errorOn?: boolean }>`
   transition: width 0.3s;
   margin-bottom: 4px;
 
-  ${media.small} {
-    width: 200px;
-    height: 30px;
-
-  /* ${media.middle} {
+  ${media.middle} {
     max-width: 279px;
-  } */
+  }
 
   &::placeholder {
     color: ${props => props.theme.text.placeholder};
@@ -91,10 +87,8 @@ const InputProfileStyled = styled.input<{ errorOn?: boolean }>`
   height: 22px;
   border-bottom: 1px solid ${props => props.theme.colors.accent};
   color: ${props =>
-    props.errorOn ? props.theme.text.error :  props.theme.text.everBlack};
-  caret-color: ${props => props.theme.text.everBlack};
-    /* props.errorOn ? props.theme.text.error : props.theme.text.textInvert};
-  caret-color: ${props => props.theme.text.caretColor}; */
+    props.errorOn ? props.theme.text.error :  props.theme.text.textInvert};
+  caret-color: ${props => props.theme.text.caretColor};
 
   &::placeholder {
     color: ${props => props.theme.text.placeholder};
