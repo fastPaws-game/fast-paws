@@ -1,5 +1,5 @@
 import BaseLayout from '../layouts/BaseLayout'
-import {LeaderBoard} from '../modules/leaderBoardModule'
+import {LeaderBoard} from '../modules/boardOfLeaderModule'
 
 const LeaderBoardPage = () => {
   return (
