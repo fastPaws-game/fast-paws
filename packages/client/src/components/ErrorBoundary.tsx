@@ -1,12 +1,12 @@
 import { Component, ErrorInfo, ReactNode } from 'react'
 
 type Props = {
-  children: ReactNode;
+  children: ReactNode
 }
 
 type State = {
-  error: Error | null;
-  errorInfo: ErrorInfo | null;
+  error: Error | null
+  errorInfo: ErrorInfo | null
 }
 
 export default class ErrorBoundary extends Component<Props, State> {

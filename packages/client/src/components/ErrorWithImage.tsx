@@ -8,7 +8,7 @@ import Button from '../ui/button'
 type Props = {
   type: 'notFound' | 'serverError'
 }
-const ErrorWithImage: FC<Props> = (props) => {
+const ErrorWithImage: FC<Props> = props => {
   const { type } = props
 
   return (
@@ -16,11 +16,9 @@ const ErrorWithImage: FC<Props> = (props) => {
       <Header>
         <H2>OOPS!</H2>
         <H3 weight={'normal'}>
-          {
-            type === 'notFound'
-              ? 'The page you requested could not be found'
-              : 'A server error has occurred'
-          }
+          {type === 'notFound'
+            ? 'The page you requested could not be found'
+            : 'A server error has occurred'}
         </H3>
       </Header>
       <ImageContainer>
@@ -29,7 +27,7 @@ const ErrorWithImage: FC<Props> = (props) => {
         </IconContainer>
         <ErrorCode>{type === 'notFound' ? '404' : '500'}</ErrorCode>
       </ImageContainer>
-      <Button size='small'>Back</Button>
+      <Button size="small">Back</Button>
     </Content>
   )
 }

@@ -11,7 +11,7 @@ type Props = {
   visible: boolean
   handleClose: () => void
 }
-const GamePause: FC<Props> = (props) => {
+const GamePause: FC<Props> = props => {
   const navigate = useNavigate()
 
   const handleClick = (path?: string) => () => {
@@ -22,11 +22,25 @@ const GamePause: FC<Props> = (props) => {
   return (
     <Modal {...props}>
       <Content>
-        <Button size={'big'} onClick={handleClick()}>Continue</Button>
+        <Button size={'big'} onClick={handleClick()}>
+          Continue
+        </Button>
         <Footer>
-          <Button icon={<IconForum />} size={'big'} onClick={handleClick('/forum')} />
-          <Button icon={<IconSettings />} size={'big'} onClick={handleClick('/settings')} />
-          <Button icon={<IconStar />} size={'big'} onClick={handleClick('/leaderboard')} />
+          <Button
+            icon={<IconForum />}
+            size={'big'}
+            onClick={handleClick('/forum')}
+          />
+          <Button
+            icon={<IconSettings />}
+            size={'big'}
+            onClick={handleClick('/settings')}
+          />
+          <Button
+            icon={<IconStar />}
+            size={'big'}
+            onClick={handleClick('/leaderboard')}
+          />
         </Footer>
       </Content>
     </Modal>
