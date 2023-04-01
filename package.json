@@ -21,6 +21,9 @@
   },
   "devDependencies": {
     "@evilmartians/lefthook": "^1.1.1",
-    "lerna": "^5.4.3"
+    "@types/styled-components": "^5.1.26",
+    "lerna": "^5.4.3",
+    "react-hook-form": "^7.43.8",
+    "styled-components": "^5.3.9"
   }
 }
