@@ -25,7 +25,7 @@ function App() {
               </RequireAuth>
             }
           />
-          <Route path='registration' element={<RegistrationPage />} />
+          <Route path="registration" element={<RegistrationPage />} />
         </Routes>
       </ThemeProvider>
     </BrowserRouter>

@@ -42,9 +42,9 @@ const VALIDATIONS = {
 
 const AuthForm: FC<Props> = props => {
   useEffect(() => {
-    window.localStorage.setItem('isAuth', 'false') 
+    window.localStorage.setItem('isAuth', 'false')
   }, [])
-  
+
   const navigate = useNavigate()
   const { authController } = props
   const {

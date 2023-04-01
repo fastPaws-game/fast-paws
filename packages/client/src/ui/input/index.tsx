@@ -40,7 +40,7 @@ const InputFormStyled = styled.input<{ errorOn?: boolean }>`
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.05);
   border-radius: 0px 15px 15px 0px;
   color: ${props =>
-    props.errorOn ? props.theme.text.error :  props.theme.text.textInvert};
+    props.errorOn ? props.theme.text.error : props.theme.text.textInvert};
   caret-color: ${props => props.theme.text.caretColor};
   padding-left: 10px;
   transition: width 0.3s;
@@ -87,7 +87,7 @@ const InputProfileStyled = styled.input<{ errorOn?: boolean }>`
   height: 22px;
   border-bottom: 1px solid ${props => props.theme.colors.accent};
   color: ${props =>
-    props.errorOn ? props.theme.text.error :  props.theme.text.textInvert};
+    props.errorOn ? props.theme.text.error : props.theme.text.textInvert};
   caret-color: ${props => props.theme.text.caretColor};
 
   &::placeholder {
