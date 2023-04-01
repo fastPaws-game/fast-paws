@@ -1,10 +1,11 @@
-import React from 'react'
 import { ThemeProvider } from 'styled-components'
 import { useChangeTheme } from './hooks/useChangeTheme'
-import { useFetchServerData } from './hooks/useFetchServerData'
 import { GlobalStyles } from './assets/styles/globalStyle'
-import { BrowserRouter } from 'react-router-dom'
-
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import RequireAuth from './modules/authModule/RequireAuth'
+import AuthPage from './pages/AuthPage'
+import RegistrationPage from './pages/RegistrationPage'
+import MainPage from './pages/MainPage'
 
 function App() {
   const { theme, themeToggler } = useChangeTheme()
@@ -13,7 +14,19 @@ function App() {
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <GlobalStyles />
-        {/*<Router/>*/}
+        <button onClick={themeToggler}>Toggle Theme</button>
+        <Routes>
+          <Route path="/login" element={<AuthPage />} />
+          <Route
+            path="/main"
+            element={
+              <RequireAuth>
+                <MainPage />
+              </RequireAuth>
+            }
+          />
+          <Route path="/signup" element={<RegistrationPage />} />
+        </Routes>
       </ThemeProvider>
     </BrowserRouter>
   )
