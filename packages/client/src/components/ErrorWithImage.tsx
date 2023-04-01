@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { H2, H3 } from '../assets/styles/texts'
-import styled from 'styled-components/macro'
+import styled from 'styled-components'
 import { media } from '../assets/styles/media'
 import IconError from '../assets/icons/IconError'
 import Button from '../ui/button'

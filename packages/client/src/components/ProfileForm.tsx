@@ -1,5 +1,5 @@
 import { SubmitHandler, FieldValues, useForm } from 'react-hook-form'
-import Input from '../ui/input'
+import Input, { typeStyleInput } from '../ui/input'
 import Button from '../ui/button'
 import Link from '../ui/link'
 import styled from 'styled-components'
@@ -48,7 +48,7 @@ const ProfileForm = () => {
         <FormFields>
           <Input
             id="first_name"
-            typeStyle="profile"
+            typeStyle={typeStyleInput.profile}
             placeholder="First name"
             {...(errors.first_name && {
               errorOn: true,
@@ -58,7 +58,7 @@ const ProfileForm = () => {
           />
           <Input
             id="second_name"
-            typeStyle="profile"
+            typeStyle={typeStyleInput.profile}
             placeholder="Second name"
             {...(errors.second_name && {
               errorOn: true,
@@ -68,7 +68,7 @@ const ProfileForm = () => {
           />
           <Input
             id="display_name"
-            typeStyle="profile"
+            typeStyle={typeStyleInput.profile}
             placeholder="Display name"
             {...(errors.display_name && {
               errorOn: true,
@@ -78,7 +78,7 @@ const ProfileForm = () => {
           />
           <Input
             id="login"
-            typeStyle="profile"
+            typeStyle={typeStyleInput.profile}
             placeholder="Login*"
             {...(errors.login && {
               errorOn: true,
@@ -88,7 +88,7 @@ const ProfileForm = () => {
           />
           <Input
             id="email"
-            typeStyle="profile"
+            typeStyle={typeStyleInput.profile}
             placeholder="E-mail*"
             {...(errors.email && {
               errorOn: true,
@@ -98,7 +98,7 @@ const ProfileForm = () => {
           />
           <Input
             id="phone"
-            typeStyle="profile"
+            typeStyle={typeStyleInput.profile}
             placeholder="Phone"
             {...(errors.phone && {
               errorOn: true,

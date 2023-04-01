@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router'
-import styled from 'styled-components/macro'
+import styled from 'styled-components'
 import { routes } from '../../constants/routes'
 import Button from '../../ui/button'
 import { PlayerItem } from './PlayerItem'

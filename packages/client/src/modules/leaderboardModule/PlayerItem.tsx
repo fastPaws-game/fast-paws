@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import styled from 'styled-components/macro'
+import styled from 'styled-components'
 import { P1 } from '../../assets/styles/texts'
 import defaultAvatar from '../../assets/images/catAvatar.png'
 import { media } from '../../assets/styles/media'
