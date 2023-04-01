@@ -5,7 +5,7 @@ import ErrorWithImage from '../components/ErrorWithImage'
 const ServerErrorPage = () => {
   return (
     <BaseLayout>
-      <ErrorWithImage type='serverError' />
+      <ErrorWithImage type="serverError" />
     </BaseLayout>
   )
 }

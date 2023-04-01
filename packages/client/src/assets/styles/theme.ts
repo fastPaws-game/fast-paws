@@ -43,6 +43,7 @@ export const lightTheme = {
     primary: '0px 8px 24px rgba(0, 0, 0, 0.08)',
     secondary: '0px 4px 15px rgba(0, 0, 0, 0.25)',
     hover: '0px 4px 35px rgba(0, 0, 0, 0.35)',
+    forFormBackground: '0px 8px 24px rgba(0, 0, 0, 0.08)',
   },
   borders: {
     primary: '15px',
@@ -83,6 +84,7 @@ export const darkTheme = {
     primary: '0px 8px 24px rgba(0, 0, 0, 0.08);',
     secondary: '0px 4px 15px rgba(0, 0, 0, 0.25);',
     hover: '0px 4px 35px rgba(0, 0, 0, 0.35)',
+    forFormBackground: '0px 8px 34px -2px rgba(0, 0, 0, 0.21)',
   },
   borders: {
     primary: '15px',
