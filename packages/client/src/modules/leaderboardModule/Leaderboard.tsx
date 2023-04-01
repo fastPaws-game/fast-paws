@@ -54,4 +54,4 @@ const Wrapper = styled.div`
     grid-template-columns: 1fr;
   }
 `
-export default LeaderBoard
+export {LeaderBoard}
