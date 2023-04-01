@@ -5,7 +5,7 @@ const MainPage = () => {
   const navigate = useNavigate()
 
   const logout = () => {
-    authController.logout(() => navigate('/'))
+    authController.logout(() => navigate('/login'))
   }
 
   return (

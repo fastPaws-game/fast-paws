@@ -86,7 +86,7 @@ const AuthForm: FC<Props> = props => {
       </InputContainer>
       <ButtonContainer>
         <Button type="submit">Log in</Button>
-        <Link to="/registration">Registration</Link>
+        <Link to="/signup">Registration</Link>
       </ButtonContainer>
     </Form>
   )

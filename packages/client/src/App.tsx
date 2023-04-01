@@ -16,7 +16,7 @@ function App() {
         <GlobalStyles />
         <button onClick={themeToggler}>Toggle Theme</button>
         <Routes>
-          <Route path="/" element={<AuthPage />} />
+          <Route path="/login" element={<AuthPage />} />
           <Route
             path="/main"
             element={
@@ -25,7 +25,7 @@ function App() {
               </RequireAuth>
             }
           />
-          <Route path="registration" element={<RegistrationPage />} />
+          <Route path="/signup" element={<RegistrationPage />} />
         </Routes>
       </ThemeProvider>
     </BrowserRouter>

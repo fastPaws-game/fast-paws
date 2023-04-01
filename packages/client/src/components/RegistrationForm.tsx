@@ -1,4 +1,4 @@
-import { SubmitHandler, FieldValues, useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import Input, { typeStyleInput } from '../ui/input'
 import Button from '../ui/button'
