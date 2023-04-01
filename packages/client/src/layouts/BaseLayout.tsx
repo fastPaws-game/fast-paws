@@ -12,6 +12,7 @@ const Root = styled.div`
   align-items: center;
   justify-content: center;
   min-height: 100vh;
+  width: 100%;
 `
 
 export default BaseLayout

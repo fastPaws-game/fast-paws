@@ -98,7 +98,7 @@ const Form = styled.form`
   align-items: center;
   justify-content: space-between;
 
-  @media screen and (min-width: 660px) {
+  @media screen and (max-width: 660px) {
     flex-direction: column;
     flex-direction: row;
     align-items: flex-start;

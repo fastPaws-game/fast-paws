@@ -10,4 +10,4 @@ declare module '*.png' {
   export default content
 }
 
-declare type Indexed<T=any>={[key in (string | symbol)]: T};
+declare type Indexed<T = any> = { [key in string | symbol]: T }
