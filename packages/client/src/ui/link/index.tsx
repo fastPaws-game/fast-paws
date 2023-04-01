@@ -5,9 +5,7 @@ import { Link as ReactLink, LinkProps } from 'react-router-dom'
 type Props = LinkProps
 
 const Link: FC<Props> = ({ children, ...props }) => {
-  return (
-    <LinkStyled {...props}>{children}</LinkStyled>
-  )
+  return <LinkStyled {...props}>{children}</LinkStyled>
 }
 
 const LinkStyled = styled(ReactLink)`
@@ -15,11 +13,11 @@ const LinkStyled = styled(ReactLink)`
   &:visited {
     color: ${props => props.theme.colors.link};
     text-decoration: none;
-}
+  }
   &:hover,
   &:active {
     text-decoration: underline;
-}
+  }
 `
 
 export default Link

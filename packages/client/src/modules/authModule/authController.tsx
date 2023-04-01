@@ -5,7 +5,7 @@ import GetUserController from '../../Controllers/GetUserController'
 import { User } from '../../Controllers/GetUserController'
 
 type AuthContextType = {
-  user: User,
+  user: User
   isAuth: boolean
 }
 
@@ -18,34 +18,34 @@ const AuthContext: AuthContextType = {
     login: '',
     email: '',
     phone: '',
-    avatar: ''
+    avatar: '',
   },
-  isAuth: false
+  isAuth: false,
 }
 
 export class AuthController {
   async signin(data: AuthFormValues, navigate: () => void) {
     try {
-      const response = await AuthApi.signin(data);
+      const response = await AuthApi.signin(data)
 
       if (!response.ok) {
-        const result = await response.json();
-        const error = new httpError(`${result.reason}`);
-        error.status = response.status;
-        throw error;
+        const result = await response.json()
+        const error = new httpError(`${result.reason}`)
+        error.status = response.status
+        throw error
       }
-  
-      AuthContext.isAuth = true;
-      const user = await GetUserController.getUser();
-      AuthContext.user = user;
-      navigate();
-    } catch(e) {
-      if(e instanceof httpError && e.status == 401) {
-        console.log(e.message);
-      } else if(e instanceof httpError && e.status == 400) {
-        console.log(e.message);
+
+      AuthContext.isAuth = true
+      const user = await GetUserController.getUser()
+      AuthContext.user = user
+      navigate()
+    } catch (e) {
+      if (e instanceof httpError && e.status == 401) {
+        console.log(e.message)
+      } else if (e instanceof httpError && e.status == 400) {
+        console.log(e.message)
       } else {
-        throw e;
+        throw e
       }
     }
   }
@@ -57,24 +57,24 @@ export class AuthController {
 
   async logout(navigate: () => void) {
     try {
-      const response = await AuthApi.logout();
-      
+      const response = await AuthApi.logout()
+
       if (!response.ok) {
-        const result = await response.json();
-        const error = new httpError(`${result.reason}`);
-        error.status = response.status;
-        throw error;
+        const result = await response.json()
+        const error = new httpError(`${result.reason}`)
+        error.status = response.status
+        throw error
       }
 
-      AuthContext.isAuth = false;
+      AuthContext.isAuth = false
       navigate()
-    } catch(e) {
-      if(e instanceof httpError && e.status == 401) {
-        console.log(e.message);
-      } else if(e instanceof httpError && e.status == 400) {
-        console.log(e.message);
+    } catch (e) {
+      if (e instanceof httpError && e.status == 401) {
+        console.log(e.message)
+      } else if (e instanceof httpError && e.status == 400) {
+        console.log(e.message)
       } else {
-        throw e;
+        throw e
       }
     }
   }

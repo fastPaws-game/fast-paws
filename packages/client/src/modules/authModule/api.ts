@@ -8,7 +8,7 @@ class AuthApi {
   }
 
   public signin(data: AuthFormValues) {
-    return this.fetchApi.post('/signin', {body: JSON.stringify(data)})
+    return this.fetchApi.post('/signin', { body: JSON.stringify(data) })
   }
 
   public logout() {

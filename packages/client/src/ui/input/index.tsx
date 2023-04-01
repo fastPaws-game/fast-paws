@@ -29,10 +29,12 @@ const InputFormStyled = styled.input<{ errorOn?: boolean }>`
   height: 34px;
   background: ${props => props.theme.colors.backgroundInput};
   border-left: 3px solid
-    ${props => !props.errorOn ? props.theme.colors.accent : props.theme.colors.error};
+    ${props =>
+      props.errorOn ? props.theme.colors.error : props.theme.colors.accent};
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.05);
   border-radius: 0px 15px 15px 0px;
-  color: ${props => !props.errorOn ? props.theme.text.textInvert : props.theme.text.error};
+  color: ${props =>
+    props.errorOn ? props.theme.text.error :  props.theme.text.textInvert};
   caret-color: ${props => props.theme.text.caretColor};
   padding-left: 10px;
   transition: width 0.3s;
@@ -52,7 +54,8 @@ const InputFormStyled = styled.input<{ errorOn?: boolean }>`
   :focus {
     transition: 0.3s;
     border-left: 5px solid
-      ${props => !props.errorOn ? props.theme.colors.accent : props.theme.colors.error};
+      ${props =>
+        props.errorOn ? props.theme.colors.error : props.theme.colors.accent};
 
     ::placeholder {
       color: ${props => props.theme.text.placeholder};

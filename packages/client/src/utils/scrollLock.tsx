@@ -5,7 +5,7 @@ const scrollLock = {
   },
   disable(): void {
     if (this.body) this.body.style.removeProperty('overflow')
-  }
+  },
 }
 
 export default scrollLock

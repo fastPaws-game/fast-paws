@@ -1,13 +1,9 @@
 import { FC, PropsWithChildren } from 'react'
 import styled from 'styled-components'
 
-const BaseLayout: FC<PropsWithChildren> = (props) => {
+const BaseLayout: FC<PropsWithChildren> = props => {
   const { children } = props
-  return (
-    <Root>
-      {children}
-    </Root>
-  )
+  return <Root>{children}</Root>
 }
 
 const Root = styled.div`

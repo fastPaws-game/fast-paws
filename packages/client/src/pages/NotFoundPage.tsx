@@ -5,7 +5,7 @@ import ErrorWithImage from '../components/ErrorWithImage'
 const NotFoundPage = () => {
   return (
     <BaseLayout>
-      <ErrorWithImage type='notFound' />
+      <ErrorWithImage type="notFound" />
     </BaseLayout>
   )
 }
