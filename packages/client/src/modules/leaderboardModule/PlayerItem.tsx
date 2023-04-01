@@ -18,7 +18,7 @@ const PlayerItem: FC<Props> = props => {
     <Wrapper>
       <P>{rating}.</P>
       <AvatarImage avatarUrl={avatarUrl || null}>
-        <img src={avatarUrl || defaultAvatar} alt=""/>
+        <img src={avatarUrl || defaultAvatar} alt="" />
       </AvatarImage>
       <P weight="700">{name}</P>
       <P weight="300">{points}</P>
@@ -72,8 +72,8 @@ const AvatarImage = styled.div<{ avatarUrl: string | null }>`
   img {
     width: 100%;
     height: ${({ avatarUrl }) =>
-      typeof avatarUrl === 'string' ? '100%' : `auto`};
+    typeof avatarUrl === 'string' ? '100%' : `auto`};
     object-fit: cover;
   }
 `
-export {PlayerItem}
+export { PlayerItem }
