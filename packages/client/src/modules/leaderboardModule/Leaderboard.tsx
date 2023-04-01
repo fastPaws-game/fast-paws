@@ -51,7 +51,7 @@ const Wrapper = styled.div`
   padding: 15px;
 
   @media screen and (max-width: 550px) {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr
   }
 `
 export { LeaderBoard }
