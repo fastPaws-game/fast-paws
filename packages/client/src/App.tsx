@@ -3,7 +3,8 @@ import { ThemeProvider } from 'styled-components'
 import { useChangeTheme } from './hooks/useChangeTheme'
 import { GlobalStyles } from './assets/styles/globalStyle'
 import { BrowserRouter } from 'react-router-dom'
-import LiderBordPage from './pages/LiderBordPage'
+import RegistrationPage from './pages/RegistrationPage'
+
 
 function App() {
   const { theme } = useChangeTheme()
@@ -13,7 +14,6 @@ function App() {
       <ThemeProvider theme={theme}>
         <GlobalStyles />
         {/*<Router/>*/}
-        <LiderBordPage />
       </ThemeProvider>
     </BrowserRouter>
   )
