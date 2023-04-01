@@ -1,14 +1,14 @@
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { SubmitHandler, FieldValues, useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
 import Input, { typeStyleInput } from '../../ui/input'
 import Button from '../../ui/button'
 import Link from '../../ui/link'
-import styled from 'styled-components/macro'
+import styled from 'styled-components'
 import { routes } from '../../constants/routes'
 import { media } from '../../assets/styles/media'
-import { FC } from 'react'
-import { SignUpFormValues } from './registrationApi'
-
-//TODO добавить валидацию
+import { FC, useEffect } from 'react'
+import { SignUpFormValues } from '../../modules/registration/registrationApi'
+import { registrationSchema } from '../../utils/validation/registrationSchema'
 
 const defaultValuesSignUpForm = {
   login: '',
@@ -26,14 +26,27 @@ type Props = {
 
 const RegistrationForm: FC<Props> = props => {
   const { handleRegistration } = props
-  const { register, reset, handleSubmit } = useForm({
+  const {
+    register,
+    reset,
+    handleSubmit,
+    setFocus,
+    formState: { errors, isSubmitting, isDirty },
+  } = useForm({
     defaultValues: defaultValuesSignUpForm,
+    mode: 'onBlur',
+    criteriaMode: 'all',
+    resolver: yupResolver(registrationSchema),
   })
+
+  useEffect(() => {
+    setFocus('login')
+  }, [])
 
   const onSubmit: SubmitHandler<SignUpFormValues> = (
     data: SignUpFormValues
   ) => {
-    alert(JSON.stringify(data))
+    console.log(JSON.stringify(data))
     handleRegistration(data)
     reset()
   }
@@ -46,24 +59,32 @@ const RegistrationForm: FC<Props> = props => {
           typeStyle={typeStyleInput.form}
           id="login"
           {...register('login')}
+          errorOn={!!errors.login}
+          errorMessage={errors.login?.message}
         />
         <Input
           placeholder="Email"
           typeStyle={typeStyleInput.form}
           id="email"
           {...register('email')}
+          errorOn={!!errors.email}
+          errorMessage={errors.email?.message}
         />
         <Input
           placeholder="Name"
           typeStyle={typeStyleInput.form}
           id="name"
           {...register('first_name')}
+          errorOn={!!errors.first_name}
+          errorMessage={errors.first_name?.message}
         />
         <Input
           placeholder="Surname"
           typeStyle={typeStyleInput.form}
           {...register('second_name')}
           id="surname"
+          errorOn={!!errors.second_name}
+          errorMessage={errors.second_name?.message}
         />
       </Column>
       <Column>
@@ -72,20 +93,30 @@ const RegistrationForm: FC<Props> = props => {
           typeStyle={typeStyleInput.form}
           id="phone"
           {...register('phone')}
+          errorOn={!!errors.phone}
+          errorMessage={errors.phone?.message}
         />
         <Input
           placeholder="Password"
           typeStyle={typeStyleInput.form}
           id="password"
+          type="password"
           {...register('password')}
+          errorOn={!!errors.password}
+          errorMessage={errors.password?.message}
         />
         <Input
           placeholder="Repeat password"
           typeStyle={typeStyleInput.form}
           id="repeated_password"
+          type="password"
           {...register('repeated_password')}
+          errorOn={!!errors.repeated_password}
+          errorMessage={errors.repeated_password?.message}
         />
-        <Button type="submit">Sign up</Button>
+        <Button type="submit" disabled={!isDirty || isSubmitting}>
+          Sign up
+        </Button>
         <Link to={routes.signin}>Log in</Link>
       </Column>
     </Form>
@@ -97,8 +128,7 @@ const Form = styled.form`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-
-  @media screen and (max-width: 660px) {
+  @media screen and (min-width: 660px) {
     flex-direction: column;
     flex-direction: row;
     align-items: flex-start;
@@ -110,7 +140,6 @@ const Form = styled.form`
     align-items: center;
   }
 `
-
 const Column = styled.div`
   display: flex;
   flex-direction: column;
@@ -120,7 +149,6 @@ const Column = styled.div`
   justify-content: space-between;
   width: 100%;
   min-width: 290px;
-
   & div {
     width: 100%;
     text-align: center;
