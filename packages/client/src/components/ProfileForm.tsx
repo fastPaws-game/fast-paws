@@ -1,9 +1,11 @@
 import { SubmitHandler, FieldValues, useForm } from 'react-hook-form'
-import Input from '../ui/input'
+import Input, { typeStyleInput } from '../ui/input'
 import Button from '../ui/button'
 import Link from '../ui/link'
 import styled from 'styled-components'
 import { H3 } from '../assets/styles/texts'
+import profileSchema from '../utils/validation/profileSchema'
+import { yupResolver } from '@hookform/resolvers/yup'
 
 const defaultValues = {
   first_name: '',
@@ -14,28 +16,18 @@ const defaultValues = {
   phone: '',
 }
 
-const validation = {
-  first_name: { minLength: 3, pattern: /^[A-Za-zА-Яа-яЁё]+$/i },
-  second_name: { minLength: 3, pattern: /^[A-Za-zА-Яа-яЁё]+$/i },
-  display_name: {
-    minLength: 3,
-    pattern: /^[A-Za-zА-Яа-яЁё0-9_]+\s?[A-Za-zА-Яа-яЁё0-9_]+$/,
-  },
-  login: { minLength: 3, pattern: /^[A-Za-z0-9_]+$/, required: true },
-  email: {
-    pattern: /^[A-Za-z._\-[0-9]+[@][A-Za-z._\-[0-9]+[.][a-z]{2,4}$/,
-    required: true,
-  },
-  phone: { pattern: /^[+]?\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/ },
-}
-
 const ProfileForm = () => {
   const {
     register,
+    reset,
     handleSubmit,
-    formState: { errors },
-  } = useForm({ defaultValues })
-
+    formState: { errors, isSubmitting, isDirty },
+  } = useForm({
+    defaultValues: defaultValues,
+    mode: 'onBlur',
+    criteriaMode: 'all',
+    resolver: yupResolver(profileSchema),
+  })
   //Profile change
   const onSubmit: SubmitHandler<FieldValues> = data => {
     alert(JSON.stringify(data))
@@ -48,65 +40,53 @@ const ProfileForm = () => {
         <FormFields>
           <Input
             id="first_name"
-            typeStyle="profile"
+            typeStyle={typeStyleInput.profile}
             placeholder="First name"
-            {...(errors.first_name && {
-              errorOn: true,
-              errorMessage: 'Name is incorrect',
-            })}
-            {...register('first_name', validation.first_name)}
+            errorOn={!!errors.first_name}
+            errorMessage={errors.first_name?.message}
+            {...register('first_name')}
           />
           <Input
             id="second_name"
-            typeStyle="profile"
+            typeStyle={typeStyleInput.profile}
             placeholder="Second name"
-            {...(errors.second_name && {
-              errorOn: true,
-              errorMessage: 'Name is incorrect',
-            })}
-            {...register('second_name', validation.second_name)}
+            errorOn={!!errors.second_name}
+            errorMessage={errors.second_name?.message}
+            {...register('second_name')}
           />
           <Input
             id="display_name"
-            typeStyle="profile"
+            typeStyle={typeStyleInput.profile}
             placeholder="Display name"
-            {...(errors.display_name && {
-              errorOn: true,
-              errorMessage: 'Name is incorrect',
-            })}
-            {...register('display_name', validation.display_name)}
+            errorOn={!!errors.display_name}
+            errorMessage={errors.display_name?.message}
+            {...register('display_name')}
           />
           <Input
             id="login"
-            typeStyle="profile"
+            typeStyle={typeStyleInput.profile}
             placeholder="Login*"
-            {...(errors.login && {
-              errorOn: true,
-              errorMessage: 'Login is incorrect',
-            })}
-            {...register('login', validation.login)}
+            errorOn={!!errors.login}
+            errorMessage={errors.login?.message}
+            {...register('login')}
           />
           <Input
             id="email"
-            typeStyle="profile"
+            typeStyle={typeStyleInput.profile}
             placeholder="E-mail*"
-            {...(errors.email && {
-              errorOn: true,
-              errorMessage: 'Wrong e-mail',
-            })}
-            {...register('email', validation.email)}
+            errorOn={!!errors.email}
+            errorMessage={errors.email?.message}
+            {...register('email')}
           />
           <Input
             id="phone"
-            typeStyle="profile"
+            typeStyle={typeStyleInput.profile}
             placeholder="Phone"
-            {...(errors.phone && {
-              errorOn: true,
-              errorMessage: 'Wrong phone number',
-            })}
-            {...register('phone', validation.phone)}
+            errorOn={!!errors.phone}
+            errorMessage={errors.phone?.message}
+            {...register('phone')}
           />
-          <Button type="submit">Update</Button>
+          <Button type="submit" disabled={!isDirty || isSubmitting}>Update</Button>
           <Link to={'#'}>Change password</Link>
         </FormFields>
       </form>
