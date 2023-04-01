@@ -16,16 +16,26 @@ const PlayerItem: FC<Props> = props => {
 
   return (
     <Wrapper>
-      <P1>{rating}.</P1>
+      <P>{rating}.</P>
       <AvatarImage avatarUrl={avatarUrl || null}>
         <img src={avatarUrl || defaultAvatar} alt="" />
       </AvatarImage>
-      <P1 weight="700">{name}</P1>
-      <P1 weight="300">{points}</P1>
+      <P weight="700">{name}</P>
+      <P weight="300">{points}</P>
     </Wrapper>
   )
 }
 
+const P = styled(P1)`
+&:nth-of-type(2) {
+  ${media.small} {
+    font-size: ${({ theme }) => theme.vars.fontSize.s};
+  }
+}
+  @media screen and (max-width: 450px) {
+    font-size: ${({ theme }) => theme.vars.fontSize.s};
+  }
+`
 const Wrapper = styled.div`
   width: 100%;
   border-radius: 15px;
@@ -43,17 +53,6 @@ const Wrapper = styled.div`
 
   ${media.small} {
     min-height: 60px;
-  }
-
-  p:nth-of-type(2) {
-    ${media.small} {
-      font-size: ${({ theme }) => theme.vars.fontSize.s};
-    }
-  }
-  p {
-    @media screen and (max-width: 450px) {
-      font-size: ${({ theme }) => theme.vars.fontSize.s};
-    }
   }
 `
 const AvatarImage = styled.div<{ avatarUrl: string | null }>`
@@ -75,7 +74,7 @@ const AvatarImage = styled.div<{ avatarUrl: string | null }>`
   img {
     width: 100%;
     height: ${({ avatarUrl }) =>
-      typeof avatarUrl === 'string' ? '100%' : `auto`};
+    typeof avatarUrl === 'string' ? '100%' : `auto`};
     object-fit: cover;
   }
 `
