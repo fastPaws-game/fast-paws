@@ -39,7 +39,6 @@ const ProfileForm = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormFields>
           <Input
-            id="first_name"
             typeStyle={typeStyleInput.profile}
             placeholder="First name"
             errorOn={!!errors.first_name}
@@ -47,7 +46,6 @@ const ProfileForm = () => {
             {...register('first_name')}
           />
           <Input
-            id="second_name"
             typeStyle={typeStyleInput.profile}
             placeholder="Second name"
             errorOn={!!errors.second_name}
@@ -55,7 +53,6 @@ const ProfileForm = () => {
             {...register('second_name')}
           />
           <Input
-            id="display_name"
             typeStyle={typeStyleInput.profile}
             placeholder="Display name"
             errorOn={!!errors.display_name}
@@ -63,7 +60,6 @@ const ProfileForm = () => {
             {...register('display_name')}
           />
           <Input
-            id="login"
             typeStyle={typeStyleInput.profile}
             placeholder="Login*"
             errorOn={!!errors.login}
@@ -71,7 +67,6 @@ const ProfileForm = () => {
             {...register('login')}
           />
           <Input
-            id="email"
             typeStyle={typeStyleInput.profile}
             placeholder="E-mail*"
             errorOn={!!errors.email}
@@ -79,7 +74,6 @@ const ProfileForm = () => {
             {...register('email')}
           />
           <Input
-            id="phone"
             typeStyle={typeStyleInput.profile}
             placeholder="Phone"
             errorOn={!!errors.phone}
