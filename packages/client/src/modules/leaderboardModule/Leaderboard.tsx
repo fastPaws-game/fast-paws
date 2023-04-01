@@ -2,9 +2,9 @@ import { useNavigate } from 'react-router'
 import styled from 'styled-components/macro'
 import { routes } from '../../constants/routes'
 import Button from '../../ui/button'
-import PlayerItem from './PlayerItem'
+import { PlayerItem } from './PlayerItem'
 
-const LiderBord = () => {
+const LeaderBoard = () => {
   const navigate = useNavigate()
 
   const handleClick = () => {
@@ -54,4 +54,4 @@ const Wrapper = styled.div`
     grid-template-columns: 1fr;
   }
 `
-export default LiderBord
+export default LeaderBoard

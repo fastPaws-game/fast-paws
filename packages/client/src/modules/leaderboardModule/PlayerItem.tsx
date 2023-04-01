@@ -78,4 +78,4 @@ const AvatarImage = styled.div<{ avatarUrl: string | null }>`
     object-fit: cover;
   }
 `
-export default PlayerItem
+export {PlayerItem}

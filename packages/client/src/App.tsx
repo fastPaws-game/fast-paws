@@ -4,6 +4,9 @@ import { useChangeTheme } from './hooks/useChangeTheme'
 import { GlobalStyles } from './assets/styles/globalStyle'
 import { BrowserRouter } from 'react-router-dom'
 import RegistrationPage from './pages/RegistrationPage'
+import LeaderboardModule from './modules/leaderBoardModule'
+import LeaderBoard from './modules/leaderBoardModule/LeaderBoard'
+import LeaderBoardPage from './pages/LeaderBoardPage'
 
 
 function App() {
@@ -14,7 +17,6 @@ function App() {
       <ThemeProvider theme={theme}>
         <GlobalStyles />
         {/*<Router/>*/}
-        <RegistrationPage/>
       </ThemeProvider>
     </BrowserRouter>
   )
