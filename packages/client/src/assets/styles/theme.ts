@@ -9,6 +9,9 @@ export const vars = {
     xl: '30px',
     xxl: '43px',
   },
+  colors: {
+    lightest: '#FDFDFD',
+  },
 }
 export const lightTheme = {
   vars,
