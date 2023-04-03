@@ -5,7 +5,7 @@ import defaultAvatar from '../../assets/images/catAvatar.png'
 import { media } from '../../assets/styles/media'
 
 type Props = {
-  avatarUrl?: string
+  avatarUrl?: string|null
   name: string
   rating: number
   points: number
@@ -17,9 +17,15 @@ const PlayerItem: FC<Props> = props => {
   return (
     <Wrapper>
       <P>{rating}.</P>
-      <AvatarImage avatarUrl={avatarUrl || null}>
-        <img src={avatarUrl || defaultAvatar} alt="" />
-      </AvatarImage>
+      {avatarUrl ?
+        <AvatarImage>
+          <img src={avatarUrl} alt="" />
+        </AvatarImage>
+        :
+        <AvatarImage >
+          <img src={defaultAvatar} alt="" />
+        </AvatarImage>
+      }
       <P weight="700">{name}</P>
       <P weight="300">{points}</P>
     </Wrapper>
@@ -32,7 +38,7 @@ const P = styled(P1)`
     font-size: ${({ theme }) => theme.vars.fontSize.s};
   }
 }
-  @media screen and (max-width: 450px) {
+${media.small} {
     font-size: ${({ theme }) => theme.vars.fontSize.s};
   }
 `
@@ -53,7 +59,7 @@ const Wrapper = styled.div`
     min-height: 60px;
   }
 `
-const AvatarImage = styled.div<{ avatarUrl: string | null }>`
+const AvatarImage = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.primary};
   background-color: ${({ theme }) => theme.vars.colors.lightest};
   width: 85px;
@@ -71,8 +77,7 @@ const AvatarImage = styled.div<{ avatarUrl: string | null }>`
 
   img {
     width: 100%;
-    height: ${({ avatarUrl }) =>
-    typeof avatarUrl === 'string' ? '100%' : `auto`};
+    height: auto;
     object-fit: cover;
   }
 `

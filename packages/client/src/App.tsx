@@ -6,6 +6,7 @@ import RequireAuth from './modules/authModule/RequireAuth'
 import AuthPage from './pages/AuthPage'
 import RegistrationPage from './pages/RegistrationPage'
 import MainPage from './pages/MainPage'
+import LeaderBoardPage from './pages/LeaderBoardPage'
 
 function App() {
   const { theme, themeToggler } = useChangeTheme()
@@ -16,7 +17,7 @@ function App() {
         <GlobalStyles />
         <button onClick={themeToggler}>Toggle Theme</button>
         <Routes>
-          <Route path="/login" element={<AuthPage />} />
+          <Route path="/login" element={<LeaderBoardPage />} />
           <Route
             path="/main"
             element={

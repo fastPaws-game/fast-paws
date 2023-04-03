@@ -15,6 +15,18 @@ const LeaderBoard = () => {
     }
   }
 
+  const mockPlayerList = [
+    {
+      name: "Босс", rating: 1, points: 520,
+      avatarUrl: 'https://nretnil.com/avatar/LawrenceEzekielAmos.png'
+    },
+    { name: "Крутой кошак", rating: 1, points: 520 },
+    { name: "Крутой кошак", rating: 1, points: 520 },
+    { name: "Крутой кошак", rating: 1, points: 520 },
+    { name: "Крутой кошак", rating: 1, points: 520 },
+    { name: "Крутой кошак", rating: 1, points: 520 }
+  ]
+
   return (
     <Wrapper>
       <ButtonBack
@@ -22,12 +34,7 @@ const LeaderBoard = () => {
         size={'small'}
         onClick={handleClick}
       />
-      <PlayerItem name="Крутой кошак" rating={1} points={520} />
-      <PlayerItem name="Крутой кошак" rating={1} points={520} />
-      <PlayerItem name="Крутой кошак" rating={1} points={520} />
-      <PlayerItem name="Крутой кошак" rating={1} points={520} />
-      <PlayerItem name="Крутой кошак" rating={1} points={520} />
-      <PlayerItem name="Крутой кошак" rating={1} points={520} />
+      {mockPlayerList.map(item => <PlayerItem name={item.name} rating={item.rating} points={item.points} avatarUrl={item.avatarUrl || null} />)}
     </Wrapper>
   )
 }
