@@ -1,30 +1,21 @@
 import { FC } from 'react'
 import styled from 'styled-components'
-import Topic, { Props as TopicProps } from '../ui/topic';
+import TopicItem, { Props as TopicProps } from '../ui/topic';
 
 type Props = {
-    topics?: Array<TopicProps>;
+    topics: Array<TopicProps> | [];
 }
 
 const TopicsList: FC<Props> = (props) => {
     const { topics } = props;
 
-    return topics ?
-        (
-            <TopicsContainer>
-                <Topics>
-                    {topics.map((topic) => {
-                        return (<Topic
-                            topicName={topic.topicName}
-                            topicPath={topic.topicPath}
-                            comments={topic.comments}
-                            userName={topic.userName}
-                            userPath={topic.userPath}
-                            date={topic.date} />)
-                    })}
-                </Topics>
-            </TopicsContainer>
-        ) : (<TopicsContainer />)
+    return (
+        <TopicsContainer>
+            <ListWrapper>
+                {(topics.length === 0) ? 'No topics' : topics.map((topic, index) => <TopicItem key={index} {...topic} />)}
+            </ListWrapper>
+        </TopicsContainer>
+    )
 }
 
 const TopicsContainer = styled.div`
@@ -37,7 +28,7 @@ const TopicsContainer = styled.div`
     height: 80vh;   
 `
 
-const Topics = styled.ul`
+const ListWrapper = styled.ul`
     display: flex;
     flex-direction: column;
     align-items: flex-start;

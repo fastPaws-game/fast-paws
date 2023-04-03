@@ -1,10 +1,11 @@
-import React, { FC, ButtonHTMLAttributes, ReactElement } from 'react'
+import { FC, ButtonHTMLAttributes, ReactElement } from 'react'
 import styled from 'styled-components'
 import { media } from '../../assets/styles/media'
 
 type Props = {
   icon?: ReactElement
   size?: string
+  light?: boolean
 } & ButtonHTMLAttributes<HTMLButtonElement>
 
 const Button: FC<Props> = props => {
@@ -55,7 +56,7 @@ const ButtonMainStyled = styled.button<{ size?: string }>`
   }
 `
 
-const ButtonIconStyled = styled.button<{ size?: string }>`
+const ButtonIconStyled = styled.button<{ size?: string, light?: boolean }>`
   width: ${props => (props.size === 'big' ? '100px' : '70px')};
   height: ${props => (props.size === 'big' ? '100px' : '70px')};
   border-radius: ${props => props.theme.borders.round};
@@ -64,7 +65,7 @@ const ButtonIconStyled = styled.button<{ size?: string }>`
   align-items: center;
   justify-content: center;
   transition: 0.3s;
-  background-color: ${props => props.theme.colors.play};
+  background-color: ${props => (props.light ? props.theme.colors.accent : props.theme.colors.play)};
   color: ${props => props.theme.text.textBase};
 
   &:not([disabled]):hover,

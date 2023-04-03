@@ -1,14 +1,22 @@
-import IconCat from '../assets/icons/IconCat'
-import ForumsComponent from '../modules/forums/ForumsComponent'
-import ForumLayout from '../layouts/ForumLayout'
+import LayoutWithHeader from '../layouts/LayoutWithHeader'
+import Forum from '../modules/forums/Forum'
+import catImg from '../assets/images/bigCat.png'
+import styled from 'styled-components'
 
 const ForumPage = () => {
     return (
-        <ForumLayout>
-            <ForumsComponent />
-            <IconCat />
-        </ForumLayout>
+        <LayoutWithHeader title='Forums'>
+            <Forum />
+            <IMG src={catImg} />
+        </LayoutWithHeader>
     )
 }
+
+const IMG = styled.img`
+    position: absolute;
+    z-index: -1;
+    bottom: 0%;
+    left: 50%;
+`
 
 export default ForumPage

@@ -7,15 +7,13 @@ import Modal from './modal'
 
 type Props = {
     visible: boolean
-    outSideClickEnable: boolean
     handleClose: () => void
     handleSubmit: () => void
+    outSideClickEnable?: boolean
 }
 
 const AddNewTopic: FC<Props> = (props) => {
-    const handleSubmit = () => {
-        props.handleSubmit()
-    }
+    const { handleSubmit } = props;
 
     return (
         <Modal {...props}>

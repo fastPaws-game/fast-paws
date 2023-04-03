@@ -1,17 +1,29 @@
 import styled from 'styled-components'
-import Forum from '../ui/forum';
+import { FC } from 'react';
+import ForumItem from '../ui/forum';
 
-const ForumsList = () => {
+type ForumData = {
+    name: string;
+    id: number;
+    path: string;
+    topics: number;
+}
+
+type Props = {
+    forums: Array<ForumData>
+}
+
+const ForumsList: FC<Props> = (props) => {
+    const {forums} = props;
+
     return (
-        <Forums>
-            <Forum forumName='New Games' forumPath='/forum/newgames' topics={222}/>
-            <Forum forumName='Game designers' forumPath='#' topics={5}/>
-            <Forum forumName='Technologies' forumPath='#' topics={590}/>
-        </Forums>
+        <ListWrapper>
+            {forums.map(forum => <ForumItem forumName={forum.name} key={forum.id} forumPath={forum.path} topics={forum.topics} />)}
+        </ListWrapper>
     )
 }
 
-const Forums = styled.ul`
+const ListWrapper = styled.ul`
     display: flex;
     flex-direction: column;
     align-items: flex-start;

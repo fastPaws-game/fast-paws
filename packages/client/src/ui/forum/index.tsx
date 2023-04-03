@@ -8,18 +8,18 @@ export type Props = {
     topics: number;
 }
 
-const Forum: FC<Props> = (props) => {
+const ForumItem: FC<Props> = (props) => {
     const { forumName, forumPath, topics } = props;
 
     return (
-        <ForumItem>
+        <Item>
             <Link to={forumPath}>{forumName}</Link>
             <Topics>Topics: {topics}</Topics>
-        </ForumItem>
+        </Item>
     )
 }
 
-const ForumItem = styled.li`
+const Item = styled.li`
     display: grid;
     grid-template-columns: 4fr 1fr;
     padding: 15px 30px 15px 30px;
@@ -34,4 +34,4 @@ const Topics = styled.span`
     font-weight: 700;
 `
 
-export default Forum
+export default ForumItem

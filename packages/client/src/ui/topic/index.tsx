@@ -11,22 +11,22 @@ export type Props = {
     date: string;
 }
 
-const Topic: FC<Props> = (props) => {
+const TopicItem: FC<Props> = (props) => {
     const { topicName, topicPath, comments, userName, userPath, date } = props;
 
     return (
-        <TopicItem>
+        <Item>
             <Link to={topicPath}>{topicName}</Link>
             <Topics>Comments: {comments}</Topics>
             <LastMessage>
                 <UserName to={userPath}>{userName}</UserName>
                 <Date>{date}</Date>
             </LastMessage>
-        </TopicItem>
+        </Item>
     )
 }
 
-const TopicItem = styled.li`
+const Item = styled.li`
     display: grid;
     grid-template-columns: 3fr 1fr 1fr;
     padding: 10px;
@@ -55,4 +55,4 @@ const Date = styled.span`
     color: ${({ theme }) => theme.text.textInvert};
 `
 
-export default Topic
+export default TopicItem
