@@ -17,14 +17,15 @@ const LeaderBoard = () => {
 
   const mockPlayerList = [
     {
+      id: 0,
       name: "Босс", rating: 1, points: 520,
       avatarUrl: 'https://nretnil.com/avatar/LawrenceEzekielAmos.png'
     },
-    { name: "Крутой кошак", rating: 1, points: 520 },
-    { name: "Крутой кошак", rating: 1, points: 520 },
-    { name: "Крутой кошак", rating: 1, points: 520 },
-    { name: "Крутой кошак", rating: 1, points: 520 },
-    { name: "Крутой кошак", rating: 1, points: 520 }
+    { id: 1, name: "Крутой кошак", rating: 1, points: 520 },
+    { id: 2, name: "Крутой кошак", rating: 1, points: 520 },
+    { id: 3, name: "Крутой кошак", rating: 1, points: 520 },
+    { id: 4, name: "Крутой кошак", rating: 1, points: 520 },
+    { id: 5, name: "Крутой кошак", rating: 1, points: 520 }
   ]
 
   return (
@@ -34,7 +35,13 @@ const LeaderBoard = () => {
         size={'small'}
         onClick={handleClick}
       />
-      {mockPlayerList.map(item => <PlayerItem name={item.name} rating={item.rating} points={item.points} avatarUrl={item.avatarUrl || null} />)}
+      {mockPlayerList.map(item => <PlayerItem
+        name={item.name}
+        rating={item.rating}
+        points={item.points}
+        avatarUrl={item.avatarUrl || null}
+        key={item.id}
+      />)}
     </Wrapper>
   )
 }
