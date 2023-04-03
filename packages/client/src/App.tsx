@@ -19,7 +19,7 @@ function App() {
         <GlobalStyles />
         <button onClick={themeToggler}>Toggle Theme</button>
         <Routes>
-          <Route path="/login" element={<LeaderBoardPage />} />
+          <Route path="/login" element={<AuthPage />} />
           <Route
             path="/main"
             element={
