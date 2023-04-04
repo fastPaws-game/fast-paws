@@ -80,7 +80,9 @@ const ProfileForm = () => {
             errorMessage={errors.phone?.message}
             {...register('phone')}
           />
-          <Button type="submit" disabled={!isDirty || isSubmitting}>Update</Button>
+          <Button type="submit" disabled={!isDirty || isSubmitting}>
+            Update
+          </Button>
           <Link to={'#'}>Change password</Link>
         </FormFields>
       </form>

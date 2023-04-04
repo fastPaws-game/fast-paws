@@ -11,8 +11,14 @@ export const mainProfileSchema = yup.object({
     .min(3, 'Логин должен быть длиннее 3 символов')
     .max(20, 'Логин должен короче 20 символов')
     .required('Пожалуйста, укажите логин'),
-  first_name: yup.string().min(3, 'Имя должено быть длиннее 3 символов').required('Пожалуйста, укажите имя'),
-  second_name: yup.string().min(3, 'Фамилия должна быть длиннее 3 символов').required('Пожалуйста, укажите фамилию'),
+  first_name: yup
+    .string()
+    .min(3, 'Имя должено быть длиннее 3 символов')
+    .required('Пожалуйста, укажите имя'),
+  second_name: yup
+    .string()
+    .min(3, 'Фамилия должна быть длиннее 3 символов')
+    .required('Пожалуйста, укажите фамилию'),
   email: yup
     .string()
     .required('Пожалуйста, введите email')
@@ -28,12 +34,10 @@ export const mainProfileSchema = yup.object({
     .max(15, 'Номер слишком длинный'),
 })
 
-
-const profileSchema = yup.object({
-  display_name: yup
-    .string()
-    .min(3, 'Имя должно быть длиннее 3 символов')
-})
+const profileSchema = yup
+  .object({
+    display_name: yup.string().min(3, 'Имя должно быть длиннее 3 символов'),
+  })
   .concat(mainProfileSchema)
 
 export default profileSchema

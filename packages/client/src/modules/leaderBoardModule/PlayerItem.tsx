@@ -5,7 +5,7 @@ import defaultAvatar from '../../assets/images/catAvatar.png'
 import { media } from '../../assets/styles/media'
 
 type Props = {
-  avatarUrl?: string|null
+  avatarUrl?: string | null
   name: string
   rating: number
   points: number
@@ -17,15 +17,15 @@ const PlayerItem: FC<Props> = props => {
   return (
     <Wrapper>
       <P>{rating}.</P>
-      {avatarUrl ?
+      {avatarUrl ? (
         <AvatarImage>
           <img src={avatarUrl} alt="" />
         </AvatarImage>
-        :
-        <AvatarImage >
+      ) : (
+        <AvatarImage>
           <img src={defaultAvatar} alt="" />
         </AvatarImage>
-      }
+      )}
       <P weight="700">{name}</P>
       <P weight="300">{points}</P>
     </Wrapper>
@@ -33,12 +33,12 @@ const PlayerItem: FC<Props> = props => {
 }
 
 const P = styled(P1)`
-&:nth-of-type(2) {
-  ${media.small} {
-    font-size: ${({ theme }) => theme.vars.fontSize.s};
+  &:nth-of-type(2) {
+    ${media.small} {
+      font-size: ${({ theme }) => theme.vars.fontSize.s};
+    }
   }
-}
-${media.small} {
+  ${media.small} {
     font-size: ${({ theme }) => theme.vars.fontSize.s};
   }
 `

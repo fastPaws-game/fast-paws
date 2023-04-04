@@ -9,39 +9,39 @@ const LeaderBoard = () => {
 
   const handleClick = () => {
     if (window.history.state && window.history.state.idx > 0) {
-      navigate(-1);
+      navigate(-1)
     } else {
-      navigate(routes.home);
+      navigate(routes.home)
     }
   }
 
   const mockPlayerList = [
     {
       id: 0,
-      name: "Босс", rating: 1, points: 520,
-      avatarUrl: 'https://nretnil.com/avatar/LawrenceEzekielAmos.png'
+      name: 'Босс',
+      rating: 1,
+      points: 520,
+      avatarUrl: 'https://nretnil.com/avatar/LawrenceEzekielAmos.png',
     },
-    { id: 1, name: "Крутой кошак", rating: 1, points: 520 },
-    { id: 2, name: "Крутой кошак", rating: 1, points: 520 },
-    { id: 3, name: "Крутой кошак", rating: 1, points: 520 },
-    { id: 4, name: "Крутой кошак", rating: 1, points: 520 },
-    { id: 5, name: "Крутой кошак", rating: 1, points: 520 }
+    { id: 1, name: 'Крутой кошак', rating: 1, points: 520 },
+    { id: 2, name: 'Крутой кошак', rating: 1, points: 520 },
+    { id: 3, name: 'Крутой кошак', rating: 1, points: 520 },
+    { id: 4, name: 'Крутой кошак', rating: 1, points: 520 },
+    { id: 5, name: 'Крутой кошак', rating: 1, points: 520 },
   ]
 
   return (
     <Wrapper>
-      <ButtonBack
-        icon={<h1>&lt;</h1>}
-        size={'small'}
-        onClick={handleClick}
-      />
-      {mockPlayerList.map(item => <PlayerItem
-        name={item.name}
-        rating={item.rating}
-        points={item.points}
-        avatarUrl={item.avatarUrl || null}
-        key={item.id}
-      />)}
+      <ButtonBack icon={<h1>&lt;</h1>} size={'small'} onClick={handleClick} />
+      {mockPlayerList.map(item => (
+        <PlayerItem
+          name={item.name}
+          rating={item.rating}
+          points={item.points}
+          avatarUrl={item.avatarUrl || null}
+          key={item.id}
+        />
+      ))}
     </Wrapper>
   )
 }
@@ -52,7 +52,7 @@ const ButtonBack = styled(Button)`
   top: 0.8em;
 
   @media screen and (max-width: 600px) {
-    width:45px;
+    width: 45px;
     height: 45px;
   }
 `
@@ -65,7 +65,7 @@ const Wrapper = styled.div`
   padding: 15px;
 
   @media screen and (max-width: 550px) {
-    grid-template-columns: 1fr
+    grid-template-columns: 1fr;
   }
 `
 export { LeaderBoard }
