@@ -31,7 +31,6 @@ const Content = styled.div`
     flex-direction: column;
     gap: 30px;
     align-items: center;
-    position: absolute;
     width: 415px;
     height: 210px;
     z-index: 100;
@@ -41,7 +40,6 @@ const Content = styled.div`
     padding: 35px;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
 `
 
 export default AddNewTopic

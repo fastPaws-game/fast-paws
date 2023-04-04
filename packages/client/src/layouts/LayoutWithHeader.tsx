@@ -6,19 +6,17 @@ import IconBack from '../assets/icons/IconBack';
 
 type Props = {
   title?: string
-  buttonAdd?: ReactNode
   children: ReactNode | undefined
 }
 
 const LayoutWithHeader: FC<Props> = (props) => {
-  const { title, children, buttonAdd  } = props;
+  const { title, children } = props;
   return (
     <Layout>
       <Container>
         <Header>
           <Button icon={IconBack} light></Button>
           <H1>{title ? title : ''}</H1>
-          {buttonAdd}
         </Header>
         {children}
       </Container>
@@ -40,7 +38,7 @@ const Header = styled.header`
   align-items: center;
   gap: 45px;
   width: 100%;
-  padding: 30px 50px;
+  padding: 30px 30px 0;
 `
 
 const Layout = styled.div`
