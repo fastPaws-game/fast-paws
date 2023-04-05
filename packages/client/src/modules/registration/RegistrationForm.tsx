@@ -1,14 +1,14 @@
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import Input, { typeStyleInput } from '../ui/input'
-import Button from '../ui/button'
-import Link from '../ui/link'
+import Input, { typeStyleInput } from '../../ui/input'
+import Button from '../../ui/button'
+import Link from '../../ui/link'
 import styled from 'styled-components'
-import { routes } from '../constants/routes'
-import { media } from '../assets/styles/media'
+import { routes } from '../../constants/routes'
+import { media } from '../../assets/styles/media'
 import { FC, useEffect } from 'react'
-import { SignUpFormValues } from '../modules/registration/registrationApi'
-import { registrationSchema } from '../utils/validation/registrationSchema'
+import { SignUpFormValues } from '../../modules/registration/registrationApi'
+import { registrationSchema } from '../../utils/validation/registrationSchema'
 
 const defaultValuesSignUpForm = {
   login: '',
@@ -121,7 +121,6 @@ const Form = styled.form`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-
   @media screen and (min-width: 660px) {
     flex-direction: column;
     flex-direction: row;
@@ -143,7 +142,6 @@ const Column = styled.div`
   justify-content: space-between;
   width: 100%;
   min-width: 290px;
-
   & div {
     width: 100%;
     text-align: center;

@@ -8,6 +8,7 @@ import RegistrationPage from './pages/RegistrationPage'
 import MainPage from './pages/MainPage'
 import { router } from './main'
 
+
 function App() {
   const { theme, themeToggler } = useChangeTheme()
 
@@ -16,9 +17,9 @@ function App() {
       <ThemeProvider theme={theme}>
         <GlobalStyles />
         <button onClick={themeToggler}>Toggle Theme</button>
+
         <RouterProvider router={router} />
         {/* <Routes>
-          <Route path="/login" element={<AuthPage />} />
           <Route
             path="/main"
             element={
