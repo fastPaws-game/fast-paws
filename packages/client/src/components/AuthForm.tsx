@@ -70,7 +70,9 @@ const AuthForm: FC<Props> = props => {
         />
       </InputContainer>
       <ButtonContainer>
-        <Button type="submit" disabled={!isDirty || isSubmitting}>Log in</Button>
+        <Button type="submit" disabled={!isDirty || isSubmitting}>
+          Log in
+        </Button>
         <Link to={routes.signin}>Registration</Link>
       </ButtonContainer>
     </Form>
