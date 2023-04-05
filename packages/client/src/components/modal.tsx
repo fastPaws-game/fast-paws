@@ -6,7 +6,7 @@ import React, {
   useCallback,
   memo,
 } from 'react'
-import styled from 'styled-components/macro'
+import styled from 'styled-components'
 import scrollLock from '../utils/scrollLock'
 import useEscape from '../hooks/useEscape'
 

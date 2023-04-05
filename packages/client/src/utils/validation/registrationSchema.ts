@@ -1,5 +1,5 @@
 import * as yup from 'yup'
-import {mainProfileSchema} from './profileSchema'
+import { mainProfileSchema } from './profileSchema'
 import { passwordRegExp } from './regExps'
 
 const passwordsSchema = yup.object({
