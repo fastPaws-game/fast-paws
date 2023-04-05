@@ -3,9 +3,7 @@ import styled from 'styled-components'
 import { H1 } from '../assets/styles/texts'
 import Button from '../ui/button'
 import IconBack from '../assets/icons/IconBack'
-import { useLocation, useNavigate } from 'react-router'
-import { routes } from '../constants/routes'
-import Link from '../ui/link'
+import { useNavigate } from 'react-router'
 
 type Props = {
   title?: string
