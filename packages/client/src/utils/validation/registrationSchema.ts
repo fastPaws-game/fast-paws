@@ -1,5 +1,5 @@
 import * as yup from 'yup'
-import profileSchema from './profileSchema'
+import { mainProfileSchema } from './profileSchema'
 import { passwordRegExp } from './regExps'
 
 const passwordsSchema = yup.object({
@@ -18,6 +18,6 @@ const passwordsSchema = yup.object({
     .oneOf([yup.ref('password')], 'Введенные пароли не совпадают'),
 })
 
-const registrationSchema = passwordsSchema.concat(profileSchema)
+const registrationSchema = passwordsSchema.concat(mainProfileSchema)
 
 export { registrationSchema }
