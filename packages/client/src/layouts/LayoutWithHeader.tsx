@@ -1,22 +1,32 @@
 import { FC, ReactNode } from 'react'
 import styled from 'styled-components'
-import { H1 } from '../assets/styles/texts';
-import Button from '../ui/button';
-import IconBack from '../assets/icons/IconBack';
+import { H1 } from '../assets/styles/texts'
+import Button from '../ui/button'
+import IconBack from '../assets/icons/IconBack'
+import { useLocation, useNavigate } from 'react-router'
+import { routes } from '../constants/routes'
+import Link from '../ui/link'
 
 type Props = {
   title?: string
   children: ReactNode | undefined
 }
 
-const LayoutWithHeader: FC<Props> = (props) => {
-  const { title, children } = props;
+const LayoutWithHeader: FC<Props> = props => {
+  const { title, children } = props
+
+  const navigate = useNavigate()
+
+  const handleClick = () => {
+    navigate(-1)
+  }
+
   return (
     <Layout>
       <Container>
         <Header>
-          <Button icon={IconBack} light></Button>
-          <H1>{title ? title : ''}</H1>
+          <Button icon={IconBack} onClick={handleClick} light></Button>
+          <H1>{title ?? ''}</H1>
         </Header>
         {children}
       </Container>
@@ -25,7 +35,7 @@ const LayoutWithHeader: FC<Props> = (props) => {
 }
 
 const Container = styled.main`
-  width: 100vw;   
+  width: 100vw;
   display: flex;
   flex-direction: column;
   align-items: flex-start;

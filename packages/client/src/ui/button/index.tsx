@@ -4,7 +4,7 @@ import { media } from '../../assets/styles/media'
 
 type Props = {
   icon?: ReactElement
-  size?: string
+  size?: 'small' | 'big'
   light?: boolean
 } & ButtonHTMLAttributes<HTMLButtonElement>
 
@@ -56,7 +56,7 @@ const ButtonMainStyled = styled.button<{ size?: string }>`
   }
 `
 
-const ButtonIconStyled = styled.button<{ size?: string, light?: boolean }>`
+const ButtonIconStyled = styled.button<{ size?: string; light?: boolean }>`
   width: ${props => (props.size === 'big' ? '100px' : '70px')};
   height: ${props => (props.size === 'big' ? '100px' : '70px')};
   border-radius: ${props => props.theme.borders.round};
@@ -65,7 +65,8 @@ const ButtonIconStyled = styled.button<{ size?: string, light?: boolean }>`
   align-items: center;
   justify-content: center;
   transition: 0.3s;
-  background-color: ${props => (props.light ? props.theme.colors.accent : props.theme.colors.play)};
+  background-color: ${props =>
+    props.light ? props.theme.colors.accent : props.theme.colors.play};
   color: ${props => props.theme.text.textBase};
 
   &:not([disabled]):hover,
