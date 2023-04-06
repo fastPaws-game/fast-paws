@@ -3,9 +3,9 @@ import Input, { typeStyleInput } from '../ui/input'
 import Button from '../ui/button'
 import Link from '../ui/link'
 import styled from 'styled-components'
-import { H3 } from '../assets/styles/texts'
 import profileSchema from '../utils/validation/profileSchema'
 import { yupResolver } from '@hookform/resolvers/yup'
+import ProfileAvatar from './ProfileAvatar'
 
 const defaultValues = {
   first_name: '',
@@ -35,8 +35,8 @@ const ProfileForm = () => {
 
   return (
     <Wrapper>
-      <H3>Profile</H3>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <ProfileAvatar />
         <FormFields>
           <Input
             typeStyle={typeStyleInput.profile}
@@ -85,10 +85,16 @@ const ProfileForm = () => {
           </Button>
           <Link to={'#'}>Change password</Link>
         </FormFields>
-      </form>
+      </Form>
     </Wrapper>
   )
 }
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
 
 const FormFields = styled.div`
   display: flex;
@@ -107,6 +113,7 @@ const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.secondary};
   box-shadow: ${({ theme }) => theme.shadows.secondary};
   padding: 25px;
+  margin-top: 10px;
   & h3 {
     text-align: center;
   }
