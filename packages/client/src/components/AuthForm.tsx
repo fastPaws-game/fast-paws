@@ -46,7 +46,7 @@ const AuthForm: FC<Props> = props => {
   })
 
   const onSubmit: SubmitHandler<AuthFormValues> = data => {
-    authController(data, () => navigate(Routes.GAME))
+    authController(data, () => navigate(Routes.MAIN))
     reset()
   }
 

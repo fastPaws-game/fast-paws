@@ -1,6 +1,7 @@
 import styled, { keyframes } from 'styled-components'
 import ErrorBoundary from '../components/ErrorBoundary'
 import { FC, PropsWithChildren, Suspense } from 'react'
+import { H2 } from '../assets/styles/texts'
 
 const PageWrapper: FC<PropsWithChildren> = ({ children }) => {
   return (
@@ -8,6 +9,7 @@ const PageWrapper: FC<PropsWithChildren> = ({ children }) => {
       <Suspense
         fallback={
           <Wrapper>
+            <H2>Loading...</H2>
             <Spinner>
               <div />
               <div />
@@ -33,6 +35,8 @@ const PageWrapper: FC<PropsWithChildren> = ({ children }) => {
 const Wrapper = styled.div`
   background: ${({ theme }) => theme.colors.primary};
   display: flex;
+  flex-direction: column;
+  gap: 20px;
   align-items: center;
   justify-content: center;
   height: 100vh;

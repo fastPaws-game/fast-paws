@@ -3,6 +3,7 @@ import { useChangeTheme } from './hooks/useChangeTheme'
 import { GlobalStyles } from './assets/styles/globalStyle'
 import { RouterProvider } from 'react-router-dom'
 import { router } from './router'
+import PageWrapper from './pages/PageWrapper'
 
 function App() {
   const { theme, themeToggler } = useChangeTheme()
@@ -11,7 +12,9 @@ function App() {
     <ThemeProvider theme={theme}>
       <GlobalStyles />
       <button onClick={themeToggler}>Toggle Theme</button>
-      <RouterProvider router={router} />
+      <PageWrapper>
+        <RouterProvider router={router} />
+      </PageWrapper>
     </ThemeProvider>
   )
 }

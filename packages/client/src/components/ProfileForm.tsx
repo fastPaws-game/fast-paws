@@ -5,7 +5,6 @@ import Link from '../ui/link'
 import styled from 'styled-components'
 import profileSchema from '../utils/validation/profileSchema'
 import { yupResolver } from '@hookform/resolvers/yup'
-import ProfileAvatar from './ProfileAvatar'
 
 const defaultValues = {
   first_name: '',
@@ -36,7 +35,6 @@ const ProfileForm = () => {
   return (
     <Wrapper>
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <ProfileAvatar />
         <FormFields>
           <Input
             typeStyle={typeStyleInput.profile}

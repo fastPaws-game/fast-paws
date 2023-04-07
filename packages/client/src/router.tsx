@@ -1,9 +1,9 @@
 import { createBrowserRouter } from 'react-router-dom'
 import React from 'react'
-import PageWrapper from './pages/PageWrapper'
 
 const LazyAuth = React.lazy(() => import('./pages/AuthPage'))
 const LazyReg = React.lazy(() => import('./pages/RegistrationPage'))
+const LazyMain = React.lazy(() => import('./pages/MainPage'))
 const LazySettings = React.lazy(() => import('./pages/ProfilePage'))
 const LazyForum = React.lazy(() => import('./pages/ForumPage'))
 const LazyTopic = React.lazy(() => import('./pages/TopicPage'))
@@ -13,63 +13,35 @@ const LazyError = React.lazy(() => import('./pages/NotFoundPage'))
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: (
-      <PageWrapper>
-        <LazyAuth />
-      </PageWrapper>
-    ),
-    errorElement: (
-      <PageWrapper>
-        <LazyError />
-      </PageWrapper>
-    ),
+    element: <LazyAuth />,
+    errorElement: <LazyError />,
   },
   {
     path: '/signup',
-    element: (
-      <PageWrapper>
-        <LazyReg />
-      </PageWrapper>
-    ),
+    element: <LazyReg />,
+  },
+  {
+    path: '/main',
+    element: <LazyMain />,
   },
   {
     path: '/settings',
-    element: (
-      <PageWrapper>
-        <LazySettings />
-      </PageWrapper>
-    ),
+    element: <LazySettings />,
   },
   {
     path: '/forum',
-    element: (
-      <PageWrapper>
-        <LazyForum />
-      </PageWrapper>
-    ),
+    element: <LazyForum />,
   },
   {
     path: '/forum/:forumId',
-    element: (
-      <PageWrapper>
-        <LazyTopic />
-      </PageWrapper>
-    ),
+    element: <LazyTopic />,
   },
   {
     path: 'game',
-    element: (
-      <PageWrapper>
-        <div>Game page</div>
-      </PageWrapper>
-    ),
+    element: <div>Game page</div>,
   },
   {
     path: 'leaderboard',
-    element: (
-      <PageWrapper>
-        <LazyBoard />
-      </PageWrapper>
-    ),
+    element: <LazyBoard />,
   },
 ])
