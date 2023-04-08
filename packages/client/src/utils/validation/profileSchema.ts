@@ -13,7 +13,7 @@ export const mainProfileSchema = yup.object({
     .required('Пожалуйста, укажите логин'),
   first_name: yup
     .string()
-    .min(3, 'Имя должено быть длиннее 3 символов')
+    .min(3, 'Имя должно быть длиннее 3 символов')
     .required('Пожалуйста, укажите имя'),
   second_name: yup
     .string()

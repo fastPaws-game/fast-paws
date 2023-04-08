@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
 import authSchema from '../utils/validation/authSchema'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { routes } from '../constants/routes'
+import { Routes } from '../constants/routes'
 
 export type AuthFormValues = {
   login: string
@@ -46,7 +46,7 @@ const AuthForm: FC<Props> = props => {
   })
 
   const onSubmit: SubmitHandler<AuthFormValues> = data => {
-    authController(data, () => navigate('/main'))
+    authController(data, () => navigate(Routes.MAIN))
     reset()
   }
 
@@ -73,7 +73,7 @@ const AuthForm: FC<Props> = props => {
         <Button type="submit" disabled={!isDirty || isSubmitting}>
           Log in
         </Button>
-        <Link to={routes.signin}>Registration</Link>
+        <Link to={Routes.SIGNUP}>Registration</Link>
       </ButtonContainer>
     </Form>
   )
