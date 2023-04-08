@@ -9,6 +9,7 @@ const LazyForum = React.lazy(() => import('./pages/ForumPage'))
 const LazyTopic = React.lazy(() => import('./pages/TopicPage'))
 const LazyBoard = React.lazy(() => import('./pages/LeaderBoardPage'))
 const LazyError = React.lazy(() => import('./pages/NotFoundPage'))
+const LazyGame = React.lazy(() => import('./pages/GamePage'))
 
 export const router = createBrowserRouter([
   {
@@ -38,7 +39,7 @@ export const router = createBrowserRouter([
   },
   {
     path: 'game',
-    element: <div>Game page</div>,
+    element: <LazyGame />,
   },
   {
     path: 'leaderboard',
