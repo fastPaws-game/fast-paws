@@ -25,8 +25,7 @@ const ButtonMainStyled = styled.button<{ size?: string }>`
   border: none;
   transition: 0.3s;
   box-shadow: ${props => props.theme.shadows.secondary};
-  background-color: ${props =>
-    props.size === 'big' ? props.theme.colors.play : props.theme.colors.accent};
+  background-color: ${props => props.theme.colors.accent};
   font-size: ${props =>
     props.size === 'big'
       ? props.theme.vars.fontSize.xl
