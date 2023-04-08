@@ -1,8 +1,7 @@
-import AuthApi from './api'
-import { AuthFormValues } from '../../components/AuthForm'
-import { httpError } from '../../errors/error'
-import GetUserController from '../../Controllers/GetUserController'
-import { User } from '../../Controllers/GetUserController'
+import AuthApi from '../api/api'
+import { AuthFormValues } from '../../../components/AuthForm'
+import { httpError } from '../../../errors/error'
+import GetUserController, { User } from '../../../Controllers/GetUserController'
 
 type AuthContextType = {
   user: User
@@ -18,9 +17,9 @@ const AuthContext: AuthContextType = {
     login: '',
     email: '',
     phone: '',
-    avatar: '',
+    avatar: ''
   },
-  isAuth: false,
+  isAuth: false
 }
 
 export class AuthController {

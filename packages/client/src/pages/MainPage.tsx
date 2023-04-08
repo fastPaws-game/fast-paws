@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import authController from '../modules/authModule/authController'
+import authController from '../modules/authModule/controllers/authController'
 
 const MainPage = () => {
   const navigate = useNavigate()

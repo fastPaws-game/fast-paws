@@ -12,6 +12,7 @@ export type User = {
   avatar: string
 }
 
+
 export class GetUserController {
   async getUser() {
     try {
