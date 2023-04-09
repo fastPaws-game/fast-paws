@@ -11,7 +11,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
-      <button onClick={themeToggler}>Toggle Theme</button>
+      {/* <button onClick={themeToggler}>Toggle Theme</button> */}
       <PageWrapper>
         <RouterProvider router={router} />
       </PageWrapper>
