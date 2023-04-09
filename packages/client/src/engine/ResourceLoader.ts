@@ -28,17 +28,17 @@ export type GifObject = {
 export class Resource {
   public progress = 0 // 0 - 100 in percents
   private total = 9 // Resource count
+  private current = 0
 
-  private current: number
-  protected static _instance: Resource
+	protected static _instance: Resource
   protected static _initialized = false
-  public sprite: Record<string, HTMLImageElement | GifObject>
   protected static _progresCallback: (progress: number) => void
+  public sprite: Record<string, HTMLImageElement | GifObject> = {}
+  public target = ['mouse', 'grasshopper', 'butterfly', 'bird']
+  public barrier = ['cactus', 'puddle', 'flowerpot', 'gnome']
 
   private constructor() {
-    this.sprite = {}
-    this.current = 0
-		this.initialize()
+    this.initialize()
   }
 
   public static get(progresCallback: (progress: number) => void) {

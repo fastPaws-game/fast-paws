@@ -261,13 +261,13 @@ const GIF = function () {
         if (gif.frames.length > 0) { gif.image = gif.frames[0].image }
         doOnloadEvent();
         if (typeof gif.onloadall === "function") {
-            (gif.onloadall.bind(gif))({   type : 'loadall', path : [gif] });
+            (gif.onloadall.bind(gif))({ type: 'loadall', obj: gif });
         }
         if (gif.playOnLoad) { gif.play() }
     }
     function canceled () { // called if the load has been cancelled
         finnished();
-        if (typeof gif.cancelCallback === "function") { (gif.cancelCallback.bind(gif))({ type : 'canceled', path : [gif] }) }
+        if (typeof gif.cancelCallback === "function") { (gif.cancelCallback.bind(gif))({ type: 'canceled', obj: gif }) }
     }
     function parseExt() {              // parse extended blocks
         const blockID = st.data[st.pos++];
@@ -301,14 +301,14 @@ const GIF = function () {
         return true;
     }
     function error(type) {
-        if (typeof gif.onerror === "function") { (gif.onerror.bind(this))({ type : type, path : [this] }) }
+        if (typeof gif.onerror === "function") { (gif.onerror.bind(this))({ type: type, obj: this }) }
         gif.onload  = gif.onerror = undefined;
         gif.loading = false;
     }
     function doOnloadEvent() { // fire onload event if set
         gif.currentFrame = 0;
         gif.nextFrameAt  = gif.lastFrameAt  = new Date().valueOf(); // just sets the time now
-        if (typeof gif.onload === "function") { (gif.onload.bind(gif))({ type : 'load', path : [gif] }) }
+        if (typeof gif.onload === "function") { (gif.onload.bind(gif))({ type: 'load', obj: gif }) }
         gif.onerror = gif.onload  = undefined;
     }
     function dataLoaded(data) { // Data loaded create stream and parse
