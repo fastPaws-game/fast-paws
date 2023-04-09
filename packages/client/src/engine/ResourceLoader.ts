@@ -17,7 +17,7 @@ export type GifObject = {
   frames: { image: HTMLCanvasElement }[]
   loading: any
   image: HTMLCanvasElement
-  lastFrame: { image: CanvasImageSource } | null
+  lastFrame: { image: HTMLCanvasElement } | null
   width: number
   height: number
   src: string
@@ -36,6 +36,14 @@ export class Resource {
   public sprite: Record<string, HTMLImageElement | GifObject> = {}
   public target = ['mouse', 'grasshopper', 'butterfly', 'bird']
   public barrier = ['cactus', 'puddle', 'flowerpot', 'gnome']
+	public difficulty = [
+		['mouse', 'grasshopper', 'butterfly', 'bird', 'cactus', 'puddle', 'flowerpot', 'gnome'],	// Testing level 0
+		['butterfly', 'puddle', 'flowerpot'],
+		['butterfly', 'grasshopper', 'puddle', 'flowerpot'],
+		['butterfly', 'grasshopper', 'puddle', 'flowerpot', 'gnome'],
+		['grasshopper', 'mouse', 'puddle', 'flowerpot', 'gnome'],
+		['grasshopper', 'mouse', 'bird', 'gnome', 'cactus'],
+	]
 
   private constructor() {
     this.initialize()
@@ -61,7 +69,7 @@ export class Resource {
         console.log('Gif loading error ' + err.type)
       }
       newGif.onloadall = res => {
-        console.log('Loaded gif:', name) // res.obj.src
+        // console.log('Loaded gif:', name) // res.obj.src
         const dimensions = {
           width: res.obj.width,
           height: res.obj.height,
@@ -79,7 +87,7 @@ export class Resource {
     const newImg = document.createElement('img')
     newImg.src = url
     newImg.onload = () => {
-      console.log('Loaded img:', name) // url
+      // console.log('Loaded img:', name) // url
       const dimensions = {
         width: newImg.width,
         height: newImg.height,
@@ -112,7 +120,7 @@ export class Resource {
 
 // Future preloader callback
 const tempCallback = (progress: number) => {
-  console.log('Resource loading:', progress)
+  console.log(`Resource loading: ${progress}%`)
 }
 
 export default Resource.get(tempCallback)

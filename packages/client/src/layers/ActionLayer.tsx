@@ -1,11 +1,11 @@
 import React, { createRef } from 'react'
 import styled from 'styled-components'
-import canvas from '../constants/canvas'
+import { canvas } from '../constants/game'
 import Engine from '../engine/Engine'
 
 class ActionLayer extends React.Component {
   private ref: React.RefObject<HTMLCanvasElement> | undefined
-	private engine: Engine | null = null
+  private engine: Engine | null = null
 
   constructor(props: any) {
     super(props)
@@ -15,17 +15,17 @@ class ActionLayer extends React.Component {
   componentDidMount() {
     console.log('Game: Mount')
     const ctx = this.ref!.current!.getContext('2d')
-		if (ctx){
-			this.engine = new Engine(ctx)
-			this.engine.start()
-		}
+    if (ctx) {
+      this.engine = Engine.get(ctx)
+      this.engine.start()
+    }
   }
 
   componentWillUnmount() {
     console.log('Game: Unmount')
-		if (this.engine){
-    	this.engine.stop()
-		}
+    if (this.engine) {
+      this.engine.stop()
+    }
   }
 
   render() {

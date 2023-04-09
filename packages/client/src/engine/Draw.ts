@@ -1,23 +1,8 @@
-import canvas from '../constants/canvas'
+import { game, SpriteCat } from '../constants/game'
 import Resource, { GifObject } from '../engine/ResourceLoader'
-
-const ActionPositionVertical = canvas.height - canvas.height / 14
-
-const SpriteCat = {
-  width: 100,
-	height: 74,
-  ar: 0.74,
-}
-
-const startTargetX = canvas.width / 2
-const startTargetY = ActionPositionVertical
-const startCatX = canvas.width / 3
-const startCatY = ActionPositionVertical
 
 export default class Draw {
   private ctx: CanvasRenderingContext2D | null = null
-  private targetHeight = 100
-  private catHeight = 74
 
   constructor(ctx: CanvasRenderingContext2D) {
     this.ctx = ctx
@@ -32,14 +17,17 @@ export default class Draw {
     }
   }
 
-  public drawCat = (image: HTMLCanvasElement, x: number, y: number) => {
+  public drawObject = (image: HTMLCanvasElement, x: number, y: number, h: number) => {
     if (this.ctx) {
-      const h = SpriteCat.height
       const w = (image.width * h) / image.height
 
-      this.drawShadow(x, startCatY, w)
+      this.drawShadow(x, game.ActionPositionVertical, w)
       this.ctx.drawImage(image, x - w / 2, y - h, w, h)
     }
+  }
+
+  public drawCat = (image: HTMLCanvasElement, x: number, y: number) => {
+		this.drawObject(image, x, y, SpriteCat.height)
   }
 
   public drawTrajectory = (x: number, y: number, j: number) => {
@@ -65,14 +53,22 @@ export default class Draw {
     }
   }
 
-  public drawTarget = (image: HTMLImageElement | GifObject) => {
+  public drawTarget = (name: string, tx: number, ty: number, h: number, animate=false) => {
+		const image: HTMLImageElement | GifObject = Resource.sprite[name];
     if (image instanceof HTMLImageElement) {
-      const h = this.targetHeight
-      const w = (image.width * h) / image.height
-      const x = startTargetX - w / 2
-      const y = startTargetY - h
-      this.drawShadow(startTargetX, startTargetY, w)
-      this.ctx!.drawImage(image, x, y, w, h)
+			let w = (image.width * h) / image.height
+			let y = Math.floor(ty - h * 0.9)
+			if (name == 'puddle') {
+				w = w / 2
+				h = h / 2
+				y = ty - h / 2
+			}
+			const x = tx - w / 2
+			// if (name != 'puddle') this.drawShadow(tx, ty, w)
+      this.ctx!.drawImage(image, x, y , w, h)
+    } else {	// GifObject
+			const farame = animate ? image.image : image.frames[image.frameCount-1].image
+      this.drawObject(farame, tx, ty + h / 8, h / 1.5)
     }
   }
 }
