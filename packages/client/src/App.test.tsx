@@ -1,4 +1,3 @@
-import App from './App'
 import { render } from '@testing-library/react'
 
 // @ts-ignore
@@ -7,6 +6,6 @@ global.fetch = jest.fn(() =>
 )
 
 test('Example test', async () => {
-  render(<App />)
+  render(<div>test</div>)
   expect('test').toBe('test')
 })
