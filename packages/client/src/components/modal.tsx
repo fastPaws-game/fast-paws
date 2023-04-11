@@ -24,7 +24,7 @@ const Modal: FC<Props> = props => {
     return () => scrollLock.disable()
   }, [visible])
 
-  useEscape(handleClose)
+  // useEscape(handleClose)
 
   const handleOutSideClick = useCallback(
     (event: MouseEvent<HTMLDivElement>) => {
@@ -40,6 +40,7 @@ const Modal: FC<Props> = props => {
 }
 
 const Root = styled.div`
+	z-index: 900;
   position: fixed;
   top: 0;
   left: 0;

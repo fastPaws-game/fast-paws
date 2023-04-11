@@ -8,12 +8,14 @@ export default class Draw {
     this.ctx = ctx
   }
 
-  private drawShadow = (x: number, y: number, w: number) => {
+  private drawShadow = (x: number, y: number, w: number, force = false) => {
     if (this.ctx) {
-      this.ctx.fillStyle = 'rgba(0, 0, 0, 0.25)'
-      this.ctx.beginPath()
-      this.ctx.ellipse(x, y, w / 4, w / 10, 0, 0, 2 * Math.PI)
-      this.ctx.fill()
+			if (game.shadowsEnable || force) {
+				this.ctx.fillStyle = 'rgba(0, 0, 0, 0.25)'
+				this.ctx.beginPath()
+				this.ctx.ellipse(x, y, w / 4, w / 10, 0, 0, 2 * Math.PI)
+				this.ctx.fill()
+			}
     }
   }
 
@@ -49,7 +51,7 @@ export default class Draw {
       this.ctx.lineWidth = 2
       this.ctx.stroke()
 
-      this.drawShadow(x + j * 2, y, w)
+      this.drawShadow(x + j * 2, y, w, true)
     }
   }
 
@@ -59,13 +61,13 @@ export default class Draw {
 			let w = (image.width * h) / image.height
 			let y = Math.floor(ty - h * 0.9)
 			if (name == 'puddle') {
-				w = w / 2
+				w = Math.floor(w / 1.2)
 				h = h / 2
 				y = ty - h / 2
 			}
 			const x = tx - w / 2
 			// if (name != 'puddle') this.drawShadow(tx, ty, w)
-      this.ctx!.drawImage(image, x, y , w, h)
+      this.ctx!.drawImage(image, x, y, w, h)
     } else {	// GifObject
 			const farame = animate ? image.image : image.frames[image.frameCount-1].image
       this.drawObject(farame, tx, ty + h / 8, h / 1.5)

@@ -10,6 +10,7 @@ import IconForum from '../assets/icons/IconForum'
 type Props = {
   visible: boolean
   handleClose: () => void
+	outSideClickEnable?: boolean
 }
 const GamePause: FC<Props> = props => {
   const navigate = useNavigate()
@@ -22,23 +23,23 @@ const GamePause: FC<Props> = props => {
   return (
     <Modal {...props}>
       <Content>
-        <Button size={'big'} onClick={handleClick()}>
+        <Button size={'middle'} onClick={handleClick()}>
           Continue
         </Button>
         <Footer>
           <Button
             icon={<IconForum />}
-            size={'big'}
+            size={'small'}
             onClick={handleClick('/forum')}
           />
           <Button
             icon={<IconSettings />}
-            size={'big'}
+            size={'small'}
             onClick={handleClick('/settings')}
           />
           <Button
             icon={<IconStar />}
-            size={'big'}
+            size={'small'}
             onClick={handleClick('/leaderboard')}
           />
         </Footer>
@@ -50,10 +51,12 @@ const GamePause: FC<Props> = props => {
 const Content = styled.div`
   display: flex;
   flex-direction: column;
+	align-items: center;
   gap: 25px;
 `
 
 const Footer = styled.div`
+	width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;

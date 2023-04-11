@@ -6,17 +6,19 @@ import Engine from '../engine/Engine'
 class ActionLayer extends React.Component {
   private ref: React.RefObject<HTMLCanvasElement> | undefined
   private engine: Engine | null = null
+	private handlers
 
-  constructor(props: any) {
-    super(props)
+  constructor(handlers: Record<string, () => void>) {
+    super(handlers)
     this.ref = createRef<HTMLCanvasElement>()
+		this.handlers = handlers
   }
 
   componentDidMount() {
     console.log('Game: Mount')
     const ctx = this.ref!.current!.getContext('2d')
     if (ctx) {
-      this.engine = Engine.get(ctx)
+      this.engine = Engine.get(this.handlers)
       this.engine.start()
     }
   }
@@ -31,7 +33,7 @@ class ActionLayer extends React.Component {
   render() {
     return (
       <Layer>
-        <canvas ref={this.ref} height={canvas.height} width={canvas.width} />
+        <canvas id='game_canvas' ref={this.ref} height={canvas.height} width={canvas.width} />
       </Layer>
     )
   }

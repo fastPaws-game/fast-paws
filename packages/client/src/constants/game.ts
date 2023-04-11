@@ -11,10 +11,12 @@ const SpriteCat = {
 
 // Base game constants
 const scorePerLevel = 100
+const initialScore = 10	// Need to prevent 'Game over' after the first fail
 const ActionPositionVertical = Math.floor(canvas.height * 0.93)
+const shadowsEnable = false
 const trajectoryStep = 2
 const jumpHeightMin = Math.floor(SpriteCat.height / 1.5)
-const jumpHeightMax = SpriteCat.height * 2
+const jumpHeightMax = SpriteCat.height * 3
 const defaultCatX = Math.floor(canvas.width / 3)
 const defaultCatY = ActionPositionVertical
 const defaultTargetX = canvas.width / 2
@@ -41,7 +43,9 @@ const score: Record<string, Record<'success' | 'fail', number>> = {
 
 const game = {
 	scorePerLevel,
+	initialScore,
 	ActionPositionVertical,
+	shadowsEnable,
 	trajectoryStep,
 	jumpHeightMin,
 	jumpHeightMax,
