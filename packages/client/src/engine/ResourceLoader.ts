@@ -7,6 +7,7 @@ import flowerpotUrl from '../assets/sprites/flowerpot-empty.png'
 import gnomeUrl from '../assets/sprites/garden-gnome.png'
 import grasshopperUrl from '../assets/sprites/grasshopper.gif'
 import mouseUrl from '../assets/sprites/mouse-brown.gif'
+import backgroundUrl from '../assets/background/background.jpg'
 // @ts-ignore
 import GIF from '../utils/gif.js'
 
@@ -61,7 +62,7 @@ export class Resource {
         console.log('Gif loading error ' + err.type)
       }
       newGif.onloadall = res => {
-        console.log('Loaded gif:', name) // res.obj.src
+        // console.log('Loaded gif:', name) // res.obj.src
         const dimensions = {
           width: res.obj.width,
           height: res.obj.height,
@@ -79,7 +80,7 @@ export class Resource {
     const newImg = document.createElement('img')
     newImg.src = url
     newImg.onload = () => {
-      console.log('Loaded img:', name) // url
+      // console.log('Loaded img:', name) // url
       const dimensions = {
         width: newImg.width,
         height: newImg.height,
@@ -91,6 +92,19 @@ export class Resource {
     }
     this.sprite[name] = newImg
     return newImg
+  }
+
+  private loadBg = (name: string, url: string): HTMLImageElement => {
+    const newBg = document.createElement('img')
+    newBg.src = url
+    newBg.onload = () => {
+      console.log('Loaded bg:', name) // url
+    }
+    newBg.onerror = function (err) {
+      console.log('Bg loading error:', err)
+    }
+    this.sprite[name] = newBg
+    return newBg
   }
 
   public initialize = () => {
@@ -106,13 +120,15 @@ export class Resource {
       this.loadImg('puddle', puddleUrl)
       this.loadImg('flowerpot', flowerpotUrl)
       this.loadImg('gnome', gnomeUrl)
+
+      this.loadBg('background', backgroundUrl)
     }
   }
 }
 
 // Future preloader callback
 const tempCallback = (progress: number) => {
-  console.log('Resource loading:', progress)
+  // console.log('Resource loading:', progress)
 }
 
 export default Resource.get(tempCallback)
