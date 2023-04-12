@@ -1,11 +1,11 @@
 import { Component, ReactPropTypes, RefObject, createRef } from 'react'
 import styled from 'styled-components'
 import canvas from '../constants/canvas'
-import GroundMotion from '../engine/GroundMotion'
+import BgMotion from '../engine/BgMotion'
 
 export default class GroundLayer extends Component {
   private canvas: RefObject<HTMLCanvasElement> | undefined
-  private motion: GroundMotion | null = null
+  private motion: BgMotion | null = null
 
   constructor(props: ReactPropTypes) {
     super(props)
@@ -15,8 +15,8 @@ export default class GroundLayer extends Component {
   componentDidMount() {
     const ctx = this.canvas!.current!.getContext('2d')
     if (ctx) {
-      this.motion = new GroundMotion(ctx)
-      this.motion.start(20)
+      // this.motion = new BgMotion(ctx, 'layer3')
+      // this.motion.start(10)
     }
   }
 

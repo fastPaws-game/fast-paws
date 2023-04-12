@@ -9,7 +9,7 @@ const GamePage = () => {
     <GameLayout>
       <SkyLayer />
       <MountainLayer />
-      <GroundLayer />
+      {/* <GroundLayer /> */}
       <ActionLayer />
     </GameLayout>
   )

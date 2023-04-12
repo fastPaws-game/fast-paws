@@ -14,9 +14,14 @@ export default class SkyLayer extends Component {
   componentDidMount() {
     const ctx = this.canvas!.current!.getContext('2d')
     const img = ResourceLoader.sprite['layer1'] as HTMLImageElement
-    const multiplier = canvas.width / img.width
+
+    const aspectRatio = img.height / img.width 
     img.width = canvas.width
-    img.height = img.height * multiplier
+    img.height = Math.floor(img.width * aspectRatio)
+    
+    // const multiplier = canvas.width / img.width
+    // img.width = canvas.width
+    // img.height = img.height * multiplier
 
     if (ctx) {
       ctx.drawImage(img as CanvasImageSource, 0, 0, img.width, img.height)
