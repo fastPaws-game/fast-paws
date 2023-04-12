@@ -5,11 +5,11 @@ import { signInUser } from '../../../store/auth/AuthSlice'
 const Authorization = () => {
   const dispatch = useAppDispatch()
 
-  const handleSubmit = async (data: AuthFormValues) => {
+  const handleSubmit = (data: AuthFormValues) => {
     dispatch(signInUser(data))
   }
 
-  return <AuthForm onSubmit={handleSubmit} />
+  return <AuthForm onSubmitFrom={handleSubmit} />
 }
 
 export default Authorization

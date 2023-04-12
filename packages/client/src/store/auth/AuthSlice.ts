@@ -1,5 +1,5 @@
 import { RequestStatus } from '../types'
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { handleError } from '../../utils/handleError'
 import { AuthFormValues } from '../../components/AuthForm'
 import { User } from '../../models/User'
@@ -37,7 +37,11 @@ const initialState: AuthSlice = {
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    setIsAuth: (state, action: PayloadAction<boolean>) => {
+      state.isAuth = action.payload
+    }
+  },
   extraReducers:
     (builder) => {
       builder
@@ -131,5 +135,7 @@ export const getUser = createAsyncThunk(
     }
   }
 )
+
+export const { setIsAuth } = authSlice.actions
 
 export default authSlice.reducer
