@@ -3,12 +3,14 @@ import Input, { typeStyleInput } from '../ui/input'
 import Button from '..//ui/button'
 import Link from '..//ui/link'
 import { H3 } from '../assets/styles/texts'
-import { FC, useEffect } from 'react'
+import { FC } from 'react'
 import { media } from '../assets/styles/media'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm, SubmitHandler } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
 import authSchema from '../utils/validation/authSchema'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { routes } from '../constants/routes'
+import { Routes } from '../constants/routes'
 
 export type AuthFormValues = {
   login: string
@@ -17,11 +19,11 @@ export type AuthFormValues = {
 
 const defaultAuthFormValues = {
   login: '',
-  password: ''
+  password: '',
 }
 
 type Props = {
-  onSubmit: (data: AuthFormValues) => void
+  authController: (data: AuthFormValues, callback: VoidFunction) => void
 }
 
 const AuthForm: FC<Props> = props => {
@@ -29,20 +31,22 @@ const AuthForm: FC<Props> = props => {
     window.localStorage.setItem('isAuth', 'false')
   }, [])
 
+  const navigate = useNavigate()
+  const { authController } = props
   const {
     register,
     reset,
     handleSubmit,
-    formState: { errors, isSubmitting, isDirty }
+    formState: { errors, isSubmitting, isDirty },
   } = useForm({
     defaultValues: defaultAuthFormValues,
     mode: 'onBlur',
     criteriaMode: 'all',
-    resolver: yupResolver(authSchema)
+    resolver: yupResolver(authSchema),
   })
 
   const onSubmit: SubmitHandler<AuthFormValues> = data => {
-    props.onSubmit(data)
+    authController(data, () => navigate(Routes.MAIN))
     reset()
   }
 
@@ -52,23 +56,24 @@ const AuthForm: FC<Props> = props => {
       <InputContainer>
         <Input
           typeStyle={typeStyleInput.form}
-          placeholder='Login'
+          placeholder="Login"
           {...register('login')}
           errorOn={!!errors.login}
           errorMessage={errors.login?.message}
         />
         <Input
           typeStyle={typeStyleInput.form}
-          type={'password'}
-          placeholder='Password'
+          placeholder="Password"
           {...register('password')}
           errorOn={!!errors.password}
           errorMessage={errors.password?.message}
         />
       </InputContainer>
       <ButtonContainer>
-        <Button type='submit' disabled={!isDirty || isSubmitting}>Log in</Button>
-        <Link to={routes.signin}>Registration</Link>
+        <Button type="submit" disabled={!isDirty || isSubmitting}>
+          Log in
+        </Button>
+        <Link to={Routes.SIGNUP}>Registration</Link>
       </ButtonContainer>
     </Form>
   )

@@ -4,7 +4,7 @@ import Input, { typeStyleInput } from '../../ui/input'
 import Button from '../../ui/button'
 import Link from '../../ui/link'
 import styled from 'styled-components'
-import { routes } from '../../constants/routes'
+import { Routes } from '../../constants/routes'
 import { media } from '../../assets/styles/media'
 import { FC, useEffect } from 'react'
 import { SignUpFormValues } from '../../modules/registration/registrationApi'
@@ -110,7 +110,7 @@ const RegistrationForm: FC<Props> = props => {
         <Button type="submit" disabled={!isDirty || isSubmitting}>
           Sign up
         </Button>
-        <Link to={routes.signin}>Log in</Link>
+        <Link to={Routes.HOME}>Log in</Link>
       </Column>
     </Form>
   )

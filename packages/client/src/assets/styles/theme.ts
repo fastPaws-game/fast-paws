@@ -9,9 +9,6 @@ export const vars = {
     xl: '30px',
     xxl: '43px',
   },
-  colors: {
-    lightest: '#FDFDFD',
-  },
 }
 export const lightTheme = {
   vars,
@@ -20,6 +17,7 @@ export const lightTheme = {
     secondary: '#FFF',
     accent: '#E4640A',
     play: '#E4640A',
+    rating: '#FDFDFD',
     white: '#FFF',
     black: '#000',
     accentHoverInput: '#FF9900',
@@ -46,6 +44,7 @@ export const lightTheme = {
     primary: '0px 8px 24px rgba(0, 0, 0, 0.08)',
     secondary: '0px 4px 15px rgba(0, 0, 0, 0.25)',
     hover: '0px 4px 35px rgba(0, 0, 0, 0.35)',
+    topic: '0px 4px 4px rgba(0, 0, 0, 0.25)',
     forFormBackground: '0px 8px 24px rgba(0, 0, 0, 0.08)',
   },
   borders: {
@@ -61,6 +60,7 @@ export const darkTheme = {
     secondary: '#233153',
     accent: '#6D96FF',
     play: '#294383',
+    rating: '#FDFDFD',
     white: '#FFF',
     black: '#000',
     accentHoverInput: '#ACC3FF',
@@ -87,6 +87,7 @@ export const darkTheme = {
     primary: '0px 8px 24px rgba(0, 0, 0, 0.08);',
     secondary: '0px 4px 15px rgba(0, 0, 0, 0.25);',
     hover: '0px 4px 35px rgba(0, 0, 0, 0.35)',
+    topic: '0px 4px 4px rgba(0, 0, 0, 0.25)',
     forFormBackground: '0px 8px 34px -2px rgba(0, 0, 0, 0.21)',
   },
   borders: {

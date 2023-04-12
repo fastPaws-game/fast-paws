@@ -4,13 +4,18 @@ import styled from 'styled-components'
 import { media } from '../assets/styles/media'
 import IconError from '../assets/icons/IconError'
 import Button from '../ui/button'
+import { useNavigate } from 'react-router'
 
 type Props = {
   type: 'notFound' | 'serverError'
 }
 const ErrorWithImage: FC<Props> = props => {
   const { type } = props
+  const navigation = useNavigate()
 
+  const clickHandler = () => {
+    navigation(-1)
+  }
   return (
     <Content>
       <Header>
@@ -27,7 +32,9 @@ const ErrorWithImage: FC<Props> = props => {
         </IconContainer>
         <ErrorCode>{type === 'notFound' ? '404' : '500'}</ErrorCode>
       </ImageContainer>
-      <Button size="small">Back</Button>
+      <Button size="small" onClick={clickHandler}>
+        Back
+      </Button>
     </Content>
   )
 }

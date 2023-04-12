@@ -1,10 +1,11 @@
-import React, { FC, ButtonHTMLAttributes, ReactElement } from 'react'
+import { FC, ButtonHTMLAttributes, ReactElement } from 'react'
 import styled from 'styled-components'
 import { media } from '../../assets/styles/media'
 
 type Props = {
   icon?: ReactElement
-  size?: string
+  size?: 'small' | 'big'
+  light?: boolean
 } & ButtonHTMLAttributes<HTMLButtonElement>
 
 const Button: FC<Props> = props => {
@@ -24,8 +25,7 @@ const ButtonMainStyled = styled.button<{ size?: string }>`
   border: none;
   transition: 0.3s;
   box-shadow: ${props => props.theme.shadows.secondary};
-  background-color: ${props =>
-    props.size === 'big' ? props.theme.colors.play : props.theme.colors.accent};
+  background-color: ${props => props.theme.colors.accent};
   font-size: ${props =>
     props.size === 'big'
       ? props.theme.vars.fontSize.xl
@@ -55,7 +55,7 @@ const ButtonMainStyled = styled.button<{ size?: string }>`
   }
 `
 
-const ButtonIconStyled = styled.button<{ size?: string }>`
+const ButtonIconStyled = styled.button<{ size?: string; light?: boolean }>`
   width: ${props => (props.size === 'big' ? '100px' : '70px')};
   height: ${props => (props.size === 'big' ? '100px' : '70px')};
   border-radius: ${props => props.theme.borders.round};
@@ -64,7 +64,8 @@ const ButtonIconStyled = styled.button<{ size?: string }>`
   align-items: center;
   justify-content: center;
   transition: 0.3s;
-  background-color: ${props => props.theme.colors.play};
+  background-color: ${props =>
+    props.light ? props.theme.colors.accent : props.theme.colors.play};
   color: ${props => props.theme.text.textBase};
 
   &:not([disabled]):hover,

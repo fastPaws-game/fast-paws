@@ -4,7 +4,7 @@ import Button from '../ui/button'
 import styled from 'styled-components'
 import IconSettings from '../assets/icons/IconSettings'
 import IconStar from '../assets/icons/IconStar'
-import { useNavigate } from 'react-router'
+import { useNavigate } from 'react-router-dom'
 import IconForum from '../assets/icons/IconForum'
 
 type Props = {
