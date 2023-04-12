@@ -1,11 +1,10 @@
 import { Component, ReactPropTypes, RefObject, createRef } from 'react'
 import styled from 'styled-components'
 import canvas from '../constants/canvas'
-import Background from '../engine/BackgroundMotion'
+import ResourceLoader from '../engine/ResourceLoader'
 
-export default class LanscapeLayer extends Component {
+export default class SkyLayer extends Component {
   private canvas: RefObject<HTMLCanvasElement> | undefined
-  private background: Background | null = null
 
   constructor(props: ReactPropTypes) {
     super(props)
@@ -14,13 +13,13 @@ export default class LanscapeLayer extends Component {
 
   componentDidMount() {
     const ctx = this.canvas!.current!.getContext('2d')
-    if (ctx) {
-      this.background = new Background(ctx)
-      this.background.start()
+    const img = ResourceLoader.sprite['layer1'] as HTMLImageElement
+    const multiplier = canvas.width / img.width
+    img.width = canvas.width
+    img.height = img.height * multiplier
 
-      // Демонстрация работы методов
-      // setTimeout(this.background.stop.bind(this.background), 4000)
-      // setTimeout(this.background.start.bind(this.background), 7000)
+    if (ctx) {
+      ctx.drawImage(img as CanvasImageSource, 0, 0, img.width, img.height)
     }
   }
 

@@ -1,7 +1,7 @@
 import canvas from '../constants/canvas'
 import ResourceLoader from './ResourceLoader'
 
-const y = 0
+let y = 0
 let x = 0
 const dx = -1
 let imgW = 0
@@ -9,16 +9,18 @@ let imgH = 0
 let clearX = 0
 let clearY = 0
 
-export default class Background {
+export default class MountainMotion {
   private ctx: CanvasRenderingContext2D | null
   private img: HTMLImageElement | null
   private timer: NodeJS.Timeout | undefined
+  private multiplier: number
 
   constructor(ctx: CanvasRenderingContext2D) {
     this.ctx = ctx
-    this.img = ResourceLoader.sprite['background'] as HTMLImageElement
+    this.img = ResourceLoader.sprite['layer2'] as HTMLImageElement
+    this.multiplier = canvas.width / this.img.width
     this.img.width = canvas.width
-    this.img.height = canvas.height
+    this.img.height = this.img.height * this.multiplier
 
     this.init()
   }
@@ -30,6 +32,8 @@ export default class Background {
 
       clearX = canvas.width
       clearY = canvas.height
+
+      y = canvas.height - this.img.height
     }
   }
 
@@ -51,6 +55,7 @@ export default class Background {
 
   public start(speed = 20) {
     this.timer = setInterval(this.draw.bind(this), speed)
+    console.log(this.timer)
   }
 
   public stop() {
