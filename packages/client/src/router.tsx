@@ -11,6 +11,7 @@ const LazyForum = React.lazy(() => import('./pages/ForumPage'))
 const LazyTopic = React.lazy(() => import('./pages/TopicPage'))
 const LazyBoard = React.lazy(() => import('./pages/LeaderBoardPage'))
 const LazyError = React.lazy(() => import('./pages/NotFoundPage'))
+const LazyGame = React.lazy(() => import('./pages/GamePage'))
 
 export const Router = () => {
   useRedirect()
@@ -22,7 +23,7 @@ export const Router = () => {
       <Route path={routes.SETTINGS} element={<LazySettings />} />
       <Route path={routes.FORUM} element={<LazyForum />} />
       <Route path={`${routes.FORUM}/:forumId`} element={<LazyTopic />} />
-      <Route path={routes.GAME} element={<div>Game page</div>} />
+      <Route path={routes.GAME} element={<LazyGame />} />
       <Route path={routes.LEADERBOARD} element={<LazyBoard />} />
     </Routes>
   )
