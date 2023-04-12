@@ -30,7 +30,7 @@ export class Resource {
   private total = 9 // Resource count
   private current = 0
 
-	protected static _instance: Resource
+  protected static _instance: Resource
   protected static _initialized = false
   protected static _progresCallback: (progress: number) => void
   public sprite: Record<string, HTMLImageElement | GifObject> = {}

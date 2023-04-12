@@ -11,8 +11,8 @@ const BaseTitle = css<Titles>`
     base
       ? theme.text.textBase
       : accent
-        ? theme.text.accent
-        : theme.text.textInvert};
+      ? theme.text.accent
+      : theme.text.textInvert};
   line-height: 120%;
 `
 export const H1 = styled.h1<Titles>`

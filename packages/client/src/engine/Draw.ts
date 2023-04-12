@@ -5,7 +5,7 @@ const ActionPositionVertical = canvas.height - canvas.height / 14
 
 const SpriteCat = {
   width: 100,
-	height: 74,
+  height: 74,
   ar: 0.74,
 }
 

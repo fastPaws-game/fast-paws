@@ -9,14 +9,14 @@ const AudioLayer: FC = forwardRef(() => {
   let gainNode: GainNode
 
   const init = () => {
-      audioContext = new AudioContext()
-      if (audioRef.current) {
-        source = audioContext.createMediaElementSource(audioRef.current)
-        gainNode = audioContext.createGain();
-        source.connect(gainNode).connect(audioContext.destination)
-      }
+    audioContext = new AudioContext()
+    if (audioRef.current) {
+      source = audioContext.createMediaElementSource(audioRef.current)
+      gainNode = audioContext.createGain()
+      source.connect(gainNode).connect(audioContext.destination)
+    }
   }
-  
+
   const onkeydown = (event: KeyboardEvent) => {
     if (event.code == 'Space') {
       if (audioContext.state === 'suspended') {
@@ -32,7 +32,10 @@ const AudioLayer: FC = forwardRef(() => {
   const onkeyup = (event: KeyboardEvent) => {
     if (event.code == 'Space') {
       if (audioRef.current) {
-        gainNode.gain.linearRampToValueAtTime(0.001, audioContext.currentTime + 1.5)
+        gainNode.gain.linearRampToValueAtTime(
+          0.001,
+          audioContext.currentTime + 1.5
+        )
       }
     }
   }
@@ -51,11 +54,8 @@ const AudioLayer: FC = forwardRef(() => {
     window.addEventListener('keyup', onkeyup)
     return () => window.removeEventListener('keyup', onkeyup)
   }, [])
-  
-  return (
-      <Audio src={audio} ref={audioRef}>
-      </Audio>
-    )
+
+  return <Audio src={audio} ref={audioRef}></Audio>
 })
 
 const Audio = styled.audio`
