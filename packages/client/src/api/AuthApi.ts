@@ -1,5 +1,5 @@
-import FetchApi from '../../../utils/fetchApi'
-import { AuthFormValues } from '../../../components/AuthForm'
+import FetchApi from '../utils/fetchApi'
+import { AuthFormValues } from '../components/AuthForm'
 
 class AuthApi {
   public signin(data: AuthFormValues) {

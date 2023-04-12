@@ -10,7 +10,7 @@ type Options = {
   body?: null | string
   headers?: Headers
 }
-type Request = <T>(url: string, options?: Options) => Promise<T>
+type Request = <T>(url: string, options?: Options) => Promise<Response>
 
 export class FetchApi {
   static API_URL = 'https://ya-praktikum.tech/api/v2'
@@ -28,7 +28,7 @@ export class FetchApi {
       headers: {
         'Content-Type': 'application/json;charset=utf-8'
       }
-    }).then(response => response.json())
+    })
   }
 
   public post: Request = async (url: string, options = {}) => {
@@ -40,7 +40,7 @@ export class FetchApi {
       headers: {
         'Content-Type': 'application/json;charset=utf-8'
       }
-    }).then(response => response.json())
+    })
   }
 }
 

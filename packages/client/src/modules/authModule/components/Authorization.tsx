@@ -1,23 +1,13 @@
 import AuthForm, { AuthFormValues } from '../../../components/AuthForm'
-import { useAppDispatch, useAppSelector } from '../../../hooks/store'
-import { signIn } from '../store'
-import { RootState } from '../../../store'
-import { useEffect } from 'react'
-import { getUser } from '../../../store/user'
+import { useAppDispatch } from '../../../hooks/store'
+import { signInUser } from '../../../store/auth/AuthSlice'
 
 const Authorization = () => {
   const dispatch = useAppDispatch()
-  const { status } = useAppSelector((state: RootState) => state.auth)
 
-  const handleSubmit = (data: AuthFormValues) => {
-    dispatch(signIn(data))
+  const handleSubmit = async (data: AuthFormValues) => {
+    dispatch(signInUser(data))
   }
-
-  useEffect(() => {
-    if (status === 'success') {
-      dispatch(getUser())
-    }
-  }, [status])
 
   return <AuthForm onSubmit={handleSubmit} />
 }

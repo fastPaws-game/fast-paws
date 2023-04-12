@@ -1,9 +1,9 @@
 import { combineReducers } from '@reduxjs/toolkit'
-import userSlice from './user'
-import { signUpSlice } from '../modules/authModule'
+import authSlice from './auth/AuthSlice'
+import themeSlice from './theme/ThemeSlice'
 
 
 export const rootReducer = combineReducers({
-  user: userSlice,
-  auth: signUpSlice
+  auth: authSlice,
+  theme: themeSlice
 })

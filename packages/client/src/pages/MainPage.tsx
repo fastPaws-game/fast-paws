@@ -1,20 +1,27 @@
-import { useNavigate } from 'react-router-dom'
-import authController from '../modules/authModule/controllers/authController'
+import { useAppDispatch } from '../hooks/store'
+import { logOut } from '../store/auth/AuthSlice'
+import { memo } from 'react'
+import styled from 'styled-components'
 
 const MainPage = () => {
-  const navigate = useNavigate()
-
+  const dispatch = useAppDispatch()
   const logout = () => {
-    authController.logout(() => navigate('/login'))
+    dispatch(logOut())
   }
-
+  
   return (
-    <div>
+    <Root>
       Здесь будет главная страница. Сейчас здесь тестовая страница для проверки
       API.
       <button onClick={logout}>Logout</button>
-    </div>
+    </Root>
   )
 }
 
-export default MainPage
+const Root = styled.div`
+  width: 100vw;
+  height: 100vh;
+  background: ${props => props.theme.colors.primary};
+`
+
+export default memo(MainPage)
