@@ -1,15 +1,11 @@
 import GameLayout from '../layouts/GameLayout'
 import ActionLayer from '../layers/ActionLayer'
-import GroundLayer from '../layers/GroundLayer'
-import SkyLayer from '../layers/SkyLayer'
-import MountainLayer from '../layers/MountainLayer'
+import BackgroundLayer from '../layers/BackgroundLayer'
 
 const GamePage = () => {
   return (
     <GameLayout>
-      <SkyLayer />
-      <MountainLayer />
-      {/* <GroundLayer /> */}
+      <BackgroundLayer />
       <ActionLayer />
     </GameLayout>
   )

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import canvas from '../constants/canvas'
 import BgMotion from '../engine/BgMotion'
 
-export default class GroundLayer extends Component {
+export default class BackgroundLayer extends Component {
   private canvas: RefObject<HTMLCanvasElement> | undefined
   private motion: BgMotion | null = null
 
@@ -15,22 +15,22 @@ export default class GroundLayer extends Component {
   componentDidMount() {
     const ctx = this.canvas!.current!.getContext('2d')
     if (ctx) {
-      // this.motion = new BgMotion(ctx, 'layer3')
-      // this.motion.start(10)
+      this.motion = new BgMotion(ctx)
+      this.motion.start(10)
     }
   }
 
   render() {
     return (
-      <Layer>
+      <Wrapper>
         <canvas ref={this.canvas} width={canvas.width} height={canvas.height} />
-      </Layer>
+      </Wrapper>
     )
   }
 }
 
-const Layer = styled.div`
-  z-index: 3;
+const Wrapper = styled.div`
+  z-index: 2;
   height: ${canvas.height}px;
   width: ${canvas.width}px;
   position: absolute;
