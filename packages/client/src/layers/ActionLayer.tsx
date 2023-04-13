@@ -38,7 +38,7 @@ class ActionLayer extends React.Component {
 }
 
 const Layer = styled.div`
-  z-index: 4;
+  z-index: 2;
   height: ${canvas.height}px;
   width: ${canvas.width}px;
   position: absolute;

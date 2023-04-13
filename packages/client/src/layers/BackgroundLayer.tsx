@@ -30,7 +30,7 @@ export default class BackgroundLayer extends Component {
 }
 
 const Wrapper = styled.div`
-  z-index: 2;
+  z-index: 1;
   height: ${canvas.height}px;
   width: ${canvas.width}px;
   position: absolute;
