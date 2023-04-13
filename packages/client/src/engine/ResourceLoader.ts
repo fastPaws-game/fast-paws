@@ -7,6 +7,10 @@ import flowerpotUrl from '../assets/sprites/flowerpot-empty.png'
 import gnomeUrl from '../assets/sprites/garden-gnome.png'
 import grasshopperUrl from '../assets/sprites/grasshopper.gif'
 import mouseUrl from '../assets/sprites/mouse-brown.gif'
+import layer1Url from '../assets/background/MistyMountains/layer_1.png'
+import layer2Url from '../assets/background/MistyMountains/layer_2.png'
+import layer3Url from '../assets/background/MistyMountains/layer_3.png'
+
 // @ts-ignore
 import GIF from '../utils/gif.js'
 
@@ -104,6 +108,10 @@ export class Resource {
       this.loadImg('puddle', puddleUrl)
       this.loadImg('flowerpot', flowerpotUrl)
       this.loadImg('gnome', gnomeUrl)
+
+      this.loadImg('layer1', layer1Url)
+      this.loadImg('layer2', layer2Url)
+      this.loadImg('layer3', layer3Url)
     }
   }
 }

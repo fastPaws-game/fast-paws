@@ -43,9 +43,7 @@ const RegistrationForm: FC<Props> = props => {
     setFocus('login')
   }, [])
 
-  const onSubmit: SubmitHandler<SignUpFormValues> = (
-    data: SignUpFormValues
-  ) => {
+  const onSubmit: SubmitHandler<SignUpFormValues> = (data: SignUpFormValues) => {
     console.log(JSON.stringify(data))
     handleRegistration(data)
     reset()

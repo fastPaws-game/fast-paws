@@ -10,10 +10,7 @@ export const breakpoints: Breakpoints = {
   small: 481,
 }
 
-export const media = Object.entries(breakpoints).reduce<Breakpoints<string>>(
-  (acc, [key, value]) => {
-    acc[key as keyof Breakpoints] = `@media screen and (max-width: ${value}px)`
-    return acc
-  },
-  {}
-)
+export const media = Object.entries(breakpoints).reduce<Breakpoints<string>>((acc, [key, value]) => {
+  acc[key as keyof Breakpoints] = `@media screen and (max-width: ${value}px)`
+  return acc
+}, {})
