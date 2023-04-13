@@ -31,8 +31,9 @@ export default class BgMotion {
   private static __instance: BgMotion
 
   constructor(ctx: CanvasRenderingContext2D) {
+    if (!ctx) return
+
     if (BgMotion.__instance) {
-      if (!ctx) return
       return BgMotion.__instance
     }
 
