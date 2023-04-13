@@ -7,7 +7,15 @@ const STATIC_ASSETS = [
   '/not-found'
 ]
 
- let CACHE_ASSETS = STATIC_ASSETS.concat(JSON.parse('%HASHURLS%'));
+const getCacheUrls = () => {
+  try {
+    return JSON.parse('%HASHURLS%')
+  } catch (err) {
+    return []
+  }
+}
+
+const CACHE_ASSETS = STATIC_ASSETS.concat(getCacheUrls());
 
 self.addEventListener('install', event => {
   console.log("INSTALL")
@@ -35,11 +43,11 @@ self.addEventListener('activate', event => {
 })
 self.addEventListener('fetch', (event) => {
   //отклоняем запросы, сделанные браузерными расширениями, т.к. они не кэшруются SW
-   if(!(event.request.url.startsWith('http'))) return;
+  if (!(event.request.url.startsWith('http'))) return;
   event.respondWith(
     caches.match(event.request).then((resp) => {
       return resp || fetch(event.request).then((response) => {
-        let responseClone = response.clone();
+        const responseClone = response.clone();
         caches.open(CACHE_NAME).then((cache) => {
           cache.put(event.request, responseClone);
         });

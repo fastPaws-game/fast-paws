@@ -10,7 +10,7 @@
     "dev": "vite",
     "build": " tsc && vite build && npx tsx ./src/getUrlList.ts ",
     "preview": "vite preview",
-    "lint": "eslint . & stylelint './src/**/*.tsx'",
+    "lint": "eslint . & stylelint './src/**/*{.tsx, .js, .ts, .mts}' --fix",
     "format": "prettier --write .",
     "test": "jest ./"
   },
