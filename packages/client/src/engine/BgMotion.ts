@@ -28,13 +28,13 @@ export default class BgMotion {
   private layersArr: Layer[] = []
   private clearX = canvas.width
   private clearY = canvas.height
-  private static __instance: BgMotion
+  private static _instance: BgMotion
 
   constructor(ctx: CanvasRenderingContext2D) {
     if (!ctx) return
 
-    if (BgMotion.__instance) {
-      return BgMotion.__instance
+    if (BgMotion._instance) {
+      return BgMotion._instance
     }
 
     this.ctx = ctx
@@ -60,13 +60,16 @@ export default class BgMotion {
       this.layersArr.push(layerObj)
     })
 
-    BgMotion.__instance = this
+    BgMotion._instance = this
   }
 
   public draw() {
     this.ctx?.clearRect(0, 0, this.clearX, this.clearY)
     this.layersArr.forEach(layer => {
-      if (layer.x <= -canvas.width) layer.x = 0
+      if (layer.x <= -canvas.width) {
+        layer.x = 0
+      }
+
       if (layer.x > -canvas.width)
         this.ctx?.drawImage(
           layer.img as CanvasImageSource,
