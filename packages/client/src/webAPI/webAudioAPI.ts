@@ -1,9 +1,11 @@
+import { audioConstants } from './constants'
+
 export default class AudioAPI {
   private static _instance: AudioAPI
   private _audioContext!: AudioContext
   private _audioRef!: HTMLMediaElement
-  private _source!: MediaElementAudioSourceNode | null
-  private _gainNode!: GainNode | null
+  private _source: MediaElementAudioSourceNode | null = null
+  private _gainNode: GainNode | null = null
 
   constructor() {
     if (AudioAPI._instance) {
@@ -11,13 +13,11 @@ export default class AudioAPI {
     }
 
     this._audioContext = new AudioContext()
-    this._source = null
-    this._gainNode = null
     AudioAPI._instance = this
   }
 
   public init(audioRef: HTMLMediaElement) {
-    if (this._source == null) {
+    if (this._source === null) {
       this._audioRef = audioRef
       this._source = this._audioContext.createMediaElementSource(audioRef)
       this._gainNode = this._audioContext.createGain()
@@ -32,7 +32,7 @@ export default class AudioAPI {
       this._audioContext.resume()
     }
     if (this._gainNode !== null) {
-      this._gainNode.gain.value = 1
+      this._gainNode.gain.value = audioConstants.volumeStart
     }
     this._audioRef.play()
   }
@@ -40,8 +40,8 @@ export default class AudioAPI {
   public pause() {
     if (this._gainNode !== null) {
       this._gainNode.gain.linearRampToValueAtTime(
-        0.001,
-        this._audioContext.currentTime + 1
+        audioConstants.volumeEnd,
+        this._audioContext.currentTime + audioConstants.time
       )
     }
   }

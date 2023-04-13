@@ -10,7 +10,7 @@ const AudioLayer: FC = forwardRef(() => {
 
   useAudio(audioRef, audioAPI)
 
-  return <Audio src={audio} ref={audioRef}></Audio>
+  return <Audio src={audio} ref={audioRef} />
 })
 
 const Audio = styled.audio`
