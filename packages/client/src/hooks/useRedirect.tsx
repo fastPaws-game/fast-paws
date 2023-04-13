@@ -4,16 +4,24 @@ import { useAppSelector } from './store'
 import { useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
 
-const pathsToNeedAuth = [routes.MAIN, routes.GAME, routes.FORUM, routes.LEADERBOARD, routes.SETTINGS]
+const pathsToNeedAuth = [
+  routes.MAIN,
+  routes.GAME,
+  routes.FORUM,
+  routes.LEADERBOARD,
+  routes.SETTINGS,
+]
 const pathForAuth = [routes.SIGNUP, routes.HOME]
 
 export const useRedirect = () => {
   const location = useLocation()
   const navigate = useNavigate()
-  const isAuth = useAppSelector((store) => store.auth.isAuth)
+  const isAuth = useAppSelector(store => store.auth.isAuth)
 
   useEffect(() => {
-    const isAuthRequirePage = pathsToNeedAuth.includes(location.pathname as routes)
+    const isAuthRequirePage = pathsToNeedAuth.includes(
+      location.pathname as routes
+    )
     const isAuthPages = pathForAuth.includes(location.pathname as routes)
 
     if (isAuthRequirePage && !isAuth) {
@@ -23,5 +31,4 @@ export const useRedirect = () => {
       navigate(routes.MAIN)
     }
   }, [isAuth, location.pathname, navigate])
-
 }

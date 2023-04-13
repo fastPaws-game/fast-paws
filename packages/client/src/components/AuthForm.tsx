@@ -17,7 +17,7 @@ export type AuthFormValues = {
 
 const defaultAuthFormValues = {
   login: '',
-  password: ''
+  password: '',
 }
 
 type Props = {
@@ -30,12 +30,12 @@ const AuthForm: FC<Props> = props => {
     register,
     reset,
     handleSubmit,
-    formState: { errors, isSubmitting, isDirty }
+    formState: { errors, isSubmitting, isDirty },
   } = useForm({
     defaultValues: defaultAuthFormValues,
     mode: 'onBlur',
     criteriaMode: 'all',
-    resolver: yupResolver(authSchema)
+    resolver: yupResolver(authSchema),
   })
 
   const onSubmit: SubmitHandler<AuthFormValues> = data => {
@@ -49,21 +49,21 @@ const AuthForm: FC<Props> = props => {
       <InputContainer>
         <Input
           typeStyle={typeStyleInput.form}
-          placeholder='Login'
+          placeholder="Login"
           {...register('login')}
           errorOn={!!errors.login}
           errorMessage={errors.login?.message}
         />
         <Input
           typeStyle={typeStyleInput.form}
-          placeholder='Password'
+          placeholder="Password"
           {...register('password')}
           errorOn={!!errors.password}
           errorMessage={errors.password?.message}
         />
       </InputContainer>
       <ButtonContainer>
-        <Button type='submit' disabled={!isDirty || isSubmitting}>
+        <Button type="submit" disabled={!isDirty || isSubmitting}>
           Log in
         </Button>
         <Link to={Routes.SIGNUP}>Registration</Link>

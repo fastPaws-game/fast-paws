@@ -149,12 +149,12 @@ export default class Engine {
     console.log('unRegister')
   }
 
-	public start(){
-		this.registerEvents()
-		requestAnimationFrame(this.update)
-	}
+  public start() {
+    this.registerEvents()
+    requestAnimationFrame(this.update)
+  }
 
-	public stop(){
-		this.unRegister()
-	}
+  public stop() {
+    this.unRegister()
+  }
 }

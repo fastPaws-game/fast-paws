@@ -6,7 +6,6 @@ import { User } from '../../models/User'
 import AuthApi from '../../api/AuthApi'
 import UserApi from '../../api/UserApi'
 
-
 type AuthSlice = {
   user: User | null
   isAuth: boolean
@@ -31,7 +30,7 @@ const initialState: AuthSlice = {
   logOutError: null,
 
   userStatus: 'initial',
-  userError: null
+  userError: null,
 }
 
 export const authSlice = createSlice({
@@ -40,50 +39,49 @@ export const authSlice = createSlice({
   reducers: {
     setIsAuth: (state, action: PayloadAction<boolean>) => {
       state.isAuth = action.payload
-    }
+    },
   },
-  extraReducers:
-    (builder) => {
-      builder
-        .addCase(signInUser.pending, (state) => {
-          state.signInStatus = 'pending'
-        })
-        .addCase(signInUser.fulfilled, (state) => {
-          state.signInStatus = 'success'
-          state.isAuth = true
-          state.signInError = null
-          localStorage.setItem('isAuth', 'true')
-        })
-        .addCase(signInUser.rejected, (state, action) => {
-          state.signInStatus = 'error'
-          state.signInError = handleError(action.payload)
-        })
-        .addCase(logOut.pending, (state) => {
-          state.logOutStatus = 'pending'
-        })
-        .addCase(logOut.fulfilled, (state) => {
-          state.logOutStatus = 'success'
-          state.isAuth = false
-          state.logOutError = null
-          localStorage.setItem('isAuth', 'false')
-        })
-        .addCase(logOut.rejected, (state, action) => {
-          state.logOutStatus = 'error'
-          state.logOutError = handleError(action.payload)
-        })
-        .addCase(getUser.pending, (state) => {
-          state.userStatus = 'pending'
-        })
-        .addCase(getUser.fulfilled, (state, action) => {
-          state.userStatus = 'success'
-          state.user = action.payload
-          state.userError = null
-        })
-        .addCase(getUser.rejected, (state, action) => {
-          state.userStatus = 'error'
-          state.userError = handleError(action.payload)
-        })
-    }
+  extraReducers: builder => {
+    builder
+      .addCase(signInUser.pending, state => {
+        state.signInStatus = 'pending'
+      })
+      .addCase(signInUser.fulfilled, state => {
+        state.signInStatus = 'success'
+        state.isAuth = true
+        state.signInError = null
+        localStorage.setItem('isAuth', 'true')
+      })
+      .addCase(signInUser.rejected, (state, action) => {
+        state.signInStatus = 'error'
+        state.signInError = handleError(action.payload)
+      })
+      .addCase(logOut.pending, state => {
+        state.logOutStatus = 'pending'
+      })
+      .addCase(logOut.fulfilled, state => {
+        state.logOutStatus = 'success'
+        state.isAuth = false
+        state.logOutError = null
+        localStorage.setItem('isAuth', 'false')
+      })
+      .addCase(logOut.rejected, (state, action) => {
+        state.logOutStatus = 'error'
+        state.logOutError = handleError(action.payload)
+      })
+      .addCase(getUser.pending, state => {
+        state.userStatus = 'pending'
+      })
+      .addCase(getUser.fulfilled, (state, action) => {
+        state.userStatus = 'success'
+        state.user = action.payload
+        state.userError = null
+      })
+      .addCase(getUser.rejected, (state, action) => {
+        state.userStatus = 'error'
+        state.userError = handleError(action.payload)
+      })
+  },
 })
 
 export const signInUser = createAsyncThunk(
@@ -101,7 +99,8 @@ export const signInUser = createAsyncThunk(
     } catch (e) {
       rejectWithValue(e)
     }
-  })
+  }
+)
 
 export const logOut = createAsyncThunk(
   'auth/logout',
@@ -116,7 +115,8 @@ export const logOut = createAsyncThunk(
     } catch (e) {
       rejectWithValue(e)
     }
-  })
+  }
+)
 
 export const getUser = createAsyncThunk(
   'user/getUser',

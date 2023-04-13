@@ -5,16 +5,17 @@ import canvas from '../constants/canvas'
 const GameLayout: FC<PropsWithChildren> = props => {
   const { children } = props
   return (
-		<Root>
-			<GameWindow>
-				{children}
-			</GameWindow>
-		</Root>
-	);
+    <Root>
+      <GameWindow>{children}</GameWindow>
+    </Root>
+  )
 }
 
 const Root = styled.div`
-	background-image: linear-gradient(${({ theme }) => theme.colors.primary}, ${({ theme }) => theme.colors.secondary});
+  background-image: linear-gradient(
+    ${({ theme }) => theme.colors.primary},
+    ${({ theme }) => theme.colors.secondary}
+  );
   display: flex;
   align-items: center;
   justify-content: center;
@@ -26,8 +27,8 @@ const GameWindow = styled.div`
   display: block;
   height: ${canvas.height}px;
   width: ${canvas.width}px;
-	position: relative;
-	background-color: gray;
+  position: relative;
+  background-color: gray;
 `
 
 export default GameLayout

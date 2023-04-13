@@ -3,7 +3,7 @@ import { Profile } from '../modules/profile'
 
 const ProfilePage = () => {
   return (
-    <LayoutWithHeader title='Profile'>
+    <LayoutWithHeader title="Profile">
       <Profile />
     </LayoutWithHeader>
   )

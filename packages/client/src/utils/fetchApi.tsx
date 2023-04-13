@@ -26,8 +26,8 @@ export class FetchApi {
       method: METHODS.GET,
       credentials: 'include',
       headers: {
-        'Content-Type': 'application/json;charset=utf-8'
-      }
+        'Content-Type': 'application/json;charset=utf-8',
+      },
     })
   }
 
@@ -38,8 +38,8 @@ export class FetchApi {
       method: METHODS.POST,
       credentials: 'include',
       headers: {
-        'Content-Type': 'application/json;charset=utf-8'
-      }
+        'Content-Type': 'application/json;charset=utf-8',
+      },
     })
   }
 }
