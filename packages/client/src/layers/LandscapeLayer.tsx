@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import canvas from '../constants/canvas'
+import { canvas } from '../constants/game'
 import bg from '../assets/background/landscape_720.jpg'
 
 export default function LandscapeLayer() {
