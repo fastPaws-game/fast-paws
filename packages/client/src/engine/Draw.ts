@@ -1,4 +1,4 @@
-import { GAME, SpriteCat } from '../constants/game'
+import { GAME, SpriteSize } from '../constants/game'
 import Resource, { GifObject } from '../engine/ResourceLoader'
 
 export default class Draw {
@@ -29,12 +29,12 @@ export default class Draw {
   }
 
   public drawCat = (image: HTMLCanvasElement, x: number, y: number) => {
-    this.drawObject(image, x, y, SpriteCat.height)
+    this.drawObject(image, x, y, SpriteSize.cat.height)
   }
 
   public drawTrajectory = (x: number, y: number, jumpHeight: number) => {
     if (this.ctx) {
-      const width = SpriteCat.width
+      const width = SpriteSize.cat.width
 
       // Outer path
       this.ctx.strokeStyle = 'rgba(70, 119, 24, 0.5)'
