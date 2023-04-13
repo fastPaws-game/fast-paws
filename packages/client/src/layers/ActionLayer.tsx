@@ -3,15 +3,15 @@ import styled from 'styled-components'
 import { canvas } from '../constants/game'
 import Engine from '../engine/Engine'
 
-class ActionLayer extends React.Component {
+export default class ActionLayer extends React.Component {
   private ref: React.RefObject<HTMLCanvasElement> | undefined
   private engine: Engine | null = null
-	private handlers
+  private handlers
 
   constructor(handlers: Record<string, () => void>) {
     super(handlers)
     this.ref = createRef<HTMLCanvasElement>()
-		this.handlers = handlers
+    this.handlers = handlers
   }
 
   componentDidMount() {
@@ -25,15 +25,13 @@ class ActionLayer extends React.Component {
 
   componentWillUnmount() {
     console.log('Game: Unmount')
-    if (this.engine) {
-      this.engine.stop()
-    }
+    this.engine?.stop()
   }
 
   render() {
     return (
       <Layer>
-        <canvas id='game_canvas' ref={this.ref} height={canvas.height} width={canvas.width} />
+        <canvas id="game_canvas" ref={this.ref} height={canvas.height} width={canvas.width} />
       </Layer>
     )
   }
@@ -47,5 +45,3 @@ const Layer = styled.div`
   left: 0px;
   top: 0px;
 `
-
-export default ActionLayer

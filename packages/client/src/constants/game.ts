@@ -2,12 +2,14 @@ const canvas = {
   width: 800,
   height: 360,
 }
+export {canvas}
 
 const SpriteCat = {
   width: 100,
   height: 74,
-  ar: 0.74,
+  aspectRatio: 0.74,
 }
+export {SpriteCat}
 
 // Base game constants
 const scorePerLevel = 100
@@ -20,16 +22,35 @@ const jumpHeightMax = SpriteCat.height * 3
 const defaultCatX = Math.floor(canvas.width / 3)
 const defaultCatY = ActionPositionVertical
 const defaultTargetX = canvas.width / 2
+const victimPositionDelta = canvas.width / 8
 const defaultTargetY = ActionPositionVertical
 const defaultTargetHeight = 80
 const stepTargetHeight = 10
 const defaultTargetDelay = 8000 // The time after which the target will escape
 const stepTargetDelay = 1000
-const catchHeight = (defaultTargetX - defaultCatX) / 2
 
-type Target = 'mouse' | 'grasshopper' | 'butterfly' | 'bird' | 'cactus' | 'puddle' | 'flowerpot' | 'gnome'
+export type TargetName = 'mouse' | 'grasshopper' | 'butterfly' | 'bird' | 'cactus' | 'puddle' | 'flowerpot' | 'gnome' | 'none'
 
-const score: Record<string, Record<'success' | 'fail', number>> = {
+const VICTIM_LIST: TargetName[] = ['mouse', 'grasshopper', 'butterfly', 'bird']
+export {VICTIM_LIST}
+
+const BARRIER_LIST: TargetName[] = ['cactus', 'puddle', 'flowerpot', 'gnome']
+export {BARRIER_LIST}
+
+const DIFFICULTY_PER_LEVEL: TargetName[][] = [
+	['mouse', 'grasshopper', 'butterfly', 'bird', 'cactus', 'puddle', 'flowerpot', 'gnome'],	// Testing level 0
+	['butterfly', 'puddle', 'flowerpot'],
+	['butterfly', 'grasshopper', 'puddle', 'flowerpot'],
+	['butterfly', 'grasshopper', 'puddle', 'flowerpot', 'gnome'],
+	['grasshopper', 'mouse', 'puddle', 'flowerpot', 'gnome'],
+	['grasshopper', 'mouse', 'bird', 'gnome', 'cactus'],
+]
+export {DIFFICULTY_PER_LEVEL}
+
+export type ScoreType = 'success' | 'fail'
+const TARGET_SCORE: Record<TargetName, Record<ScoreType, number>> = {
+	none:					{success: 0, fail: 0},
+
 	butterfly:		{success: 10, fail: 0},
 	grasshopper:	{success: 10, fail: 0},
 	bird:					{success: 10, fail: -5},
@@ -40,8 +61,9 @@ const score: Record<string, Record<'success' | 'fail', number>> = {
 	gnome:				{success: 5, fail: -10},
 	cactus:				{success: 5, fail: -20},
 }
+export {TARGET_SCORE}
 
-const game = {
+const GAME = {
 	scorePerLevel,
 	initialScore,
 	ActionPositionVertical,
@@ -53,11 +75,10 @@ const game = {
 	defaultCatY,
 	defaultTargetX,
 	defaultTargetY,
+	victimPositionDelta,
 	defaultTargetHeight,
 	stepTargetHeight,
 	defaultTargetDelay,
 	stepTargetDelay,
-	catchHeight,
 }
-
-export {canvas, game, score, SpriteCat}
+export {GAME}

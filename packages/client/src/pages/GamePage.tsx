@@ -1,44 +1,46 @@
-import { useState, createContext } from 'react';
+import { useState, createContext } from 'react'
 import GameLayout from '../layouts/GameLayout'
 import ActionLayer from '../layers/ActionLayer'
 import LandscapeLayer from '../layers/LandscapeLayer'
 import GamePause from '../components/gamePause'
 import GameOver from '../components/GameOver'
-import Engine from '../engine/Engine';
+import Engine from '../engine/Engine'
 
-const GameContext = createContext({});
+const GameContext = createContext({})
 
 const GamePage = () => {
-	const [pauseVisible, setPauseVisible] = useState(false);
-	const [gameOverVisible, setGameOverVisible] = useState(false);
+  const [pauseVisible, setPauseVisible] = useState(false)
+  const [gameOverVisible, setGameOverVisible] = useState(false)
 
-	function handlePause(){
-		setPauseVisible(true)
-	}
-	
-	function handleContinue(){
-		setPauseVisible(false)
-		const engine = Engine.get()
-		engine.pause(false)
-	}
+  const handlePause = () => {
+    setPauseVisible(true)
+  }
 
-	function handleGameOver(){
-		setGameOverVisible(true)
-	}
-	
-	function handleNewGame(){
-		setGameOverVisible(false)
-		const engine = Engine.get()
-		engine.start()
-	}
+  const handleContinue = () => {
+    setPauseVisible(false)
 
-	return (
-		<GameLayout>
-			<GamePause visible={pauseVisible} handleClose={handleContinue} outSideClickEnable/>
-			<GameOver visible={gameOverVisible} handleClose={handleNewGame} />
-			<LandscapeLayer />
-			<ActionLayer {...{handlePause, handleGameOver}}/>
-		</GameLayout>
+    const engine = Engine.get()
+    engine.pause(false)
+  }
+
+  const handleGameOver = () => {
+    setGameOverVisible(true)
+  }
+
+  const handleNewGame = () => {
+    setGameOverVisible(false)
+
+    const engine = Engine.get()
+    engine.start()
+  }
+
+  return (
+    <GameLayout>
+      <GamePause visible={pauseVisible} handleClose={handleContinue} outSideClickEnable />
+      <GameOver visible={gameOverVisible} handleClose={handleNewGame} />
+      <LandscapeLayer />
+      <ActionLayer {...{ handlePause, handleGameOver }} />
+    </GameLayout>
   )
 }
 

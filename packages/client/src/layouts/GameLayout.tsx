@@ -12,10 +12,7 @@ const GameLayout: FC<PropsWithChildren> = props => {
 }
 
 const Root = styled.div`
-  background-image: linear-gradient(
-    ${({ theme }) => theme.colors.primary},
-    ${({ theme }) => theme.colors.secondary}
-  );
+  background-image: linear-gradient(${({ theme }) => theme.colors.primary}, ${({ theme }) => theme.colors.secondary});
   display: flex;
   align-items: center;
   justify-content: center;
@@ -28,7 +25,6 @@ const GameWindow = styled.div`
   height: ${canvas.height}px;
   width: ${canvas.width}px;
   position: relative;
-  background-color: gray;
 `
 
 export default GameLayout

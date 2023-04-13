@@ -30,20 +30,10 @@ export class Resource {
   private total = 9 // Resource count
   private current = 0
 
-	protected static _instance: Resource
+  protected static _instance: Resource
   protected static _initialized = false
   protected static _progresCallback: (progress: number) => void
   public sprite: Record<string, HTMLImageElement | GifObject> = {}
-  public target = ['mouse', 'grasshopper', 'butterfly', 'bird']
-  public barrier = ['cactus', 'puddle', 'flowerpot', 'gnome']
-	public difficulty = [
-		['mouse', 'grasshopper', 'butterfly', 'bird', 'cactus', 'puddle', 'flowerpot', 'gnome'],	// Testing level 0
-		['butterfly', 'puddle', 'flowerpot'],
-		['butterfly', 'grasshopper', 'puddle', 'flowerpot'],
-		['butterfly', 'grasshopper', 'puddle', 'flowerpot', 'gnome'],
-		['grasshopper', 'mouse', 'puddle', 'flowerpot', 'gnome'],
-		['grasshopper', 'mouse', 'bird', 'gnome', 'cactus'],
-	]
 
   private constructor() {
     this.initialize()
