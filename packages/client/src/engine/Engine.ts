@@ -121,7 +121,7 @@ export default class Engine {
     if (this.hold && event.code == 'Space') {
       this.hold = false
       this.action = 'stay'
-			// Prevent accidentially tapping
+      // Prevent accidentially tapping
       if (this.jumpHeight > GAME.jumpHeightMin + GAME.trajectoryStep * 2) {
         this.action = 'jump'
         this.jumpStage = -Math.PI

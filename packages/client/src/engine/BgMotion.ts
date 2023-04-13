@@ -1,4 +1,4 @@
-import canvas from '../constants/canvas'
+import { canvas } from '../constants/game'
 import ResourceLoader from './ResourceLoader'
 
 export type Layer = {
@@ -54,9 +54,7 @@ export default class BgMotion {
       const aspectRatio = img.height / img.width
       layerObj.imgW = canvas.width
       layerObj.imgH = layerObj.imgW * aspectRatio
-      layer.isTop
-        ? (layerObj.y = 0)
-        : (layerObj.y = canvas.height - layerObj.imgH)
+      layer.isTop ? (layerObj.y = 0) : (layerObj.y = canvas.height - layerObj.imgH)
       this.layersArr.push(layerObj)
     })
 
@@ -71,21 +69,9 @@ export default class BgMotion {
       }
 
       if (layer.x > -canvas.width)
-        this.ctx?.drawImage(
-          layer.img as CanvasImageSource,
-          canvas.width + layer.x,
-          layer.y,
-          layer.imgW,
-          layer.imgH
-        )
+        this.ctx?.drawImage(layer.img as CanvasImageSource, canvas.width + layer.x, layer.y, layer.imgW, layer.imgH)
 
-      this.ctx?.drawImage(
-        layer.img as CanvasImageSource,
-        layer.x,
-        layer.y,
-        layer.imgW,
-        layer.imgH
-      )
+      this.ctx?.drawImage(layer.img as CanvasImageSource, layer.x, layer.y, layer.imgW, layer.imgH)
       layer.x += layer.dx
     })
   }

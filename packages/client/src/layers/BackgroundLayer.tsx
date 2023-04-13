@@ -1,6 +1,6 @@
 import { Component, ReactPropTypes, RefObject, createRef } from 'react'
 import styled from 'styled-components'
-import canvas from '../constants/canvas'
+import { canvas } from '../constants/game'
 import BgMotion from '../engine/BgMotion'
 
 export default class BackgroundLayer extends Component {

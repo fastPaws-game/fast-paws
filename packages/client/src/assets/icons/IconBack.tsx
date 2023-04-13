@@ -1,11 +1,6 @@
 function IconBack() {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="22"
-      height="34"
-      fill="none"
-      viewBox="0 0 22 34">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="34" fill="none" viewBox="0 0 22 34">
       <path
         stroke="#fff"
         strokeLinecap="round"

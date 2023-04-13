@@ -217,15 +217,8 @@ const GIF = function () {
         interlacedBufSize = pixelBufSize
       }
       for (pass = 0; pass < 4; pass++) {
-        for (
-          toLine = interlaceOffsets[pass];
-          toLine < lines;
-          toLine += interlaceSteps[pass]
-        ) {
-          deinterlaceBuf.set(
-            pixelBuf.subarray(fromLine, fromLine + width),
-            toLine * width
-          )
+        for (toLine = interlaceOffsets[pass]; toLine < lines; toLine += interlaceSteps[pass]) {
+          deinterlaceBuf.set(pixelBuf.subarray(fromLine, fromLine + width), toLine * width)
           fromLine += width
         }
       }
@@ -272,31 +265,15 @@ const GIF = function () {
     frame.image.width = gif.width
     frame.image.height = gif.height
     frame.image.ctx = frame.image.getContext('2d')
-    ct = frame.localColourTableFlag
-      ? frame.localColourTable
-      : gif.globalColourTable
+    ct = frame.localColourTableFlag ? frame.localColourTable : gif.globalColourTable
     if (gif.lastFrame === null) {
       gif.lastFrame = frame
     }
-    useT =
-      gif.lastFrame.disposalMethod === 2 || gif.lastFrame.disposalMethod === 3
-        ? true
-        : false
+    useT = gif.lastFrame.disposalMethod === 2 || gif.lastFrame.disposalMethod === 3 ? true : false
     if (!useT) {
-      frame.image.ctx.drawImage(
-        gif.lastFrame.image,
-        0,
-        0,
-        gif.width,
-        gif.height
-      )
+      frame.image.ctx.drawImage(gif.lastFrame.image, 0, 0, gif.width, gif.height)
     }
-    cData = frame.image.ctx.getImageData(
-      frame.leftPos,
-      frame.topPos,
-      frame.width,
-      frame.height
-    )
+    cData = frame.image.ctx.getImageData(frame.leftPos, frame.topPos, frame.width, frame.height)
     ti = frame.transparencyIndex
     dat = cData.data
     if (frame.interlaced) {
@@ -500,10 +477,7 @@ const GIF = function () {
     time *= 1000 // in ms
     time %= gif.length
     var frame = 0
-    while (
-      time > gif.frames[frame].time + gif.frames[frame].delay &&
-      frame < gif.frames.length
-    ) {
+    while (time > gif.frames[frame].time + gif.frames[frame].delay && frame < gif.frames.length) {
       frame += 1
     }
     gif.currentFrame = frame

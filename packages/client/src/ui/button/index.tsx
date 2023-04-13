@@ -19,9 +19,7 @@ const ButtonMainStyled = styled.button<{ size?: string }>`
   width: ${props => (props.size === 'big' ? '395px' : props.size === 'middle' ? '280px' : '145px')};
   height: ${props => (props.size === 'big' ? '100px' : props.size === 'middle' ? '60px' : '35px')};
   border-radius: ${props =>
-    (props.size === 'big' || props.size === 'middle')
-      ? props.theme.borders.secondary
-      : props.theme.borders.primary};
+    props.size === 'big' || props.size === 'middle' ? props.theme.borders.secondary : props.theme.borders.primary};
   border: none;
   transition: 0.3s;
   box-shadow: ${props => props.theme.shadows.secondary};
@@ -29,8 +27,8 @@ const ButtonMainStyled = styled.button<{ size?: string }>`
   font-size: ${props =>
     props.size === 'big'
       ? props.theme.vars.fontSize.xl
-			: props.size === 'middle'
-			? props.theme.vars.fontSize.l
+      : props.size === 'middle'
+      ? props.theme.vars.fontSize.l
       : props.theme.vars.fontSize.s};
   color: ${props => props.theme.text.everWhite};
 
@@ -66,8 +64,7 @@ const ButtonIconStyled = styled.button<{ size?: string; light?: boolean }>`
   align-items: center;
   justify-content: center;
   transition: 0.3s;
-  background-color: ${props =>
-    props.light ? props.theme.colors.accent : props.theme.colors.play};
+  background-color: ${props => (props.light ? props.theme.colors.accent : props.theme.colors.play)};
   color: ${props => props.theme.text.textBase};
 
   &:not([disabled]):hover,
