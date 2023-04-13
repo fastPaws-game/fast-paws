@@ -9,6 +9,7 @@ import {
 } from '../constants/game'
 import Draw from './Draw'
 import Resource, { GifObject } from '../engine/ResourceLoader'
+import BgMotion from '../engine/BgMotion'
 
 type Action = 'run' | 'stay' | 'jump' | 'path' | 'scene' | 'return' | null
 type Target = {
@@ -58,11 +59,13 @@ export default class Engine {
   private fullJump = true
   private score: number
   private paused = false
+  private CatAtPosition = false
   private cat: GifObject
   private draw: Draw
+  private bgMotion: BgMotion
   private handlePause: () => void
   private handleGameOver: () => void
-  private static _instance: Engine
+  private static __instance: Engine
 
   private constructor(handlers: Record<string, () => void>) {
     this.handlePause = handlers.handlePause
@@ -71,6 +74,7 @@ export default class Engine {
     const canvas = document.getElementById('game_canvas') as HTMLCanvasElement
     this.ctx = canvas.getContext('2d')
     this.draw = new Draw(this.ctx!)
+    this.bgMotion = new BgMotion()
 
     this.cat = Resource.sprite.cat as GifObject
     this.score = GAME.initialScore // Get score from store
@@ -128,7 +132,7 @@ export default class Engine {
         this.success =
           (this.target.isBarrier && this.jumpHeight > this.successHeight) ||
           Math.abs(this.jumpHeight - this.successHeight) < 10
-        console.log('Jump height: ', this.jumpHeight, '/', this.successHeight, this.success)
+        // console.log('Jump height: ', this.jumpHeight, '/', this.successHeight, this.success)	// Do not remove!
       }
     }
     if (event.code == 'Escape') {
@@ -141,7 +145,6 @@ export default class Engine {
     if (this.jumpHeight >= GAME.jumpHeightMax) this.trajectoryDirection = -1
     if (this.jumpHeight < GAME.jumpHeightMin) {
       // Stops jump request
-      // this.trajectoryDirection = 1
       this.action = 'stay'
       this.jumpStage = -Math.PI
       requestAnimationFrame(this.update)
@@ -166,7 +169,7 @@ export default class Engine {
     } else {
       this.success ? this.commitSuccess() : this.commitFail()
     }
-    /*
+    /*	Trajectory algorithm
 			for (let i = -Math.PI; i < 0; i += step) {
 				const x = this.CatX + r + r * Math.cos(i);
 				const y = this.CatY + r * Math.sin(i);
@@ -198,13 +201,18 @@ export default class Engine {
       if (!this.target.isBarrier) {
         this.timer = window.setTimeout(this.commitFail, this.target.runAwayDelay)
       }
+      this.bgMotion.stop()
     }
 
     // Move Cat
     if (this.CatX > GAME.defaultCatX) {
-      this.CatX -= 4
-    } else if (this.target.nameLast != 'none') {
-      // this.movementSpeed = 4
+      this.CatX -= Math.floor((this.movementSpeed / 3) * 2)
+    } else {
+      if (!this.CatAtPosition) this.bgMotion.start(Math.floor((this.updateTime / 2) * 3))
+      this.CatAtPosition = true
+      if (this.target.nameLast != 'none') {
+        // this.movementSpeed = 4
+      }
     }
   }
 
@@ -320,6 +328,7 @@ export default class Engine {
       ? Math.floor(this.target.heightCurr * this.successHeightModifer)
       : (this.target.PositionX - GAME.defaultCatX) / 2
     this.fullJump = this.target.nameCurr == 'puddle' || VICTIM_LIST.includes(this.target.nameCurr)
+    this.CatAtPosition = false
     /* 
 		console.log(`Level ${level}:`, {
 			speed: this.SPEED,
@@ -327,7 +336,9 @@ export default class Engine {
 			target: this.target,
 		})
  */
+    this.bgMotion.start(this.updateTime)
     requestAnimationFrame(this.update)
+    // console.log('Game: Initialized', this.bgMotion)
   }
 
   private registerEvents = () => {
@@ -364,8 +375,8 @@ export default class Engine {
   }
 
   public static get(handlers?: Record<string, () => void>) {
-    if (Engine._instance) return Engine._instance
-    if (handlers) Engine._instance = new Engine(handlers)
-    return Engine._instance
+    if (Engine.__instance) return Engine.__instance
+    if (handlers) Engine.__instance = new Engine(handlers)
+    return Engine.__instance
   }
 }

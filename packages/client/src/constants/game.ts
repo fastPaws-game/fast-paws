@@ -15,7 +15,7 @@ export const SpriteSize = {
 export const GAME = {
   scorePerLevel: 100,
   initialScore: 20, // Need to prevent 'Game over' after the first fail
-  actionPositionVertical: Math.floor(canvas.height * 0.93),
+  actionPositionVertical: Math.floor(canvas.height * 0.88),
   shadowsEnable: false,
   trajectoryStep: 2,
   jumpHeightMin: Math.floor(SpriteSize.cat.height / 1.5),

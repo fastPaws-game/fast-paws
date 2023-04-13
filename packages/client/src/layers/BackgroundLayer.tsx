@@ -16,7 +16,6 @@ export default class BackgroundLayer extends Component {
     const ctx = this.canvas!.current!.getContext('2d')
     if (ctx) {
       this.motion = new BgMotion(ctx)
-      this.motion.start(10)
     }
   }
 
