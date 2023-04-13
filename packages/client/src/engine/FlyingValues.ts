@@ -1,5 +1,5 @@
 // Not for review!
-import { canvas, GAME, SpriteCat } from '../constants/game'
+import { canvas, GAME, SpriteSize } from '../constants/game'
 
 type Message = {
 	text: string;
@@ -10,7 +10,7 @@ type Message = {
 
 const delta = 100
 const dx = - 2
-const numberStartY = GAME.ActionPositionVertical - SpriteCat.height
+const numberStartY = GAME.actionPositionVertical - SpriteSize.cat.height
 const textStartY = numberStartY - delta
 
 export default class Draw {
@@ -36,5 +36,7 @@ export default class Draw {
 		window.setInterval(this.render, 17)
 	}
 
-	private render = () => {}
+	private render = () => {
+		// Do something
+	}
 }

@@ -28,7 +28,7 @@ type Target = {
 export default class Engine {
   private SPEED = 0.5 // Game complexity refers to current level (Slow: 0.5 Max: 1)
   private successHeightModifer = 1.2 // Defines jump to target height ratio
-  private updateTime = 17 / this.SPEED // Frame rait
+  private updateTime = 17 / this.SPEED // Frame rait, actually no, but :)
   private action: Action = null
   private ctx: CanvasRenderingContext2D | null = null
   private hold = false
@@ -43,12 +43,12 @@ export default class Engine {
     xCurr: this.CatX + canvas.width / 2,
     yCurr: GAME.defaultTargetY,
     xLast: GAME.defaultTargetX,
-    PositionX: GAME.defaultTargetX,
     yLast: GAME.defaultTargetY,
+    PositionX: GAME.defaultTargetX,
     heightCurr: GAME.defaultTargetHeight,
     heightLast: GAME.defaultTargetHeight,
     isBarrier: false,
-    runAwayDelay: GAME.defaultTargetDelay,
+    runAwayDelay: GAME.defaultRunAwayDelay,
   }
   private timer = 0
   private movementSpeed = 6
@@ -311,7 +311,7 @@ export default class Engine {
     this.target.heightCurr = this.target.isBarrier
       ? GAME.defaultTargetHeight + GAME.stepTargetHeight * level
       : GAME.defaultTargetHeight
-    this.target.runAwayDelay = GAME.defaultTargetDelay - GAME.stepTargetDelay * level
+    this.target.runAwayDelay = GAME.defaultRunAwayDelay - GAME.stepTargetDelay * level
     this.action = 'scene'
     this.hold = true
     this.paused = false

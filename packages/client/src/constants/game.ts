@@ -15,19 +15,19 @@ export const SpriteSize = {
 export const GAME = {
 	scorePerLevel: 100,
 	initialScore: 20,	// Need to prevent 'Game over' after the first fail
-	ActionPositionVertical: Math.floor(canvas.height * 0.93),
+	actionPositionVertical: Math.floor(canvas.height * 0.93),
 	shadowsEnable: false,
 	trajectoryStep: 2,
 	jumpHeightMin: Math.floor(SpriteSize.cat.height / 1.5),
 	jumpHeightMax: SpriteSize.cat.height * 3,
 	defaultCatX: Math.floor(canvas.width / 3),
-	get defaultCatY(): number { return this.ActionPositionVertical },
+	get defaultCatY(): number { return this.actionPositionVertical },
 	defaultTargetX: canvas.width / 2,
 	victimPositionDelta: canvas.width / 8,
-	get defaultTargetY(): number { return this.ActionPositionVertical },
+	get defaultTargetY(): number { return this.actionPositionVertical },
 	defaultTargetHeight: 80,
 	stepTargetHeight: 10,
-	defaultTargetDelay: 8000, // The time after which the target will escape
+	defaultRunAwayDelay: 8000, // The time after which the target will escape
 	stepTargetDelay: 1000,
 }
 

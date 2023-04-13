@@ -23,7 +23,7 @@ export default class Draw {
     if (this.ctx) {
       const width = (image.width * height) / image.height
 
-      this.drawShadow(x, GAME.ActionPositionVertical, width)
+      this.drawShadow(x, GAME.actionPositionVertical, width)
       this.ctx.drawImage(image, x - width / 2, y - height, width, height)
     }
   }
