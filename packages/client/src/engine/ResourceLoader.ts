@@ -21,7 +21,7 @@ export type GifObject = {
   frames: { image: HTMLCanvasElement }[]
   loading: any
   image: HTMLCanvasElement
-  lastFrame: { image: CanvasImageSource } | null
+  lastFrame: { image: HTMLCanvasElement } | null
   width: number
   height: number
   src: string
@@ -38,8 +38,6 @@ export class Resource {
   protected static _initialized = false
   protected static _progresCallback: (progress: number) => void
   public sprite: Record<string, HTMLImageElement | GifObject> = {}
-  public target = ['mouse', 'grasshopper', 'butterfly', 'bird']
-  public barrier = ['cactus', 'puddle', 'flowerpot', 'gnome']
 
   private constructor() {
     this.initialize()
@@ -120,7 +118,7 @@ export class Resource {
 
 // Future preloader callback
 const tempCallback = (progress: number) => {
-  // console.log('Resource loading:', progress)
+  console.log(`Resource loading: ${progress}%`)
 }
 
 export default Resource.get(tempCallback)
