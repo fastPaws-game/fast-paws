@@ -13,6 +13,7 @@ const InterfaceLayer: FC<Props> = props => {
     console.log('Click button:', action)
   }
 
+	// Сделать новые кнопки, значки должны быть svg а не jsx
   return (
     <Layer>
       <HorisontalBlock>
@@ -21,15 +22,15 @@ const InterfaceLayer: FC<Props> = props => {
 					<Element>Score: {props.score}</Element>
 				</div>
 				<HorisontalBlock>
-					<Element>Sound</Element>	{/* Значок динамика с двумя состояниями вкл/откл */}
-					<Element>Pause</Element>	{/* Значок паузы (две вертикальные чёрточки) */}
+					<Button icon={<Icon>Snd</Icon>} size="small" onClick={handleClick('sound')} />	{/* Значок динамика с двумя состояниями вкл/откл */}
+					<Button icon={<Icon>| |</Icon>} size="small" onClick={handleClick('pause')} />	{/* Значок паузы (две жирные вертикальные чёрточки) */}
 				</HorisontalBlock>
 			</HorisontalBlock>
 			<GameTip>{props.tooltip}</GameTip>
 			<div></div>
       <HorisontalBlock>
-				<Button icon={<IconSettings />} size="small" onClick={handleClick('settings')} /> {/* Сделать новые кнопки, значки должны быть svg а не jsx */}
-				<Element>Full screen</Element>	{/* Значок разворачивания на полный экран как на Youtube */}
+				<Button icon={<IconSettings />} size="small" onClick={handleClick('settings')} />
+				<Button icon={<Icon>[ ]</Icon>} size="small" onClick={handleClick('full screen')} />	{/* Значок разворачивания на полный экран как на Youtube */}
 			</HorisontalBlock>
     </Layer>
   )
@@ -48,6 +49,10 @@ const Layer = styled.div`
 	color: ${props => props.theme.text.everWhite};
 	font-weight: 600;
 	text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+`
+const Icon = styled.div`
+	color: ${props => props.theme.text.everWhite};
+	font-weight: 600;
 `
 const HorisontalBlock = styled.div`
 	display: flex;

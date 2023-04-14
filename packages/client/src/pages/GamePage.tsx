@@ -14,7 +14,7 @@ const GamePage = () => {
   const [gameOverVisible, setGameOverVisible] = useState(false)
   const [level, setLevel] = useState(0)
   const [score, setScore] = useState(0)
-  const [tooltip, setTooltip] = useState('Hold space to jump')
+  const [tooltip, setTooltip] = useState('')
 
   const handlePause = () => {
     setPauseVisible(true)
