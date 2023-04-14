@@ -60,16 +60,23 @@ export default class Engine {
   private score: number
   private paused = false
   private CatAtPosition = false
+	private tooltipShown = true
   private cat: GifObject
   private draw: Draw
   private bgMotion: BgMotion
   private handlePause: () => void
   private handleGameOver: () => void
+  private showScore: (score: number) => void
+  private showLevel: (score: number) => void
+  private showTooltip: (tooltip: string) => void
   private static __instance: Engine
 
-  private constructor(handlers: Record<string, () => void>) {
+  private constructor(handlers: Record<string, (value?: any) => void>) {
     this.handlePause = handlers.handlePause
     this.handleGameOver = handlers.handleGameOver
+    this.showLevel = handlers.setLevel
+    this.showScore = handlers.setScore
+    this.showTooltip = handlers.setTooltip
 
     const canvas = document.getElementById('game_canvas') as HTMLCanvasElement
     this.ctx = canvas.getContext('2d')
@@ -80,8 +87,22 @@ export default class Engine {
     this.score = GAME.initialScore // Get score from store
   }
 
+	private setTooltip(text?: string) {
+		if (!text && this.tooltipShown) {
+			this.showTooltip('')
+			this.tooltipShown = false
+			return
+		}
+		if (typeof text == 'string') {
+			this.showTooltip(text)
+			this.tooltipShown = true
+		}
+	}
+
   private setScore = (value: number) => {
     this.score += value
+		this.showScore(this.score)
+		this.setTooltip()
     console.log((value > 0 ? 'Success!' : 'Fail.') + ' Score:', this.score)
   }
 
@@ -301,6 +322,9 @@ export default class Engine {
   private levelPrepare = () => {
     window.clearTimeout(this.timer)
     const level = Math.min(Math.floor(Math.max(this.score, 0) / GAME.scorePerLevel), 5)
+    this.showLevel(level)
+    this.showScore(this.score)
+
     this.SPEED = 0.5 + level * 0.1
     this.updateTime = 17 / this.SPEED
     const targets = DIFFICULTY_PER_LEVEL[level]

@@ -1,29 +1,36 @@
-import React from 'react'
+import React, { FC } from 'react'
 import styled from 'styled-components'
+import Button from '../ui/button'
+import IconSettings from '../assets/icons/IconSettings'
 
-// Функция должна принимать колбэк смены state
-export default function InterfaceLayer() {
-  // const image = React.createRef<HTMLImageElement>()
-	const state={
-		score: 0,
-		tip: 'Hold space to jump',
-	}
+type Props = {
+	level: number
+  score: number
+  tooltip: string
+}
+const InterfaceLayer: FC<Props> = props => {
+  const handleClick = (action?: string) => () => {
+    console.log('Click button:', action)
+  }
 
   return (
     <Layer>
-      <Horisontal>
-				<Element>Score: {state.score}</Element>
-				<Horisontal>
+      <HorisontalBlock>
+				<div>
+					<Element>Level: {props.level < 4 ? props.level + 1 : 'MAX'}</Element>
+					<Element>Score: {props.score}</Element>
+				</div>
+				<HorisontalBlock>
 					<Element>Sound</Element>	{/* Значок динамика с двумя состояниями вкл/откл */}
 					<Element>Pause</Element>	{/* Значок паузы (две вертикальные чёрточки) */}
-				</Horisontal>
-			</Horisontal>
-			<GameTip>{state.tip}</GameTip>
+				</HorisontalBlock>
+			</HorisontalBlock>
+			<GameTip>{props.tooltip}</GameTip>
 			<div></div>
-      <Horisontal>
-				<Element>Settings</Element>	{/* Значок шестерёнки */}
+      <HorisontalBlock>
+				<Button icon={<IconSettings />} size="small" onClick={handleClick('settings')} /> {/* Сделать новые кнопки, значки должны быть svg а не jsx */}
 				<Element>Full screen</Element>	{/* Значок разворачивания на полный экран как на Youtube */}
-			</Horisontal>
+			</HorisontalBlock>
     </Layer>
   )
 }
@@ -42,7 +49,7 @@ const Layer = styled.div`
 	font-weight: 600;
 	text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 `
-const Horisontal = styled.div`
+const HorisontalBlock = styled.div`
 	display: flex;
 	justify-content: space-between;
 `
@@ -53,3 +60,4 @@ const GameTip = styled.div`
 	margin: 10px;
 	align-self: center;
 `
+export default InterfaceLayer

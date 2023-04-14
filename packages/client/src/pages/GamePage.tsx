@@ -12,6 +12,9 @@ const GameContext = createContext({})
 const GamePage = () => {
   const [pauseVisible, setPauseVisible] = useState(false)
   const [gameOverVisible, setGameOverVisible] = useState(false)
+  const [level, setLevel] = useState(0)
+  const [score, setScore] = useState(0)
+  const [tooltip, setTooltip] = useState('Hold space to jump')
 
   const handlePause = () => {
     setPauseVisible(true)
@@ -40,8 +43,8 @@ const GamePage = () => {
       <GamePause visible={pauseVisible} handleClose={handleContinue} outSideClickEnable />
       <GameOver visible={gameOverVisible} handleClose={handleNewGame} />
       <BackgroundLayer />
-      <ActionLayer {...{ handlePause, handleGameOver }} />
-			<InterfaceLayer />
+      <ActionLayer {...{ handlePause, handleGameOver, setLevel, setScore, setTooltip }} />
+			<InterfaceLayer level={level} score={score} tooltip={tooltip}/>
     </GameLayout>
   )
 }
