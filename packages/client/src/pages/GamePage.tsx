@@ -1,7 +1,7 @@
 import { useState, createContext } from 'react'
 import GameLayout from '../layouts/GameLayout'
 import ActionLayer from '../layers/ActionLayer'
-// import LandscapeLayer from '../layers/LandscapeLayer'
+import InterfaceLayer from '../layers/InterfaceLayer'
 import BackgroundLayer from '../layers/BackgroundLayer'
 import GamePause from '../components/gamePause'
 import GameOver from '../components/GameOver'
@@ -41,6 +41,7 @@ const GamePage = () => {
       <GameOver visible={gameOverVisible} handleClose={handleNewGame} />
       <BackgroundLayer />
       <ActionLayer {...{ handlePause, handleGameOver }} />
+			<InterfaceLayer />
     </GameLayout>
   )
 }
