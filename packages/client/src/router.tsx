@@ -29,6 +29,7 @@ export const Router = () => {
       <Route path={`${routes.FORUM}/:forumId`} element={<LazyTopic />} />
       <Route path={routes.GAME} element={<LazyGame />} />
       <Route path={routes.LEADERBOARD} element={<LazyBoard />} />
+      <Route path={routes.NOT_FOUND} element={<LazyError />} />
     </Routes>
   )
 }

@@ -19,12 +19,7 @@ const ForumsList: FC<Props> = props => {
   return (
     <ListWrapper>
       {forums.map(forum => (
-        <ForumItem
-          forumName={forum.name}
-          key={forum.id}
-          forumPath={forum.path}
-          topics={forum.topics}
-        />
+        <ForumItem forumName={forum.name} key={forum.id} forumPath={forum.path} topics={forum.topics} />
       ))}
     </ListWrapper>
   )

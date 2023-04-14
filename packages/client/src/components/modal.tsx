@@ -1,11 +1,4 @@
-import React, {
-  FC,
-  PropsWithChildren,
-  useEffect,
-  MouseEvent,
-  useCallback,
-  memo,
-} from 'react'
+import React, { FC, PropsWithChildren, useEffect, MouseEvent, useCallback, memo } from 'react'
 import styled from 'styled-components'
 import scrollLock from '../utils/scrollLock'
 import useEscape from '../hooks/useEscape'
@@ -40,7 +33,7 @@ const Modal: FC<Props> = props => {
 }
 
 const Root = styled.div`
-	z-index: 900;
+  z-index: 900;
   position: fixed;
   top: 0;
   left: 0;
