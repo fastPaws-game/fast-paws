@@ -7,6 +7,12 @@ type Props = {
 	level: number
   score: number
   tooltip: string
+	catched: {
+		butterfly: number
+		grasshopper: number
+		bird: number
+		mouse: number
+	}
 }
 const InterfaceLayer: FC<Props> = props => {
   const handleClick = (action?: string) => () => {
@@ -18,9 +24,10 @@ const InterfaceLayer: FC<Props> = props => {
     <Layer>
       <HorisontalBlock>
 				<div>
-					<Element>Level: {props.level < 4 ? props.level + 1 : 'MAX'}</Element>
+					<Element>Level: {props.level < 5 ? props.level + 1 : 'MAX'}</Element>
 					<Element>Score: {props.score}</Element>
 				</div>
+				<Element>B: {props.catched.butterfly} G: {props.catched.grasshopper} B: {props.catched.bird} M: {props.catched.mouse}</Element>
 				<HorisontalBlock>
 					<Button icon={<Icon>Snd</Icon>} size="small" onClick={handleClick('sound')} />	{/* Значок динамика с двумя состояниями вкл/откл */}
 					<Button icon={<Icon>| |</Icon>} size="small" onClick={handleClick('pause')} />	{/* Значок паузы (две жирные вертикальные чёрточки) */}
