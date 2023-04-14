@@ -19,12 +19,10 @@ const Wrapper = styled.div<{ padding?: number | string }>`
   justify-content: center;
   background-color: ${({ theme }) => theme.colors.secondary};
   box-shadow: ${({ theme }) => theme.shadows.forFormBackground};
-  padding: ${({ padding = '15px' }) =>
-    typeof padding === 'string' ? padding : `${padding}px`};
+  padding: ${({ padding = '15px' }) => (typeof padding === 'string' ? padding : `${padding}px`)};
 
   ${media.middle} {
-    padding: ${({ padding = '10px' }) =>
-      typeof padding === 'string' ? padding : `${padding * 0.8}px`};
+    padding: ${({ padding = '10px' }) => (typeof padding === 'string' ? padding : `${padding * 0.8}px`)};
     padding-top: 30px;
     min-width: 90%;
   }

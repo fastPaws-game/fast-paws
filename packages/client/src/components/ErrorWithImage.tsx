@@ -21,9 +21,7 @@ const ErrorWithImage: FC<Props> = props => {
       <Header>
         <H2>OOPS!</H2>
         <H3 weight={'normal'}>
-          {type === 'notFound'
-            ? 'The page you requested could not be found'
-            : 'A server error has occurred'}
+          {type === 'notFound' ? 'The page you requested could not be found' : 'A server error has occurred'}
         </H3>
       </Header>
       <ImageContainer>
