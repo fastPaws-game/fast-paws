@@ -1,3 +1,6 @@
+/* eslint no-undef: 1 */
+/* eslint no-redeclare: 1 */
+
 /*============================================================================
   Gif Decoder and player for use with Canvas API's
 
@@ -5,8 +8,8 @@
 
 To use
 
-    var myGif = GIF();                  // creates a new gif  
-    var myGif = new GIF();              // will work as well but not needed as GIF() returns the correct reference already.    
+    var myGif = GIF();                  // creates a new gif
+    var myGif = new GIF();              // will work as well but not needed as GIF() returns the correct reference already.
     myGif.load("myGif.gif");            // set URL and load
     myGif.onload = function(event){     // fires when loading is complete
                                         //event.type   = "load"
@@ -24,12 +27,12 @@ To use
 
 Once loaded the gif can be displayed
     if(!myGif.loading){
-        ctx.drawImage(myGif.image,0,0); 
+        ctx.drawImage(myGif.image,0,0);
     }
 You can display the last frame loaded during loading
 
     if(myGif.lastFrame !== null){
-        ctx.drawImage(myGif.lastFrame.image,0,0); 
+        ctx.drawImage(myGif.lastFrame.image,0,0);
     }
 
 
@@ -63,9 +66,9 @@ const GIF = function () {
         IMAGE   : 0x2C,
         EOF     : 59,   // This is entered as decimal
         EXT     : 0x21,
-    };      
-    // simple buffered stream used to read from the file 
-    var Stream = function (data) { 
+    };
+    // simple buffered stream used to read from the file
+    var Stream = function (data) {
         this.data = new Uint8ClampedArray(data);
         this.pos  = 0;
         var len   = this.data.length;
@@ -134,7 +137,7 @@ const GIF = function () {
     }
     function parse (){        // read the header. This is the starting point of the decode and async calls parseBlock
         var bitField;
-        st.pos                += 6;  
+        st.pos                += 6;
         gif.width             = (st.data[st.pos++]) + ((st.data[st.pos++]) << 8);
         gif.height            = (st.data[st.pos++]) + ((st.data[st.pos++]) << 8);
         bitField              = st.data[st.pos++];
@@ -193,7 +196,7 @@ const GIF = function () {
         frame.width   = (st.data[st.pos++]) + ((st.data[st.pos++]) << 8);
         frame.height  = (st.data[st.pos++]) + ((st.data[st.pos++]) << 8);
         bitField      = st.data[st.pos++];
-        frame.localColourTableFlag = bitField & 0b10000000 ? true : false; 
+        frame.localColourTableFlag = bitField & 0b10000000 ? true : false;
         if (frame.localColourTableFlag) { frame.localColourTable = parseColourTable(1 << ((bitField & 0b111) + 1)) }
         if (pixelBufSize !== frame.width * frame.height) { // create a pixel buffer if not yet created or if current frame size is different from previous
             pixelBuf     = new Uint8Array(frame.width * frame.height);
@@ -400,7 +403,7 @@ const GIF = function () {
         frames         : [],         // array of frames
         comment        : "",         // comments if found in file. Note I remember that some gifs have comments per frame if so this will be all comment concatenated
         length         : 0,          // gif length in ms (1/1000 second)
-        currentFrame   : 0,          // current frame. 
+        currentFrame   : 0,          // current frame.
         frameCount     : 0,          // number of frames
         playSpeed      : 1,          // play speed 1 normal, 2 twice 0.5 half, -1 reverse etc...
         lastFrame      : null,       // temp hold last frame loaded so you can display the gif as it loads
