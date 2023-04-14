@@ -1,10 +1,11 @@
-import { SubmitHandler, FieldValues, useForm } from 'react-hook-form'
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import Input, { typeStyleInput } from '../ui/input'
 import Button from '../ui/button'
 import Link from '../ui/link'
 import styled from 'styled-components'
 import profileSchema from '../utils/validation/profileSchema'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { FC } from 'react'
 
 const defaultValues = {
   first_name: '',
@@ -15,10 +16,15 @@ const defaultValues = {
   phone: '',
 }
 
-const ProfileForm = () => {
+type Props = {
+  onSubmitForm: (data: FieldValues) => void
+}
+
+const ProfileForm: FC<Props> = props => {
+  const { onSubmitForm } = props
+
   const {
     register,
-    reset,
     handleSubmit,
     formState: { errors, isSubmitting, isDirty },
   } = useForm({
@@ -27,9 +33,9 @@ const ProfileForm = () => {
     criteriaMode: 'all',
     resolver: yupResolver(profileSchema),
   })
-  //Profile change
+
   const onSubmit: SubmitHandler<FieldValues> = data => {
-    alert(JSON.stringify(data))
+    onSubmitForm(data)
   }
 
   return (
@@ -112,6 +118,7 @@ const Wrapper = styled.div`
   box-shadow: ${({ theme }) => theme.shadows.secondary};
   padding: 25px;
   margin-top: 10px;
+
   & h3 {
     text-align: center;
   }
