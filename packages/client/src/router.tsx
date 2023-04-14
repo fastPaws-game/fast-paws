@@ -38,11 +38,15 @@ export const router = createBrowserRouter([
     element: <LazyTopic />,
   },
   {
-    path: 'game',
+    path: '/game',
     element: <LazyGame />,
   },
   {
-    path: 'leaderboard',
+    path: '/leaderboard',
     element: <LazyBoard />,
+  },
+  {
+    path: '/not-found',
+    element: <LazyError />,
   },
 ])

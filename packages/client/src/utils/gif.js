@@ -1,3 +1,5 @@
+/* eslint no-undef: 1 */
+/* eslint no-redeclare: 1 */
 /*============================================================================
   Gif Decoder and player for use with Canvas API's
 
@@ -5,8 +7,8 @@
 
 To use
 
-    var myGif = GIF();                  // creates a new gif  
-    var myGif = new GIF();              // will work as well but not needed as GIF() returns the correct reference already.    
+    var myGif = GIF();                  // creates a new gif
+    var myGif = new GIF();              // will work as well but not needed as GIF() returns the correct reference already.
     myGif.load("myGif.gif");            // set URL and load
     myGif.onload = function(event){     // fires when loading is complete
                                         //event.type   = "load"
@@ -24,12 +26,12 @@ To use
 
 Once loaded the gif can be displayed
     if(!myGif.loading){
-        ctx.drawImage(myGif.image,0,0); 
+        ctx.drawImage(myGif.image,0,0);
     }
 You can display the last frame loaded during loading
 
     if(myGif.lastFrame !== null){
-        ctx.drawImage(myGif.lastFrame.image,0,0); 
+        ctx.drawImage(myGif.lastFrame.image,0,0);
     }
 
 

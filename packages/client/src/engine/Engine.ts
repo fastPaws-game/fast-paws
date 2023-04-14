@@ -61,7 +61,7 @@ export default class Engine {
   private game: TGame = {
     SPEED: 0.5, // Game complexity refers to current level (Slow: 0.5 Max: 1)
     successHeightModifer: 1.2, // Defines jump to target height ratio
-		// Frame rait, actually no :). Updates automatically.
+    // Frame rait, actually no :). Updates automatically.
     get updateTime(): number {
       return Math.floor(17 / this.SPEED)
     },
@@ -471,7 +471,7 @@ export default class Engine {
     console.log(`Game: ${this.game.paused ? 'Pause' : 'Continue'}`)
     if (this.game.paused) {
       this.unRegister()
-			this.bgMotion.stop()
+      this.bgMotion.stop()
       this.handlePause()
       window.clearTimeout(this.game.timer)
     } else {

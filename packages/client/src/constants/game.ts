@@ -74,8 +74,8 @@ export const TARGET_SCORE: Record<TargetName, Record<'success' | 'fail', number>
 }
 
 type Tooltip = 'newGame' | 'firstVictim' | 'firstBarrier'
-export const TOOLTIP: Record<Tooltip , string> = {
-	newGame: 'Hold space/tap to jump',
-	firstVictim: 'Need to jump on target',
-	firstBarrier: 'Need to jump over the target',
+export const TOOLTIP: Record<Tooltip, string> = {
+  newGame: 'Hold space/tap to jump',
+  firstVictim: 'Need to jump on target',
+  firstBarrier: 'Need to jump over the target',
 }

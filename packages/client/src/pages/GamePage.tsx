@@ -15,7 +15,7 @@ const GamePage = () => {
   const [level, setLevel] = useState(0)
   const [score, setScore] = useState(0)
   const [tooltip, setTooltip] = useState('')
-  const [catched, setCatched] = useState({mouse: 0, grasshopper: 0, butterfly: 0, bird: 0})
+  const [catched, setCatched] = useState({ mouse: 0, grasshopper: 0, butterfly: 0, bird: 0 })
 
   const handlePause = () => {
     setPauseVisible(true)
@@ -45,7 +45,7 @@ const GamePage = () => {
       <GameOver visible={gameOverVisible} handleClose={handleNewGame} />
       <BackgroundLayer />
       <ActionLayer {...{ handlePause, handleGameOver, setLevel, setScore, setTooltip, setCatched }} />
-			<InterfaceLayer level={level} score={score} tooltip={tooltip} catched={catched}/>
+      <InterfaceLayer level={level} score={score} tooltip={tooltip} catched={catched} />
     </GameLayout>
   )
 }
