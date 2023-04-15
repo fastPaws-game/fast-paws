@@ -1,12 +1,12 @@
 import {
+  BARRIER_LIST,
   canvas,
+  DIFFICULTY_PER_LEVEL,
   GAME,
   TARGET_SCORE,
   TargetName,
-  VICTIM_LIST,
-  BARRIER_LIST,
-  DIFFICULTY_PER_LEVEL,
   TOOLTIP,
+  VICTIM_LIST,
 } from '../constants/game'
 import Draw from './Draw'
 import Resource, { GifObject } from '../engine/ResourceLoader'
@@ -403,7 +403,7 @@ export default class Engine {
       : (this.target.PositionX - GAME.defaultCatX) / 2
     this.game.fullJump = this.target.nameCurr == 'puddle' || VICTIM_LIST.includes(this.target.nameCurr)
     this.cat.atPosition = false
-    /* 
+    /*
 		console.log(`Level ${level}:`, {
 			speed: this.SPEED,
 			rand: `${rand}/${targets.length}`,
@@ -469,6 +469,7 @@ export default class Engine {
     if (this.game.paused == state) return
     this.game.paused = state
     console.log(`Game: ${this.game.paused ? 'Pause' : 'Continue'}`)
+
     if (this.game.paused) {
       this.unRegister()
       this.bgMotion.stop()
