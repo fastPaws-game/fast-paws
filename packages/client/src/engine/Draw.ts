@@ -3,6 +3,7 @@ import Resource, { GifObject } from '../engine/ResourceLoader'
 
 export default class Draw {
   private ctx: CanvasRenderingContext2D | null = null
+	private resource = Resource.get()
 
   constructor(ctx: CanvasRenderingContext2D) {
     this.ctx = ctx
@@ -56,7 +57,7 @@ export default class Draw {
   }
 
   public drawTarget = (name: string, x: number, y: number, height: number, animate = false) => {
-    const image: HTMLImageElement | GifObject = Resource.sprite[name]
+    const image: HTMLImageElement | GifObject = this.resource.sprite[name]
     if (image instanceof HTMLImageElement) {
       let width = (image.width * height) / image.height
       let newY = Math.floor(y - height * 0.9)

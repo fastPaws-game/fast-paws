@@ -1,13 +1,10 @@
-import { useState, createContext } from 'react'
-import GameLayout from '../layouts/GameLayout'
+import { useState } from 'react'
 import ActionLayer from '../layers/ActionLayer'
 import InterfaceLayer from '../layers/InterfaceLayer'
 import BackgroundLayer from '../layers/BackgroundLayer'
 import GamePause from '../components/gamePause'
 import GameOver from '../components/GameOver'
 import Engine from '../engine/Engine'
-
-const GameContext = createContext({})
 
 const GamePage = () => {
   const [pauseVisible, setPauseVisible] = useState(false)
@@ -40,13 +37,13 @@ const GamePage = () => {
   }
 
   return (
-    <GameLayout>
+		<>
       <GamePause visible={pauseVisible} handleClose={handleContinue} outSideClickEnable />
       <GameOver visible={gameOverVisible} handleClose={handleNewGame} />
       <BackgroundLayer />
       <ActionLayer {...{ handlePause, handleGameOver, setLevel, setScore, setTooltip, setCatched }} />
       <InterfaceLayer level={level} score={score} tooltip={tooltip} catched={catched} />
-    </GameLayout>
+		</>
   )
 }
 

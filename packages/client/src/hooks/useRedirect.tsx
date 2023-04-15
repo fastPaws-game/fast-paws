@@ -6,7 +6,7 @@ import { useEffect } from 'react'
 
 const pathsToNeedAuth = [
   routes.MAIN,
-  routes.GAME,
+  // routes.GAME,
   routes.FORUM,
   routes.LEADERBOARD,
   routes.SETTINGS,

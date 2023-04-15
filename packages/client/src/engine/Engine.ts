@@ -1,5 +1,5 @@
 import {
-  canvas,
+  CANVAS,
   GAME,
   TARGET_SCORE,
   TargetName,
@@ -41,10 +41,12 @@ type TGame = {
   fullJump: boolean
   score: number
   paused: boolean
-  tooltipShown: boolean
-  firstFail: {
+  tooltip: {
+		shown: boolean
+		firstTip: boolean
     firstVictim: boolean
     firstBarrier: boolean
+    firstTimeout: boolean
   }
 }
 type TCat = {
@@ -76,10 +78,12 @@ export default class Engine {
     fullJump: true, // To know does current target need a full jump
     score: 0,
     paused: false,
-    tooltipShown: false,
-    firstFail: {
+    tooltip: {
+			shown: false,
+      firstTip: true,
       firstVictim: true,
       firstBarrier: true,
+      firstTimeout: true,
     },
   }
   private cat: TCat = {
@@ -94,7 +98,7 @@ export default class Engine {
   private target: Target = {
     nameCurr: 'none',
     nameLast: 'none',
-    xCurr: this.cat.CatX + canvas.width / 2,
+    xCurr: this.cat.CatX + CANVAS.width / 2,
     yCurr: GAME.defaultTargetY,
     xLast: GAME.defaultTargetX,
     yLast: GAME.defaultTargetY,
@@ -104,6 +108,7 @@ export default class Engine {
     isBarrier: false,
     runAwayDelay: GAME.defaultRunAwayDelay,
   }
+  private resource: Resource
   private draw: Draw
   private bgMotion: BgMotion
   private handlePause: () => void
@@ -122,54 +127,67 @@ export default class Engine {
 
     const canvas = document.getElementById('game_canvas') as HTMLCanvasElement
     this.game.ctx = canvas.getContext('2d')
-    // this.game.updateTime = Math.floor(17 / this.game.SPEED)
     this.game.successHeight = GAME.defaultTargetHeight * this.game.successHeightModifer
     this.draw = new Draw(this.game.ctx!)
     this.bgMotion = new BgMotion()
 
-    this.cat.source = Resource.sprite.cat as GifObject
+    this.resource = Resource.get()
+    this.cat.source = this.resource.sprite.cat as GifObject
     this.game.score = GAME.initialScore // Get score from store
   }
 
   private showTooltip(text?: string) {
-    if (!text && this.game.tooltipShown) {
+    if (!text && this.game.tooltip.shown) {
       this.setTooltip('')
-      this.game.tooltipShown = false
+      this.game.tooltip.shown = false
+      this.game.tooltip.firstTip = false
       return
     }
     if (typeof text == 'string') {
       this.setTooltip(text)
-      this.game.tooltipShown = true
+      this.game.tooltip.shown = true
     }
   }
+
+	private showFirstTooltip = (reason?: 'timeout') => {
+		if (this.target.isBarrier) {
+			if (this.game.tooltip.firstBarrier) {
+				this.game.tooltip.firstBarrier = false
+				this.showTooltip(TOOLTIP.firstBarrier)
+			}
+			return
+		}
+
+		if (reason === 'timeout') {
+			if (this.game.tooltip.firstTimeout) {
+				this.game.tooltip.firstTimeout = false
+				this.showTooltip(TOOLTIP.firstTimeout)
+			}
+			return
+		}
+		
+		if (this.game.tooltip.firstVictim) {
+			this.game.tooltip.firstVictim = false
+			this.showTooltip(TOOLTIP.firstVictim)
+		}
+	}
 
   private setScore = (value: number) => {
     this.game.score += value
     this.showScore(this.game.score)
     if (this.game.success) this.showTooltip() // Hide tooltip
-    console.log((value > 0 ? 'Success!' : 'Fail.') + ' Score:', this.game.score)
+    // console.log((value > 0 ? 'Success!' : 'Fail.') + ' Score:', this.game.score)
   }
 
-  private commitFail = () => {
+  private commitFail = (reason?: 'timeout') => {
     if (this.game.score + TARGET_SCORE[this.target.nameCurr].fail < 0) {
       this.game.score = GAME.initialScore
       this.game.paused = true
-      console.log('Game over')
+      // console.log('Game over')
       this.handleGameOver()
       return
     }
-    // Show first tooltip
-    if (this.target.isBarrier) {
-      if (this.game.firstFail.firstBarrier) {
-        this.game.firstFail.firstBarrier = false
-        this.showTooltip(TOOLTIP.firstBarrier)
-      }
-    } else {
-      if (this.game.firstFail.firstVictim) {
-        this.game.firstFail.firstVictim = false
-        this.showTooltip(TOOLTIP.firstVictim)
-      }
-    }
+		this.showFirstTooltip(reason)
 
     this.game.hold = true
     this.game.success = false
@@ -262,7 +280,7 @@ export default class Engine {
         this.target.heightLast,
         !this.game.success
       )
-      if (this.target.xLast < 0 || this.target.xLast > canvas.width) this.target.nameLast = 'none'
+      if (this.target.xLast < 0 || this.target.xLast > CANVAS.width) this.target.nameLast = 'none'
     }
 
     // Move current target
@@ -271,7 +289,7 @@ export default class Engine {
       this.game.action = 'stay'
       this.game.hold = false
       if (!this.target.isBarrier) {
-        this.game.timer = window.setTimeout(this.commitFail, this.target.runAwayDelay)
+        this.game.timer = window.setTimeout(() => this.commitFail('timeout'), this.target.runAwayDelay)
       }
       this.bgMotion.stop()
     }
@@ -327,8 +345,8 @@ export default class Engine {
   // Renders one frame
   private render = () => {
     // Development time patch
-    if (!this.cat.source) this.cat.source = Resource.sprite.cat as GifObject
-    this.game.ctx!.clearRect(0, 0, canvas.width, canvas.height)
+    if (!this.cat.source) this.cat.source = this.resource.sprite.cat as GifObject
+    this.game.ctx!.clearRect(0, 0, CANVAS.width, CANVAS.height)
     this.draw.drawTarget(this.target.nameCurr, this.target.xCurr, this.target.yCurr, this.target.heightCurr)
 
     switch (this.game.action) {
@@ -361,7 +379,7 @@ export default class Engine {
   private update = (timer: number) => {
     if (!this.game.paused && this.game.ctx) {
       // Develpement time patch
-      if (Resource.sprite.cat && !Resource.sprite.cat.loading) {
+      if (this.resource.sprite.cat && !this.resource.sprite.cat.loading) {
         this.render()
       } else {
         console.log('Waiting for GIF image')
@@ -371,11 +389,13 @@ export default class Engine {
   }
 
   private levelPrepare = () => {
+    // Developement time patch (React.StrictMode)
+    if (this.game.action == 'scene') return
     window.clearTimeout(this.game.timer)
     const level = Math.min(Math.floor(Math.max(this.game.score, 0) / GAME.scorePerLevel), 5)
     this.showLevel(level)
     this.showScore(this.game.score)
-    if (!this.game.tooltipShown && this.game.score <= GAME.initialScore) this.showTooltip(TOOLTIP.newGame)
+    if (this.game.tooltip.firstTip) this.showTooltip(TOOLTIP.newGame)
     this.game.SPEED = 0.5 + level * 0.1
     const targets = DIFFICULTY_PER_LEVEL[level]
     const rand = Math.floor(Math.random() * targets.length)
@@ -383,7 +403,7 @@ export default class Engine {
     this.target.heightLast = this.target.heightCurr
     this.target.xLast = this.target.xCurr
     this.target.yLast = this.target.yCurr
-    this.target.xCurr = Math.max(this.cat.CatX + canvas.width / 2, canvas.width)
+    this.target.xCurr = Math.max(this.cat.CatX + CANVAS.width / 2, CANVAS.width)
     this.target.yCurr = GAME.defaultTargetY
     this.target.nameCurr = targets[rand]
     this.target.isBarrier = BARRIER_LIST.includes(this.target.nameCurr)
@@ -403,16 +423,9 @@ export default class Engine {
       : (this.target.PositionX - GAME.defaultCatX) / 2
     this.game.fullJump = this.target.nameCurr == 'puddle' || VICTIM_LIST.includes(this.target.nameCurr)
     this.cat.atPosition = false
-    /* 
-		console.log(`Level ${level}:`, {
-			speed: this.SPEED,
-			rand: `${rand}/${targets.length}`,
-			target: this.target,
-		})
- */
+    // console.log(`Level ${level}:`, {speed: this.game.SPEED, rand: `${rand}/${targets.length}`, target: this.target})
     this.bgMotion.start(this.game.updateTime)
     requestAnimationFrame(this.update)
-    // console.log('Game: Initialized', this.bgMotion)
   }
 
   private onkeydown = (event: KeyboardEvent) => {
@@ -430,8 +443,11 @@ export default class Engine {
     }
   }
 
-  private touchstart = () => {
-    this.prepareJumpStart()
+  private touchstart = (event: MouseEvent | TouchEvent) => {
+    event.preventDefault()
+    if (!this.game.hold) {
+      this.prepareJumpStart()
+    }
   }
 
   private touchend = () => {

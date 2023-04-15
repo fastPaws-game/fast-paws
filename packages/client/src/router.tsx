@@ -11,17 +11,13 @@ const LazyForum = React.lazy(() => import('./pages/ForumPage'))
 const LazyTopic = React.lazy(() => import('./pages/TopicPage'))
 const LazyBoard = React.lazy(() => import('./pages/LeaderBoardPage'))
 const LazyError = React.lazy(() => import('./pages/NotFoundPage'))
-const LazyGame = React.lazy(() => import('./pages/GamePage'))
+const LazyGame = React.lazy(() => import('./pages/GameLoaderPage'))
 
 export const Router = () => {
   useRedirect()
   return (
     <Routes>
-      <Route
-        path={routes.HOME}
-        errorElement={<LazyError />}
-        element={<LazyAuth />}
-      />
+      <Route path={routes.HOME} errorElement={<LazyError />} element={<LazyAuth />} />
       <Route path={routes.SIGNUP} element={<LazyReg />} />
       <Route path={routes.MAIN} element={<LazyMain />} />
       <Route path={routes.SETTINGS} element={<LazySettings />} />

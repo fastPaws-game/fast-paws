@@ -1,7 +1,18 @@
 import React, { FC } from 'react'
+import { isMobile } from 'react-device-detect'
 import styled from 'styled-components'
 import Button from '../ui/button'
 import IconSettings from '../assets/icons/IconSettings'
+
+function browserOnly(WrappedComponent: FC) {
+  return (props: any) => isMobile ? null : <WrappedComponent {...props} />
+} 
+const BrowserButton = browserOnly(Button)
+
+function deviceOnly(WrappedComponent: FC) {
+  return (props: any) => isMobile ? <WrappedComponent {...props} /> : null
+} 
+const DeviceButton = deviceOnly(Button)
 
 type Props = {
   level: number
@@ -31,18 +42,19 @@ const InterfaceLayer: FC<Props> = props => {
           B: {props.catched.butterfly} G: {props.catched.grasshopper} B: {props.catched.bird} M: {props.catched.mouse}
         </Element>
         <HorisontalBlock>
-          <Button icon={<Icon>Snd</Icon>} size="small" onClick={handleClick('sound')} />{' '}
           {/* Значок динамика с двумя состояниями вкл/откл */}
-          <Button icon={<Icon>| |</Icon>} size="small" onClick={handleClick('pause')} />{' '}
+          <Button icon={<Icon>Snd</Icon>} size="small" onClick={handleClick('sound')} />{' '}
           {/* Значок паузы (две жирные вертикальные чёрточки) */}
+          <BrowserButton icon={<Icon>| |</Icon>} size="small" onClick={handleClick('pause')} />{' '}
         </HorisontalBlock>
       </HorisontalBlock>
       <GameTip>{props.tooltip}</GameTip>
       <div></div>
       <HorisontalBlock>
         <Button icon={<IconSettings />} size="small" onClick={handleClick('settings')} />
-        <Button icon={<Icon>[ ]</Icon>} size="small" onClick={handleClick('full screen')} />{' '}
         {/* Значок разворачивания на полный экран как на Youtube */}
+        <BrowserButton icon={<Icon>[ ]</Icon>} size="small" onClick={handleClick('full screen')} />{' '}
+        <DeviceButton icon={<Icon>| |</Icon>} size="small" onClick={handleClick('pause')} />{' '}
       </HorisontalBlock>
     </Layer>
   )
