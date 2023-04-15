@@ -1,8 +1,9 @@
 import FetchApi from '../utils/fetchApi'
+import { User } from '../models/User'
 
 class UserApi {
-  public getUser<T>() {
-    return FetchApi.get<T>('/auth/user')
+  public getUser() {
+    return FetchApi.get<User>('/auth/user')
   }
 }
 

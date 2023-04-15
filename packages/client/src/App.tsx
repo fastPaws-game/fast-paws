@@ -7,14 +7,15 @@ import PageWrapper from './pages/PageWrapper'
 import { useEffect } from 'react'
 import { useAppDispatch } from './hooks/store'
 import { setIsAuth } from './store/auth/AuthSlice'
+import LocalStorage from './utils/localStorage'
 
 function App() {
   const { theme } = useChangeTheme()
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    const isAuth = localStorage.getItem('isAuth')
-    dispatch(setIsAuth(isAuth === 'true'))
+    const isAuth = LocalStorage.get('isAuth')
+    dispatch(setIsAuth(isAuth))
   }, [])
 
   return (

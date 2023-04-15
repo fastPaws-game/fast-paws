@@ -5,6 +5,7 @@ import { AuthFormValues } from '../../components/AuthForm'
 import { User } from '../../models/User'
 import AuthApi from '../../api/AuthApi'
 import UserApi from '../../api/UserApi'
+import LocalStorage from '../../utils/localStorage'
 
 type AuthSlice = {
   user: User | null
@@ -50,7 +51,7 @@ export const authSlice = createSlice({
         state.signInStatus = 'success'
         state.isAuth = true
         state.signInError = null
-        localStorage.setItem('isAuth', 'true')
+        LocalStorage.set('isAuth', true)
       })
       .addCase(signInUser.rejected, (state, action) => {
         state.signInStatus = 'error'
@@ -63,7 +64,7 @@ export const authSlice = createSlice({
         state.logOutStatus = 'success'
         state.isAuth = false
         state.logOutError = null
-        localStorage.setItem('isAuth', 'false')
+        LocalStorage.set('isAuth', false)
       })
       .addCase(logOut.rejected, (state, action) => {
         state.logOutStatus = 'error'
@@ -90,51 +91,43 @@ export const signInUser = createAsyncThunk(
     try {
       const response = await AuthApi.signin(body)
 
-      if (response.status === 200) {
-        await dispatch(getUser())
-        return
-      } else {
+      if (response.status !== 200) {
         return rejectWithValue(response)
       }
+      await dispatch(getUser())
+      return
     } catch (e) {
       rejectWithValue(e)
     }
   }
 )
 
-export const logOut = createAsyncThunk(
-  'auth/logout',
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await AuthApi.logout()
-      if (response.status === 200) {
-        return
-      } else {
-        return rejectWithValue(response)
-      }
-    } catch (e) {
-      rejectWithValue(e)
+export const logOut = createAsyncThunk('auth/logout', async (_, { rejectWithValue }) => {
+  try {
+    const response = await AuthApi.logout()
+    if (response.status !== 200) {
+      return rejectWithValue(response)
     }
+    return
+  } catch (e) {
+    rejectWithValue(e)
   }
-)
+})
 
-export const getUser = createAsyncThunk(
-  'user/getUser',
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await UserApi.getUser<User>()
-      const data = await response.json()
+export const getUser = createAsyncThunk('user/getUser', async (_, { rejectWithValue }) => {
+  try {
+    const response = await UserApi.getUser()
+    const data = await response.json()
 
-      if (response.status === 200) {
-        return data
-      } else {
-        return rejectWithValue(data)
-      }
-    } catch (e) {
-      rejectWithValue(e)
+    if (response.status !== 200) {
+      return rejectWithValue(data)
     }
+
+    return data
+  } catch (e) {
+    rejectWithValue(e)
   }
-)
+})
 
 export const { setIsAuth } = authSlice.actions
 

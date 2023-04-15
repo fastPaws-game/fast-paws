@@ -6,4 +6,5 @@ export enum Routes {
   GAME = '/game',
   MAIN = '/main',
   LEADERBOARD = '/leaderboard',
+  NOT_FOUND = '*',
 }
