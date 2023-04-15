@@ -1,14 +1,18 @@
 export const CANVAS = {
   width: 800,
   height: 360,
-	get aspectRatio(): number {return this.height/this.width}
+  get aspectRatio(): number {
+    return this.height / this.width
+  },
 }
 
 export const SpriteSize = {
   cat: {
     width: 100,
     height: 74,
-		get aspectRatio(): number {return this.height/this.width}
+    get aspectRatio(): number {
+      return this.height / this.width
+    },
   },
 }
 
@@ -26,7 +30,7 @@ export const GAME = {
     return this.actionPositionVertical
   },
   defaultTargetX: CANVAS.width / 2,
-  victimPositionDelta: CANVAS.width / 8,
+  animalPositionDelta: CANVAS.width / 8,
   get defaultTargetY(): number {
     return this.actionPositionVertical
   },
@@ -35,19 +39,11 @@ export const GAME = {
   defaultRunAwayDelay: 8000, // The time after which the target will escape
   stepTargetDelay: 1000,
 }
+export type AnimalName = 'butterfly' | 'grasshopper' | 'bird' | 'mouse'
 
-export type TargetName =
-  | 'mouse'
-  | 'grasshopper'
-  | 'butterfly'
-  | 'bird'
-  | 'cactus'
-  | 'puddle'
-  | 'flowerpot'
-  | 'gnome'
-  | 'none'
+export type TargetName = AnimalName | 'cactus' | 'puddle' | 'flowerpot' | 'gnome' | 'none'
 
-export const VICTIM_LIST: TargetName[] = ['mouse', 'grasshopper', 'butterfly', 'bird']
+export const ANIMAL_LIST: TargetName[] = ['mouse', 'grasshopper', 'butterfly', 'bird']
 
 export const BARRIER_LIST: TargetName[] = ['cactus', 'puddle', 'flowerpot', 'gnome']
 
@@ -74,10 +70,10 @@ export const TARGET_SCORE: Record<TargetName, Record<'success' | 'fail', number>
   cactus: { success: 5, fail: -20 },
 }
 
-type Tooltip = 'newGame' | 'firstVictim' | 'firstBarrier' | 'firstTimeout'
+type Tooltip = 'newGame' | 'firstAnimal' | 'firstBarrier' | 'firstTimeout'
 export const TOOLTIP: Record<Tooltip, string> = {
   newGame: 'Hold space/tap to jump',
-  firstVictim: 'Need to jump on target',
+  firstAnimal: 'Need to jump on target',
   firstBarrier: 'Need to jump over the target',
-	firstTimeout: 'The animal can run away',
+  firstTimeout: 'The animal can run away',
 }

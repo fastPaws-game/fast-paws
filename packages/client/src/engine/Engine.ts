@@ -3,7 +3,8 @@ import {
   GAME,
   TARGET_SCORE,
   TargetName,
-  VICTIM_LIST,
+  AnimalName,
+  ANIMAL_LIST,
   BARRIER_LIST,
   DIFFICULTY_PER_LEVEL,
   TOOLTIP,
@@ -39,14 +40,20 @@ type TGame = {
   successHeight: number
   success: boolean
   fullJump: boolean
-  score: number
   paused: boolean
   tooltip: {
-		shown: boolean
-		firstTip: boolean
+    shown: boolean
+    firstTip: boolean
     firstVictim: boolean
     firstBarrier: boolean
     firstTimeout: boolean
+  }
+  score: number
+  catched: {
+    butterfly: number
+    grasshopper: number
+    bird: number
+    mouse: number
   }
 }
 type TCat = {
@@ -76,14 +83,20 @@ export default class Engine {
     successHeight: GAME.defaultTargetHeight,
     success: false,
     fullJump: true, // To know does current target need a full jump
-    score: 0,
     paused: false,
     tooltip: {
-			shown: false,
+      shown: false,
       firstTip: true,
       firstVictim: true,
       firstBarrier: true,
       firstTimeout: true,
+    },
+    score: 0,
+    catched: {
+      butterfly: 0,
+      grasshopper: 0,
+      bird: 0,
+      mouse: 0,
     },
   }
   private cat: TCat = {
@@ -116,6 +129,7 @@ export default class Engine {
   private showScore: (score: number) => void
   private showLevel: (score: number) => void
   private setTooltip: (tooltip: string) => void
+  private setCatched: (catched: Record<string, number>) => void
   private static __instance: Engine
 
   private constructor(handlers: Record<string, (value?: any) => void>) {
@@ -124,6 +138,7 @@ export default class Engine {
     this.showLevel = handlers.setLevel
     this.showScore = handlers.setScore
     this.setTooltip = handlers.setTooltip
+    this.setCatched = handlers.setCatched
 
     const canvas = document.getElementById('game_canvas') as HTMLCanvasElement
     this.game.ctx = canvas.getContext('2d')
@@ -149,28 +164,28 @@ export default class Engine {
     }
   }
 
-	private showFirstTooltip = (reason?: 'timeout') => {
-		if (this.target.isBarrier) {
-			if (this.game.tooltip.firstBarrier) {
-				this.game.tooltip.firstBarrier = false
-				this.showTooltip(TOOLTIP.firstBarrier)
-			}
-			return
-		}
+  private showFirstTooltip = (reason?: 'timeout') => {
+    if (this.target.isBarrier) {
+      if (this.game.tooltip.firstBarrier) {
+        this.game.tooltip.firstBarrier = false
+        this.showTooltip(TOOLTIP.firstBarrier)
+      }
+      return
+    }
 
-		if (reason === 'timeout') {
-			if (this.game.tooltip.firstTimeout) {
-				this.game.tooltip.firstTimeout = false
-				this.showTooltip(TOOLTIP.firstTimeout)
-			}
-			return
-		}
-		
-		if (this.game.tooltip.firstVictim) {
-			this.game.tooltip.firstVictim = false
-			this.showTooltip(TOOLTIP.firstVictim)
-		}
-	}
+    if (reason === 'timeout') {
+      if (this.game.tooltip.firstTimeout) {
+        this.game.tooltip.firstTimeout = false
+        this.showTooltip(TOOLTIP.firstTimeout)
+      }
+      return
+    }
+
+    if (this.game.tooltip.firstVictim) {
+      this.game.tooltip.firstVictim = false
+      this.showTooltip(TOOLTIP.firstAnimal)
+    }
+  }
 
   private setScore = (value: number) => {
     this.game.score += value
@@ -187,7 +202,7 @@ export default class Engine {
       this.handleGameOver()
       return
     }
-		this.showFirstTooltip(reason)
+    this.showFirstTooltip(reason)
 
     this.game.hold = true
     this.game.success = false
@@ -198,7 +213,12 @@ export default class Engine {
 
   private commitSuccess = () => {
     this.setScore(TARGET_SCORE[this.target.nameCurr].success)
-    if (!this.target.isBarrier) this.target.nameCurr = 'none'
+    if (!this.target.isBarrier) {
+      const name: AnimalName = this.target.nameCurr as AnimalName
+      this.game.catched[name] += 1
+      this.setCatched(this.game.catched)
+      this.target.nameCurr = 'none'
+    }
     this.levelPrepare()
   }
 
@@ -391,13 +411,14 @@ export default class Engine {
   private levelPrepare = () => {
     // Developement time patch (React.StrictMode)
     if (this.game.action == 'scene') return
+
     window.clearTimeout(this.game.timer)
     const level = Math.min(Math.floor(Math.max(this.game.score, 0) / GAME.scorePerLevel), 5)
     this.showLevel(level)
     this.showScore(this.game.score)
     if (this.game.tooltip.firstTip) this.showTooltip(TOOLTIP.newGame)
     this.game.SPEED = 0.5 + level * 0.1
-    const targets = DIFFICULTY_PER_LEVEL[level]
+    const targets = DIFFICULTY_PER_LEVEL[0] // ToDo change to a level
     const rand = Math.floor(Math.random() * targets.length)
     this.target.nameLast = this.target.nameCurr
     this.target.heightLast = this.target.heightCurr
@@ -409,7 +430,7 @@ export default class Engine {
     this.target.isBarrier = BARRIER_LIST.includes(this.target.nameCurr)
     this.target.PositionX = this.target.isBarrier
       ? GAME.defaultTargetX
-      : GAME.defaultTargetX + Math.floor(Math.random() * GAME.victimPositionDelta)
+      : GAME.defaultTargetX + Math.floor(Math.random() * GAME.animalPositionDelta)
     this.target.heightCurr = this.target.isBarrier
       ? GAME.defaultTargetHeight + GAME.stepTargetHeight * level
       : GAME.defaultTargetHeight
@@ -421,9 +442,10 @@ export default class Engine {
     this.game.successHeight = this.target.isBarrier
       ? Math.floor(this.target.heightCurr * this.game.successHeightModifer)
       : (this.target.PositionX - GAME.defaultCatX) / 2
-    this.game.fullJump = this.target.nameCurr == 'puddle' || VICTIM_LIST.includes(this.target.nameCurr)
+    this.game.fullJump = this.target.nameCurr == 'puddle' || ANIMAL_LIST.includes(this.target.nameCurr)
     this.cat.atPosition = false
     // console.log(`Level ${level}:`, {speed: this.game.SPEED, rand: `${rand}/${targets.length}`, target: this.target})
+
     this.bgMotion.start(this.game.updateTime)
     requestAnimationFrame(this.update)
   }
