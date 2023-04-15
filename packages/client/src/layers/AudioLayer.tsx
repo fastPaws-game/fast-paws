@@ -1,7 +1,7 @@
 import React, { FC, forwardRef, useRef } from 'react'
 import AudioAPI from '../webAPI/webAudioAPI'
 import useAudio from '../hooks/useAudio'
-import audio from '../assets/audio/koshachiy-krik.mp3'
+import audio from '../assets/audio/animals-cat-blue-meow.mp3'
 import styled from 'styled-components'
 
 const AudioLayer: FC = forwardRef(() => {

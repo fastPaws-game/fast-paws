@@ -7,5 +7,5 @@ type AudioConstants = {
 export const audioConstants: AudioConstants = {
   volumeStart: 1,
   volumeEnd: 0.01,
-  time: 1
+  time: 1.5
 }

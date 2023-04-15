@@ -5,6 +5,7 @@ import InterfaceLayer from '../layers/InterfaceLayer'
 import BackgroundLayer from '../layers/BackgroundLayer'
 import GamePause from '../components/gamePause'
 import GameOver from '../components/GameOver'
+import AudioLayer from '../layers/AudioLayer'
 import Engine from '../engine/Engine'
 
 const GameContext = createContext({})
@@ -44,6 +45,7 @@ const GamePage = () => {
       <GamePause visible={pauseVisible} handleClose={handleContinue} outSideClickEnable />
       <GameOver visible={gameOverVisible} handleClose={handleNewGame} />
       <BackgroundLayer />
+      <AudioLayer />
       <ActionLayer {...{ handlePause, handleGameOver, setLevel, setScore, setTooltip, setCatched }} />
       <InterfaceLayer level={level} score={score} tooltip={tooltip} catched={catched} />
     </GameLayout>
