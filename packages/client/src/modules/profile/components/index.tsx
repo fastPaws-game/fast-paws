@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import ProfileAvatar from '../../../components/ProfileAvatar'
 import ProfileForm from '../../../components/ProfileForm'
 import { useAppDispatch } from '../../../hooks/store'
@@ -14,13 +14,18 @@ const Profile = () => {
   const handleSubmit = (data: FieldValues) => {
     console.log(data)
   }
+
+  const handleLogOut = useCallback(() => {
+    dispatch(logOut())
+  }, [dispatch])
+
   return (
     <>
       <ProfileAvatar />
       <ProfileForm onSubmitForm={handleSubmit} />
       <Footer>
         <Button onClick={toggleTheme}>Toggle theme</Button>
-        <Button onClick={() => dispatch(logOut())}>Log out</Button>
+        <Button onClick={handleLogOut}>Log out</Button>
       </Footer>
     </>
   )

@@ -7,7 +7,7 @@ export const handleError = (error: unknown) => {
   } else if (typeof error === 'string') {
     return error
   } else {
-    console.error(error)
+    console.error('error', error)
     return BASE_ERROR
   }
 }

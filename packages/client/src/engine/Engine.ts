@@ -507,6 +507,7 @@ export default class Engine {
     if (this.game.paused == state) return
     this.game.paused = state
     console.log(`Game: ${this.game.paused ? 'Pause' : 'Continue'}`)
+
     if (this.game.paused) {
       this.unRegister()
       this.bgMotion.stop()

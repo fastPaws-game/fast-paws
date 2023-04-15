@@ -1,4 +1,4 @@
-import { FC, ButtonHTMLAttributes, ReactElement } from 'react'
+import { ButtonHTMLAttributes, FC, ReactElement } from 'react'
 import styled from 'styled-components'
 import { media } from '../../assets/styles/media'
 
@@ -63,6 +63,7 @@ const ButtonIconStyled = styled.button<{ size?: string; light?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 20px;
   transition: 0.3s;
   background-color: ${props => (props.light ? props.theme.colors.accent : props.theme.colors.play)};
   color: ${props => props.theme.text.textBase};

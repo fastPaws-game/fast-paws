@@ -65,6 +65,7 @@ const Layer = styled.div`
   position: absolute;
   left: 0px;
   top: 0px;
+  padding: 10px;
   width: 100%;
   height: 100%;
   display: flex;
@@ -80,13 +81,11 @@ const Icon = styled.div`
 `
 const HorisontalBlock = styled.div`
   display: flex;
+  gap: 10px;
   justify-content: space-between;
 `
-const Element = styled.div`
-  margin: 10px;
-`
+const Element = styled.div``
 const GameTip = styled.div`
-  margin: 10px;
   align-self: center;
 `
 export default InterfaceLayer
