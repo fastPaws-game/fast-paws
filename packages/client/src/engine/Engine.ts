@@ -1,99 +1,247 @@
-import canvas from '../constants/canvas'
+import {
+  canvas,
+  GAME,
+  TARGET_SCORE,
+  TargetName,
+  VICTIM_LIST,
+  BARRIER_LIST,
+  DIFFICULTY_PER_LEVEL,
+  TOOLTIP,
+} from '../constants/game'
 import Draw from './Draw'
 import Resource, { GifObject } from '../engine/ResourceLoader'
+import BgMotion from '../engine/BgMotion'
 
-const SPEED = 1 // Fast: 0.5 Normal: 1
-const updateTime = 34 * SPEED
-const ActionPositionVertical = canvas.height - canvas.height / 14
-const trajectoryStep = 2
-
-const SpriteCat = {
-  size: 100,
-  ar: 0.74,
+type Action = 'run' | 'stay' | 'jump' | 'path' | 'scene' | 'return' | null
+type Target = {
+  nameCurr: TargetName
+  nameLast: TargetName
+  xCurr: number
+  yCurr: number
+  PositionX: number
+  xLast: number
+  yLast: number
+  heightCurr: number
+  heightLast: number
+  isBarrier: boolean
+  runAwayDelay: number
+}
+type TGame = {
+  SPEED: number
+  successHeightModifer: number
+  updateTime: number
+  action: Action
+  ctx: CanvasRenderingContext2D | null
+  hold: boolean
+  timer: number
+  movementSpeed: number
+  runAwaySpeed: number
+  successHeight: number
+  success: boolean
+  fullJump: boolean
+  score: number
+  paused: boolean
+  tooltipShown: boolean
+  firstFail: {
+    firstVictim: boolean
+    firstBarrier: boolean
+  }
+}
+type TCat = {
+  source: GifObject
+  jumpHeight: number
+  jumpStage: number
+  trajectoryDirection: number
+  CatX: number
+  CatY: number
+  atPosition: boolean
 }
 
-const jumpHeightMin = SpriteCat.size / 2
-const jumpHeightMax = (SpriteCat.size * 3) / 2
-const startCatX = canvas.width / 3
-const startCatY = ActionPositionVertical
-const startTargetX = canvas.width / 2
-const startTargetY = ActionPositionVertical
-
-let CatObj: GifObject = Resource.sprite.cat as GifObject
-
 export default class Engine {
-  private action: 'run' | 'stay' | 'jump' | 'path' | null
-  private ctx: CanvasRenderingContext2D | null = null
-  private hold: boolean
-  private jumpHeight: number = jumpHeightMin
-  private jumpStage = 0
-  private trajectoryDirection = 1
-  private CatX = startCatX
-  private CatY = startCatY
-  private targetHeight = 100
+  private game: TGame = {
+    SPEED: 0.5, // Game complexity refers to current level (Slow: 0.5 Max: 1)
+    successHeightModifer: 1.2, // Defines jump to target height ratio
+    // Frame rait, actually no :). Updates automatically.
+    get updateTime(): number {
+      return Math.floor(17 / this.SPEED)
+    },
+    action: null,
+    ctx: null,
+    hold: false, // State to prevent jump attemptt in some actions
+    timer: 0, // setTimeout link
+    movementSpeed: 6,
+    runAwaySpeed: 6,
+    successHeight: GAME.defaultTargetHeight,
+    success: false,
+    fullJump: true, // To know does current target need a full jump
+    score: 0,
+    paused: false,
+    tooltipShown: false,
+    firstFail: {
+      firstVictim: true,
+      firstBarrier: true,
+    },
+  }
+  private cat: TCat = {
+    source: {} as GifObject,
+    jumpHeight: GAME.jumpHeightMin,
+    jumpStage: 0,
+    trajectoryDirection: 1,
+    CatX: GAME.defaultCatX,
+    CatY: GAME.defaultCatY,
+    atPosition: false,
+  }
+  private target: Target = {
+    nameCurr: 'none',
+    nameLast: 'none',
+    xCurr: this.cat.CatX + canvas.width / 2,
+    yCurr: GAME.defaultTargetY,
+    xLast: GAME.defaultTargetX,
+    yLast: GAME.defaultTargetY,
+    PositionX: GAME.defaultTargetX, // A place where a target will stop
+    heightCurr: GAME.defaultTargetHeight,
+    heightLast: GAME.defaultTargetHeight,
+    isBarrier: false,
+    runAwayDelay: GAME.defaultRunAwayDelay,
+  }
   private draw: Draw
+  private bgMotion: BgMotion
+  private handlePause: () => void
+  private handleGameOver: () => void
+  private showScore: (score: number) => void
+  private showLevel: (score: number) => void
+  private setTooltip: (tooltip: string) => void
+  private static __instance: Engine
 
-  constructor(ctx: CanvasRenderingContext2D) {
-    this.action = null
-    this.ctx = ctx
-    this.hold = false
-    this.draw = new Draw(ctx)
+  private constructor(handlers: Record<string, (value?: any) => void>) {
+    this.handlePause = handlers.handlePause
+    this.handleGameOver = handlers.handleGameOver
+    this.showLevel = handlers.setLevel
+    this.showScore = handlers.setScore
+    this.setTooltip = handlers.setTooltip
+
+    const canvas = document.getElementById('game_canvas') as HTMLCanvasElement
+    this.game.ctx = canvas.getContext('2d')
+    // this.game.updateTime = Math.floor(17 / this.game.SPEED)
+    this.game.successHeight = GAME.defaultTargetHeight * this.game.successHeightModifer
+    this.draw = new Draw(this.game.ctx!)
+    this.bgMotion = new BgMotion()
+
+    this.cat.source = Resource.sprite.cat as GifObject
+    this.game.score = GAME.initialScore // Get score from store
   }
 
-  private onkeydown = (event: KeyboardEvent) => {
-    if (!this.hold && event.code == 'Space') {
-      this.hold = true
-      this.action = null // Stop all current actions
-      setTimeout(() => {
-        // Start a new action
-        this.action = 'path'
-        this.jumpHeight = jumpHeightMin
-        this.trajectoryDirection = 1
-        requestAnimationFrame(this.update)
-      }, updateTime * 2)
+  private showTooltip(text?: string) {
+    if (!text && this.game.tooltipShown) {
+      this.setTooltip('')
+      this.game.tooltipShown = false
+      return
+    }
+    if (typeof text == 'string') {
+      this.setTooltip(text)
+      this.game.tooltipShown = true
     }
   }
 
-  private onkeyup = (event: KeyboardEvent) => {
-    if (this.hold && event.code == 'Space') {
-      this.hold = false
-      // this.action='stay';
-      this.action = 'jump'
-      this.jumpStage = -Math.PI
-      console.log('Jump height: ', this.jumpHeight)
+  private setScore = (value: number) => {
+    this.game.score += value
+    this.showScore(this.game.score)
+    if (this.game.success) this.showTooltip() // Hide tooltip
+    console.log((value > 0 ? 'Success!' : 'Fail.') + ' Score:', this.game.score)
+  }
+
+  private commitFail = () => {
+    if (this.game.score + TARGET_SCORE[this.target.nameCurr].fail < 0) {
+      this.game.score = GAME.initialScore
+      this.game.paused = true
+      console.log('Game over')
+      this.handleGameOver()
+      return
+    }
+    // Show first tooltip
+    if (this.target.isBarrier) {
+      if (this.game.firstFail.firstBarrier) {
+        this.game.firstFail.firstBarrier = false
+        this.showTooltip(TOOLTIP.firstBarrier)
+      }
+    } else {
+      if (this.game.firstFail.firstVictim) {
+        this.game.firstFail.firstVictim = false
+        this.showTooltip(TOOLTIP.firstVictim)
+      }
+    }
+
+    this.game.hold = true
+    this.game.success = false
+    this.game.action = 'return'
+    this.setScore(TARGET_SCORE[this.target.nameCurr].fail)
+    if (!this.target.isBarrier) this.levelPrepare()
+  }
+
+  private commitSuccess = () => {
+    this.setScore(TARGET_SCORE[this.target.nameCurr].success)
+    if (!this.target.isBarrier) this.target.nameCurr = 'none'
+    this.levelPrepare()
+  }
+
+  private prepareJumpStart() {
+    this.game.hold = true
+    // Stop all current actions
+    this.game.action = null
+    // Wait till all actions will be stoped
+    setTimeout(() => {
+      // Start a new jump request
+      this.game.action = 'path'
+      this.cat.jumpHeight = GAME.jumpHeightMin
+      this.cat.trajectoryDirection = 1
+      requestAnimationFrame(this.update)
+    }, this.game.updateTime)
+  }
+
+  private prepareJumpEnd() {
+    this.game.hold = false
+    this.game.action = 'stay'
+    // Prevent accidentially tapping
+    if (this.cat.jumpHeight > GAME.jumpHeightMin + GAME.trajectoryStep * 2) {
+      this.game.action = 'jump'
+      this.cat.jumpStage = -Math.PI
+      this.game.success =
+        (this.target.isBarrier && this.cat.jumpHeight > this.game.successHeight) ||
+        Math.abs(this.cat.jumpHeight - this.game.successHeight) < 10
+      // console.log('Jump height: ', this.jumpHeight, '/', this.successHeight, this.success)	// Do not remove!
     }
   }
 
   private defineTrajectory = () => {
-    this.jumpHeight += trajectoryStep * this.trajectoryDirection
-    if (this.jumpHeight >= jumpHeightMax) this.trajectoryDirection = -1
-    if (this.jumpHeight < jumpHeightMin) {
-      // this.trajectoryDirection = 1
-      this.action = 'stay'
-      this.jumpStage = -Math.PI
+    this.cat.jumpHeight += GAME.trajectoryStep * this.cat.trajectoryDirection
+    if (this.cat.jumpHeight >= GAME.jumpHeightMax) this.cat.trajectoryDirection = -1
+    if (this.cat.jumpHeight < GAME.jumpHeightMin) {
+      // Stops jump request
+      this.game.action = 'stay'
+      this.cat.jumpStage = -Math.PI
       requestAnimationFrame(this.update)
     }
-    this.draw.drawTrajectory(this.CatX, this.CatY, this.jumpHeight)
+    this.draw.drawTrajectory(this.cat.CatX, this.cat.CatY, this.cat.jumpHeight)
   }
 
   private defineJump = () => {
-    const r = this.jumpHeight // радиус
-    const points = r / 4 // количество точек
+    const r = this.cat.jumpHeight // Circle radius
+    const points = r / 4 // Position count
     const step = Math.PI / points
-    this.jumpStage += step
-    const i = this.jumpStage
-    if (i < 0) {
-      this.CatX = startCatX + r + r * Math.cos(i)
-      const y = this.CatY + r * Math.sin(i)
-      // this.ctx!.fillRect(x, y, 3, 3);
-      const frameIndex = Math.floor(((i + Math.PI) / Math.PI) * 3)
-      // console.log(a);
-      this.draw.drawCat(CatObj.frames[frameIndex].image, this.CatX, y)
-    } else {
-      this.action = 'run'
-      requestAnimationFrame(this.update)
+    this.cat.jumpStage += step
+    const i = this.cat.jumpStage
+    if (!this.game.fullJump && !this.game.success && i > -Math.PI / 2) {
+      this.commitFail()
     }
-    /*
+    if (i < 0) {
+      this.cat.CatX = GAME.defaultCatX + r + r * Math.cos(i)
+      const y = this.cat.CatY + r * Math.sin(i)
+      const frameIndex = Math.floor(((i + Math.PI) / Math.PI) * 3)
+      this.draw.drawCat(this.cat.source.frames[frameIndex].image, this.cat.CatX, y)
+    } else {
+      this.game.success ? this.commitSuccess() : this.commitFail()
+    }
+    /*	Trajectory algorithm
 			for (let i = -Math.PI; i < 0; i += step) {
 				const x = this.CatX + r + r * Math.cos(i);
 				const y = this.CatY + r * Math.sin(i);
@@ -102,59 +250,239 @@ export default class Engine {
 */
   }
 
+  private sceneChange = () => {
+    // Move last target
+    if (this.target.nameLast != 'none') {
+      this.runAway()
+
+      this.draw.drawTarget(
+        this.target.nameLast,
+        this.target.xLast,
+        this.target.yLast,
+        this.target.heightLast,
+        !this.game.success
+      )
+      if (this.target.xLast < 0 || this.target.xLast > canvas.width) this.target.nameLast = 'none'
+    }
+
+    // Move current target
+    this.target.xCurr -= this.game.movementSpeed
+    if (this.target.xCurr <= this.target.PositionX) {
+      this.game.action = 'stay'
+      this.game.hold = false
+      if (!this.target.isBarrier) {
+        this.game.timer = window.setTimeout(this.commitFail, this.target.runAwayDelay)
+      }
+      this.bgMotion.stop()
+    }
+
+    // Move Cat
+    if (this.cat.CatX > GAME.defaultCatX) {
+      this.cat.CatX -= Math.floor((this.game.movementSpeed / 3) * 2)
+    } else {
+      if (!this.cat.atPosition) this.bgMotion.start(Math.floor((this.game.updateTime / 2) * 3))
+      this.cat.atPosition = true
+      if (this.target.nameLast != 'none') {
+        // this.movementSpeed = 4
+      }
+    }
+  }
+
+  private runAway = () => {
+    if (this.target.nameLast == 'butterfly' || this.target.nameLast == 'bird') {
+      this.target.xLast -= this.game.runAwaySpeed
+      this.target.yLast -= this.target.nameLast == 'butterfly' ? Math.random() * 6 : 4
+      return
+    }
+
+    if (this.target.nameLast == 'grasshopper') {
+      this.target.xLast -= this.game.runAwaySpeed
+      return
+    }
+
+    if (this.target.nameLast == 'mouse') {
+      this.target.xLast += this.game.runAwaySpeed
+      return
+    }
+
+    this.target.xLast -= this.game.movementSpeed
+    return
+  }
+
+  private sceneReturn = () => {
+    // Move Cat
+    if (this.cat.CatX > GAME.defaultCatX) {
+      this.cat.CatX -= this.game.movementSpeed
+    } else {
+      this.game.action = 'stay'
+      this.game.hold = false
+    }
+  }
+
+  private movingCat = () => {
+    this.draw.drawCat(this.cat.source.image, this.cat.CatX, this.cat.CatY)
+    setTimeout(this.update, this.game.updateTime)
+  }
+
+  // Renders one frame
+  private render = () => {
+    // Development time patch
+    if (!this.cat.source) this.cat.source = Resource.sprite.cat as GifObject
+    this.game.ctx!.clearRect(0, 0, canvas.width, canvas.height)
+    this.draw.drawTarget(this.target.nameCurr, this.target.xCurr, this.target.yCurr, this.target.heightCurr)
+
+    switch (this.game.action) {
+      case 'return':
+        this.sceneReturn()
+        this.movingCat()
+        break
+      case 'scene':
+        this.sceneChange()
+        this.movingCat()
+        break
+      case 'run':
+        this.movingCat()
+        break
+      case 'path':
+        this.defineTrajectory()
+        this.draw.drawCat(this.cat.source.frames[0].image, this.cat.CatX, this.cat.CatY)
+        setTimeout(this.update, this.game.updateTime)
+        break
+      case 'jump':
+        this.defineJump()
+        setTimeout(this.update, this.game.updateTime)
+        break
+      default: //'stay'
+        this.draw.drawCat(this.cat.source.frames[2].image, this.cat.CatX, this.cat.CatY)
+    }
+  }
+
   // Main update function
   private update = (timer: number) => {
-    if (this.ctx && Resource.sprite.cat && !Resource.sprite.cat.loading) {
-      if (!CatObj) CatObj = Resource.sprite.cat as GifObject
-      this.ctx.clearRect(0, 0, canvas.width, canvas.height)
-      this.draw.drawTarget(Resource.sprite.cactus)
-      switch (this.action) {
-        case 'run':
-          console.log('render run')
-          this.draw.drawCat(CatObj.image, this.CatX, this.CatY)
-          break
-        case 'path':
-          console.log('render trajectory')
-          this.defineTrajectory()
-          this.draw.drawCat(CatObj.frames[0].image, this.CatX, this.CatY)
-          break
-        case 'jump':
-          console.log('render jump')
-          this.defineJump()
-          break
-        default: //'stay'
-          this.draw.drawCat(CatObj.frames[2].image, this.CatX, this.CatY)
+    if (!this.game.paused && this.game.ctx) {
+      // Develpement time patch
+      if (Resource.sprite.cat && !Resource.sprite.cat.loading) {
+        this.render()
+      } else {
+        console.log('Waiting for GIF image')
+        setTimeout(this.update, 500)
       }
-      if (
-        this.action == 'run' ||
-        this.action == 'path' ||
-        this.action == 'jump'
-      )
-        setTimeout(this.update, updateTime)
-    } else {
-      console.log('Waiting for GIF image')
-      setTimeout(this.update, 500)
     }
+  }
+
+  private levelPrepare = () => {
+    window.clearTimeout(this.game.timer)
+    const level = Math.min(Math.floor(Math.max(this.game.score, 0) / GAME.scorePerLevel), 5)
+    this.showLevel(level)
+    this.showScore(this.game.score)
+    if (!this.game.tooltipShown && this.game.score <= GAME.initialScore) this.showTooltip(TOOLTIP.newGame)
+    this.game.SPEED = 0.5 + level * 0.1
+    const targets = DIFFICULTY_PER_LEVEL[level]
+    const rand = Math.floor(Math.random() * targets.length)
+    this.target.nameLast = this.target.nameCurr
+    this.target.heightLast = this.target.heightCurr
+    this.target.xLast = this.target.xCurr
+    this.target.yLast = this.target.yCurr
+    this.target.xCurr = Math.max(this.cat.CatX + canvas.width / 2, canvas.width)
+    this.target.yCurr = GAME.defaultTargetY
+    this.target.nameCurr = targets[rand]
+    this.target.isBarrier = BARRIER_LIST.includes(this.target.nameCurr)
+    this.target.PositionX = this.target.isBarrier
+      ? GAME.defaultTargetX
+      : GAME.defaultTargetX + Math.floor(Math.random() * GAME.victimPositionDelta)
+    this.target.heightCurr = this.target.isBarrier
+      ? GAME.defaultTargetHeight + GAME.stepTargetHeight * level
+      : GAME.defaultTargetHeight
+    this.target.runAwayDelay = GAME.defaultRunAwayDelay - GAME.stepTargetDelay * level
+    this.game.action = 'scene'
+    this.game.hold = true
+    this.game.paused = false
+    this.game.movementSpeed = 6
+    this.game.successHeight = this.target.isBarrier
+      ? Math.floor(this.target.heightCurr * this.game.successHeightModifer)
+      : (this.target.PositionX - GAME.defaultCatX) / 2
+    this.game.fullJump = this.target.nameCurr == 'puddle' || VICTIM_LIST.includes(this.target.nameCurr)
+    this.cat.atPosition = false
+    /* 
+		console.log(`Level ${level}:`, {
+			speed: this.SPEED,
+			rand: `${rand}/${targets.length}`,
+			target: this.target,
+		})
+ */
+    this.bgMotion.start(this.game.updateTime)
+    requestAnimationFrame(this.update)
+    // console.log('Game: Initialized', this.bgMotion)
+  }
+
+  private onkeydown = (event: KeyboardEvent) => {
+    if (!this.game.hold && event.code == 'Space') {
+      this.prepareJumpStart()
+    }
+  }
+
+  private onkeyup = (event: KeyboardEvent) => {
+    if (this.game.hold && event.code == 'Space') {
+      this.prepareJumpEnd()
+    }
+    if (event.code == 'Escape') {
+      this.pause(true)
+    }
+  }
+
+  private touchstart = () => {
+    this.prepareJumpStart()
+  }
+
+  private touchend = () => {
+    this.prepareJumpEnd()
   }
 
   private registerEvents = () => {
     window.addEventListener('keydown', this.onkeydown)
     window.addEventListener('keyup', this.onkeyup)
-    console.log('registerEvents')
+    window.addEventListener('touchstart', this.touchstart)
+    window.addEventListener('touchend', this.touchend)
+    window.addEventListener('mousedown', this.touchstart)
+    window.addEventListener('mouseup', this.touchend)
   }
 
   private unRegister = () => {
     window.removeEventListener('keydown', this.onkeydown)
     window.removeEventListener('keyup', this.onkeyup)
-    console.log('unRegister')
+    window.removeEventListener('touchstart', this.touchstart)
+    window.removeEventListener('touchend', this.touchend)
+    window.removeEventListener('mousedown', this.touchstart)
+    window.removeEventListener('mouseup', this.touchend)
   }
 
   public start() {
     this.registerEvents()
-    requestAnimationFrame(this.update)
+    this.levelPrepare()
   }
 
   public stop() {
     this.unRegister()
+  }
+
+  public pause = (state: boolean) => {
+    if (this.game.paused == state) return
+    this.game.paused = state
+    console.log(`Game: ${this.game.paused ? 'Pause' : 'Continue'}`)
+    if (this.game.paused) {
+      this.unRegister()
+      this.bgMotion.stop()
+      this.handlePause()
+      window.clearTimeout(this.game.timer)
+    } else {
+      this.registerEvents()
+      requestAnimationFrame(this.update)
+    }
+  }
+
+  public static get(handlers?: Record<string, () => void>) {
+    if (Engine.__instance) return Engine.__instance
+    if (handlers) Engine.__instance = new Engine(handlers)
+    return Engine.__instance
   }
 }

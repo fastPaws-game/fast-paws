@@ -8,22 +8,25 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build && npx tsx ./src/getUrlList.ts",
     "preview": "vite preview",
-    "lint": "eslint . & stylelint './src/**/*.tsx'",
+    "lint": "eslint . & stylelint src/**/*.{js,ts,tsx,mts} --fix",
     "format": "prettier --write .",
     "test": "jest ./"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.0.0",
+    "@reduxjs/toolkit": "^1.9.3",
     "dotenv": "^16.0.2",
     "eslint-config-prettier": "^8.5.0",
     "prettier": "^2.7.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.8",
+    "react-redux": "^8.0.5",
     "react-router": "^6.9.0",
     "react-router-dom": "^6.9.0",
+    "redux-thunk": "^2.4.2",
     "styled-components": "^5.3.9",
     "yup": "^1.0.2"
   },

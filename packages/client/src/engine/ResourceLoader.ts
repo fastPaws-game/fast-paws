@@ -7,8 +7,13 @@ import flowerpotUrl from '../assets/sprites/flowerpot-empty.png'
 import gnomeUrl from '../assets/sprites/garden-gnome.png'
 import grasshopperUrl from '../assets/sprites/grasshopper.gif'
 import mouseUrl from '../assets/sprites/mouse-brown.gif'
+import MistyMountains_layer1Url from '../assets/background/MistyMountains/layer_1.png'
+import MistyMountains_layer2Url from '../assets/background/MistyMountains/layer_2.png'
+import MistyMountains_layer3Url from '../assets/background/MistyMountains/layer_3.png'
+
 // @ts-ignore
 import GIF from '../utils/gif.js'
+import { setValue } from '../utils/data_utils'
 
 export type GifObject = {
   onerror: (e: any) => void
@@ -17,7 +22,7 @@ export type GifObject = {
   frames: { image: HTMLCanvasElement }[]
   loading: any
   image: HTMLCanvasElement
-  lastFrame: { image: CanvasImageSource } | null
+  lastFrame: { image: HTMLCanvasElement } | null
   width: number
   height: number
   src: string
@@ -27,15 +32,13 @@ export type GifObject = {
 
 export class Resource {
   public progress = 0 // 0 - 100 in percents
-  private total = 9 // Resource count
+  private total = 12 // Resource count
   private current = 0
 
   protected static _instance: Resource
   protected static _initialized = false
   protected static _progresCallback: (progress: number) => void
   public sprite: Record<string, HTMLImageElement | GifObject> = {}
-  public target = ['mouse', 'grasshopper', 'butterfly', 'bird']
-  public barrier = ['cactus', 'puddle', 'flowerpot', 'gnome']
 
   private constructor() {
     this.initialize()
@@ -61,7 +64,7 @@ export class Resource {
         console.log('Gif loading error ' + err.type)
       }
       newGif.onloadall = res => {
-        console.log('Loaded gif:', name) // res.obj.src
+        // console.log('Loaded gif:', name) // res.obj.src
         const dimensions = {
           width: res.obj.width,
           height: res.obj.height,
@@ -79,7 +82,7 @@ export class Resource {
     const newImg = document.createElement('img')
     newImg.src = url
     newImg.onload = () => {
-      console.log('Loaded img:', name) // url
+      // console.log('Loaded img:', name) // url
       const dimensions = {
         width: newImg.width,
         height: newImg.height,
@@ -89,7 +92,8 @@ export class Resource {
     newImg.onerror = function (err) {
       console.log('Img loading error:', err)
     }
-    this.sprite[name] = newImg
+    setValue(this.sprite, name, newImg)
+    // this.sprite[name] = newImg
     return newImg
   }
 
@@ -106,13 +110,17 @@ export class Resource {
       this.loadImg('puddle', puddleUrl)
       this.loadImg('flowerpot', flowerpotUrl)
       this.loadImg('gnome', gnomeUrl)
+
+      this.loadImg('MistyMountains.layer1', MistyMountains_layer1Url)
+      this.loadImg('MistyMountains.layer2', MistyMountains_layer2Url)
+      this.loadImg('MistyMountains.layer3', MistyMountains_layer3Url)
     }
   }
 }
 
 // Future preloader callback
 const tempCallback = (progress: number) => {
-  console.log('Resource loading:', progress)
+  console.log(`Resource loading: ${progress}%`)
 }
 
 export default Resource.get(tempCallback)

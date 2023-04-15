@@ -5,9 +5,7 @@ import Link from '..//ui/link'
 import { H3 } from '../assets/styles/texts'
 import { FC } from 'react'
 import { media } from '../assets/styles/media'
-import { useForm, SubmitHandler } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
-import { useEffect } from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import authSchema from '../utils/validation/authSchema'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Routes } from '../constants/routes'
@@ -23,16 +21,11 @@ const defaultAuthFormValues = {
 }
 
 type Props = {
-  authController: (data: AuthFormValues, callback: VoidFunction) => void
+  onSubmitFrom: (data: AuthFormValues) => void
 }
 
 const AuthForm: FC<Props> = props => {
-  useEffect(() => {
-    window.localStorage.setItem('isAuth', 'false')
-  }, [])
-
-  const navigate = useNavigate()
-  const { authController } = props
+  const { onSubmitFrom } = props
   const {
     register,
     reset,
@@ -46,7 +39,7 @@ const AuthForm: FC<Props> = props => {
   })
 
   const onSubmit: SubmitHandler<AuthFormValues> = data => {
-    authController(data, () => navigate(Routes.MAIN))
+    onSubmitFrom(data)
     reset()
   }
 
