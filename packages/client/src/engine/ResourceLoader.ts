@@ -7,8 +7,13 @@ import flowerpotUrl from '../assets/sprites/flowerpot-empty.png'
 import gnomeUrl from '../assets/sprites/garden-gnome.png'
 import grasshopperUrl from '../assets/sprites/grasshopper.gif'
 import mouseUrl from '../assets/sprites/mouse-brown.gif'
+import MistyMountains_layer1Url from '../assets/background/MistyMountains/layer_1.png'
+import MistyMountains_layer2Url from '../assets/background/MistyMountains/layer_2.png'
+import MistyMountains_layer3Url from '../assets/background/MistyMountains/layer_3.png'
+
 // @ts-ignore
 import GIF from '../utils/gif.js'
+import { setValue } from '../utils/data_utils'
 
 export type GifObject = {
   onerror: (e: any) => void
@@ -27,7 +32,7 @@ export type GifObject = {
 
 export class Resource {
   public progress = 0 // 0 - 100 in percents
-  private total = 9 // Resource count
+  private total = 12 // Resource count
   private current = 0
 
   protected static _instance: Resource
@@ -87,7 +92,8 @@ export class Resource {
     newImg.onerror = function (err) {
       console.log('Img loading error:', err)
     }
-    this.sprite[name] = newImg
+    setValue(this.sprite, name, newImg)
+    // this.sprite[name] = newImg
     return newImg
   }
 
@@ -104,6 +110,10 @@ export class Resource {
       this.loadImg('puddle', puddleUrl)
       this.loadImg('flowerpot', flowerpotUrl)
       this.loadImg('gnome', gnomeUrl)
+
+      this.loadImg('MistyMountains.layer1', MistyMountains_layer1Url)
+      this.loadImg('MistyMountains.layer2', MistyMountains_layer2Url)
+      this.loadImg('MistyMountains.layer3', MistyMountains_layer3Url)
     }
   }
 }

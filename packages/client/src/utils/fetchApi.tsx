@@ -10,19 +10,18 @@ type Options = {
   body?: null | string
   headers?: Headers
 }
-type Request = (url: string, options?: Options) => Promise<Response>
+type Request = <T>(url: string, options?: Options) => Promise<Response>
 
-export class fetchApi {
+export class FetchApi {
   static API_URL = 'https://ya-praktikum.tech/api/v2'
-  protected endpoint: string
 
-  constructor(endpoint: string) {
-    this.endpoint = `${fetchApi.API_URL}${endpoint}`
+  private buildUrl = (path: string) => {
+    return FetchApi.API_URL + path
   }
 
-  public get: Request = async (partUrl: string, options = {}) => {
-    const url = this.endpoint + partUrl
-    return fetch(url, {
+  public get: Request = async (url: string, options = {}) => {
+    const buildedUrl = this.buildUrl(url)
+    return fetch(buildedUrl, {
       ...options,
       method: METHODS.GET,
       credentials: 'include',
@@ -32,9 +31,9 @@ export class fetchApi {
     })
   }
 
-  public post: Request = async (partUrl: string, options = {}) => {
-    const url = this.endpoint + partUrl
-    return fetch(url, {
+  public post: Request = async (url: string, options = {}) => {
+    const buildedUrl = this.buildUrl(url)
+    return fetch(buildedUrl, {
       ...options,
       method: METHODS.POST,
       credentials: 'include',
@@ -44,3 +43,5 @@ export class fetchApi {
     })
   }
 }
+
+export default new FetchApi()

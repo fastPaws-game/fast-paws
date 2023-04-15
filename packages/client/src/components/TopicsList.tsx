@@ -12,9 +12,7 @@ const TopicsList: FC<Props> = props => {
   return (
     <TopicsContainer>
       <ListWrapper>
-        {topics.length === 0
-          ? 'No topics'
-          : topics.map((topic, index) => <TopicItem key={index} {...topic} />)}
+        {topics.length === 0 ? 'No topics' : topics.map((topic, index) => <TopicItem key={index} {...topic} />)}
       </ListWrapper>
     </TopicsContainer>
   )
