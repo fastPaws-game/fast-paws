@@ -1,17 +1,11 @@
 import { useLocation } from 'react-router'
-import { Routes as routes } from '../constants/routes'
+import { Routes } from '../constants/routes'
 import { useAppSelector } from './store'
 import { useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
 
-const pathsToNeedAuth = [
-  routes.MAIN,
-  routes.GAME,
-  routes.FORUM,
-  routes.LEADERBOARD,
-  routes.SETTINGS,
-]
-const pathForAuth = [routes.SIGNUP, routes.HOME]
+const pathsRequireAuth = [Routes.MAIN, Routes.GAME, Routes.FORUM, Routes.LEADERBOARD, Routes.SETTINGS]
+const pathForAuth = [Routes.SIGNUP, Routes.HOME]
 
 export const useRedirect = () => {
   const location = useLocation()
@@ -19,16 +13,16 @@ export const useRedirect = () => {
   const isAuth = useAppSelector(store => store.auth.isAuth)
 
   useEffect(() => {
-    const isAuthRequirePage = pathsToNeedAuth.includes(
-      location.pathname as routes
-    )
-    const isAuthPages = pathForAuth.includes(location.pathname as routes)
+    const pathName = location.pathname as Routes
+    const isAuthRequirePage = pathsRequireAuth.includes(pathName)
+
+    const isAuthPages = pathForAuth.includes(pathName)
 
     if (isAuthRequirePage && !isAuth) {
-      navigate(routes.HOME)
+      navigate(Routes.HOME)
     }
     if (isAuthPages && isAuth) {
-      navigate(routes.MAIN)
+      navigate(Routes.MAIN)
     }
   }, [isAuth, location.pathname, navigate])
 }
