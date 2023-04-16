@@ -81,7 +81,7 @@ const Form = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 30px;
+  gap: 20px;
   background-color: ${props => props.theme.colors.secondary};
   border-radius: ${props => props.theme.borders.primary};
   transition: 0.3s;
@@ -97,6 +97,8 @@ const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 15px;
+  width: 100%;
+  max-width: 246px;
 `
 
 const ButtonContainer = styled.div`
