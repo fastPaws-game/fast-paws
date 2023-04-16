@@ -119,6 +119,7 @@ const Form = styled.form`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+
   @media screen and (min-width: 660px) {
     flex-direction: column;
     flex-direction: row;
@@ -135,11 +136,13 @@ const Column = styled.div`
   display: flex;
   flex-direction: column;
   gap: 15px;
-  margin: 10px;
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  min-width: 290px;
+  padding-right:20px;
+  padding-left:20px;
+  min-width:290px;
+  
   & div {
     width: 100%;
     text-align: center;

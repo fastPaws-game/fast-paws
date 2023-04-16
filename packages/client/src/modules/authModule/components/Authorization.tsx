@@ -6,6 +6,7 @@ const Authorization = () => {
   const dispatch = useAppDispatch()
 
   const handleSubmit = (data: AuthFormValues) => {
+    console.log(data)
     dispatch(signInUser(data))
   }
 

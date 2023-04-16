@@ -6,6 +6,8 @@ import styled from 'styled-components'
 import profileSchema from '../utils/validation/profileSchema'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { FC } from 'react'
+import { H3 } from '../assets/styles/texts'
+import ContrastingWrapper from './ContrastingWrapper'
 
 const defaultValues = {
   first_name: '',
@@ -39,8 +41,9 @@ const ProfileForm: FC<Props> = props => {
   }
 
   return (
-    <Wrapper>
+    <ContrastingWrapper>
       <Form onSubmit={handleSubmit(onSubmit)}>
+        <Title accent>Profile</Title>
         <FormFields>
           <Input
             typeStyle={typeStyleInput.profile}
@@ -90,7 +93,7 @@ const ProfileForm: FC<Props> = props => {
           <Link to={'#'}>Change password</Link>
         </FormFields>
       </Form>
-    </Wrapper>
+    </ContrastingWrapper>
   )
 }
 
@@ -98,29 +101,24 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width:100%;
+  padding:35px;
+  padding-top: 15px;
+  padding-bottom: 10px;
+`
+const Title = styled(H3)`
+color: ${({ theme }) => theme.text.textInvert};
+align-self: flex-start;
+margin-bottom: 22px;
 `
 
 const FormFields = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1em;
-  margin: 1em;
   align-items: center;
-`
-
-const Wrapper = styled.div`
-  border-radius: 15px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: ${({ theme }) => theme.colors.secondary};
-  box-shadow: ${({ theme }) => theme.shadows.secondary};
-  padding: 25px;
-  margin-top: 10px;
-
-  & h3 {
-    text-align: center;
+  width:100%;
+  button{
+    margin-bottom: 1em;
   }
 `
 
