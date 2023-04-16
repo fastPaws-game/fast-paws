@@ -1,11 +1,11 @@
-import BaseLayout from '../layouts/BaseLayout'
+import LayoutWithHeader from '../layouts/LayoutWithHeader'
 import { LeaderBoard } from '../modules/leaderBoardModule'
 
 const LeaderBoardPage = () => {
   return (
-    <BaseLayout>
+    <LayoutWithHeader title="Leaderboard">
       <LeaderBoard />
-    </BaseLayout>
+    </LayoutWithHeader>
   )
 }
 

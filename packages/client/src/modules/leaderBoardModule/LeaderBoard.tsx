@@ -27,7 +27,6 @@ const mockPlayerList: PlayerItemType[] = [
 
 const LeaderBoard = () => {
   return (
-    <LayoutWithHeader title="Leaderboard">
       <Wrapper>
         {mockPlayerList.map(item => (
           <PlayerItem
@@ -39,7 +38,6 @@ const LeaderBoard = () => {
           />
         ))}
       </Wrapper>
-    </LayoutWithHeader>
   )
 }
 

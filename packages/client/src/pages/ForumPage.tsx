@@ -2,6 +2,7 @@ import LayoutWithHeader from '../layouts/LayoutWithHeader'
 import Forum from '../modules/forums/Forum'
 import catImg from '../assets/images/bigCat.png'
 import styled from 'styled-components'
+import { media } from '../assets/styles/media'
 
 const ForumPage = () => {
   return (
@@ -14,9 +15,12 @@ const ForumPage = () => {
 
 const IMG = styled.img`
   position: absolute;
-  z-index: -1;
   bottom: 0%;
-  left: 50%;
+  left: 40%;
+
+  ${media.middle} {
+    display: none;
+  }
 `
 
 export default ForumPage
