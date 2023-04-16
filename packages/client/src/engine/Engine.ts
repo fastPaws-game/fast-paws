@@ -126,8 +126,8 @@ export default class Engine {
   private bgMotion: BgMotion
   private setPauseVisible: (pause: boolean) => void
   private handleGameOver: () => void
-  private showScore: (score: number) => void
-  private showLevel: (score: number) => void
+  private showScore: (value: number) => void
+  private showLevel: (value: number) => void
   private setTooltip: (tooltip: string) => void
   private setCatched: (catched: Record<string, number>) => void
   private static __instance: Engine
@@ -519,7 +519,7 @@ export default class Engine {
     }
   }
 
-  public static get(handlers?: Record<string, () => void>) {
+  public static get(handlers?: Record<string, (value?: any) => void>) {
     if (Engine.__instance) return Engine.__instance
     if (handlers) Engine.__instance = new Engine(handlers)
     return Engine.__instance
