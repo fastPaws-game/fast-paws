@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import LocalStorage from '../../utils/localStorage'
 
 export type ThemeVariants = 'light' | 'dark'
 
@@ -15,14 +16,13 @@ export const themeSlice = createSlice({
   initialState,
   reducers: {
     toggleTheme: state => {
-      if (state.currentTheme === 'light') {
-        state.currentTheme = 'dark'
-      } else {
-        state.currentTheme = 'light'
-      }
+      const newTheme = state.currentTheme === 'light' ? 'dark' : 'light'
+      state.currentTheme = newTheme
+      LocalStorage.set('Theme', newTheme)
     },
     changeTheme: (state, action: PayloadAction<ThemeSlice['currentTheme']>) => {
       state.currentTheme = action.payload
+      LocalStorage.set('Theme', action.payload)
     },
   },
 })

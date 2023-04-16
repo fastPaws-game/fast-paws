@@ -8,6 +8,7 @@ import { useEffect } from 'react'
 import { useAppDispatch } from './hooks/store'
 import { setIsAuth } from './store/auth/AuthSlice'
 import LocalStorage from './utils/localStorage'
+import { changeTheme } from './store/theme/ThemeSlice'
 
 function App() {
   const { theme } = useChangeTheme()
@@ -15,7 +16,9 @@ function App() {
 
   useEffect(() => {
     const isAuth = LocalStorage.get('isAuth')
+    const currentTheme = LocalStorage.get('Theme') || 'light'
     dispatch(setIsAuth(isAuth))
+    dispatch(changeTheme(currentTheme))
   }, [])
 
   return (

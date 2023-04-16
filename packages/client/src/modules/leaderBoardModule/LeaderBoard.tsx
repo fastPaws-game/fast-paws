@@ -27,17 +27,17 @@ const mockPlayerList: PlayerItemType[] = [
 
 const LeaderBoard = () => {
   return (
-      <Wrapper>
-        {mockPlayerList.map(item => (
-          <PlayerItem
-            name={item.name}
-            rating={item.rating}
-            points={item.points}
-            avatarUrl={item.avatarUrl || null}
-            key={item.id}
-          />
-        ))}
-      </Wrapper>
+    <Wrapper>
+      {mockPlayerList.map(item => (
+        <PlayerItem
+          name={item.name}
+          rating={item.rating}
+          points={item.points}
+          avatarUrl={item.avatarUrl || null}
+          key={item.id}
+        />
+      ))}
+    </Wrapper>
   )
 }
 
