@@ -1,18 +1,20 @@
-import React, { FC } from 'react'
+import { FC, useState } from 'react'
 import { isMobile } from 'react-device-detect'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
-import Button from '../ui/button'
-import IconSettings from '../assets/icons/IconSettings'
 
-function browserOnly(WrappedComponent: FC) {
-  return (props: any) => isMobile ? null : <WrappedComponent {...props} />
-} 
-const BrowserButton = browserOnly(Button)
+import IconSettings from '../assets/icons/IconSettings.svg'
+import IconFullscreen from '../assets/icons/IconFullscreen.svg'
+import IconPause from '../assets/icons/IconPause.svg'
+import IconSoundOn from '../assets/icons/IconSoundOn.svg'
+import IconSoundOff from '../assets/icons/IconSoundOff.svg'
 
-function deviceOnly(WrappedComponent: FC) {
-  return (props: any) => isMobile ? <WrappedComponent {...props} /> : null
-} 
-const DeviceButton = deviceOnly(Button)
+import IconMouse from '../assets/icons/IconMouse.svg'
+import IconButterfly from '../assets/icons/IconButterfly.svg'
+import IconBird from '../assets/icons/IconBird.svg'
+import IconFrog from '../assets/icons/IconFrog.svg'
+
+import Beep from '../assets/sounds/Beep'
 
 type Props = {
   level: number
@@ -24,42 +26,87 @@ type Props = {
     bird: number
     mouse: number
   }
+  switchFullScreen: () => void
+  handlePause: () => void
 }
+
+type TAction = 'settings' | 'sound' | 'pause' | 'fullscreen'
+
 const InterfaceLayer: FC<Props> = props => {
-  const handleClick = (action?: string) => () => {
+  const [sound, setSound] = useState(true)
+  const navigate = useNavigate()
+
+  const handleClick = (action?: TAction) => () => {
     console.log('Click button:', action)
+    switch (action) {
+      case 'settings':
+        navigate('/settings')
+        break
+      case 'sound':
+        Beep.play()
+        setSound(!sound)
+        break
+      case 'pause':
+        props.handlePause()
+        break
+      case 'fullscreen':
+        props.switchFullScreen()
+        break
+    }
   }
 
-  // Сделать новые кнопки, значки должны быть svg а не jsx
   return (
     <Layer>
       <HorisontalBlock>
-        <div>
-          <Element>Level: {props.level < 5 ? props.level + 1 : 'MAX'}</Element>
-          <Element>Score: {props.score}</Element>
-        </div>
-        <Element>
-          B: {props.catched.butterfly} G: {props.catched.grasshopper} B: {props.catched.bird} M: {props.catched.mouse}
-        </Element>
+        <ScoreBlock>
+          <div>Level: {props.level < 5 ? props.level + 1 : 'MAX'}</div>
+          <div>Score: {props.score}</div>
+        </ScoreBlock>
         <HorisontalBlock>
-          {/* Значок динамика с двумя состояниями вкл/откл */}
-          <Button icon={<Icon>Snd</Icon>} size="small" onClick={handleClick('sound')} />{' '}
-          {/* Значок паузы (две жирные вертикальные чёрточки) */}
-          <BrowserButton icon={<Icon>| |</Icon>} size="small" onClick={handleClick('pause')} />{' '}
+          <IconAnimal icon={IconButterfly} /> {props.catched.butterfly}
+          <IconAnimal icon={IconFrog} /> {props.catched.grasshopper}
+          <IconAnimal icon={IconBird} /> {props.catched.bird}
+          <IconAnimal icon={IconMouse} /> {props.catched.mouse}
+        </HorisontalBlock>
+        <HorisontalBlock>
+          <UIButton icon={sound ? IconSoundOn : IconSoundOff} onClick={handleClick('sound')} />
+          <BrowserButton icon={IconPause} onClick={handleClick('pause')} />
         </HorisontalBlock>
       </HorisontalBlock>
       <GameTip>{props.tooltip}</GameTip>
       <div></div>
       <HorisontalBlock>
-        <Button icon={<IconSettings />} size="small" onClick={handleClick('settings')} />
-        {/* Значок разворачивания на полный экран как на Youtube */}
-        <BrowserButton icon={<Icon>[ ]</Icon>} size="small" onClick={handleClick('full screen')} />{' '}
-        <DeviceButton icon={<Icon>| |</Icon>} size="small" onClick={handleClick('pause')} />{' '}
+        <UIButton icon={IconSettings} onClick={handleClick('settings')} />
+        <BrowserButton icon={IconFullscreen} onClick={handleClick('fullscreen')} />
+        <DeviceButton icon={IconPause} onClick={handleClick('pause')} />
       </HorisontalBlock>
     </Layer>
   )
 }
 
+const UIButton = styled.div<{ icon: string }>`
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  background-color: ${props => props.theme.colors.accent};
+  mask-size: cover;
+  mask-size: cover;
+  mask-image: url(${props => props.icon});
+  mask-image: url(${props => props.icon});
+  &:hover {
+    background-color: ${props => props.theme.colors.accentHover};
+    transition: background-color 0.3s ease-in-out;
+  }
+`
+const IconAnimal = styled.div<{ icon: string }>`
+  width: 20px;
+  height: 20px;
+  background-color: ${props => props.theme.colors.accent};
+  mask-size: cover;
+  mask-size: cover;
+  mask-image: url(${props => props.icon});
+  mask-image: url(${props => props.icon});
+`
 const Layer = styled.div`
   z-index: 3;
   position: absolute;
@@ -72,20 +119,33 @@ const Layer = styled.div`
   flex-direction: column;
   justify-content: space-between;
   color: ${props => props.theme.text.everWhite};
+  font-size: ${props => props.theme.vars.fontSize.s};
   font-weight: 600;
   text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 `
-const Icon = styled.div`
-  color: ${props => props.theme.text.everWhite};
+const ScoreBlock = styled.div`
+  font-size: ${props => props.theme.vars.fontSize.l};
+  color: ${props => props.theme.colors.accent};
   font-weight: 600;
+  text-shadow: none;
 `
 const HorisontalBlock = styled.div`
   display: flex;
   gap: 10px;
   justify-content: space-between;
 `
-const Element = styled.div``
 const GameTip = styled.div`
   align-self: center;
 `
+
+function browserOnly(WrappedComponent: FC) {
+  return (props: any) => (isMobile ? null : <WrappedComponent {...props} />)
+}
+const BrowserButton = browserOnly(UIButton)
+
+function deviceOnly(WrappedComponent: FC) {
+  return (props: any) => (isMobile ? <WrappedComponent {...props} /> : null)
+}
+const DeviceButton = deviceOnly(UIButton)
+
 export default InterfaceLayer

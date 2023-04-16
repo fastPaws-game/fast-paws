@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, FC } from 'react'
 import ActionLayer from '../layers/ActionLayer'
 import InterfaceLayer from '../layers/InterfaceLayer'
 import BackgroundLayer from '../layers/BackgroundLayer'
@@ -6,7 +6,10 @@ import GamePause from '../components/gamePause'
 import GameOver from '../components/GameOver'
 import Engine from '../engine/Engine'
 
-const GamePage = () => {
+type Props = {
+  switchFullScreen: () => void
+}
+const GamePage: FC<Props> = props => {
   const [pauseVisible, setPauseVisible] = useState(false)
   const [gameOverVisible, setGameOverVisible] = useState(false)
   const [level, setLevel] = useState(0)
@@ -15,7 +18,8 @@ const GamePage = () => {
   const [catched, setCatched] = useState({ mouse: 0, grasshopper: 0, butterfly: 0, bird: 0 })
 
   const handlePause = () => {
-    setPauseVisible(true)
+    const engine = Engine.get()
+    engine.pause(true)
   }
 
   const handleContinue = () => {
@@ -37,13 +41,13 @@ const GamePage = () => {
   }
 
   return (
-		<>
+    <>
       <GamePause visible={pauseVisible} handleClose={handleContinue} outSideClickEnable />
       <GameOver visible={gameOverVisible} handleClose={handleNewGame} />
       <BackgroundLayer />
-      <ActionLayer {...{ handlePause, handleGameOver, setLevel, setScore, setTooltip, setCatched }} />
-      <InterfaceLayer level={level} score={score} tooltip={tooltip} catched={catched} />
-		</>
+      <ActionLayer {...{ setPauseVisible, handleGameOver, setLevel, setScore, setTooltip, setCatched }} />
+      <InterfaceLayer {...{ level, score, tooltip, catched, switchFullScreen: props.switchFullScreen, handlePause }} />
+    </>
   )
 }
 

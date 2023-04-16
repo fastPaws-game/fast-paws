@@ -124,7 +124,7 @@ export default class Engine {
   private resource: Resource
   private draw: Draw
   private bgMotion: BgMotion
-  private handlePause: () => void
+  private setPauseVisible: (pause: boolean) => void
   private handleGameOver: () => void
   private showScore: (score: number) => void
   private showLevel: (score: number) => void
@@ -133,7 +133,7 @@ export default class Engine {
   private static __instance: Engine
 
   private constructor(handlers: Record<string, (value?: any) => void>) {
-    this.handlePause = handlers.handlePause
+    this.setPauseVisible = handlers.setPauseVisible
     this.handleGameOver = handlers.handleGameOver
     this.showLevel = handlers.setLevel
     this.showScore = handlers.setScore
@@ -511,7 +511,7 @@ export default class Engine {
     if (this.game.paused) {
       this.unRegister()
       this.bgMotion.stop()
-      this.handlePause()
+      this.setPauseVisible(true)
       window.clearTimeout(this.game.timer)
     } else {
       this.registerEvents()
