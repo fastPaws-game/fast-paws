@@ -121,6 +121,7 @@ export default class Engine {
     isBarrier: false,
     runAwayDelay: GAME.defaultRunAwayDelay,
   }
+	private canvas: HTMLCanvasElement
   private resource: Resource
   private draw: Draw
   private bgMotion: BgMotion
@@ -140,8 +141,8 @@ export default class Engine {
     this.setTooltip = handlers.setTooltip
     this.setCatched = handlers.setCatched
 
-    const canvas = document.getElementById('game_canvas') as HTMLCanvasElement
-    this.game.ctx = canvas.getContext('2d')
+    this.canvas = document.getElementById('game_canvas') as HTMLCanvasElement
+    this.game.ctx = this.canvas.getContext('2d')
     this.game.successHeight = GAME.defaultTargetHeight * this.game.successHeightModifer
     this.draw = new Draw(this.game.ctx!)
     this.bgMotion = new BgMotion()
@@ -466,13 +467,16 @@ export default class Engine {
   }
 
   private touchstart = (event: MouseEvent | TouchEvent) => {
+		event.stopPropagation()
     event.preventDefault()
+		
     if (!this.game.hold) {
       this.prepareJumpStart()
     }
   }
 
-  private touchend = () => {
+  private touchend = (event: MouseEvent | TouchEvent) => {
+		event.stopPropagation()
     this.prepareJumpEnd()
   }
 
@@ -495,6 +499,8 @@ export default class Engine {
   }
 
   public start() {
+		this.canvas = document.getElementById('game_canvas') as HTMLCanvasElement
+    this.game.ctx = this.canvas.getContext('2d')
     this.registerEvents()
     this.levelPrepare()
   }

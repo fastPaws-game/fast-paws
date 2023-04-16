@@ -1,4 +1,4 @@
-import { useState, useEffect, createRef } from 'react'
+import { useState, useEffect, useRef, RefObject } from 'react'
 import { isMobile } from 'react-device-detect'
 import styled from 'styled-components'
 import { CANVAS } from '../constants/game'
@@ -6,50 +6,45 @@ import Game from './Game'
 
 const DeviceSelector = () => {
   const [fullScreen, setFullScreen] = useState(false)
-	const ref = createRef<HTMLDivElement>()
+  const ref = useRef<HTMLDivElement>(null)
 
-	const switchFullScreen = () => {
-		setFullScreen(!fullScreen)
-		setDimensions()
-	}
+  const switchFullScreen = () => {
+    setFullScreen(!fullScreen)
+  }
 
-	function setDimensions() {
-		let canvasWidth = CANVAS.width
-		let canvasHeight = CANVAS.height
-	
-		if (isMobile || fullScreen) {
-			canvasWidth = window.innerWidth
-			const expectedHeight = Math.floor(window.innerWidth * CANVAS.aspectRatio)
-			if (expectedHeight < window.innerHeight) {
-				canvasHeight = Math.floor(Math.min(expectedHeight * 1.25, window.innerHeight))
-			} else {
-				canvasHeight = window.innerHeight
-			}
-		}
+  useEffect(setDimensions, [fullScreen])
 
-		const element = ref.current
-		if (element) {
-			element.style.width = canvasWidth+'px'
-			element.style.height = canvasHeight+'px'
-		}
-	
-		return {canvasWidth, canvasHeight}
-	}
+  function setDimensions() {
+    let canvasWidth = CANVAS.width
+    let canvasHeight = CANVAS.height
+
+    if (isMobile || fullScreen) {
+      canvasWidth = window.innerWidth
+      const expectedHeight = Math.floor(window.innerWidth * CANVAS.aspectRatio)
+      if (expectedHeight < window.innerHeight) {
+        canvasHeight = Math.floor(Math.min(expectedHeight * 1.25, window.innerHeight))
+      } else {
+        canvasHeight = window.innerHeight
+      }
+    }
+
+    const element = ref.current
+    if (element) {
+      element.style.width = canvasWidth + 'px'
+      element.style.height = canvasHeight + 'px'
+    }
+  }
 
   useEffect(() => {
-		setDimensions()
-    const handleResize = () => {
-			const dimensions = setDimensions()
-			// setDimensions(dimensions)
-		}
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  })
+    setDimensions()
+    window.addEventListener('resize', setDimensions)
+    return () => window.removeEventListener('resize', setDimensions)
+  }, [])
 
   return (
     <RootWrapper>
       <GameWrapper ref={ref}>
-        <Game switchFullScreen={switchFullScreen}/>
+        <Game switchFullScreen={switchFullScreen} />
       </GameWrapper>
     </RootWrapper>
   )

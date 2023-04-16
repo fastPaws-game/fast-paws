@@ -37,7 +37,6 @@ const InterfaceLayer: FC<Props> = props => {
   const navigate = useNavigate()
 
   const handleClick = (action?: TAction) => () => {
-    console.log('Click button:', action)
     switch (action) {
       case 'settings':
         navigate('/settings')
@@ -63,10 +62,14 @@ const InterfaceLayer: FC<Props> = props => {
           <div>Score: {props.score}</div>
         </ScoreBlock>
         <HorisontalBlock>
-          <IconAnimal icon={IconButterfly} /> {props.catched.butterfly}
-          <IconAnimal icon={IconFrog} /> {props.catched.grasshopper}
-          <IconAnimal icon={IconBird} /> {props.catched.bird}
-          <IconAnimal icon={IconMouse} /> {props.catched.mouse}
+          <IconAnimal icon={IconButterfly} />
+          <span> {props.catched.butterfly}</span>
+          <IconAnimal icon={IconFrog} />
+          <span> {props.catched.grasshopper}</span>
+          <IconAnimal icon={IconBird} />
+          <span> {props.catched.bird}</span>
+          <IconAnimal icon={IconMouse} />
+          <span> {props.catched.mouse}</span>
         </HorisontalBlock>
         <HorisontalBlock>
           <UIButton icon={sound ? IconSoundOn : IconSoundOff} onClick={handleClick('sound')} />

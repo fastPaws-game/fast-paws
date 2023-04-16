@@ -9,7 +9,7 @@ const pathsRequireAuth = [
   // Routes.GAME,
   Routes.FORUM,
   Routes.LEADERBOARD,
-  Routes.SETTINGS,
+  // Routes.SETTINGS,
 ]
 const pathForAuth = [Routes.SIGNUP, Routes.HOME]
 
