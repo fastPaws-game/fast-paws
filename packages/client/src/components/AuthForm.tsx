@@ -57,6 +57,7 @@ const AuthForm: FC<Props> = props => {
         <Input
           typeStyle={typeStyleInput.form}
           placeholder="Password"
+          type='password'
           {...register('password')}
           errorOn={!!errors.password}
           errorMessage={errors.password?.message}
@@ -74,7 +75,7 @@ const AuthForm: FC<Props> = props => {
 
 const Form = styled.form`
   width: 100%;
-  max-width: 345px;
+  max-width: 380px;
   height: 100%;
   max-height: 285px;
   display: flex;
@@ -94,13 +95,21 @@ const Form = styled.form`
 `
 
 const InputContainer = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 15px;
+  & div {
+    width: 100%;
+    text-align: center;
+  }
 `
 
 const ButtonContainer = styled.div`
   display: flex;
+  width: 100%;
+  align-items: center;
   flex-direction: column;
   gap: 10px;
 
