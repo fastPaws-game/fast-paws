@@ -7,8 +7,11 @@ import styled from 'styled-components'
 import { Routes } from '../../constants/routes'
 import { media } from '../../assets/styles/media'
 import { FC, useEffect } from 'react'
-import { SignUpFormValues } from '../../modules/registration/registrationApi'
+import { SignUpFormValues } from '../../modules/registration/Registration'
 import { registrationSchema } from '../../utils/validation/registrationSchema'
+import { useAppDispatch, useAppSelector } from '../../hooks/store'
+import { authSelectors } from '../../store/auth/AuthSelectors'
+import { resetSignUpError } from '../../store/auth/AuthSlice'
 
 const defaultValuesSignUpForm = {
   login: '',
@@ -31,6 +34,7 @@ const RegistrationForm: FC<Props> = props => {
     reset,
     handleSubmit,
     setFocus,
+    setError,
     formState: { errors, isSubmitting, isDirty },
   } = useForm({
     defaultValues: defaultValuesSignUpForm,
@@ -38,10 +42,23 @@ const RegistrationForm: FC<Props> = props => {
     criteriaMode: 'all',
     resolver: yupResolver(registrationSchema),
   })
+  const serverError = useAppSelector(authSelectors.getSignUpError)
+  const signInStatus = useAppSelector(authSelectors.getSignUpStatus)
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     setFocus('login')
   }, [])
+
+  useEffect(() => {
+    setError('root.serverError', {
+      message: serverError ?? '',
+    })
+  }, [serverError])
+
+  useEffect(() => {
+    if (isDirty) dispatch(resetSignUpError())
+  }, [isDirty])
 
   const onSubmit: SubmitHandler<SignUpFormValues> = (data: SignUpFormValues) => {
     console.log(JSON.stringify(data))
@@ -105,6 +122,7 @@ const RegistrationForm: FC<Props> = props => {
           errorOn={!!errors.repeated_password}
           errorMessage={errors.repeated_password?.message}
         />
+        {serverError && <Error>{serverError}</Error>}
         <Button type="submit" disabled={!isDirty || isSubmitting}>
           Sign up
         </Button>
@@ -132,6 +150,14 @@ const Form = styled.form`
     align-items: center;
   }
 `
+const Error = styled.p`
+  color: ${props => props.theme.text.error};
+  margin: 0;
+  position: absolute;
+  bottom: 85px;
+  left: 25px;
+  text-align: left;
+`
 const Column = styled.div`
   display: flex;
   flex-direction: column;
@@ -142,7 +168,8 @@ const Column = styled.div`
   padding-right:20px;
   padding-left:20px;
   min-width:290px;
-  
+  position: relative;
+
   & div {
     width: 100%;
     text-align: center;

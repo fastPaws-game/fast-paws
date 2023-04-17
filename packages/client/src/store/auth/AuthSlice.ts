@@ -6,12 +6,16 @@ import { User } from '../../models/User'
 import AuthApi from '../../api/AuthApi'
 import UserApi from '../../api/UserApi'
 import LocalStorage from '../../utils/localStorage'
+import { SignUpFormValues } from '../../modules/registration/Registration'
 
 type AuthSlice = {
   user: User | null
   isAuth: boolean
   signInStatus: RequestStatus
   signInError: string | null
+
+  signUpStatus: RequestStatus
+  signUpError: string | null
 
   logOutStatus: RequestStatus
   logOutError: string | null
@@ -26,6 +30,9 @@ const initialState: AuthSlice = {
 
   signInStatus: 'initial',
   signInError: null,
+
+  signUpStatus: 'initial',
+  signUpError: null,
 
   logOutStatus: 'initial',
   logOutError: null,
@@ -42,9 +49,13 @@ export const authSlice = createSlice({
       state.isAuth = action.payload
     },
     resetSignInError: (state) => {
-      state.signInError  = null
+      state.signInError = null
       state.signInStatus = 'pending'
     },
+    resetSignUpError:(state)=>{
+      state.signUpError = null
+      state.signUpStatus = 'pending'
+    }
   },
   extraReducers: builder => {
     builder
@@ -60,6 +71,21 @@ export const authSlice = createSlice({
       .addCase(signInUser.rejected, (state, action) => {
         state.signInStatus = 'error'
         state.signInError = handleError(action.payload)
+      })
+      .addCase(registration.pending, state => {
+        state.signUpStatus = 'pending'
+      })
+      .addCase(registration.fulfilled, state => {
+        state.signInStatus = 'success'
+        state.signUpStatus = 'success'
+        state.isAuth = true
+        state.signInError = null
+        state.signUpError = null
+        LocalStorage.set('isAuth', true)
+      })
+      .addCase(registration.rejected, (state, action) => {
+        state.signUpStatus = 'error'
+        state.signUpError = handleError(action.payload)
       })
       .addCase(logOut.pending, state => {
         state.logOutStatus = 'pending'
@@ -95,7 +121,7 @@ export const signInUser = createAsyncThunk(
     try {
       const response = await AuthApi.signin(body)
       if (response.status !== 200) {
-        const error = await  response.json()
+        const error = await response.json()
         return rejectWithValue(error.reason)
       }
       await dispatch(getUser())
@@ -111,7 +137,7 @@ export const logOut = createAsyncThunk('auth/logout', async (_, { rejectWithValu
     const response = await AuthApi.logout()
 
     if (response.status !== 200) {
-      const error = await  response.json()
+      const error = await response.json()
       return rejectWithValue(error.reason)
     }
     return
@@ -134,7 +160,34 @@ export const getUser = createAsyncThunk('user/getUser', async (_, { rejectWithVa
     rejectWithValue(e)
   }
 })
+export const registration = createAsyncThunk('auth/signup',
+  async (body: SignUpFormValues, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await AuthApi.signup(body)
+      if (response.status !== 200) {
+        const error = await response.json()
+        return rejectWithValue(error.reason)
+      }
+      await dispatch(getUser())
+      return
+    } catch (e) {
+      rejectWithValue(e)
+    }
+  }
+)
+/*
+return result.then(data => {
+  //TODO заменить на new httpError, когда Ильфат сольет МР
+  const message = `Что-то пошло не так... ${data.message}`
+  return Promise.reject(new Error(message))
+})
+}
+} catch (err) {
+console.log(err)
+}
+})
+*/
 
-export const { setIsAuth, resetSignInError } = authSlice.actions
+export const { setIsAuth, resetSignInError, resetSignUpError } = authSlice.actions
 
 export default authSlice.reducer
