@@ -57,8 +57,8 @@ export const darkTheme = {
   vars: vars,
   colors: {
     primary: '#294383',
-    secondary: '#233153',
-    accent: '#6D96FF',
+    secondary: '#203060',
+    accent: '#294383',
     play: '#294383',
     rating: '#FDFDFD',
     white: '#FFF',
