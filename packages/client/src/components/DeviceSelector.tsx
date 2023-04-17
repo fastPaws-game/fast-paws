@@ -12,8 +12,6 @@ const DeviceSelector = () => {
 
   const switchFullScreen = () => {
     setFullScreen(!fullScreen)
-    const element = ref.current
-    switchFullscreen(!fullScreen, element)
   }
 
   function setDimensions() {
@@ -39,17 +37,21 @@ const DeviceSelector = () => {
 
   function fullscreenchange() {
     // @ts-ignore
-    const fullscreenElement = document.fullscreenElement || document.mozFullScreenElemen || document.webkitFullscreenElement
-    if (!fullscreenElement) setFullScreen(false)
+    const isFullscreenMode = document.fullscreenElement || document.mozFullScreenElemen || document.webkitFullscreenElement
+    // Was pressed Escape
+    if (!isFullscreenMode) setFullScreen(false)
+    // Switching full screen have delayed animation
+    setTimeout(setDimensions, 150)
   }
 
   useEffect(() => {
-		if (fullScreen) switchFullscreen(fullScreen)
-    setDimensions()
-    window.addEventListener('resize', setDimensions)
+    // @ts-ignore
+    const isFullscreenMode = document.fullscreenElement || document.mozFullScreenElemen || document.webkitFullscreenElement
+    if (isFullscreenMode != fullScreen) switchFullscreen(fullScreen)
+    // window.addEventListener('resize', setDimensions)	// Was used in stretch mode
     document.addEventListener('fullscreenchange', fullscreenchange)
     return () => {
-      window.removeEventListener('resize', setDimensions)
+      // window.removeEventListener('resize', setDimensions)
       document.removeEventListener('fullscreenchange', fullscreenchange)
     }
   }, [fullScreen])
