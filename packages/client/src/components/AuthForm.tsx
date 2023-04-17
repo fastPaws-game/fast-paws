@@ -9,6 +9,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import authSchema from '../utils/validation/authSchema'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Routes } from '../constants/routes'
+import { useNavigate } from 'react-router'
 
 export type AuthFormValues = {
   login: string
@@ -26,6 +27,7 @@ type Props = {
 
 const AuthForm: FC<Props> = props => {
   const { onSubmitFrom } = props
+	const navigate = useNavigate()
   const {
     register,
     reset,
@@ -44,37 +46,48 @@ const AuthForm: FC<Props> = props => {
   }
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
-      <H3 accent>Login</H3>
-      <InputContainer>
-        <Input
-          typeStyle={typeStyleInput.form}
-          placeholder="Login"
-          {...register('login')}
-          errorOn={!!errors.login}
-          errorMessage={errors.login?.message}
-        />
-        <Input
-          typeStyle={typeStyleInput.form}
-          placeholder="Password"
-          {...register('password')}
-          errorOn={!!errors.password}
-          errorMessage={errors.password?.message}
-        />
-      </InputContainer>
-      <ButtonContainer>
-        <Button type="submit" disabled={!isDirty || isSubmitting}>
-          Log in
-        </Button>
-        <Link to={Routes.SIGNUP}>Registration</Link>
-      </ButtonContainer>
-    </Form>
+		<Wrapper>
+			<Form onSubmit={handleSubmit(onSubmit)}>
+				<H3 accent>Login</H3>
+				<InputContainer>
+					<Input
+						typeStyle={typeStyleInput.form}
+						placeholder="Login"
+						{...register('login')}
+						errorOn={!!errors.login}
+						errorMessage={errors.login?.message}
+					/>
+					<Input
+						typeStyle={typeStyleInput.form}
+						placeholder="Password"
+						{...register('password')}
+						errorOn={!!errors.password}
+						errorMessage={errors.password?.message}
+					/>
+				</InputContainer>
+				<ButtonContainer>
+					<Button type="submit" disabled={!isDirty || isSubmitting}>
+						Log in
+					</Button>
+					<Link to={Routes.SIGNUP}>Registration</Link>
+				</ButtonContainer>
+			</Form>
+			<Button onClick={()=>navigate('/game')}>Play unatorized</Button>
+		</Wrapper>
   )
 }
 
+const Wrapper = styled.div`
+	width: 100%;
+  max-width: 400px;
+  gap: 20px;
+  display: flex;
+  flex-direction: column;
+	align-items: center;
+`
+
 const Form = styled.form`
   width: 100%;
-  max-width: 345px;
   height: 100%;
   max-height: 285px;
   display: flex;

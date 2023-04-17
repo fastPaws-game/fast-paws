@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, RefObject } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { isMobile } from 'react-device-detect'
 import styled from 'styled-components'
 import { CANVAS } from '../constants/game'
@@ -11,8 +11,6 @@ const DeviceSelector = () => {
   const switchFullScreen = () => {
     setFullScreen(!fullScreen)
   }
-
-  useEffect(setDimensions, [fullScreen])
 
   function setDimensions() {
     let canvasWidth = CANVAS.width
@@ -39,7 +37,7 @@ const DeviceSelector = () => {
     setDimensions()
     window.addEventListener('resize', setDimensions)
     return () => window.removeEventListener('resize', setDimensions)
-  }, [])
+  }, [fullScreen])
 
   return (
     <RootWrapper>
