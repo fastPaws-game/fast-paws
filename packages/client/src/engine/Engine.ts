@@ -121,7 +121,7 @@ export default class Engine {
     isBarrier: false,
     runAwayDelay: GAME.defaultRunAwayDelay,
   }
-	private canvas: HTMLCanvasElement
+  private canvas: HTMLCanvasElement
   private resource: Resource
   private draw: Draw
   private bgMotion: BgMotion
@@ -467,17 +467,17 @@ export default class Engine {
   }
 
   private touchstart = (event: MouseEvent | TouchEvent) => {
-		event.stopPropagation()
     event.preventDefault()
-		
+    if (event.target && event.target instanceof HTMLDivElement && event.target.ariaLabel) return
     if (!this.game.hold) {
       this.prepareJumpStart()
     }
   }
 
   private touchend = (event: MouseEvent | TouchEvent) => {
-		event.stopPropagation()
-    this.prepareJumpEnd()
+    if (this.game.hold) {
+      this.prepareJumpEnd()
+    }
   }
 
   private registerEvents = () => {
@@ -499,14 +499,17 @@ export default class Engine {
   }
 
   public start() {
-		this.canvas = document.getElementById('game_canvas') as HTMLCanvasElement
+    this.canvas = document.getElementById('game_canvas') as HTMLCanvasElement
     this.game.ctx = this.canvas.getContext('2d')
+    this.draw = new Draw(this.game.ctx!)
     this.registerEvents()
     this.levelPrepare()
   }
 
   public stop() {
     this.unRegister()
+    this.bgMotion.stop()
+    window.clearTimeout(this.game.timer)
   }
 
   public pause = (state: boolean) => {
@@ -526,7 +529,18 @@ export default class Engine {
   }
 
   public static get(handlers?: Record<string, (value?: any) => void>) {
-    if (Engine.__instance) return Engine.__instance
+    if (Engine.__instance) {
+      // Renew handlers
+      if (handlers) {
+        Engine.__instance.setPauseVisible = handlers.setPauseVisible
+        Engine.__instance.handleGameOver = handlers.handleGameOver
+        Engine.__instance.showLevel = handlers.setLevel
+        Engine.__instance.showScore = handlers.setScore
+        Engine.__instance.setTooltip = handlers.setTooltip
+        Engine.__instance.setCatched = handlers.setCatched
+      }
+      return Engine.__instance
+    }
     if (handlers) Engine.__instance = new Engine(handlers)
     return Engine.__instance
   }

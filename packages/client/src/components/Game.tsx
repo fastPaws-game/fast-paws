@@ -7,7 +7,7 @@ import GameOver from '../components/GameOver'
 import Engine from '../engine/Engine'
 
 type Props = {
-  switchFullScreen: () => void
+  switchFullWidth: () => void
 }
 const GamePage: FC<Props> = props => {
   const [pauseVisible, setPauseVisible] = useState(false)
@@ -44,8 +44,8 @@ const GamePage: FC<Props> = props => {
   )
 
   const interfaceLayerProps = useMemo(
-    () => ({ level, score, tooltip, catched, switchFullScreen: props.switchFullScreen, handlePause }),
-    [level, score, tooltip, catched, props.switchFullScreen, handlePause]
+    () => ({ level, score, tooltip, catched, switchFullWidth: props.switchFullWidth, handlePause }),
+    [level, score, tooltip, catched, props.switchFullWidth, handlePause]
   )
 
   return (

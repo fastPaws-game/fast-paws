@@ -30,21 +30,17 @@ export default class BgMotion {
   private clearX = CANVAS.width
   private clearY = CANVAS.height
   private static __instance: BgMotion
-	private resource = Resource.get()
+  private resource = Resource.get()
 
   constructor(ctx?: CanvasRenderingContext2D) {
+    if (ctx) BgMotion.__instance.ctx = ctx
     if (BgMotion.__instance) return BgMotion.__instance
-		// Need only for a first initialization of this singleton
-    if (!ctx) return
-
-    this.ctx = ctx
     this.init()
-
     BgMotion.__instance = this
   }
 
   private init = () => {
-		// Developement time patch
+    // Developement time patch
     if (this.resource.progress < 100) {
       setTimeout(this.init, 500)
       return

@@ -26,11 +26,11 @@ type Props = {
     bird: number
     mouse: number
   }
-  switchFullScreen: () => void
+  switchFullWidth: () => void
   handlePause: () => void
 }
 
-type TAction = 'settings' | 'sound' | 'pause' | 'fullscreen'
+type TAction = 'settings' | 'sound' | 'pause' | 'fullscreen' | 'fullwidth'
 
 const InterfaceLayer: FC<Props> = props => {
   const [sound, setSound] = useState(true)
@@ -48,8 +48,8 @@ const InterfaceLayer: FC<Props> = props => {
       case 'pause':
         props.handlePause()
         break
-      case 'fullscreen':
-        props.switchFullScreen()
+      case 'fullwidth':
+        props.switchFullWidth()
         break
     }
   }
@@ -72,16 +72,16 @@ const InterfaceLayer: FC<Props> = props => {
           <span> {props.catched.mouse}</span>
         </HorisontalBlock>
         <HorisontalBlock>
-          <UIButton icon={sound ? IconSoundOn : IconSoundOff} onClick={handleClick('sound')} />
-          <BrowserButton icon={IconPause} onClick={handleClick('pause')} />
+          <UIButton aria-label="button" icon={sound ? IconSoundOn : IconSoundOff} onClick={handleClick('sound')} />
+          <BrowserButton aria-label="button" icon={IconPause} onClick={handleClick('pause')} />
         </HorisontalBlock>
       </HorisontalBlock>
       <GameTip>{props.tooltip}</GameTip>
       <div></div>
       <HorisontalBlock>
-        <UIButton icon={IconSettings} onClick={handleClick('settings')} />
-        <BrowserButton icon={IconFullscreen} onClick={handleClick('fullscreen')} />
-        <DeviceButton icon={IconPause} onClick={handleClick('pause')} />
+        <UIButton aria-label="button" icon={IconSettings} onClick={handleClick('settings')} />
+        <BrowserButton aria-label="button" icon={IconFullscreen} onClick={handleClick('fullwidth')} />
+        <DeviceButton aria-label="button" icon={IconPause} onClick={handleClick('pause')} />
       </HorisontalBlock>
     </Layer>
   )
