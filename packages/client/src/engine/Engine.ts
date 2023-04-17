@@ -121,27 +121,28 @@ export default class Engine {
     isBarrier: false,
     runAwayDelay: GAME.defaultRunAwayDelay,
   }
+	private canvas: HTMLCanvasElement
   private resource: Resource
   private draw: Draw
   private bgMotion: BgMotion
-  private handlePause: () => void
+  private setPauseVisible: (pause: boolean) => void
   private handleGameOver: () => void
-  private showScore: (score: number) => void
-  private showLevel: (score: number) => void
+  private showScore: (value: number) => void
+  private showLevel: (value: number) => void
   private setTooltip: (tooltip: string) => void
   private setCatched: (catched: Record<string, number>) => void
   private static __instance: Engine
 
   private constructor(handlers: Record<string, (value?: any) => void>) {
-    this.handlePause = handlers.handlePause
+    this.setPauseVisible = handlers.setPauseVisible
     this.handleGameOver = handlers.handleGameOver
     this.showLevel = handlers.setLevel
     this.showScore = handlers.setScore
     this.setTooltip = handlers.setTooltip
     this.setCatched = handlers.setCatched
 
-    const canvas = document.getElementById('game_canvas') as HTMLCanvasElement
-    this.game.ctx = canvas.getContext('2d')
+    this.canvas = document.getElementById('game_canvas') as HTMLCanvasElement
+    this.game.ctx = this.canvas.getContext('2d')
     this.game.successHeight = GAME.defaultTargetHeight * this.game.successHeightModifer
     this.draw = new Draw(this.game.ctx!)
     this.bgMotion = new BgMotion()
@@ -466,13 +467,16 @@ export default class Engine {
   }
 
   private touchstart = (event: MouseEvent | TouchEvent) => {
+		event.stopPropagation()
     event.preventDefault()
+		
     if (!this.game.hold) {
       this.prepareJumpStart()
     }
   }
 
-  private touchend = () => {
+  private touchend = (event: MouseEvent | TouchEvent) => {
+		event.stopPropagation()
     this.prepareJumpEnd()
   }
 
@@ -495,6 +499,8 @@ export default class Engine {
   }
 
   public start() {
+		this.canvas = document.getElementById('game_canvas') as HTMLCanvasElement
+    this.game.ctx = this.canvas.getContext('2d')
     this.registerEvents()
     this.levelPrepare()
   }
@@ -511,7 +517,7 @@ export default class Engine {
     if (this.game.paused) {
       this.unRegister()
       this.bgMotion.stop()
-      this.handlePause()
+      this.setPauseVisible(true)
       window.clearTimeout(this.game.timer)
     } else {
       this.registerEvents()
@@ -519,7 +525,7 @@ export default class Engine {
     }
   }
 
-  public static get(handlers?: Record<string, () => void>) {
+  public static get(handlers?: Record<string, (value?: any) => void>) {
     if (Engine.__instance) return Engine.__instance
     if (handlers) Engine.__instance = new Engine(handlers)
     return Engine.__instance

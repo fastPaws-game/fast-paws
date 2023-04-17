@@ -12,8 +12,9 @@ const LoaderGame = () => {
 	}
 
 	useEffect(() => {
-    Resource.get(progressCallback)
-  });
+    const resource=Resource.get(progressCallback)
+		setProgress(resource.progress)
+  }, [progress]);
 
   return (progress < 100 ? <LoadingPage progress = {progress}/> : <DeviceSelector />)
 }
