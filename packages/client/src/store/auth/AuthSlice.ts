@@ -41,6 +41,10 @@ export const authSlice = createSlice({
     setIsAuth: (state, action: PayloadAction<boolean>) => {
       state.isAuth = action.payload
     },
+    resetSignInError: (state) => {
+      state.signInError  = null
+      state.signInStatus = 'pending'
+    },
   },
   extraReducers: builder => {
     builder
@@ -90,9 +94,9 @@ export const signInUser = createAsyncThunk(
   async (body: AuthFormValues, { dispatch, rejectWithValue }) => {
     try {
       const response = await AuthApi.signin(body)
-
       if (response.status !== 200) {
-        return rejectWithValue(response)
+        const error = await  response.json()
+        return rejectWithValue(error.reason)
       }
       await dispatch(getUser())
       return
@@ -105,8 +109,10 @@ export const signInUser = createAsyncThunk(
 export const logOut = createAsyncThunk('auth/logout', async (_, { rejectWithValue }) => {
   try {
     const response = await AuthApi.logout()
+
     if (response.status !== 200) {
-      return rejectWithValue(response)
+      const error = await  response.json()
+      return rejectWithValue(error.reason)
     }
     return
   } catch (e) {
@@ -129,6 +135,6 @@ export const getUser = createAsyncThunk('user/getUser', async (_, { rejectWithVa
   }
 })
 
-export const { setIsAuth } = authSlice.actions
+export const { setIsAuth, resetSignInError } = authSlice.actions
 
 export default authSlice.reducer

@@ -5,8 +5,7 @@ import { signInUser } from '../../../store/auth/AuthSlice'
 const Authorization = () => {
   const dispatch = useAppDispatch()
 
-  const handleSubmit = (data: AuthFormValues) => {
-    console.log(data)
+  const handleSubmit = async (data: AuthFormValues) => {
     dispatch(signInUser(data))
   }
 
