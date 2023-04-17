@@ -1,4 +1,4 @@
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import Input, { typeStyleInput } from '../ui/input'
 import Button from '../ui/button'
 import Link from '../ui/link'
@@ -9,34 +9,35 @@ import { FC } from 'react'
 import { H3 } from '../assets/styles/texts'
 import ContrastingWrapper from './ContrastingWrapper'
 
-const defaultValues = {
-  first_name: '',
-  second_name: '',
-  display_name: '', //first_name+' '+second_name,
-  login: '',
-  email: '',
-  phone: '',
+export type ProfileFormValuesType = {
+  first_name: string,
+  second_name: string,
+  display_name: string,
+  login: string,
+  email: string,
+  phone: string,
 }
 
 type Props = {
-  onSubmitForm: (data: FieldValues) => void
+  onSubmitForm: (data: ProfileFormValuesType) => void,
+  defaultFormValues: ProfileFormValuesType
 }
 
 const ProfileForm: FC<Props> = props => {
-  const { onSubmitForm } = props
+  const { onSubmitForm, defaultFormValues } = props
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting, isDirty },
   } = useForm({
-    defaultValues: defaultValues,
+    defaultValues: defaultFormValues,
     mode: 'onBlur',
     criteriaMode: 'all',
     resolver: yupResolver(profileSchema),
   })
 
-  const onSubmit: SubmitHandler<FieldValues> = data => {
+  const onSubmit: SubmitHandler<ProfileFormValuesType> = data => {
     onSubmitForm(data)
   }
 
@@ -87,7 +88,7 @@ const ProfileForm: FC<Props> = props => {
             errorMessage={errors.phone?.message}
             {...register('phone')}
           />
-          <Button type="submit" disabled={!isDirty || isSubmitting}>
+          <Button type="submit" disabled={!isDirty || isSubmitting }>
             Update
           </Button>
           <Link to={'#'}>Change password</Link>

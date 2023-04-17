@@ -1,17 +1,17 @@
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import Input, { typeStyleInput } from '../../ui/input'
-import Button from '../../ui/button'
-import Link from '../../ui/link'
+import Input, { typeStyleInput } from '../ui/input'
+import Button from '../ui/button'
+import Link from '../ui/link'
 import styled from 'styled-components'
-import { Routes } from '../../constants/routes'
-import { media } from '../../assets/styles/media'
+import { Routes } from '../constants/routes'
+import { media } from '../assets/styles/media'
 import { FC, useEffect } from 'react'
-import { SignUpFormValues } from '../../modules/registration/Registration'
-import { registrationSchema } from '../../utils/validation/registrationSchema'
-import { useAppDispatch, useAppSelector } from '../../hooks/store'
-import { authSelectors } from '../../store/auth/AuthSelectors'
-import { resetSignUpError } from '../../store/auth/AuthSlice'
+import { SignUpFormValues } from '../modules/registration/Registration'
+import { registrationSchema } from '../utils/validation/registrationSchema'
+import { useAppDispatch, useAppSelector } from '../hooks/store'
+import { authSelectors } from '../store/auth/AuthSelectors'
+import { resetSignUpError } from '../store/auth/AuthActions'
 
 const defaultValuesSignUpForm = {
   login: '',
@@ -46,6 +46,10 @@ const RegistrationForm: FC<Props> = props => {
   const signInStatus = useAppSelector(authSelectors.getSignUpStatus)
   const dispatch = useAppDispatch()
 
+  const isUserServerError =  (signInStatus === 'error')&&(serverError?.startsWith('User'||'Login'))
+  const isEmailServerError =  (signInStatus === 'error')&&(serverError?.startsWith('Email'))
+  const isPasswordServerError =  (signInStatus === 'error')&&(serverError?.startsWith('Password'))
+
   useEffect(() => {
     setFocus('login')
   }, [])
@@ -61,7 +65,6 @@ const RegistrationForm: FC<Props> = props => {
   }, [isDirty])
 
   const onSubmit: SubmitHandler<SignUpFormValues> = (data: SignUpFormValues) => {
-    console.log(JSON.stringify(data))
     handleRegistration(data)
     reset()
   }
@@ -73,14 +76,14 @@ const RegistrationForm: FC<Props> = props => {
           placeholder="Login"
           typeStyle={typeStyleInput.form}
           {...register('login')}
-          errorOn={!!errors.login}
+          errorOn={!!errors.login||isUserServerError}
           errorMessage={errors.login?.message}
         />
         <Input
           placeholder="Email"
           typeStyle={typeStyleInput.form}
           {...register('email')}
-          errorOn={!!errors.email}
+          errorOn={!!errors.email||isEmailServerError}
           errorMessage={errors.email?.message}
         />
         <Input
@@ -111,7 +114,7 @@ const RegistrationForm: FC<Props> = props => {
           typeStyle={typeStyleInput.form}
           type="password"
           {...register('password')}
-          errorOn={!!errors.password}
+          errorOn={!!errors.password||isPasswordServerError}
           errorMessage={errors.password?.message}
         />
         <Input
@@ -119,7 +122,7 @@ const RegistrationForm: FC<Props> = props => {
           typeStyle={typeStyleInput.form}
           type="password"
           {...register('repeated_password')}
-          errorOn={!!errors.repeated_password}
+          errorOn={!!errors.repeated_password||isPasswordServerError}
           errorMessage={errors.repeated_password?.message}
         />
         {serverError && <Error>{serverError}</Error>}

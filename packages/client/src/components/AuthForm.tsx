@@ -12,7 +12,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { Routes } from '../constants/routes'
 import { authSelectors } from '../store/auth/AuthSelectors'
 import { useAppDispatch } from '../hooks/store'
-import { resetSignInError } from '../store/auth/AuthSlice'
+import { resetSignInError } from '../store/auth/AuthActions'
 
 export type AuthFormValues = {
   login: string

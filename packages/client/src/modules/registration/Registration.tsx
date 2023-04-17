@@ -1,6 +1,6 @@
-import RegistrationForm from './RegistrationForm'
+import RegistrationForm from '../../components/RegistrationForm'
 import ContrastingWrapper from '../../components/ContrastingWrapper'
-import { registration } from '../../store/auth/AuthSlice'
+import { registration } from '../../store/auth/AuthActions'
 import { H3 } from '../../assets/styles/texts'
 import { useAppDispatch } from '../../hooks/store'
 

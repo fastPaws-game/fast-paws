@@ -42,6 +42,18 @@ export class FetchApi {
       },
     })
   }
+
+  public put: Request = async (url: string, options = {}) => {
+    const buildedUrl = this.buildUrl(url)
+    return fetch(buildedUrl, {
+      ...options,
+      method: METHODS.PUT,
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+      },
+    })
+  }
 }
 
 export default new FetchApi()

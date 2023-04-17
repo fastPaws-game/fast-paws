@@ -1,12 +1,9 @@
 import { RequestStatus } from '../types'
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { handleError } from '../../utils/handleError'
-import { AuthFormValues } from '../../components/AuthForm'
 import { User } from '../../models/User'
-import AuthApi from '../../api/AuthApi'
-import UserApi from '../../api/UserApi'
 import LocalStorage from '../../utils/localStorage'
-import { SignUpFormValues } from '../../modules/registration/Registration'
+import { getUser, logOut, registration, signInUser, updateUser } from './AuthActions'
 
 type AuthSlice = {
   user: User | null
@@ -52,7 +49,7 @@ export const authSlice = createSlice({
       state.signInError = null
       state.signInStatus = 'pending'
     },
-    resetSignUpError:(state)=>{
+    resetSignUpError: (state) => {
       state.signUpError = null
       state.signUpStatus = 'pending'
     }
@@ -112,82 +109,20 @@ export const authSlice = createSlice({
         state.userStatus = 'error'
         state.userError = handleError(action.payload)
       })
+
+      .addCase(updateUser.pending, state => {
+        state.userStatus = 'pending'
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        state.userStatus = 'success'
+        state.user = state.user ? { ...state.user, ...action.payload } : null
+        state.userError = null
+      })
+      .addCase(updateUser.rejected, (state, action) => {
+        state.userStatus = 'error'
+        state.userError = handleError(action.payload)
+      })
   },
 })
-
-export const signInUser = createAsyncThunk(
-  'user/signIn',
-  async (body: AuthFormValues, { dispatch, rejectWithValue }) => {
-    try {
-      const response = await AuthApi.signin(body)
-      if (response.status !== 200) {
-        const error = await response.json()
-        return rejectWithValue(error.reason)
-      }
-      await dispatch(getUser())
-      return
-    } catch (e) {
-      rejectWithValue(e)
-    }
-  }
-)
-
-export const logOut = createAsyncThunk('auth/logout', async (_, { rejectWithValue }) => {
-  try {
-    const response = await AuthApi.logout()
-
-    if (response.status !== 200) {
-      const error = await response.json()
-      return rejectWithValue(error.reason)
-    }
-    return
-  } catch (e) {
-    rejectWithValue(e)
-  }
-})
-
-export const getUser = createAsyncThunk('user/getUser', async (_, { rejectWithValue }) => {
-  try {
-    const response = await UserApi.getUser()
-    const data = await response.json()
-
-    if (response.status !== 200) {
-      return rejectWithValue(data)
-    }
-
-    return data
-  } catch (e) {
-    rejectWithValue(e)
-  }
-})
-export const registration = createAsyncThunk('auth/signup',
-  async (body: SignUpFormValues, { dispatch, rejectWithValue }) => {
-    try {
-      const response = await AuthApi.signup(body)
-      if (response.status !== 200) {
-        const error = await response.json()
-        return rejectWithValue(error.reason)
-      }
-      await dispatch(getUser())
-      return
-    } catch (e) {
-      rejectWithValue(e)
-    }
-  }
-)
-/*
-return result.then(data => {
-  //TODO заменить на new httpError, когда Ильфат сольет МР
-  const message = `Что-то пошло не так... ${data.message}`
-  return Promise.reject(new Error(message))
-})
-}
-} catch (err) {
-console.log(err)
-}
-})
-*/
-
-export const { setIsAuth, resetSignInError, resetSignUpError } = authSlice.actions
 
 export default authSlice.reducer
