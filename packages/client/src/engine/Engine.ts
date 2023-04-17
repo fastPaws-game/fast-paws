@@ -125,6 +125,7 @@ export default class Engine {
   private resource: Resource
   private draw: Draw
   private bgMotion: BgMotion
+	private performance = [100]
   private setPauseVisible: (pause: boolean) => void
   private handleGameOver: () => void
   private showScore: (value: number) => void
@@ -367,6 +368,7 @@ export default class Engine {
   private render = () => {
     // Development time patch
     if (!this.cat.source) this.cat.source = this.resource.sprite.cat as GifObject
+    performance.mark('beginRenderProcess')
     this.game.ctx!.clearRect(0, 0, CANVAS.width, CANVAS.height)
     this.draw.drawTarget(this.target.nameCurr, this.target.xCurr, this.target.yCurr, this.target.heightCurr)
 
@@ -394,6 +396,16 @@ export default class Engine {
       default: //'stay'
         this.draw.drawCat(this.cat.source.frames[2].image, this.cat.CatX, this.cat.CatY)
     }
+		// Performance meter
+    performance.mark('endRenderProcess')
+    const measure = performance.measure('measureRenderProcess', 'beginRenderProcess', 'endRenderProcess')
+    const duration = Math.floor(measure.duration * 1000)
+		if (duration>0) this.performance.push(duration)
+		if (this.performance.length > 10) this.performance.shift()
+		const summ=this.performance.reduce((aver, curr)=>aver+curr,0)
+		const average=Math.floor(summ/this.performance.length)
+    this.game.ctx!.fillStyle = 'black'
+    this.game.ctx!.fillText(`mms/frame: ${average}`, 600, 10)
   }
 
   // Main update function
