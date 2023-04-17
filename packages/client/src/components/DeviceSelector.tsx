@@ -3,20 +3,22 @@ import { isMobile } from 'react-device-detect'
 import styled from 'styled-components'
 import { CANVAS } from '../constants/game'
 import Game from './Game'
+// @ts-ignore
+import switchFullscreen from '../utils/fullscreen.js'
 
 const DeviceSelector = () => {
-  const [fullWidth, setfullWidth] = useState(false)
+  const [fullScreen, setFullScreen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 
-  const switchfullWidth = () => {
-    setfullWidth(!fullWidth)
+  const switchFullScreen = () => {
+    setFullScreen(!fullScreen)
   }
 
   function setDimensions() {
     let canvasWidth = CANVAS.width
     let canvasHeight = CANVAS.height
 
-    if (isMobile || fullWidth) {
+    if (isMobile || fullScreen) {
       canvasWidth = window.innerWidth
       const expectedHeight = Math.floor(window.innerWidth * CANVAS.aspectRatio)
       if (expectedHeight < window.innerHeight) {
@@ -33,16 +35,31 @@ const DeviceSelector = () => {
     }
   }
 
+  function fullscreenchange() {
+    // @ts-ignore
+    const isFullscreenMode = document.fullscreenElement || document.mozFullScreenElemen || document.webkitFullscreenElement
+    // Was pressed Escape
+    if (!isFullscreenMode) setFullScreen(false)
+    // Switching full screen have delayed animation
+    setTimeout(setDimensions, 150)
+  }
+
   useEffect(() => {
-    setDimensions()
-    window.addEventListener('resize', setDimensions)
-    return () => window.removeEventListener('resize', setDimensions)
-  }, [fullWidth])
+    // @ts-ignore
+    const isFullscreenMode = document.fullscreenElement || document.mozFullScreenElemen || document.webkitFullscreenElement
+    if (isFullscreenMode != fullScreen) switchFullscreen(fullScreen)
+    // window.addEventListener('resize', setDimensions)	// Was used in stretch mode
+    document.addEventListener('fullscreenchange', fullscreenchange)
+    return () => {
+      // window.removeEventListener('resize', setDimensions)
+      document.removeEventListener('fullscreenchange', fullscreenchange)
+    }
+  }, [fullScreen])
 
   return (
     <RootWrapper>
       <GameWrapper ref={ref}>
-        <Game switchFullWidth={switchfullWidth} />
+        <Game switchFullScreen={switchFullScreen} />
       </GameWrapper>
     </RootWrapper>
   )
