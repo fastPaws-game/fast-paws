@@ -26,11 +26,11 @@ type Props = {
     bird: number
     mouse: number
   }
-  switchFullWidth: () => void
+  switchFullScreen: () => void
   handlePause: () => void
 }
 
-type TAction = 'settings' | 'sound' | 'pause' | 'fullscreen' | 'fullwidth'
+type TAction = 'settings' | 'sound' | 'pause' | 'fullscreen'
 
 const InterfaceLayer: FC<Props> = props => {
   const [sound, setSound] = useState(true)
@@ -48,8 +48,8 @@ const InterfaceLayer: FC<Props> = props => {
       case 'pause':
         props.handlePause()
         break
-      case 'fullwidth':
-        props.switchFullWidth()
+      case 'fullscreen':
+        props.switchFullScreen()
         break
     }
   }
@@ -80,7 +80,7 @@ const InterfaceLayer: FC<Props> = props => {
       <div></div>
       <HorisontalBlock>
         <UIButton aria-label="button" icon={IconSettings} onClick={handleClick('settings')} />
-        <BrowserButton aria-label="button" icon={IconFullscreen} onClick={handleClick('fullwidth')} />
+        <BrowserButton aria-label="button" icon={IconFullscreen} onClick={handleClick('fullscreen')} />
         <DeviceButton aria-label="button" icon={IconPause} onClick={handleClick('pause')} />
       </HorisontalBlock>
     </Layer>
