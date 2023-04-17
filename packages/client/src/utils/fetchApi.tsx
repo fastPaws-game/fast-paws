@@ -12,6 +12,14 @@ type Options = {
 }
 type Request = <T>(url: string, options?: Options) => Promise<Response>
 
+const configOptions = {
+  method: METHODS.GET,
+  credentials: 'include' as RequestCredentials | undefined,
+  headers: {
+    'Content-Type': 'application/json;charset=utf-8',
+  },
+}
+
 export class FetchApi {
   static API_URL = 'https://ya-praktikum.tech/api/v2'
 
@@ -23,11 +31,7 @@ export class FetchApi {
     const buildedUrl = this.buildUrl(url)
     return fetch(buildedUrl, {
       ...options,
-      method: METHODS.GET,
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8',
-      },
+      ...configOptions,
     })
   }
 
@@ -35,11 +39,8 @@ export class FetchApi {
     const buildedUrl = this.buildUrl(url)
     return fetch(buildedUrl, {
       ...options,
+      ...configOptions,
       method: METHODS.POST,
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8',
-      },
     })
   }
 
@@ -47,11 +48,8 @@ export class FetchApi {
     const buildedUrl = this.buildUrl(url)
     return fetch(buildedUrl, {
       ...options,
+      ...configOptions,
       method: METHODS.PUT,
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8',
-      },
     })
   }
 }
