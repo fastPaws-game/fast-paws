@@ -29,7 +29,7 @@ const Input: FC<Props> = forwardRef((props, ref) => {
 })
 
 const InputFormStyled = styled.input<{ errorOn?: boolean }>`
-  max-width: 246px;
+  max-width: 300px;
   width: 100%;
   height: 34px;
   background: ${props => props.theme.colors.backgroundInput};

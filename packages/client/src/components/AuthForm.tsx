@@ -46,34 +46,32 @@ const AuthForm: FC<Props> = props => {
   }
 
   return (
-		<Wrapper>
-			<Form onSubmit={handleSubmit(onSubmit)}>
-				<H3 accent>Login</H3>
-				<InputContainer>
-					<Input
-						typeStyle={typeStyleInput.form}
-						placeholder="Login"
-						{...register('login')}
-						errorOn={!!errors.login}
-						errorMessage={errors.login?.message}
-					/>
-					<Input
-						typeStyle={typeStyleInput.form}
-						placeholder="Password"
-						{...register('password')}
-						errorOn={!!errors.password}
-						errorMessage={errors.password?.message}
-					/>
-				</InputContainer>
-				<ButtonContainer>
-					<Button type="submit" disabled={!isDirty || isSubmitting}>
-						Log in
-					</Button>
-					<Link to={Routes.SIGNUP}>Registration</Link>
-				</ButtonContainer>
-			</Form>
-			<Button onClick={()=>navigate('/game')}>Play unatorized</Button>
-		</Wrapper>
+    <Form onSubmit={handleSubmit(onSubmit)}>
+      <H3 accent>Login</H3>
+      <InputContainer>
+        <Input
+          typeStyle={typeStyleInput.form}
+          placeholder="Login"
+          {...register('login')}
+          errorOn={!!errors.login}
+          errorMessage={errors.login?.message}
+        />
+        <Input
+          typeStyle={typeStyleInput.form}
+          placeholder="Password"
+          type='password'
+          {...register('password')}
+          errorOn={!!errors.password}
+          errorMessage={errors.password?.message}
+        />
+      </InputContainer>
+      <ButtonContainer>
+        <Button type="submit" disabled={!isDirty || isSubmitting}>
+          Log in
+        </Button>
+        <Link to={Routes.SIGNUP}>Registration</Link>
+      </ButtonContainer>
+    </Form>
   )
 }
 
@@ -88,6 +86,7 @@ const Wrapper = styled.div`
 
 const Form = styled.form`
   width: 100%;
+  max-width: 380px;
   height: 100%;
   max-height: 285px;
   display: flex;
@@ -107,13 +106,21 @@ const Form = styled.form`
 `
 
 const InputContainer = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 15px;
+  & div {
+    width: 100%;
+    text-align: center;
+  }
 `
 
 const ButtonContainer = styled.div`
   display: flex;
+  width: 100%;
+  align-items: center;
   flex-direction: column;
   gap: 10px;
 

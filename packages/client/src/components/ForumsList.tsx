@@ -33,6 +33,7 @@ const ListWrapper = styled.ul`
   list-style-type: none;
   width: 100%;
   padding: 30px;
+  z-index: 1;
 `
 
 export default ForumsList
