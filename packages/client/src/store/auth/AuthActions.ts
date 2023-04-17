@@ -1,10 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
+import { authSlice } from './AuthSlice'
 import AuthApi from '../../api/AuthApi'
 import UserApi from '../../api/UserApi'
 import { AuthFormValues } from '../../components/AuthForm'
 import { ProfileFormValuesType } from '../../components/ProfileForm'
 import { SignUpFormValues } from '../../modules/registration/Registration'
-import { authSlice } from './AuthSlice'
 
 export const updateUser = createAsyncThunk(
   'user/updateUser',

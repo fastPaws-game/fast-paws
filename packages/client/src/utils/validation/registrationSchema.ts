@@ -2,7 +2,7 @@ import * as yup from 'yup'
 import { mainProfileSchema } from './profileSchema'
 import { passwordRegExp } from './regExps'
 
-const passwordsSchema = yup.object({
+export const passwordsSchema = yup.object({
   password: yup
     .string()
     .matches(passwordRegExp, 'Пароль дожен содержать хотя бы одну заглавную букву и цифру')

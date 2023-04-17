@@ -7,7 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { FC, useState, useCallback } from 'react'
 import { H3 } from '../assets/styles/texts'
 import ContrastingWrapper from './ContrastingWrapper'
-import PasswordsPopup from './PasswordsPopup'
+import { PasswordsPopup } from './PasswordsPopup'
 
 export type ProfileFormValuesType = {
   first_name: string
@@ -25,6 +25,7 @@ type Props = {
 
 const ProfileForm: FC<Props> = props => {
   const { onSubmitForm, defaultFormValues } = props
+  const [modal, setModal] = useState(false)
 
   const {
     register,
@@ -36,8 +37,6 @@ const ProfileForm: FC<Props> = props => {
     criteriaMode: 'all',
     resolver: yupResolver(profileSchema),
   })
-
-  const [modal, setModal] = useState(false)
 
   const handleClose = useCallback(() => {
     setModal(false)
@@ -140,15 +139,15 @@ const FormFields = styled.div`
     color: ${({ theme }) => theme.colors.accent};
     transition: all 0.5s ease-out;
   }
+  button:last-of-type:hover {
+    text-decoration: underline;
+  }
   button:last-of-type:active,
   button:last-of-type:hover,
   button:last-of-type:not([disabled]):hover,
   button:last-of-type:not([disabled]):focus {
     background: transparent;
     box-shadow: none;
-  }
-  button:last-of-type:hover {
-    text-decoration: underline;
   }
 `
 

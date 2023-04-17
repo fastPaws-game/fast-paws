@@ -1,6 +1,7 @@
 import FetchApi from '../utils/fetchApi'
 import { User } from '../models/User'
 import { ProfileFormValuesType } from '../components/ProfileForm'
+import { ChangingPasswords } from '../models/Passwords'
 
 class UserApi {
   public getUser() {
@@ -8,6 +9,9 @@ class UserApi {
   }
   public updateUser(data: ProfileFormValuesType) {
     return FetchApi.put('/user/profile', { body: JSON.stringify(data) })
+  }
+  public updatePassword(data: ChangingPasswords) {
+    return FetchApi.put('/user/password', { body: JSON.stringify(data) })
   }
 }
 
