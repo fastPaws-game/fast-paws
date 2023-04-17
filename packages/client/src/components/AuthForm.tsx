@@ -10,6 +10,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import authSchema from '../utils/validation/authSchema'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Routes } from '../constants/routes'
+import { useNavigate } from 'react-router'
 import { authSelectors } from '../store/auth/AuthSelectors'
 import { useAppDispatch } from '../hooks/store'
 import { resetSignInError } from '../store/auth/AuthActions'
@@ -30,6 +31,8 @@ type Props = {
 
 const AuthForm: FC<Props> = props => {
   const { onSubmitFrom } = props
+  //TODO Николай хочет добавить переход на страницу с игрой
+  const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const serverError = useSelector(authSelectors.getSignInError)
   const signInStatus = useSelector(authSelectors.getSignInStatus)
@@ -76,6 +79,7 @@ const AuthForm: FC<Props> = props => {
         <Input
           typeStyle={typeStyleInput.form}
           placeholder="Password"
+          type='password'
           {...register('password')}
           errorOn={!!errors.password || (signInStatus === 'error')}
           errorMessage={errors.password?.message}
@@ -102,7 +106,7 @@ const Error = styled.p`
 `
 const Form = styled.form`
   width: 100%;
-  max-width: 345px;
+  max-width: 380px;
   height: 100%;
   max-height: 285px;
   display: flex;
@@ -121,8 +125,10 @@ const Form = styled.form`
 `
 
 const InputContainer = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 15px;
   width: 100%;
   max-width: 246px;

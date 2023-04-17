@@ -1,4 +1,4 @@
-import { canvas } from '../constants/game'
+import { CANVAS } from '../constants/game'
 import Resource from './ResourceLoader'
 import { getValue } from '../utils/data_utils'
 
@@ -27,40 +27,38 @@ export default class BgMotion {
   private ctx: CanvasRenderingContext2D | null = null
   private timer: NodeJS.Timeout | null = null
   private layersArr: Layer[] = []
-  private clearX = canvas.width
-  private clearY = canvas.height
+  private clearX = CANVAS.width
+  private clearY = CANVAS.height
   private static __instance: BgMotion
+  private resource = Resource.get()
 
   constructor(ctx?: CanvasRenderingContext2D) {
+    if (ctx) BgMotion.__instance.ctx = ctx
     if (BgMotion.__instance) return BgMotion.__instance
-    if (!ctx) return
-
-    this.ctx = ctx
     this.init()
-
     BgMotion.__instance = this
   }
 
   private init = () => {
-    if (Resource.progress < 100) {
-      // Developement time patch
+    // Developement time patch
+    if (this.resource.progress < 100) {
       setTimeout(this.init, 500)
       return
     }
 
     layersData.forEach(layer => {
-      const img = getValue(Resource.sprite, layer.src) as HTMLImageElement
+      const img = getValue(this.resource.sprite, layer.src) as HTMLImageElement
       const aspectRatio = img.height / img.width
       const layerObj: Layer = {
         img,
         dx: layer.dx,
-        imgW: canvas.width,
+        imgW: CANVAS.width,
         get imgH(): number {
           return this.imgW * aspectRatio
         },
         x: 0,
         get y(): number {
-          return layer.isTop ? 0 : canvas.height - this.imgH
+          return layer.isTop ? 0 : CANVAS.height - this.imgH
         },
       }
       this.layersArr.push(layerObj)
@@ -70,12 +68,12 @@ export default class BgMotion {
   private draw = () => {
     this.ctx?.clearRect(0, 0, this.clearX, this.clearY)
     this.layersArr.forEach(layer => {
-      if (layer.x <= -canvas.width) {
+      if (layer.x <= -CANVAS.width) {
         layer.x = 0
       }
 
-      if (layer.x > -canvas.width) {
-        this.ctx?.drawImage(layer.img as CanvasImageSource, canvas.width + layer.x, layer.y, layer.imgW, layer.imgH)
+      if (layer.x > -CANVAS.width) {
+        this.ctx?.drawImage(layer.img as CanvasImageSource, CANVAS.width + layer.x, layer.y, layer.imgW, layer.imgH)
       }
 
       this.ctx?.drawImage(layer.img as CanvasImageSource, layer.x, layer.y, layer.imgW, layer.imgH)

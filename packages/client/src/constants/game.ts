@@ -1,13 +1,18 @@
-export const canvas = {
+export const CANVAS = {
   width: 800,
   height: 360,
+  get aspectRatio(): number {
+    return this.height / this.width
+  },
 }
 
 export const SpriteSize = {
   cat: {
     width: 100,
     height: 74,
-    aspectRatio: 0.74,
+    get aspectRatio(): number {
+      return this.height / this.width
+    },
   },
 }
 
@@ -15,17 +20,17 @@ export const SpriteSize = {
 export const GAME = {
   scorePerLevel: 100,
   initialScore: 20, // Need to prevent 'Game over' after the first fail
-  actionPositionVertical: Math.floor(canvas.height * 0.88),
+  actionPositionVertical: Math.floor(CANVAS.height * 0.88),
   shadowsEnable: false,
   trajectoryStep: 2,
   jumpHeightMin: Math.floor(SpriteSize.cat.height / 1.5),
   jumpHeightMax: SpriteSize.cat.height * 3,
-  defaultCatX: Math.floor(canvas.width / 3),
+  defaultCatX: Math.floor(CANVAS.width / 3),
   get defaultCatY(): number {
     return this.actionPositionVertical
   },
-  defaultTargetX: canvas.width / 2,
-  victimPositionDelta: canvas.width / 8,
+  defaultTargetX: CANVAS.width / 2,
+  animalPositionDelta: CANVAS.width / 8,
   get defaultTargetY(): number {
     return this.actionPositionVertical
   },
@@ -34,19 +39,11 @@ export const GAME = {
   defaultRunAwayDelay: 8000, // The time after which the target will escape
   stepTargetDelay: 1000,
 }
+export type AnimalName = 'butterfly' | 'grasshopper' | 'bird' | 'mouse'
 
-export type TargetName =
-  | 'mouse'
-  | 'grasshopper'
-  | 'butterfly'
-  | 'bird'
-  | 'cactus'
-  | 'puddle'
-  | 'flowerpot'
-  | 'gnome'
-  | 'none'
+export type TargetName = AnimalName | 'cactus' | 'puddle' | 'flowerpot' | 'gnome' | 'none'
 
-export const VICTIM_LIST: TargetName[] = ['mouse', 'grasshopper', 'butterfly', 'bird']
+export const ANIMAL_LIST: TargetName[] = ['mouse', 'grasshopper', 'butterfly', 'bird']
 
 export const BARRIER_LIST: TargetName[] = ['cactus', 'puddle', 'flowerpot', 'gnome']
 
@@ -73,9 +70,10 @@ export const TARGET_SCORE: Record<TargetName, Record<'success' | 'fail', number>
   cactus: { success: 5, fail: -20 },
 }
 
-type Tooltip = 'newGame' | 'firstVictim' | 'firstBarrier'
+type Tooltip = 'newGame' | 'firstAnimal' | 'firstBarrier' | 'firstTimeout'
 export const TOOLTIP: Record<Tooltip, string> = {
   newGame: 'Hold space/tap to jump',
-  firstVictim: 'Need to jump on target',
+  firstAnimal: 'Need to jump on target',
   firstBarrier: 'Need to jump over the target',
+  firstTimeout: 'The animal can run away',
 }
