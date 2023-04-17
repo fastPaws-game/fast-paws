@@ -73,15 +73,15 @@ const AuthForm: FC<Props> = props => {
           typeStyle={typeStyleInput.form}
           placeholder="Login"
           {...register('login')}
-          errorOn={!!errors.login || (signInStatus === 'error')}
+          errorOn={!!errors.login || signInStatus === 'error'}
           errorMessage={errors.login?.message}
         />
         <Input
           typeStyle={typeStyleInput.form}
           placeholder="Password"
-          type='password'
+          type="password"
           {...register('password')}
-          errorOn={!!errors.password || (signInStatus === 'error')}
+          errorOn={!!errors.password || signInStatus === 'error'}
           errorMessage={errors.password?.message}
         />
       </InputContainer>
@@ -132,16 +132,16 @@ const InputContainer = styled.div`
   gap: 15px;
   width: 100%;
   max-width: 246px;
-  padding-top:20px;
+  padding-top: 20px;
 `
 
 const ButtonContainer = styled.div`
   display: flex;
-  width:100%;
+  width: 100%;
   flex-direction: column;
   gap: 10px;
-  position:relative;
-  padding-top:35px;
+  position: relative;
+  padding-top: 35px;
   align-items: center;
 
   :last-child {

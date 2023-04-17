@@ -7,13 +7,17 @@ import Button from '../../ui/button'
 import styled from 'styled-components'
 import { useChangeTheme } from '../../hooks/useChangeTheme'
 import { authSelectors } from '../../store/auth/AuthSelectors'
+import { Routes } from '../../constants/routes'
+import { useNavigate } from 'react-router'
+import PasswordsPopup from '../../components/PasswordsPopup'
 
 const Profile = () => {
   const { toggleTheme } = useChangeTheme()
   const [userValues, setDefaultValues] = useState<ProfileFormValuesType | null>(null)
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
   const user = useAppSelector(authSelectors.getUser)
-  const hasUserData = !!user?.email;
+  const hasUserData = !!user?.email
 
   const handleSubmit = async (data: ProfileFormValuesType) => {
     dispatch(updateUser(data))
@@ -21,35 +25,37 @@ const Profile = () => {
 
   const handleLogOut = useCallback(() => {
     dispatch(logOut())
+    navigate(Routes.HOME)
   }, [dispatch])
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       if (!hasUserData) {
         await dispatch(getUser())
           .unwrap()
-          .then((originalPromiseResult) => {
+          .then(originalPromiseResult => {
             setDefaultValues({
               ...originalPromiseResult,
-              display_name: originalPromiseResult.display_name ??
-                `${originalPromiseResult.first_name} ${originalPromiseResult.second_name}`
+              display_name:
+                originalPromiseResult.display_name ??
+                `${originalPromiseResult.first_name} ${originalPromiseResult.second_name}`,
             })
           })
-      }
-      else {
+      } else {
         setDefaultValues({
           ...user,
-          display_name: user.display_name ?? `${user.first_name} ${user.second_name}`
+          display_name: user.display_name ?? `${user.first_name} ${user.second_name}`,
         })
       }
     })()
   }, [])
 
   useEffect(() => {
-    if (hasUserData) setDefaultValues({
-      ...user,
-      display_name: user.display_name ?? `${user.first_name} ${user.second_name}`
-    })
+    if (hasUserData)
+      setDefaultValues({
+        ...user,
+        display_name: user.display_name ?? `${user.first_name} ${user.second_name}`,
+      })
   }, [user])
 
   return (

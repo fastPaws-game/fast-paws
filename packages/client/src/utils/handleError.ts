@@ -1,4 +1,3 @@
-
 import { httpError } from '../errors/error'
 
 const BASE_ERROR = 'Sorry, something wrong'
@@ -12,4 +11,3 @@ export const handleError = (error: unknown) => {
     return BASE_ERROR
   }
 }
-

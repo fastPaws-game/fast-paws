@@ -45,14 +45,14 @@ export const authSlice = createSlice({
     setIsAuth: (state, action: PayloadAction<boolean>) => {
       state.isAuth = action.payload
     },
-    resetSignInError: (state) => {
+    resetSignInError: state => {
       state.signInError = null
       state.signInStatus = 'pending'
     },
-    resetSignUpError: (state) => {
+    resetSignUpError: state => {
       state.signUpError = null
       state.signUpStatus = 'pending'
-    }
+    },
   },
   extraReducers: builder => {
     builder
@@ -91,6 +91,7 @@ export const authSlice = createSlice({
         state.logOutStatus = 'success'
         state.isAuth = false
         state.logOutError = null
+        state.user = null
         LocalStorage.set('isAuth', false)
       })
       .addCase(logOut.rejected, (state, action) => {

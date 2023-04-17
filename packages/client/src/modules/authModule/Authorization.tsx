@@ -12,4 +12,4 @@ const Authorization = () => {
   return <AuthForm onSubmitFrom={handleSubmit} />
 }
 
-export {Authorization}
+export { Authorization }

@@ -1,10 +1,10 @@
-import { createAsyncThunk } from "@reduxjs/toolkit"
-import AuthApi from "../../api/AuthApi"
-import UserApi from "../../api/UserApi"
-import { AuthFormValues } from "../../components/AuthForm"
-import { ProfileFormValuesType } from "../../components/ProfileForm"
-import { SignUpFormValues } from "../../modules/registration/Registration"
-import { authSlice } from "./AuthSlice"
+import { createAsyncThunk } from '@reduxjs/toolkit'
+import AuthApi from '../../api/AuthApi'
+import UserApi from '../../api/UserApi'
+import { AuthFormValues } from '../../components/AuthForm'
+import { ProfileFormValuesType } from '../../components/ProfileForm'
+import { SignUpFormValues } from '../../modules/registration/Registration'
+import { authSlice } from './AuthSlice'
 
 export const updateUser = createAsyncThunk(
   'user/updateUser',
@@ -65,7 +65,8 @@ export const getUser = createAsyncThunk('user/getUser', async (_, { rejectWithVa
     rejectWithValue(e)
   }
 })
-export const registration = createAsyncThunk('auth/signup',
+export const registration = createAsyncThunk(
+  'auth/signup',
   async (body: SignUpFormValues, { dispatch, rejectWithValue }) => {
     try {
       const response = await AuthApi.signup(body)
@@ -94,5 +95,3 @@ console.log(err)
 */
 
 export const { setIsAuth, resetSignInError, resetSignUpError } = authSlice.actions
-
-

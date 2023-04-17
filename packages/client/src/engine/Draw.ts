@@ -3,7 +3,7 @@ import Resource, { GifObject } from '../engine/ResourceLoader'
 
 export default class Draw {
   private ctx: CanvasRenderingContext2D | null = null
-	private resource = Resource.get()
+  private resource = Resource.get()
 
   constructor(ctx: CanvasRenderingContext2D) {
     this.ctx = ctx

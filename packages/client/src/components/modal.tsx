@@ -1,4 +1,4 @@
-import React, { FC, PropsWithChildren, useEffect, MouseEvent, useCallback, memo } from 'react'
+import { FC, PropsWithChildren, useEffect, MouseEvent, useCallback, memo } from 'react'
 import styled from 'styled-components'
 import scrollLock from '../utils/scrollLock'
 import useEscape from '../hooks/useEscape'

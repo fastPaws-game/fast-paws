@@ -46,9 +46,9 @@ const RegistrationForm: FC<Props> = props => {
   const signInStatus = useAppSelector(authSelectors.getSignUpStatus)
   const dispatch = useAppDispatch()
 
-  const isUserServerError =  (signInStatus === 'error')&&(serverError?.startsWith('User'||'Login'))
-  const isEmailServerError =  (signInStatus === 'error')&&(serverError?.startsWith('Email'))
-  const isPasswordServerError =  (signInStatus === 'error')&&(serverError?.startsWith('Password'))
+  const isUserServerError = signInStatus === 'error' && serverError?.startsWith('User' || 'Login')
+  const isEmailServerError = signInStatus === 'error' && serverError?.startsWith('Email')
+  const isPasswordServerError = signInStatus === 'error' && serverError?.startsWith('Password')
 
   useEffect(() => {
     setFocus('login')
@@ -76,14 +76,14 @@ const RegistrationForm: FC<Props> = props => {
           placeholder="Login"
           typeStyle={typeStyleInput.form}
           {...register('login')}
-          errorOn={!!errors.login||isUserServerError}
+          errorOn={!!errors.login || isUserServerError}
           errorMessage={errors.login?.message}
         />
         <Input
           placeholder="Email"
           typeStyle={typeStyleInput.form}
           {...register('email')}
-          errorOn={!!errors.email||isEmailServerError}
+          errorOn={!!errors.email || isEmailServerError}
           errorMessage={errors.email?.message}
         />
         <Input
@@ -114,7 +114,7 @@ const RegistrationForm: FC<Props> = props => {
           typeStyle={typeStyleInput.form}
           type="password"
           {...register('password')}
-          errorOn={!!errors.password||isPasswordServerError}
+          errorOn={!!errors.password || isPasswordServerError}
           errorMessage={errors.password?.message}
         />
         <Input
@@ -122,7 +122,7 @@ const RegistrationForm: FC<Props> = props => {
           typeStyle={typeStyleInput.form}
           type="password"
           {...register('repeated_password')}
-          errorOn={!!errors.repeated_password||isPasswordServerError}
+          errorOn={!!errors.repeated_password || isPasswordServerError}
           errorMessage={errors.repeated_password?.message}
         />
         {serverError && <Error>{serverError}</Error>}
@@ -168,9 +168,9 @@ const Column = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding-right:20px;
-  padding-left:20px;
-  min-width:290px;
+  padding-right: 20px;
+  padding-left: 20px;
+  min-width: 290px;
   position: relative;
 
   & div {

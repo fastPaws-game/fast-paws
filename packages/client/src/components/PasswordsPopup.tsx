@@ -7,16 +7,14 @@ import Popup from './Popup'
 type Props = {
   visible: boolean
   handleClose: () => void
-  handleSubmit: () => void
   outSideClickEnable?: boolean
 }
 
-const AddNewTopic: FC<Props> = props => {
-  const { handleSubmit } = props
-
+const PasswordsPopup: FC<Props> = props => {
+  const handleSubmit = () => console.log('555')
   return (
     <Popup {...props}>
-      <H3>New Topic</H3>
+      <H3>Passwords</H3>
       <Input placeholder="Topic name" typeStyle={typeStyleInput.profile} />
       <Button size="small" onClick={handleSubmit}>
         Add topic
@@ -25,4 +23,4 @@ const AddNewTopic: FC<Props> = props => {
   )
 }
 
-export default AddNewTopic
+export default PasswordsPopup
