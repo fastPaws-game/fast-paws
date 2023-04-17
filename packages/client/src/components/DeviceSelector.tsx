@@ -5,18 +5,18 @@ import { CANVAS } from '../constants/game'
 import Game from './Game'
 
 const DeviceSelector = () => {
-  const [fullScreen, setFullScreen] = useState(false)
+  const [fullWidth, setfullWidth] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 
-  const switchFullScreen = () => {
-    setFullScreen(!fullScreen)
+  const switchfullWidth = () => {
+    setfullWidth(!fullWidth)
   }
 
   function setDimensions() {
     let canvasWidth = CANVAS.width
     let canvasHeight = CANVAS.height
 
-    if (isMobile || fullScreen) {
+    if (isMobile || fullWidth) {
       canvasWidth = window.innerWidth
       const expectedHeight = Math.floor(window.innerWidth * CANVAS.aspectRatio)
       if (expectedHeight < window.innerHeight) {
@@ -37,12 +37,12 @@ const DeviceSelector = () => {
     setDimensions()
     window.addEventListener('resize', setDimensions)
     return () => window.removeEventListener('resize', setDimensions)
-  }, [fullScreen])
+  }, [fullWidth])
 
   return (
     <RootWrapper>
       <GameWrapper ref={ref}>
-        <Game switchFullScreen={switchFullScreen} />
+        <Game switchFullWidth={switchfullWidth} />
       </GameWrapper>
     </RootWrapper>
   )
