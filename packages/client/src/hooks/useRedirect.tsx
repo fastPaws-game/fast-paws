@@ -4,7 +4,13 @@ import { useAppSelector } from './store'
 import { useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
 
-const pathsRequireAuth = [Routes.MAIN, Routes.GAME, Routes.FORUM, Routes.LEADERBOARD, Routes.SETTINGS]
+const pathsRequireAuth = [
+  Routes.MAIN,
+  // Routes.GAME,
+  Routes.FORUM,
+  Routes.LEADERBOARD,
+  // Routes.SETTINGS,
+]
 const pathForAuth = [Routes.SIGNUP, Routes.HOME]
 
 export const useRedirect = () => {

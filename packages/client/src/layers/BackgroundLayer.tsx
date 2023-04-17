@@ -1,6 +1,6 @@
 import { Component, ReactPropTypes, RefObject, createRef } from 'react'
 import styled from 'styled-components'
-import { canvas } from '../constants/game'
+import { CANVAS } from '../constants/game'
 import BgMotion from '../engine/BgMotion'
 
 export default class BackgroundLayer extends Component {
@@ -22,7 +22,7 @@ export default class BackgroundLayer extends Component {
   render() {
     return (
       <Wrapper>
-        <canvas ref={this.canvas} width={canvas.width} height={canvas.height} />
+        <canvas ref={this.canvas} width={CANVAS.width} height={CANVAS.height} />
       </Wrapper>
     )
   }
@@ -30,10 +30,9 @@ export default class BackgroundLayer extends Component {
 
 const Wrapper = styled.div`
   z-index: 1;
-  height: ${canvas.height}px;
-  width: ${canvas.width}px;
+  width: 100%;
+  height: 100%;
   position: absolute;
   left: 0px;
   top: 0px;
-  overflow: clip;
 `

@@ -35,25 +35,19 @@ export class Resource {
   private total = 12 // Resource count
   private current = 0
 
-  protected static _instance: Resource
+  protected static __instance: Resource
   protected static _initialized = false
-  protected static _progresCallback: (progress: number) => void
+  protected static _progressCallback: (progress: number) => void
   public sprite: Record<string, HTMLImageElement | GifObject> = {}
 
   private constructor() {
     this.initialize()
   }
 
-  public static get(progresCallback: (progress: number) => void) {
-    if (Resource._instance) return Resource._instance
-    Resource._progresCallback = progresCallback
-    return (Resource._instance = new Resource())
-  }
-
   private countOne = () => {
     this.current += 1
     this.progress = Math.floor((this.current / this.total) * 100)
-    Resource._progresCallback(this.progress)
+    Resource._progressCallback(this.progress)
   }
 
   private loadGif = (name: string, url: string) => {
@@ -116,11 +110,18 @@ export class Resource {
       this.loadImg('MistyMountains.layer3', MistyMountains_layer3Url)
     }
   }
+
+  public static get(progressCallback?: (progress: number) => void) {
+    if (Resource.__instance) return Resource.__instance
+		if (progressCallback) Resource._progressCallback = progressCallback
+    return (Resource.__instance = new Resource())
+  }
 }
 
-// Future preloader callback
+/* Callback example
 const tempCallback = (progress: number) => {
   console.log(`Resource loading: ${progress}%`)
 }
+*/
 
-export default Resource.get(tempCallback)
+export default Resource
