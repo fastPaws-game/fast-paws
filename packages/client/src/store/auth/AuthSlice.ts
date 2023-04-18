@@ -1,7 +1,7 @@
 import { RequestStatus } from '../types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { handleError } from '../../utils/handleError'
-import { TUser } from '../../models/types'
+import { TUser } from '../../models/UserModel'
 import LocalStorage from '../../utils/localStorage'
 import { getUser, logOut, registration, signInUser, updateUser } from './AuthActions'
 
