@@ -121,7 +121,7 @@ export default class Engine {
     isBarrier: false,
     runAwayDelay: GAME.defaultRunAwayDelay,
   }
-	private canvas: HTMLCanvasElement
+  private canvas: HTMLCanvasElement
   private resource: Resource
   private draw: Draw
   private bgMotion: BgMotion
@@ -467,16 +467,16 @@ export default class Engine {
   }
 
   private touchstart = (event: MouseEvent | TouchEvent) => {
-		event.stopPropagation()
+    event.stopPropagation()
     event.preventDefault()
-		
+
     if (!this.game.hold) {
       this.prepareJumpStart()
     }
   }
 
   private touchend = (event: MouseEvent | TouchEvent) => {
-		event.stopPropagation()
+    event.stopPropagation()
     this.prepareJumpEnd()
   }
 
@@ -499,7 +499,7 @@ export default class Engine {
   }
 
   public start() {
-		this.canvas = document.getElementById('game_canvas') as HTMLCanvasElement
+    this.canvas = document.getElementById('game_canvas') as HTMLCanvasElement
     this.game.ctx = this.canvas.getContext('2d')
     this.registerEvents()
     this.levelPrepare()

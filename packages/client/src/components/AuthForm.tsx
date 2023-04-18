@@ -57,7 +57,7 @@ const AuthForm: FC<Props> = props => {
         <Input
           typeStyle={typeStyleInput.form}
           placeholder="Password"
-          type='password'
+          type="password"
           {...register('password')}
           errorOn={!!errors.password}
           errorMessage={errors.password?.message}

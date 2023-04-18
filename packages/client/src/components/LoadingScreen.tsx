@@ -2,26 +2,26 @@ import styled, { keyframes } from 'styled-components'
 import { FC } from 'react'
 import { H2 } from '../assets/styles/texts'
 
-type Props = {progress?: number}
-const LoadingPage: FC<Props> = ({progress = 0}) => {
+type Props = { progress?: number }
+const LoadingPage: FC<Props> = ({ progress = 0 }) => {
   return (
-	<Wrapper>
-		<H2>Loading... {progress}%</H2>
-		<Spinner>
-			<div />
-			<div />
-			<div />
-			<div />
-			<div />
-			<div />
-			<div />
-			<div />
-			<div />
-			<div />
-			<div />
-			<div />
-		</Spinner>
-	</Wrapper>
+    <Wrapper>
+      <H2>Loading... {progress}%</H2>
+      <Spinner>
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
+      </Spinner>
+    </Wrapper>
   )
 }
 

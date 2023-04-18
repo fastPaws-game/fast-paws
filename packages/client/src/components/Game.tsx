@@ -5,6 +5,7 @@ import BackgroundLayer from '../layers/BackgroundLayer'
 import GamePause from '../components/gamePause'
 import GameOver from '../components/GameOver'
 import Engine from '../engine/Engine'
+import AudioLayer from '../layers/AudioLayer'
 
 type Props = {
   switchFullScreen: () => void
@@ -53,6 +54,7 @@ const GamePage: FC<Props> = props => {
       <GamePause visible={pauseVisible} handleClose={handleContinue} outSideClickEnable />
       <GameOver visible={gameOverVisible} handleClose={handleNewGame} />
       <BackgroundLayer />
+      <AudioLayer />
       <ActionLayer {...actionLayerProps} />
       <InterfaceLayer {...interfaceLayerProps} />
     </>
