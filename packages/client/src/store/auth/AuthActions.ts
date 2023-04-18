@@ -2,13 +2,13 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import { authSlice } from './AuthSlice'
 import AuthApi from '../../api/AuthApi'
 import UserApi from '../../api/UserApi'
-import { AuthFormValues } from '../../components/AuthForm'
-import { ProfileFormValuesType } from '../../components/ProfileForm'
-import { SignUpFormValues } from '../../modules/registration/Registration'
+import { TSignIn } from '../../models/SignInModel'
+import { TProfile } from '../../models/ProfileModel'
+import { TSignUpFormValues } from '../../models/RegistrationModel'
 
 export const updateUser = createAsyncThunk(
   'user/updateUser',
-  async (body: ProfileFormValuesType, { dispatch, rejectWithValue }) => {
+  async (body: TProfile, { dispatch, rejectWithValue }) => {
     try {
       const response = await UserApi.updateUser(body)
       if (response.status !== 200) {
@@ -23,7 +23,7 @@ export const updateUser = createAsyncThunk(
 )
 export const signInUser = createAsyncThunk(
   'user/signIn',
-  async (body: AuthFormValues, { dispatch, rejectWithValue }) => {
+  async (body: TSignIn, { dispatch, rejectWithValue }) => {
     try {
       const response = await AuthApi.signin(body)
       if (response.status !== 200) {
@@ -67,7 +67,7 @@ export const getUser = createAsyncThunk('user/getUser', async (_, { rejectWithVa
 })
 export const registration = createAsyncThunk(
   'auth/signup',
-  async (body: SignUpFormValues, { dispatch, rejectWithValue }) => {
+  async (body: TSignUpFormValues, { dispatch, rejectWithValue }) => {
     try {
       const response = await AuthApi.signup(body)
       if (response.status !== 200) {
@@ -81,17 +81,5 @@ export const registration = createAsyncThunk(
     }
   }
 )
-/*
-return result.then(data => {
-  //TODO заменить на new httpError, когда Ильфат сольет МР
-  const message = `Что-то пошло не так... ${data.message}`
-  return Promise.reject(new Error(message))
-})
-}
-} catch (err) {
-console.log(err)
-}
-})
-*/
 
 export const { setIsAuth, resetSignInError, resetSignUpError } = authSlice.actions
