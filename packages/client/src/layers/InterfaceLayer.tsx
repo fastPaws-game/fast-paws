@@ -91,7 +91,7 @@ const UIButton = styled.div<{ icon: string }>`
   width: 40px;
   height: 40px;
   cursor: pointer;
-  background-color: ${props => props.theme.colors.accent};
+  background-color: ${props => props.theme.colors.tertiary};
   mask-size: cover;
   mask-image: url(${props => props.icon});
   &:hover {
@@ -102,7 +102,7 @@ const UIButton = styled.div<{ icon: string }>`
 const IconAnimal = styled.div<{ icon: string }>`
   width: 20px;
   height: 20px;
-  background-color: ${props => props.theme.colors.accent};
+  background-color: ${props => props.theme.colors.tertiary};
   mask-size: cover;
   mask-image: url(${props => props.icon});
 `
@@ -124,7 +124,7 @@ const Layer = styled.div`
 `
 const ScoreBlock = styled.div`
   font-size: ${props => props.theme.vars.fontSize.l};
-  color: ${props => props.theme.colors.accent};
+  color: ${props => props.theme.colors.tertiary};
   font-weight: 600;
   text-shadow: none;
 `

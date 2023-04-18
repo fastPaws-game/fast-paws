@@ -1,11 +1,11 @@
 import styled from 'styled-components'
 import { FC } from 'react'
 import ForumItem from '../ui/forum'
+import { Routes } from '../constants/routes'
 
 type ForumData = {
   name: string
   id: number
-  path: string
   topics: number
 }
 
@@ -19,7 +19,7 @@ const ForumsList: FC<Props> = props => {
   return (
     <ListWrapper>
       {forums.map(forum => (
-        <ForumItem forumName={forum.name} key={forum.id} forumPath={forum.path} topics={forum.topics} />
+        <ForumItem forumName={forum.name} key={forum.id} forumPath={`${Routes.FORUM}/${forum.id}`} topics={forum.topics} />
       ))}
     </ListWrapper>
   )
