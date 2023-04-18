@@ -9,6 +9,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import authSchema from '../utils/validation/authSchema'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Routes } from '../constants/routes'
+import { useNavigate } from 'react-router'
 
 export type AuthFormValues = {
   login: string
@@ -26,6 +27,7 @@ type Props = {
 
 const AuthForm: FC<Props> = props => {
   const { onSubmitFrom } = props
+	const navigate = useNavigate()
   const {
     register,
     reset,
@@ -72,6 +74,15 @@ const AuthForm: FC<Props> = props => {
     </Form>
   )
 }
+
+const Wrapper = styled.div`
+	width: 100%;
+  max-width: 400px;
+  gap: 20px;
+  display: flex;
+  flex-direction: column;
+	align-items: center;
+`
 
 const Form = styled.form`
   width: 100%;
