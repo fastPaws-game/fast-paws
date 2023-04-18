@@ -21,9 +21,7 @@ export default class AudioAPI {
       this._audioRef = audioRef
       this._source = this._audioContext.createMediaElementSource(audioRef)
       this._gainNode = this._audioContext.createGain()
-      this._source
-        .connect(this._gainNode)
-        .connect(this._audioContext.destination)
+      this._source.connect(this._gainNode).connect(this._audioContext.destination)
     }
   }
 

@@ -6,17 +6,17 @@ import DeviceSelector from '../components/DeviceSelector'
 const LoaderGame = () => {
   const [progress, setProgress] = useState(0)
 
-	const progressCallback = (current: number) => {
-		// console.log(`Resource loading: ${current}%`)
-		setProgress(current)
-	}
+  const progressCallback = (current: number) => {
+    // console.log(`Resource loading: ${current}%`)
+    setProgress(current)
+  }
 
-	useEffect(() => {
-    const resource=Resource.get(progressCallback)
-		setProgress(resource.progress)
-  }, [progress]);
+  useEffect(() => {
+    const resource = Resource.get(progressCallback)
+    setProgress(resource.progress)
+  }, [progress])
 
-  return (progress < 100 ? <LoadingPage progress = {progress}/> : <DeviceSelector />)
+  return progress < 100 ? <LoadingPage progress={progress} /> : <DeviceSelector />
 }
 
 export default LoaderGame

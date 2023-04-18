@@ -113,7 +113,7 @@ export class Resource {
 
   public static get(progressCallback?: (progress: number) => void) {
     if (Resource.__instance) return Resource.__instance
-		if (progressCallback) Resource._progressCallback = progressCallback
+    if (progressCallback) Resource._progressCallback = progressCallback
     return (Resource.__instance = new Resource())
   }
 }

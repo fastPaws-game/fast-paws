@@ -30,7 +30,7 @@ const setTooltip = (value: string) => {
 }
 // Can not be tested cause fires in game progress
 const setCatched = (value: Record<string, number>) => {
-	catched = {...catched, ...value}
+  catched = { ...catched, ...value }
 }
 
 const engine = Engine.get({ setPauseVisible, handleGameOver, setLevel, setScore, setTooltip, setCatched })

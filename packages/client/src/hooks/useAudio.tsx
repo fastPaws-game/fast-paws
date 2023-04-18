@@ -1,10 +1,7 @@
 import { useEffect } from 'react'
 import AudioAPI from '../webAPI/webAudioAPI'
 
-const useAudio = (
-  audioRef: React.RefObject<HTMLMediaElement>,
-  audioAPI: AudioAPI
-) => {
+const useAudio = (audioRef: React.RefObject<HTMLMediaElement>, audioAPI: AudioAPI) => {
   const onkeydown = (event: KeyboardEvent) => {
     if (event.code == 'Space') {
       audioAPI.play()

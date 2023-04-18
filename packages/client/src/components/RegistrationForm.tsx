@@ -1,14 +1,17 @@
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import Input, { typeStyleInput } from '../../ui/input'
-import Button from '../../ui/button'
-import Link from '../../ui/link'
+import Input, { typeStyleInput } from '../ui/input'
+import Button from '../ui/button'
+import Link from '../ui/link'
 import styled from 'styled-components'
-import { Routes } from '../../constants/routes'
-import { media } from '../../assets/styles/media'
+import { Routes } from '../constants/routes'
+import { media } from '../assets/styles/media'
 import { FC, useEffect } from 'react'
-import { SignUpFormValues } from '../../modules/registration/registrationApi'
-import { registrationSchema } from '../../utils/validation/registrationSchema'
+import { TSignUpFormValues } from '../models/RegistrationModel'
+import { registrationSchema } from '../utils/validation/registrationSchema'
+import { useAppDispatch, useAppSelector } from '../hooks/store'
+import { authSelectors } from '../store/auth/AuthSelectors'
+import { resetSignUpError } from '../store/auth/AuthActions'
 
 const defaultValuesSignUpForm = {
   login: '',
@@ -21,7 +24,7 @@ const defaultValuesSignUpForm = {
 }
 
 type Props = {
-  handleRegistration: (values: SignUpFormValues) => void
+  handleRegistration: (values: TSignUpFormValues) => void
 }
 
 const RegistrationForm: FC<Props> = props => {
@@ -31,6 +34,7 @@ const RegistrationForm: FC<Props> = props => {
     reset,
     handleSubmit,
     setFocus,
+    setError,
     formState: { errors, isSubmitting, isDirty },
   } = useForm({
     defaultValues: defaultValuesSignUpForm,
@@ -38,14 +42,30 @@ const RegistrationForm: FC<Props> = props => {
     criteriaMode: 'all',
     resolver: yupResolver(registrationSchema),
   })
+  const serverError = useAppSelector(authSelectors.getSignUpError)
+  const signInStatus = useAppSelector(authSelectors.getSignUpStatus)
+  const dispatch = useAppDispatch()
+
+  const isUserServerError = signInStatus === 'error' && serverError?.startsWith('Login')
+  const isEmailServerError = signInStatus === 'error' && serverError?.startsWith('Email')
+  const isPasswordServerError = signInStatus === 'error' && serverError?.startsWith('Password')
 
   useEffect(() => {
     setFocus('login')
   }, [])
 
-  const onSubmit: SubmitHandler<SignUpFormValues> = (data: SignUpFormValues) => {
-    console.log(JSON.stringify(data))
-    handleRegistration(data)
+  useEffect(() => {
+    setError('root.serverError', {
+      message: serverError ?? '',
+    })
+  }, [serverError])
+
+  useEffect(() => {
+    if (isDirty) dispatch(resetSignUpError())
+  }, [isDirty])
+
+  const onSubmit: SubmitHandler<TSignUpFormValues> = async (data: TSignUpFormValues) => {
+    await handleRegistration(data)
     reset()
   }
 
@@ -56,14 +76,14 @@ const RegistrationForm: FC<Props> = props => {
           placeholder="Login"
           typeStyle={typeStyleInput.form}
           {...register('login')}
-          errorOn={!!errors.login}
+          errorOn={!!errors.login || isUserServerError}
           errorMessage={errors.login?.message}
         />
         <Input
           placeholder="Email"
           typeStyle={typeStyleInput.form}
           {...register('email')}
-          errorOn={!!errors.email}
+          errorOn={!!errors.email || isEmailServerError}
           errorMessage={errors.email?.message}
         />
         <Input
@@ -94,7 +114,7 @@ const RegistrationForm: FC<Props> = props => {
           typeStyle={typeStyleInput.form}
           type="password"
           {...register('password')}
-          errorOn={!!errors.password}
+          errorOn={!!errors.password || isPasswordServerError}
           errorMessage={errors.password?.message}
         />
         <Input
@@ -102,9 +122,10 @@ const RegistrationForm: FC<Props> = props => {
           typeStyle={typeStyleInput.form}
           type="password"
           {...register('repeated_password')}
-          errorOn={!!errors.repeated_password}
+          errorOn={!!errors.repeated_password || isPasswordServerError}
           errorMessage={errors.repeated_password?.message}
         />
+        {serverError && <Error>{serverError}</Error>}
         <Button type="submit" disabled={!isDirty || isSubmitting}>
           Sign up
         </Button>
@@ -119,6 +140,7 @@ const Form = styled.form`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+
   @media screen and (min-width: 660px) {
     flex-direction: column;
     flex-direction: row;
@@ -131,15 +153,27 @@ const Form = styled.form`
     align-items: center;
   }
 `
+//TODO можно вынести error из всех форм в отдельный компонент
+const Error = styled.p`
+  color: ${props => props.theme.text.error};
+  margin: 0;
+  position: absolute;
+  bottom: 85px;
+  left: 25px;
+  text-align: left;
+`
 const Column = styled.div`
   display: flex;
   flex-direction: column;
   gap: 15px;
-  margin: 10px;
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  padding-right: 20px;
+  padding-left: 20px;
   min-width: 290px;
+  position: relative;
+
   & div {
     width: 100%;
     text-align: center;
