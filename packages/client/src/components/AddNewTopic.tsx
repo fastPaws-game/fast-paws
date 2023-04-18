@@ -21,10 +21,8 @@ const AddNewTopic: FC<Props> = props => {
       <Button size="small" onClick={handleSubmit}>
         Add topic
       </Button>
-        </Popup>
+    </Popup>
   )
 }
-
-
 
 export default AddNewTopic
