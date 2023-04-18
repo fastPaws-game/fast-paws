@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import ProfileAvatar from '../../components/ProfileAvatar'
-import ProfileForm, { ProfileFormValuesType } from '../../components/ProfileForm'
+import ProfileForm from '../../components/ProfileForm'
 import { useAppDispatch, useAppSelector } from '../../hooks/store'
 import { getUser, logOut, updateUser } from '../../store/auth/AuthActions'
 import Button from '../../ui/button'
@@ -9,16 +9,17 @@ import { useChangeTheme } from '../../hooks/useChangeTheme'
 import { authSelectors } from '../../store/auth/AuthSelectors'
 import { Routes } from '../../constants/routes'
 import { useNavigate } from 'react-router'
+import { TProfile } from '../../models/ProfileModel'
 
 const Profile = () => {
   const { toggleTheme } = useChangeTheme()
-  const [userValues, setDefaultValues] = useState<ProfileFormValuesType | null>(null)
+  const [userValues, setDefaultValues] = useState<TProfile | null>(null)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const user = useAppSelector(authSelectors.getUser)
   const hasUserData = !!user?.email
 
-  const handleSubmit = async (data: ProfileFormValuesType) => {
+  const handleSubmit = async (data: TProfile) => {
     dispatch(updateUser(data))
   }
 
