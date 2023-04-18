@@ -34,6 +34,7 @@ type TGame = {
   action: Action
   ctx: CanvasRenderingContext2D | null
   hold: boolean
+  definingTrajectory: boolean
   timer: number
   movementSpeed: number
   runAwaySpeed: number
@@ -69,14 +70,15 @@ type TCat = {
 export default class Engine {
   private game: TGame = {
     SPEED: 0.5, // Game complexity refers to current level (Slow: 0.5 Max: 1)
-    successHeightModifer: 1.2, // Defines jump to target height ratio
+    successHeightModifer: 1.3, // Defines jump to target height ratio
     // Frame rait, actually no :). Updates automatically.
     get updateTime(): number {
       return Math.floor(17 / this.SPEED)
     },
     action: null,
     ctx: null,
-    hold: false, // State to prevent jump attemptt in some actions
+    hold: false, // State to prevent jump attemptt in some actions. Edit: outdated
+    definingTrajectory: false,
     timer: 0, // setTimeout link
     movementSpeed: 6,
     runAwaySpeed: 6,
@@ -206,9 +208,8 @@ export default class Engine {
     }
     this.showFirstTooltip(reason)
 
-    this.game.hold = true
     this.game.success = false
-    this.game.action = 'return'
+    if (reason != 'timeout') this.game.action = 'return'
     this.setScore(TARGET_SCORE[this.target.nameCurr].fail)
     if (!this.target.isBarrier) this.levelPrepare()
   }
@@ -225,30 +226,28 @@ export default class Engine {
   }
 
   private prepareJumpStart() {
-    this.game.hold = true
-    // Stop all current actions
-    this.game.action = null
-    // Wait till all actions will be stoped
-    setTimeout(() => {
-      // Start a new jump request
-      this.game.action = 'path'
-      this.cat.jumpHeight = GAME.jumpHeightMin
-      this.cat.trajectoryDirection = 1
-      requestAnimationFrame(this.update)
-    }, this.game.updateTime)
+    this.cat.jumpHeight = GAME.jumpHeightMin
+    this.cat.trajectoryDirection = 1
+    this.game.definingTrajectory = true
+    if (!this.updateIsNeeded()) requestAnimationFrame(this.update)
   }
 
   private prepareJumpEnd() {
-    this.game.hold = false
-    this.game.action = 'stay'
     // Prevent accidentially tapping
     if (this.cat.jumpHeight > GAME.jumpHeightMin + GAME.trajectoryStep * 2) {
+      this.bgMotion.stop()
+      this.game.definingTrajectory = false
       this.game.action = 'jump'
       this.cat.jumpStage = -Math.PI
+      this.game.successHeight = this.target.isBarrier
+        ? Math.floor(
+            this.target.heightCurr * this.game.successHeightModifer + (this.target.xCurr - this.target.PositionX) / 2
+          )
+        : Math.floor((this.target.xCurr - this.cat.CatX) / 2)
       this.game.success =
         (this.target.isBarrier && this.cat.jumpHeight > this.game.successHeight) ||
-        Math.abs(this.cat.jumpHeight - this.game.successHeight) < 10
-      // console.log('Jump height: ', this.jumpHeight, '/', this.successHeight, this.success)	// Do not remove!
+        Math.abs(this.cat.jumpHeight - this.game.successHeight) < GAME.catchRange
+      // console.log('Jump height: ', this.cat.jumpHeight, '/', this.game.successHeight, this.game.success)	// Do not remove!
     }
   }
 
@@ -258,8 +257,8 @@ export default class Engine {
     if (this.cat.jumpHeight < GAME.jumpHeightMin) {
       // Stops jump request
       this.game.action = 'stay'
+      this.game.definingTrajectory = false
       this.cat.jumpStage = -Math.PI
-      requestAnimationFrame(this.update)
     }
     this.draw.drawTrajectory(this.cat.CatX, this.cat.CatY, this.cat.jumpHeight)
   }
@@ -309,7 +308,6 @@ export default class Engine {
     this.target.xCurr -= this.game.movementSpeed
     if (this.target.xCurr <= this.target.PositionX) {
       this.game.action = 'stay'
-      this.game.hold = false
       if (!this.target.isBarrier) {
         this.game.timer = window.setTimeout(() => this.commitFail('timeout'), this.target.runAwayDelay)
       }
@@ -355,13 +353,7 @@ export default class Engine {
       this.cat.CatX -= this.game.movementSpeed
     } else {
       this.game.action = 'stay'
-      this.game.hold = false
     }
-  }
-
-  private movingCat = () => {
-    this.draw.drawCat(this.cat.source.image, this.cat.CatX, this.cat.CatY)
-    setTimeout(this.update, this.game.updateTime)
   }
 
   // Renders one frame
@@ -372,30 +364,27 @@ export default class Engine {
     this.game.ctx!.clearRect(0, 0, CANVAS.width, CANVAS.height)
     this.draw.drawTarget(this.target.nameCurr, this.target.xCurr, this.target.yCurr, this.target.heightCurr)
 
+    if (this.game.definingTrajectory) this.defineTrajectory()
+
     switch (this.game.action) {
       case 'return':
         this.sceneReturn()
-        this.movingCat()
+        this.draw.drawCat(this.cat.source.image, this.cat.CatX, this.cat.CatY)
         break
       case 'scene':
         this.sceneChange()
-        this.movingCat()
+        this.draw.drawCat(this.cat.source.image, this.cat.CatX, this.cat.CatY)
         break
       case 'run':
-        this.movingCat()
-        break
-      case 'path':
-        this.defineTrajectory()
-        this.draw.drawCat(this.cat.source.frames[0].image, this.cat.CatX, this.cat.CatY)
-        setTimeout(this.update, this.game.updateTime)
+        this.draw.drawCat(this.cat.source.image, this.cat.CatX, this.cat.CatY)
         break
       case 'jump':
         this.defineJump()
-        setTimeout(this.update, this.game.updateTime)
         break
       default: //'stay'
         this.draw.drawCat(this.cat.source.frames[2].image, this.cat.CatX, this.cat.CatY)
     }
+    if (this.game.definingTrajectory || this.updateIsNeeded()) setTimeout(this.update, this.game.updateTime)
     // Performance meter
     performance.mark('endRenderProcess')
     const measure = performance.measure('measureRenderProcess', 'beginRenderProcess', 'endRenderProcess')
@@ -406,6 +395,10 @@ export default class Engine {
     const average = Math.floor(summ / this.performance.length)
     this.game.ctx!.fillStyle = 'black'
     this.game.ctx!.fillText(`mms/frame: ${average}`, 600, 10)
+  }
+
+  private updateIsNeeded = (): boolean => {
+    return this.game.action !== null && this.game.action !== 'stay'
   }
 
   // Main update function
@@ -448,29 +441,25 @@ export default class Engine {
       ? GAME.defaultTargetHeight + GAME.stepTargetHeight * level
       : GAME.defaultTargetHeight
     this.target.runAwayDelay = GAME.defaultRunAwayDelay - GAME.stepTargetDelay * level
-    this.game.action = 'scene'
-    this.game.hold = true
     this.game.paused = false
     this.game.movementSpeed = 6
-    this.game.successHeight = this.target.isBarrier
-      ? Math.floor(this.target.heightCurr * this.game.successHeightModifer)
-      : (this.target.PositionX - GAME.defaultCatX) / 2
     this.game.fullJump = this.target.nameCurr == 'puddle' || ANIMAL_LIST.includes(this.target.nameCurr)
     this.cat.atPosition = false
     // console.log(`Level ${level}:`, {speed: this.game.SPEED, rand: `${rand}/${targets.length}`, target: this.target})
 
     this.bgMotion.start(this.game.updateTime)
-    requestAnimationFrame(this.update)
+    if (!this.updateIsNeeded()) requestAnimationFrame(this.update)
+    this.game.action = 'scene'
   }
 
   private onkeydown = (event: KeyboardEvent) => {
-    if (!this.game.hold && event.code == 'Space') {
+    if (!this.game.definingTrajectory && event.code == 'Space') {
       this.prepareJumpStart()
     }
   }
 
   private onkeyup = (event: KeyboardEvent) => {
-    if (this.game.hold && event.code == 'Space') {
+    if (this.game.definingTrajectory && event.code == 'Space') {
       this.prepareJumpEnd()
     }
     if (event.code == 'Escape') {
@@ -481,13 +470,11 @@ export default class Engine {
   private touchstart = (event: MouseEvent | TouchEvent) => {
     event.preventDefault()
     if (event.target && event.target instanceof HTMLDivElement && event.target.ariaLabel) return
-    if (!this.game.hold) {
-      this.prepareJumpStart()
-    }
+    this.prepareJumpStart()
   }
 
   private touchend = (event: MouseEvent | TouchEvent) => {
-    if (this.game.hold) {
+    if (this.game.definingTrajectory) {
       this.prepareJumpEnd()
     }
   }

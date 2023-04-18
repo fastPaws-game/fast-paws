@@ -26,17 +26,17 @@ const GamePage: FC<Props> = props => {
     setPauseVisible(false)
     const engine = Engine.get()
     engine.pause(false)
-  }, [])
+  }, [setPauseVisible])
 
   const handleGameOver = useCallback(() => {
     setGameOverVisible(true)
-  }, [])
+  }, [setGameOverVisible])
 
   const handleNewGame = useCallback(() => {
     setGameOverVisible(false)
     const engine = Engine.get()
     engine.start()
-  }, [])
+  }, [setGameOverVisible])
 
   const actionLayerProps = useMemo(
     () => ({ setPauseVisible, handleGameOver, setLevel, setScore, setTooltip, setCatched }),

@@ -20,6 +20,7 @@ export const SpriteSize = {
 export const GAME = {
   scorePerLevel: 100,
   initialScore: 20, // Need to prevent 'Game over' after the first fail
+	catchRange: 10,	// A range
   actionPositionVertical: Math.floor(CANVAS.height * 0.88),
   shadowsEnable: false,
   trajectoryStep: 2,
