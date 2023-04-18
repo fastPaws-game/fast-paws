@@ -93,8 +93,6 @@ const UIButton = styled.div<{ icon: string }>`
   cursor: pointer;
   background-color: ${props => props.theme.colors.accent};
   mask-size: cover;
-  mask-size: cover;
-  mask-image: url(${props => props.icon});
   mask-image: url(${props => props.icon});
   &:hover {
     background-color: ${props => props.theme.colors.accentHover};
@@ -106,8 +104,6 @@ const IconAnimal = styled.div<{ icon: string }>`
   height: 20px;
   background-color: ${props => props.theme.colors.accent};
   mask-size: cover;
-  mask-size: cover;
-  mask-image: url(${props => props.icon});
   mask-image: url(${props => props.icon});
 `
 const Layer = styled.div`

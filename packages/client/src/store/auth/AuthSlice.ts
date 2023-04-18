@@ -1,17 +1,18 @@
 import { RequestStatus } from '../types'
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { handleError } from '../../utils/handleError'
-import { AuthFormValues } from '../../components/AuthForm'
-import { User } from '../../models/User'
-import AuthApi from '../../api/AuthApi'
-import UserApi from '../../api/UserApi'
+import { TUser } from '../../models/types'
 import LocalStorage from '../../utils/localStorage'
+import { getUser, logOut, registration, signInUser, updateUser } from './AuthActions'
 
 type AuthSlice = {
-  user: User | null
+  user: TUser | null
   isAuth: boolean
   signInStatus: RequestStatus
   signInError: string | null
+
+  signUpStatus: RequestStatus
+  signUpError: string | null
 
   logOutStatus: RequestStatus
   logOutError: string | null
@@ -27,6 +28,9 @@ const initialState: AuthSlice = {
   signInStatus: 'initial',
   signInError: null,
 
+  signUpStatus: 'initial',
+  signUpError: null,
+
   logOutStatus: 'initial',
   logOutError: null,
 
@@ -40,6 +44,14 @@ export const authSlice = createSlice({
   reducers: {
     setIsAuth: (state, action: PayloadAction<boolean>) => {
       state.isAuth = action.payload
+    },
+    resetSignInError: state => {
+      state.signInError = null
+      state.signInStatus = 'pending'
+    },
+    resetSignUpError: state => {
+      state.signUpError = null
+      state.signUpStatus = 'pending'
     },
   },
   extraReducers: builder => {
@@ -57,6 +69,21 @@ export const authSlice = createSlice({
         state.signInStatus = 'error'
         state.signInError = handleError(action.payload)
       })
+      .addCase(registration.pending, state => {
+        state.signUpStatus = 'pending'
+      })
+      .addCase(registration.fulfilled, state => {
+        state.signInStatus = 'success'
+        state.signUpStatus = 'success'
+        state.isAuth = true
+        state.signInError = null
+        state.signUpError = null
+        LocalStorage.set('isAuth', true)
+      })
+      .addCase(registration.rejected, (state, action) => {
+        state.signUpStatus = 'error'
+        state.signUpError = handleError(action.payload)
+      })
       .addCase(logOut.pending, state => {
         state.logOutStatus = 'pending'
       })
@@ -64,6 +91,7 @@ export const authSlice = createSlice({
         state.logOutStatus = 'success'
         state.isAuth = false
         state.logOutError = null
+        state.user = null
         LocalStorage.set('isAuth', false)
       })
       .addCase(logOut.rejected, (state, action) => {
@@ -82,53 +110,20 @@ export const authSlice = createSlice({
         state.userStatus = 'error'
         state.userError = handleError(action.payload)
       })
+
+      .addCase(updateUser.pending, state => {
+        state.userStatus = 'pending'
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        state.userStatus = 'success'
+        state.user = state.user ? { ...state.user, ...action.payload } : null
+        state.userError = null
+      })
+      .addCase(updateUser.rejected, (state, action) => {
+        state.userStatus = 'error'
+        state.userError = handleError(action.payload)
+      })
   },
 })
-
-export const signInUser = createAsyncThunk(
-  'user/signIn',
-  async (body: AuthFormValues, { dispatch, rejectWithValue }) => {
-    try {
-      const response = await AuthApi.signin(body)
-
-      if (response.status !== 200) {
-        return rejectWithValue(response)
-      }
-      await dispatch(getUser())
-      return
-    } catch (e) {
-      rejectWithValue(e)
-    }
-  }
-)
-
-export const logOut = createAsyncThunk('auth/logout', async (_, { rejectWithValue }) => {
-  try {
-    const response = await AuthApi.logout()
-    if (response.status !== 200) {
-      return rejectWithValue(response)
-    }
-    return
-  } catch (e) {
-    rejectWithValue(e)
-  }
-})
-
-export const getUser = createAsyncThunk('user/getUser', async (_, { rejectWithValue }) => {
-  try {
-    const response = await UserApi.getUser()
-    const data = await response.json()
-
-    if (response.status !== 200) {
-      return rejectWithValue(data)
-    }
-
-    return data
-  } catch (e) {
-    rejectWithValue(e)
-  }
-})
-
-export const { setIsAuth } = authSlice.actions
 
 export default authSlice.reducer

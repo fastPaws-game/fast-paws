@@ -1,6 +1,7 @@
 function activateFullscreen(el) {
   const element = el || document.documentElement
-  const fullscreenEnabled = document.fullscreenEnabled || document.mozFullScreenEnable || document.webkitFullscreenEnabled
+  const fullscreenEnabled =
+    document.fullscreenEnabled || document.mozFullScreenEnable || document.webkitFullscreenEnabled
 
   if (fullscreenEnabled) {
     if (element.requestFullscreen) {
