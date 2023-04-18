@@ -23,7 +23,6 @@ const LayoutWithHeader: FC<Props> = props => {
     <Container>
       <Header>
         <Button icon={IconBack} onClick={handleClick} light></Button>
-        <H1>{title ?? ''}</H1>
       </Header>
       {children}
     </Container>
@@ -31,13 +30,13 @@ const LayoutWithHeader: FC<Props> = props => {
 }
 
 const Container = styled.main`
-  min-width: 100vw;
   min-height: 100vh;
   background: ${({ theme }) => theme.colors.primary};
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+  padding: 3em;
 `
 
 const Header = styled.header`
@@ -45,7 +44,6 @@ const Header = styled.header`
   align-items: center;
   gap: 45px;
   width: 100%;
-  padding: 30px 30px 0;
 `
 
 export default LayoutWithHeader

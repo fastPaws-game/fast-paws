@@ -1,8 +1,10 @@
-import { useState, useEffect, useRef, RefObject } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { isMobile } from 'react-device-detect'
 import styled from 'styled-components'
 import { CANVAS } from '../constants/game'
 import Game from './Game'
+// @ts-ignore
+import switchFullscreen from '../utils/fullscreen.js'
 
 const DeviceSelector = () => {
   const [fullScreen, setFullScreen] = useState(false)
@@ -11,8 +13,6 @@ const DeviceSelector = () => {
   const switchFullScreen = () => {
     setFullScreen(!fullScreen)
   }
-
-  useEffect(setDimensions, [fullScreen])
 
   function setDimensions() {
     let canvasWidth = CANVAS.width
@@ -35,11 +35,28 @@ const DeviceSelector = () => {
     }
   }
 
+  function fullscreenchange() {
+    // @ts-ignore
+    const isFullscreenMode =
+      document.fullscreenElement || document.mozFullScreenElemen || document.webkitFullscreenElement
+    // Was pressed Escape
+    if (!isFullscreenMode) setFullScreen(false)
+    // Switching full screen have delayed animation
+    setTimeout(setDimensions, 150)
+  }
+
   useEffect(() => {
-    setDimensions()
-    window.addEventListener('resize', setDimensions)
-    return () => window.removeEventListener('resize', setDimensions)
-  }, [])
+    // @ts-ignore
+    const isFullscreenMode =
+      document.fullscreenElement || document.mozFullScreenElemen || document.webkitFullscreenElement
+    if (isFullscreenMode != fullScreen) switchFullscreen(fullScreen)
+    // window.addEventListener('resize', setDimensions)	// Was used in stretch mode
+    document.addEventListener('fullscreenchange', fullscreenchange)
+    return () => {
+      // window.removeEventListener('resize', setDimensions)
+      document.removeEventListener('fullscreenchange', fullscreenchange)
+    }
+  }, [fullScreen])
 
   return (
     <RootWrapper>

@@ -38,6 +38,7 @@ const Root = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  z-index: 1;
 `
 
 const Buttons = styled.div`

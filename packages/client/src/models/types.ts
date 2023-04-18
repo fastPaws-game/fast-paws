@@ -1,3 +1,5 @@
+import { TUser } from "./UserModel"
+
 export type TAppState = {
   user: TUser | null
   chats: TChat[] | null
@@ -8,8 +10,6 @@ export type TAppState = {
   // tokens: ChatToken[];
   // appIsInited: boolean;
   // isLoading: boolean;
-  // formError: string | null;
-  // formSuccess: string | null;
   // isChatsLoaded: boolean;
   // isChatsLoading: boolean;
 }
@@ -18,43 +18,6 @@ export type APIError = {
   reason: string
   status?: number
   data?: undefined
-}
-
-export type TUser = {
-  id: number
-  login: string
-  first_name: string
-  second_name: string
-  display_name: string
-  avatar: string
-  phone: string
-  email: string
-  role?: string
-}
-
-export type TProfile = {
-  first_name: string
-  second_name: string
-  display_name: string
-  login: string
-  email: string
-  phone: string
-}
-
-export type TSignIn = {
-  login: string
-  password: string
-}
-
-export type TSignUp = {
-  first_name: string
-  second_name: string
-  login: string
-  email: string
-  password: string
-  'psw-repeat'?: string
-  phone: string
-  display_name?: string
 }
 
 export type Token = {
@@ -127,19 +90,6 @@ export type TSendMessage = {
   type: string
 }
 
-export type PasswordsForm = {
-  password: string
-  new_password: string
-  new_password_confirm?: string
-}
-
-export type PasswordsToCompare = PasswordsForm & { password_confirm: string }
-
-export type TPassword = {
-  oldPassword: string
-  newPassword: string
-}
-
 export type TLogin = {
   login: string
 }
@@ -158,3 +108,4 @@ export type TDeletedChat = {
     avatar: string
   }
 }
+

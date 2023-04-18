@@ -33,13 +33,9 @@ export default class BgMotion {
   private resource = Resource.get()
 
   constructor(ctx?: CanvasRenderingContext2D) {
+    if (ctx) BgMotion.__instance.ctx = ctx
     if (BgMotion.__instance) return BgMotion.__instance
-    // Need only for a first initialization of this singleton
-    if (!ctx) return
-
-    this.ctx = ctx
     this.init()
-
     BgMotion.__instance = this
   }
 

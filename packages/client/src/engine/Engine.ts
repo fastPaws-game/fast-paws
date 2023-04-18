@@ -125,6 +125,7 @@ export default class Engine {
   private resource: Resource
   private draw: Draw
   private bgMotion: BgMotion
+  private performance = [100]
   private setPauseVisible: (pause: boolean) => void
   private handleGameOver: () => void
   private showScore: (value: number) => void
@@ -367,6 +368,7 @@ export default class Engine {
   private render = () => {
     // Development time patch
     if (!this.cat.source) this.cat.source = this.resource.sprite.cat as GifObject
+    performance.mark('beginRenderProcess')
     this.game.ctx!.clearRect(0, 0, CANVAS.width, CANVAS.height)
     this.draw.drawTarget(this.target.nameCurr, this.target.xCurr, this.target.yCurr, this.target.heightCurr)
 
@@ -394,6 +396,16 @@ export default class Engine {
       default: //'stay'
         this.draw.drawCat(this.cat.source.frames[2].image, this.cat.CatX, this.cat.CatY)
     }
+    // Performance meter
+    performance.mark('endRenderProcess')
+    const measure = performance.measure('measureRenderProcess', 'beginRenderProcess', 'endRenderProcess')
+    const duration = Math.floor(measure.duration * 1000)
+    if (duration > 0) this.performance.push(duration)
+    if (this.performance.length > 10) this.performance.shift()
+    const summ = this.performance.reduce((aver, curr) => aver + curr, 0)
+    const average = Math.floor(summ / this.performance.length)
+    this.game.ctx!.fillStyle = 'black'
+    this.game.ctx!.fillText(`mms/frame: ${average}`, 600, 10)
   }
 
   // Main update function
@@ -467,17 +479,17 @@ export default class Engine {
   }
 
   private touchstart = (event: MouseEvent | TouchEvent) => {
-    event.stopPropagation()
     event.preventDefault()
-
+    if (event.target && event.target instanceof HTMLDivElement && event.target.ariaLabel) return
     if (!this.game.hold) {
       this.prepareJumpStart()
     }
   }
 
   private touchend = (event: MouseEvent | TouchEvent) => {
-    event.stopPropagation()
-    this.prepareJumpEnd()
+    if (this.game.hold) {
+      this.prepareJumpEnd()
+    }
   }
 
   private registerEvents = () => {
@@ -501,12 +513,15 @@ export default class Engine {
   public start() {
     this.canvas = document.getElementById('game_canvas') as HTMLCanvasElement
     this.game.ctx = this.canvas.getContext('2d')
+    this.draw = new Draw(this.game.ctx!)
     this.registerEvents()
     this.levelPrepare()
   }
 
   public stop() {
     this.unRegister()
+    this.bgMotion.stop()
+    window.clearTimeout(this.game.timer)
   }
 
   public pause = (state: boolean) => {
@@ -526,7 +541,18 @@ export default class Engine {
   }
 
   public static get(handlers?: Record<string, (value?: any) => void>) {
-    if (Engine.__instance) return Engine.__instance
+    if (Engine.__instance) {
+      // Renew handlers
+      if (handlers) {
+        Engine.__instance.setPauseVisible = handlers.setPauseVisible
+        Engine.__instance.handleGameOver = handlers.handleGameOver
+        Engine.__instance.showLevel = handlers.setLevel
+        Engine.__instance.showScore = handlers.setScore
+        Engine.__instance.setTooltip = handlers.setTooltip
+        Engine.__instance.setCatched = handlers.setCatched
+      }
+      return Engine.__instance
+    }
     if (handlers) Engine.__instance = new Engine(handlers)
     return Engine.__instance
   }

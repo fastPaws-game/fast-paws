@@ -23,13 +23,13 @@ const GamePause: FC<Props> = props => {
   return (
     <Modal {...props}>
       <Content>
-        <Button size="middle" onClick={handleClick()}>
+        <Button size="middle" onClick={handleClick()} darkblue>
           Continue
         </Button>
         <Footer>
-          <Button icon={<IconForum />} size="small" onClick={handleClick('/forum')} />
-          <Button icon={<IconSettings />} size="small" onClick={handleClick('/settings')} />
-          <Button icon={<IconStar />} size="small" onClick={handleClick('/leaderboard')} />
+          <Button icon={<IconForum />} size="small" onClick={handleClick('/forum')} darkblue/>
+          <Button icon={<IconSettings />} size="small" onClick={handleClick('/settings')} darkblue />
+          <Button icon={<IconStar />} size="small" onClick={handleClick('/leaderboard')} darkblue />
         </Footer>
       </Content>
     </Modal>

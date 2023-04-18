@@ -6,7 +6,7 @@ import { Router } from './router'
 import PageWrapper from './pages/PageWrapper'
 import { useEffect } from 'react'
 import { useAppDispatch } from './hooks/store'
-import { setIsAuth } from './store/auth/AuthSlice'
+import { setIsAuth } from './store/auth/AuthActions'
 import LocalStorage from './utils/localStorage'
 import { changeTheme } from './store/theme/ThemeSlice'
 

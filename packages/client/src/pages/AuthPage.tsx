@@ -1,4 +1,4 @@
-import { Authorization } from '../modules/authModule'
+import { Authorization } from '../modules/authModule/Authorization'
 import BaseLayout from '../layouts/BaseLayout'
 
 const AuthPage = () => {
