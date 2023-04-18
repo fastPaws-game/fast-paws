@@ -23,6 +23,7 @@ const LayoutWithHeader: FC<Props> = props => {
     <Container>
       <Header>
         <Button icon={IconBack} onClick={handleClick}></Button>
+        <H1>{title ?? ''}</H1>
       </Header>
       {children}
     </Container>
