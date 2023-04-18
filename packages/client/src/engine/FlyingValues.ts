@@ -1,5 +1,5 @@
 // Not for review!
-import { canvas, GAME, SpriteSize } from '../constants/game'
+import { CANVAS, GAME, SpriteSize } from '../constants/game'
 
 type Message = {
   text: string
