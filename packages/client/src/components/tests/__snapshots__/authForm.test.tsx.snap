@@ -6,7 +6,7 @@ Object {
   "baseElement": <body>
     <div>
       <form
-        class="sc-irTswW fsuZBJ"
+        class="sc-fbJfA gxZABW"
       >
         <h3
           class="sc-dmqHEX dEsNhG"
@@ -14,18 +14,22 @@ Object {
           Login
         </h3>
         <div
-          class="sc-csCMJt gdVroa"
+          class="sc-brKeYL dShNIU"
         >
-          <div>
+          <div
+            class="sc-iAEyYk gaEfrR"
+          >
             <input
-              class="sc-iAEyYk kjfeft"
+              class="sc-fsQiph hbuA-DO"
               name="login"
               placeholder="Login"
             />
           </div>
-          <div>
+          <div
+            class="sc-iAEyYk gaEfrR"
+          >
             <input
-              class="sc-iAEyYk kjfeft"
+              class="sc-fsQiph hbuA-DO"
               name="password"
               placeholder="Password"
               type="password"
@@ -33,28 +37,30 @@ Object {
           </div>
         </div>
         <div
-          class="sc-fbJfA kpiejP"
+          class="sc-ktEKTO dOiDpU"
         >
           <button
-            class="sc-qRumB jJQVPy"
+            class="sc-jsMahE jmLrqT"
             disabled=""
             type="submit"
           >
             Log in
           </button>
-          <a
-            class="sc-kFuwaP cZMyXH"
-            href="/signup"
-          >
-            Registration
-          </a>
+          <div>
+            <a
+              class="sc-irTswW fjocTC"
+              href="/signup"
+            >
+              Registration
+            </a>
+          </div>
         </div>
       </form>
     </div>
   </body>,
   "container": <div>
     <form
-      class="sc-irTswW fsuZBJ"
+      class="sc-fbJfA gxZABW"
     >
       <h3
         class="sc-dmqHEX dEsNhG"
@@ -62,18 +68,22 @@ Object {
         Login
       </h3>
       <div
-        class="sc-csCMJt gdVroa"
+        class="sc-brKeYL dShNIU"
       >
-        <div>
+        <div
+          class="sc-iAEyYk gaEfrR"
+        >
           <input
-            class="sc-iAEyYk kjfeft"
+            class="sc-fsQiph hbuA-DO"
             name="login"
             placeholder="Login"
           />
         </div>
-        <div>
+        <div
+          class="sc-iAEyYk gaEfrR"
+        >
           <input
-            class="sc-iAEyYk kjfeft"
+            class="sc-fsQiph hbuA-DO"
             name="password"
             placeholder="Password"
             type="password"
@@ -81,21 +91,23 @@ Object {
         </div>
       </div>
       <div
-        class="sc-fbJfA kpiejP"
+        class="sc-ktEKTO dOiDpU"
       >
         <button
-          class="sc-qRumB jJQVPy"
+          class="sc-jsMahE jmLrqT"
           disabled=""
           type="submit"
         >
           Log in
         </button>
-        <a
-          class="sc-kFuwaP cZMyXH"
-          href="/signup"
-        >
-          Registration
-        </a>
+        <div>
+          <a
+            class="sc-irTswW fjocTC"
+            href="/signup"
+          >
+            Registration
+          </a>
+        </div>
       </div>
     </form>
   </div>,

@@ -2,17 +2,28 @@ import AuthForm from '../AuthForm'
 import { render, fireEvent, waitFor, screen } from '../../utils/test-utils'
 import userEvent from '@testing-library/user-event'
 
+import { Provider } from 'react-redux'
+import {store} from '../../store/index'
+
 describe('AuthForm components', () => {
   const handleSubmit = jest.fn()
 
   test('render AuthForm component', () => {
-    const tree = render(<AuthForm onSubmitFrom={handleSubmit} />)
+    const tree = render(
+      <Provider store={store}>
+        <AuthForm onSubmitFrom={handleSubmit} />
+      </Provider>
+      )
 
     expect(tree).toMatchSnapshot()
   })
 
   test('Submit button without inputs data', async () => {
-    const { getByText } = render(<AuthForm onSubmitFrom={handleSubmit} />)
+    const { getByText } = render(
+      <Provider store={store}>
+        <AuthForm onSubmitFrom={handleSubmit} />
+      </Provider>
+      )
 
     fireEvent.submit(getByText('Log in'))
 
