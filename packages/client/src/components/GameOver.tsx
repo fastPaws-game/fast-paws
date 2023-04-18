@@ -37,9 +37,9 @@ const GameOver: FC<Props> = props => {
           </TextContainer>
         </Header>
         <Footer>
-          <Button icon={<IconRestart />} size={'small'} onClick={handleClick()} />
-          <Button icon={<IconSettings />} size={'small'} onClick={handleClick('/settings')} />
-          <Button icon={<IconStar />} size={'small'} onClick={handleClick('/leaderboard')} />
+          <Button icon={<IconRestart />} size={'small'} onClick={handleClick()} darkblue />
+          <Button icon={<IconSettings />} size={'small'} onClick={handleClick('/settings')} darkblue/>
+          <Button icon={<IconStar />} size={'small'} onClick={handleClick('/leaderboard')} darkblue/>
         </Footer>
       </Content>
     </Modal>
@@ -60,7 +60,7 @@ const Header = styled.div`
   align-items: center;
   padding: 20px 0;
   gap: 15px;
-  background-color: ${props => props.theme.colors.accent};
+  background-color: ${props => props.theme.colors.tertiary};
   border-radius: ${props => props.theme.borders.secondary};
   box-shadow: ${props => props.theme.shadows.secondary};
 `
@@ -68,6 +68,7 @@ const H1Modify = styled(H1)`
   width: 55%;
   padding-bottom: 5px;
   border-bottom: 1px solid ${props => props.theme.colors.white};
+  color: ${props => props.theme.colors.white};
   text-align: center;
 `
 const TextContainer = styled.div`
