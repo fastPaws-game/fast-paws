@@ -8,19 +8,11 @@ import { FC, useState, useCallback } from 'react'
 import { H3 } from '../assets/styles/texts'
 import ContrastingWrapper from './ContrastingWrapper'
 import { PasswordsPopup } from './PasswordsPopup'
-
-export type ProfileFormValuesType = {
-  first_name: string
-  second_name: string
-  display_name: string
-  login: string
-  email: string
-  phone: string
-}
+import { TProfile } from '../models/ProfileModel'
 
 type Props = {
-  onSubmitForm: (data: ProfileFormValuesType) => void
-  defaultFormValues: ProfileFormValuesType
+  onSubmitForm: (data: TProfile) => void
+  defaultFormValues: TProfile
 }
 
 const ProfileForm: FC<Props> = props => {
@@ -46,7 +38,7 @@ const ProfileForm: FC<Props> = props => {
     setModal(true)
   }
 
-  const onSubmit: SubmitHandler<ProfileFormValuesType> = data => {
+  const onSubmit: SubmitHandler<TProfile> = data => {
     onSubmitForm(data)
   }
 
@@ -136,7 +128,7 @@ const FormFields = styled.div`
   button:last-of-type {
     background: transparent;
     box-shadow: none;
-    color: ${({ theme }) => theme.colors.accent};
+    color: ${props => props.theme.text.everWhite};
     transition: all 0.5s ease-out;
   }
   button:last-of-type:hover {

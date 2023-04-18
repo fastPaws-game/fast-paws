@@ -1,12 +1,12 @@
 import { RequestStatus } from '../types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { handleError } from '../../utils/handleError'
-import { User } from '../../models/User'
+import { TUser } from '../../models/types'
 import LocalStorage from '../../utils/localStorage'
 import { getUser, logOut, registration, signInUser, updateUser } from './AuthActions'
 
 type AuthSlice = {
-  user: User | null
+  user: TUser | null
   isAuth: boolean
   signInStatus: RequestStatus
   signInError: string | null

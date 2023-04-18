@@ -21,14 +21,14 @@ const Input: FC<Props> = forwardRef((props, ref) => {
   const InputStyled = typeStyle === 'form' ? InputFormStyled : InputProfileStyled
 
   return (
-    <WRAPPER>
+    <Wrapper>
       <InputStyled errorOn={errorOn} ref={ref} {...rest} />
       {errorOn && <P4>{errorMessage}</P4>}
-    </WRAPPER>
+    </Wrapper>
   )
 })
 
-const WRAPPER = styled.div`
+const Wrapper = styled.div`
   position: relative;
   max-width: 315px;
   width: 100%;

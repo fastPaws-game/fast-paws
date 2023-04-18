@@ -27,6 +27,7 @@ export const lightTheme = {
     focus: '#808080',
     accentHover: '#E9833B',
     link: '#170A01',
+    success: '#006400',
   },
   text: {
     textInvert: '#000',
@@ -70,6 +71,7 @@ export const darkTheme = {
     focus: '#808080',
     accentHover: '#4D6FC4',
     link: '#EAECF3',
+    success: '#66CDAA',
   },
   text: {
     textInvert: '#FFF',

@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import { Routes } from '../constants/routes'
 import { media } from '../assets/styles/media'
 import { FC, useEffect } from 'react'
-import { SignUpFormValues } from '../modules/registration/Registration'
+import { TSignUpFormValues } from '../models/RegistrationModel'
 import { registrationSchema } from '../utils/validation/registrationSchema'
 import { useAppDispatch, useAppSelector } from '../hooks/store'
 import { authSelectors } from '../store/auth/AuthSelectors'
@@ -24,7 +24,7 @@ const defaultValuesSignUpForm = {
 }
 
 type Props = {
-  handleRegistration: (values: SignUpFormValues) => void
+  handleRegistration: (values: TSignUpFormValues) => void
 }
 
 const RegistrationForm: FC<Props> = props => {
@@ -46,7 +46,7 @@ const RegistrationForm: FC<Props> = props => {
   const signInStatus = useAppSelector(authSelectors.getSignUpStatus)
   const dispatch = useAppDispatch()
 
-  const isUserServerError = signInStatus === 'error' && serverError?.startsWith('User' || 'Login')
+  const isUserServerError = signInStatus === 'error' && serverError?.startsWith('Login')
   const isEmailServerError = signInStatus === 'error' && serverError?.startsWith('Email')
   const isPasswordServerError = signInStatus === 'error' && serverError?.startsWith('Password')
 
@@ -64,8 +64,8 @@ const RegistrationForm: FC<Props> = props => {
     if (isDirty) dispatch(resetSignUpError())
   }, [isDirty])
 
-  const onSubmit: SubmitHandler<SignUpFormValues> = (data: SignUpFormValues) => {
-    handleRegistration(data)
+  const onSubmit: SubmitHandler<TSignUpFormValues> = async (data: TSignUpFormValues) => {
+    await handleRegistration(data)
     reset()
   }
 
@@ -153,6 +153,7 @@ const Form = styled.form`
     align-items: center;
   }
 `
+//TODO можно вынести error из всех форм в отдельный компонент
 const Error = styled.p`
   color: ${props => props.theme.text.error};
   margin: 0;

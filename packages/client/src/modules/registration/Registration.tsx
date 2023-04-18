@@ -3,21 +3,11 @@ import ContrastingWrapper from '../../components/ContrastingWrapper'
 import { registration } from '../../store/auth/AuthActions'
 import { H3 } from '../../assets/styles/texts'
 import { useAppDispatch } from '../../hooks/store'
-
-export type SignUpFormValues = {
-  login: string
-  email: string
-  first_name: string
-  second_name: string
-  phone: string | number
-  password: string
-  repeated_password: string
-}
+import { TSignUpFormValues } from '../../models/RegistrationModel'
 
 const Registration = () => {
   const dispatch = useAppDispatch()
-  const handleSubmit = async (data: SignUpFormValues) => {
-    console.log(registration)
+  const handleSubmit = async (data: TSignUpFormValues) => {
     dispatch(registration(data))
   }
 

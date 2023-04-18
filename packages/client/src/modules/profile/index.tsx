@@ -9,7 +9,6 @@ import { useChangeTheme } from '../../hooks/useChangeTheme'
 import { authSelectors } from '../../store/auth/AuthSelectors'
 import { Routes } from '../../constants/routes'
 import { useNavigate } from 'react-router'
-import PasswordsPopup from '../../components/PasswordsPopup'
 
 const Profile = () => {
   const { toggleTheme } = useChangeTheme()

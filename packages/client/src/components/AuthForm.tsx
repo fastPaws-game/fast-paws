@@ -14,11 +14,7 @@ import { useNavigate } from 'react-router'
 import { authSelectors } from '../store/auth/AuthSelectors'
 import { useAppDispatch } from '../hooks/store'
 import { resetSignInError } from '../store/auth/AuthActions'
-
-export type AuthFormValues = {
-  login: string
-  password: string
-}
+import { TSignIn } from '../models/SignInModel'
 
 const defaultAuthFormValues = {
   login: '',
@@ -26,7 +22,7 @@ const defaultAuthFormValues = {
 }
 
 type Props = {
-  onSubmitFrom: (data: AuthFormValues) => void
+  onSubmitFrom: (data: TSignIn) => void
 }
 
 const AuthForm: FC<Props> = props => {
@@ -60,7 +56,7 @@ const AuthForm: FC<Props> = props => {
     if (isDirty) dispatch(resetSignInError())
   }, [isDirty])
 
-  const onSubmit: SubmitHandler<AuthFormValues> = data => {
+  const onSubmit: SubmitHandler<TSignIn> = data => {
     onSubmitFrom(data)
     reset()
   }
