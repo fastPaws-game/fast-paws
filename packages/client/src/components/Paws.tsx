@@ -35,7 +35,8 @@ const Paws: FC = () => {
 }
 
 const walk = keyframes`
-  25%  {opacity: 1;}
+  15%  {opacity: 1;}
+  75%  {opacity: 0;}
   100% {opacity: 0;}
 `
 
@@ -55,49 +56,51 @@ const Paw1 = styled.div`
   ${basePaw};
   left: 75px;
   top: 250px;
-  animation: ${walk} 3s linear infinite;
+  animation: ${walk} 5s linear infinite;
+
+  ${media.middle} {
+    left: 30px;
+    top: 430px;
+  transform: rotate(-20deg);
+  }
 
   ${media.small} {
     display: none;
-  }
-
-  ${media.middle} {
-    left: 50px;
-    top: 200px;
   }
 `
 
 const Paw2 = styled.div`
   ${basePaw};
   left: 275px;
-  top: 280px;
+  top: 360px;
   transform: rotate(-5deg);
-  animation: ${walk} 3s linear infinite 0.25s;
+  animation: ${walk} 5s linear infinite 0.25s;
+
+  ${media.middle} {
+    left: 120px;
+    top: 200px;
+  }
 
   ${media.small} {
     display: none;
-  }
-
-  ${media.middle} {
-    left: 150px;
-    top: 40px;
   }
 `
 
 const Paw3 = styled.div`
   ${basePaw};
   left: 375px;
-  top: 130px;
+  top: 150px;
   transform: rotate(-10deg);
-  animation: ${walk} 3s linear infinite 0.5s;
-
-  ${media.small} {
-    display: none;
-  }
+  animation: ${walk} 5s linear infinite 0.5s;
 
   ${media.middle} {
     left: 270px;
-    top: 170px;
+    top: 370px;
+  transform: rotate(-20deg);
+  }
+
+  ${media.small} {
+    display: none;
   }
 `
 
@@ -106,11 +109,15 @@ const Paw4 = styled.div`
   left: 575px;
   top: 280px;
   transform: rotate(-20deg);
-  animation: ${walk} 3s linear infinite 0.75s;
+  animation: ${walk} 5s linear infinite 0.75s;
 
   ${media.middle} {
     left: 330px;
-    top: 10px;
+    top: 100px;
+  }
+
+  ${media.small} {
+    display: none;
   }
 `
 
@@ -119,10 +126,14 @@ const Paw5 = styled.div`
   left: 650px;
   top: 50px;
   transform: rotate(10deg);
-  animation: ${walk} 3s linear infinite 1s;
+  animation: ${walk} 5s linear infinite 1s;
 
   ${media.middle} {
     display: none;
+  }
+
+  ${media.large} {
+    transform: rotate(-10deg);
   }
 `
 
@@ -131,7 +142,7 @@ const Paw6 = styled.div`
   left: 875px;
   top: 200px;
   transform: rotate(10deg);
-  animation: ${walk} 3s linear infinite 1.25s;
+  animation: ${walk} 5s linear infinite 1.25s;
 
   ${media.large} {
     display: none;
@@ -143,7 +154,7 @@ const Paw7 = styled.div`
   left: 1075px;
   top: 50px;
   transform: rotate(20deg);
-  animation: ${walk} 3s linear infinite 1.5s;
+  animation: ${walk} 5s linear infinite 1.5s;
 
   ${media.xl} {
     display: none;
@@ -155,7 +166,7 @@ const Paw8 = styled.div`
   left: 1150px;
   top: 250px;
   transform: rotate(10deg);
-  animation: ${walk} 3s linear infinite 1.75s;
+  animation: ${walk} 5s linear infinite 1.75s;
 
   ${media.xl} {
     display: none;
