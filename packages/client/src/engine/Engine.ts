@@ -12,6 +12,7 @@ import {
 import Draw from './Draw'
 import Resource, { GifObject } from '../engine/ResourceLoader'
 import BgMotion from '../engine/BgMotion'
+import FlyingValues from './FlyingValues'
 
 type Action = 'run' | 'stay' | 'jump' | 'path' | 'scene' | 'return' | null
 type Target = {
@@ -126,6 +127,7 @@ export default class Engine {
   private canvas: HTMLCanvasElement
   private resource: Resource
   private draw: Draw
+	private fly: FlyingValues
   private bgMotion: BgMotion
   private performance = [100]
   private setPauseVisible: (pause: boolean) => void
@@ -148,6 +150,7 @@ export default class Engine {
     this.game.ctx = this.canvas.getContext('2d')
     this.game.successHeight = GAME.defaultTargetHeight * this.game.successHeightModifer
     this.draw = new Draw(this.game.ctx!)
+    this.fly = new FlyingValues(this.game.ctx!)
     this.bgMotion = new BgMotion()
 
     this.resource = Resource.get()
@@ -194,8 +197,8 @@ export default class Engine {
   private setScore = (value: number) => {
     this.game.score += value
     this.showScore(this.game.score)
+		if (value != 0) this.fly.throw(value, this.cat.CatX)
     if (this.game.success) this.showTooltip() // Hide tooltip
-    // console.log((value > 0 ? 'Success!' : 'Fail.') + ' Score:', this.game.score)
   }
 
   private commitFail = (reason?: 'timeout') => {
@@ -273,7 +276,7 @@ export default class Engine {
       this.commitFail()
     }
     if (i < 0) {
-      this.cat.CatX = GAME.defaultCatX + r + r * Math.cos(i)
+      this.cat.CatX = Math.floor(GAME.defaultCatX + r + r * Math.cos(i))
       const y = this.cat.CatY + r * Math.sin(i)
       const frameIndex = Math.floor(((i + Math.PI) / Math.PI) * 3)
       this.draw.drawCat(this.cat.source.frames[frameIndex].image, this.cat.CatX, y)
@@ -384,6 +387,7 @@ export default class Engine {
       default: //'stay'
         this.draw.drawCat(this.cat.source.frames[2].image, this.cat.CatX, this.cat.CatY)
     }
+		this.fly.render()
     if (this.game.definingTrajectory || this.updateIsNeeded()) setTimeout(this.update, this.game.updateTime)
     // Performance meter
     performance.mark('endRenderProcess')
@@ -394,7 +398,7 @@ export default class Engine {
     const summ = this.performance.reduce((aver, curr) => aver + curr, 0)
     const average = Math.floor(summ / this.performance.length)
     this.game.ctx!.fillStyle = 'black'
-    this.game.ctx!.fillText(`mms/frame: ${average}`, 600, 10)
+    this.game.ctx!.fillText(`mms/frame: ${average}`, 540, 18)
   }
 
   private updateIsNeeded = (): boolean => {
@@ -501,6 +505,8 @@ export default class Engine {
     this.canvas = document.getElementById('game_canvas') as HTMLCanvasElement
     this.game.ctx = this.canvas.getContext('2d')
     this.draw = new Draw(this.game.ctx!)
+    this.fly = new FlyingValues(this.game.ctx!)
+		this.game.ctx!.font = "18px Arial"
     this.registerEvents()
     this.levelPrepare()
   }
