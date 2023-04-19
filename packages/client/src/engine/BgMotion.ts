@@ -19,8 +19,8 @@ type LayersData = {
 
 const layersData: LayersData[] = [
   { src: 'MistyMountains.layer1', dx: 0, isTop: true },
-  { src: 'MistyMountains.layer2', dx: -1 },
-  { src: 'MistyMountains.layer3', dx: -4 },
+  { src: 'MistyMountains.layer2', dx: -0.25 },
+  { src: 'MistyMountains.layer3', dx: -1 },
 ]
 
 export default class BgMotion {
@@ -65,7 +65,7 @@ export default class BgMotion {
     })
   }
 
-  private draw = () => {
+  public draw = (speed = 4) => {
     this.ctx?.clearRect(0, 0, this.clearX, this.clearY)
     this.layersArr.forEach(layer => {
       if (layer.x <= -CANVAS.width) {
@@ -77,7 +77,7 @@ export default class BgMotion {
       }
 
       this.ctx?.drawImage(layer.img as CanvasImageSource, layer.x, layer.y, layer.imgW, layer.imgH)
-      layer.x += layer.dx
+      layer.x += speed * layer.dx
     })
   }
 

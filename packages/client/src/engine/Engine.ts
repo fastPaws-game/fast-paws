@@ -210,7 +210,7 @@ export default class Engine {
       this.game.score = GAME.initialScore
       this.game.paused = true
       this.game.action = null
-      this.bgMotion.stop()
+      // this.bgMotion.stop()
       this.handleGameOver()
       return
     }
@@ -221,14 +221,14 @@ export default class Engine {
     this.game.success = false
     if (reason != 'timeout') {
       this.game.action = 'return'
-      this.bgMotion.start(this.game.updateTime)
+      // this.bgMotion.start(!this.cat.atPosition ? Math.floor((this.game.updateTime / 3) * 2) : this.game.updateTime)
     }
     this.setScore(TARGET_SCORE[this.target.nameCurr].fail)
     if (!this.target.isBarrier) this.levelPrepare()
   }
 
   private commitSuccess = () => {
-    const multiplier = this.game.action == 'stay' ? 1 : 2
+    const multiplier = this.target.atPosition ? 1 : 2
     this.setScore(TARGET_SCORE[this.target.nameCurr].success, multiplier)
     if (!this.target.isBarrier) {
       if (this.game.combo < 5) {
@@ -252,10 +252,10 @@ export default class Engine {
   }
 
   private prepareJumpEnd() {
+    this.game.definingTrajectory = false
     // Prevent accidentially tapping
     if (this.cat.jumpHeight > GAME.jumpHeightMin + GAME.trajectoryStep * 2) {
-      this.bgMotion.stop()
-      this.game.definingTrajectory = false
+      // this.bgMotion.stop()
       this.game.action = 'jump'
       this.cat.atPosition = false
       this.cat.jumpStage = -Math.PI
@@ -318,27 +318,27 @@ export default class Engine {
     }
 
     // Move current target
-    this.target.xCurr -= this.game.movementSpeed
+    this.target.xCurr -= this.cat.atPosition ? this.game.movementSpeed : Math.floor((this.game.movementSpeed / 2) * 3)
     if (this.target.xCurr < this.target.PositionX) {
       this.target.xCurr = this.target.PositionX
       this.target.atPosition = true
       if (!this.target.isBarrier) {
         this.game.timer = window.setTimeout(() => this.commitFail('timeout'), this.target.runAwayDelay)
       }
-      this.bgMotion.stop()
+      // this.bgMotion.stop()
     }
 
     // Move Cat
     if (this.cat.CatX > GAME.defaultCatX) {
-      this.cat.CatX -= this.target.atPosition ? this.game.movementSpeed : Math.floor((this.game.movementSpeed / 3) * 2)
+      this.cat.CatX -= this.target.atPosition ? Math.floor((this.game.movementSpeed / 3) * 2) : this.game.movementSpeed
     } else {
-      if (!this.cat.atPosition) this.bgMotion.start(Math.floor((this.game.updateTime / 2) * 3))
+      // if (!this.cat.atPosition) this.bgMotion.start(this.game.updateTime)
       this.cat.atPosition = true
     }
 
     if (this.cat.atPosition && this.target.atPosition) {
       setTimeout(() => (this.game.action = 'stay'), 0)
-      this.bgMotion.stop()
+      // this.bgMotion.stop()
     }
   }
 
@@ -359,7 +359,7 @@ export default class Engine {
       return
     }
 
-    this.target.xLast -= this.game.movementSpeed
+    this.target.xLast -= this.cat.atPosition ? this.game.movementSpeed : Math.floor((this.game.movementSpeed / 2) * 3)
     return
   }
 
@@ -378,6 +378,10 @@ export default class Engine {
     if (!this.cat.source) this.cat.source = this.resource.sprite.cat as GifObject
     performance.mark('beginRenderProcess')
     this.game.ctx!.clearRect(0, 0, CANVAS.width, CANVAS.height)
+    if (!this.target.atPosition && (this.game.action == 'return' || this.game.action == 'scene')) {
+      this.bgMotion.draw(this.cat.atPosition ? this.game.movementSpeed : Math.floor((this.game.movementSpeed / 2) * 3))
+    }
+
     this.draw.drawTarget(this.target.nameCurr, this.target.xCurr, this.target.yCurr, this.target.heightCurr)
 
     if (this.game.definingTrajectory) this.defineTrajectory()
@@ -468,7 +472,7 @@ export default class Engine {
     this.target.atPosition = false
     // console.log(`Level ${level}:`, {speed: this.game.SPEED, rand: `${rand}/${targets.length}`, target: this.target})
 
-    this.bgMotion.start(this.game.updateTime)
+    //  this.bgMotion.start(!this.cat.atPosition ? Math.floor((this.game.updateTime / 3) * 2) : this.game.updateTime)
     if (!this.updateIsNeeded()) requestAnimationFrame(this.update)
     this.game.action = 'scene'
   }
@@ -536,7 +540,7 @@ export default class Engine {
 
   public stop() {
     this.unRegister()
-    this.bgMotion.stop()
+    // this.bgMotion.stop()
     window.clearTimeout(this.game.timer)
   }
 
@@ -547,7 +551,7 @@ export default class Engine {
 
     if (this.game.paused) {
       this.unRegister()
-      this.bgMotion.stop()
+      // this.bgMotion.stop()
       this.setPauseVisible(true)
       window.clearTimeout(this.game.timer)
     } else {
