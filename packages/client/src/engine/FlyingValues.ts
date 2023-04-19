@@ -1,5 +1,5 @@
 // Not for review!
-import { CANVAS, GAME, SpriteSize } from '../constants/game'
+import { GAME, SpriteSize } from '../constants/game'
 
 type Message = {
   text: string
@@ -16,8 +16,6 @@ const txtStartY = numStartY - delta
 
 export default class FlyingValues {
   private ctx: CanvasRenderingContext2D | null = null
-  private paused = false
-  private timer = 0
   private messages: Message[] = []
 
   constructor(ctx: CanvasRenderingContext2D) {
@@ -25,19 +23,20 @@ export default class FlyingValues {
   }
 
   public render = () => {
-    let needShift = false
-    this.messages.forEach(message => {
-      const { text, color, X, minY } = message
-      message.Y += dy
-      if (message.Y < minY) needShift = true
-      this.ctx!.fillStyle = color
-      this.ctx!.fillText(text, X, message.Y)
-    })
-    if (needShift) this.messages.shift()
-    if (this.messages.length == 0) window.clearTimeout(this.timer)
+    if (this.messages.length > 0) {
+      let needShift = false
+      this.messages.forEach(message => {
+        const { text, color, X, minY } = message
+        message.Y += dy
+        if (message.Y < minY) needShift = true
+        this.ctx!.fillStyle = color
+        this.ctx!.fillText(text, X, message.Y)
+      })
+      if (needShift) this.messages.shift()
+    }
   }
 
-  public throw = (value: number | string, x: number, y?: number) => {
+  public throw = (value: number | string, multiplier: number, x: number, y?: number) => {
     let text = value.toString()
     let color = 'yellow'
     let Y = y || txtStartY
@@ -46,15 +45,7 @@ export default class FlyingValues {
       color = value < 0 ? 'red' : 'green'
       Y = y || numStartY
     }
+    if (multiplier > 1) text = text + ' x' + multiplier
     this.messages.push({ text, color, X: x, Y, minY: Y - delta })
-    // window.clearTimeout(this.timer)
-    // this.timer = window.setInterval(this.render, 17 * 2)
-  }
-
-  public pause = (state?: boolean) => {
-    if (state != undefined) this.paused = state
-    else this.paused = !this.paused
-    if (this.paused) window.clearTimeout(this.timer)
-    else this.timer = window.setInterval(this.render, 17 * 2)
   }
 }
