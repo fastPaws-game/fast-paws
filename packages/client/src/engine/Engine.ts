@@ -27,6 +27,7 @@ type Target = {
   heightLast: number
   isBarrier: boolean
   runAwayDelay: number
+  atPosition: boolean
 }
 type TGame = {
   SPEED: number
@@ -34,7 +35,6 @@ type TGame = {
   updateTime: number
   action: Action
   ctx: CanvasRenderingContext2D | null
-  hold: boolean
   definingTrajectory: boolean
   timer: number
   movementSpeed: number
@@ -43,6 +43,7 @@ type TGame = {
   success: boolean
   fullJump: boolean
   paused: boolean
+  combo: number
   tooltip: {
     shown: boolean
     firstTip: boolean
@@ -78,8 +79,7 @@ export default class Engine {
     },
     action: null,
     ctx: null,
-    hold: false, // State to prevent jump attemptt in some actions. Edit: outdated
-    definingTrajectory: false,
+    definingTrajectory: false, // Jump attempt state
     timer: 0, // setTimeout link
     movementSpeed: 6,
     runAwaySpeed: 6,
@@ -87,6 +87,7 @@ export default class Engine {
     success: false,
     fullJump: true, // To know does current target need a full jump
     paused: false,
+    combo: 1, // Combo multiplier for score
     tooltip: {
       shown: false,
       firstTip: true,
@@ -123,17 +124,19 @@ export default class Engine {
     heightLast: GAME.defaultTargetHeight,
     isBarrier: false,
     runAwayDelay: GAME.defaultRunAwayDelay,
+    atPosition: false,
   }
   private canvas: HTMLCanvasElement
   private resource: Resource
   private draw: Draw
-	private fly: FlyingValues
+  private fly: FlyingValues
   private bgMotion: BgMotion
-  private performance = [100]
+  private performance = [100] // Dev element. Set [100] to show, [] to disable
   private setPauseVisible: (pause: boolean) => void
   private handleGameOver: () => void
-  private showScore: (value: number) => void
   private showLevel: (value: number) => void
+  private showScore: (value: number) => void
+  private showCombo: (value: number) => void
   private setTooltip: (tooltip: string) => void
   private setCatched: (catched: Record<string, number>) => void
   private static __instance: Engine
@@ -143,6 +146,7 @@ export default class Engine {
     this.handleGameOver = handlers.handleGameOver
     this.showLevel = handlers.setLevel
     this.showScore = handlers.setScore
+    this.showCombo = handlers.setCombo
     this.setTooltip = handlers.setTooltip
     this.setCatched = handlers.setCatched
 
@@ -194,10 +198,10 @@ export default class Engine {
     }
   }
 
-  private setScore = (value: number) => {
-    this.game.score += value
+  private setScore = (value: number, multiplier = 1) => {
+    this.game.score += value * multiplier * this.game.combo
     this.showScore(this.game.score)
-		if (value != 0) this.fly.throw(value, this.cat.CatX)
+    if (value != 0) this.fly.throw(value * this.game.combo, multiplier, this.cat.CatX)
     if (this.game.success) this.showTooltip() // Hide tooltip
   }
 
@@ -205,21 +209,33 @@ export default class Engine {
     if (this.game.score + TARGET_SCORE[this.target.nameCurr].fail < 0) {
       this.game.score = GAME.initialScore
       this.game.paused = true
-      // console.log('Game over')
+      this.game.action = null
+      this.bgMotion.stop()
       this.handleGameOver()
       return
     }
     this.showFirstTooltip(reason)
 
+    this.game.combo = 1
+    this.showCombo(this.game.combo)
     this.game.success = false
-    if (reason != 'timeout') this.game.action = 'return'
+    if (reason != 'timeout') {
+      this.game.action = 'return'
+      this.bgMotion.start(this.game.updateTime)
+    }
     this.setScore(TARGET_SCORE[this.target.nameCurr].fail)
     if (!this.target.isBarrier) this.levelPrepare()
   }
 
   private commitSuccess = () => {
-    this.setScore(TARGET_SCORE[this.target.nameCurr].success)
+    const multiplier = this.game.action == 'stay' ? 1 : 2
+    this.setScore(TARGET_SCORE[this.target.nameCurr].success, multiplier)
     if (!this.target.isBarrier) {
+      if (this.game.combo < 5) {
+        this.game.combo += 1
+        this.showCombo(this.game.combo)
+        this.fly.throw('Combo:', this.game.combo, this.cat.CatX)
+      }
       const name: AnimalName = this.target.nameCurr as AnimalName
       this.game.catched[name] += 1
       this.setCatched(this.game.catched)
@@ -241,6 +257,7 @@ export default class Engine {
       this.bgMotion.stop()
       this.game.definingTrajectory = false
       this.game.action = 'jump'
+      this.cat.atPosition = false
       this.cat.jumpStage = -Math.PI
       this.game.successHeight = this.target.isBarrier
         ? Math.floor(
@@ -283,13 +300,6 @@ export default class Engine {
     } else {
       this.game.success ? this.commitSuccess() : this.commitFail()
     }
-    /*	Trajectory algorithm
-			for (let i = -Math.PI; i < 0; i += step) {
-				const x = this.CatX + r + r * Math.cos(i);
-				const y = this.CatY + r * Math.sin(i);
-				this.ctx!.fillRect(x, y, 2, 2);
-			}
-*/
   }
 
   private sceneChange = () => {
@@ -309,8 +319,9 @@ export default class Engine {
 
     // Move current target
     this.target.xCurr -= this.game.movementSpeed
-    if (this.target.xCurr <= this.target.PositionX) {
-      this.game.action = 'stay'
+    if (this.target.xCurr < this.target.PositionX) {
+      this.target.xCurr = this.target.PositionX
+      this.target.atPosition = true
       if (!this.target.isBarrier) {
         this.game.timer = window.setTimeout(() => this.commitFail('timeout'), this.target.runAwayDelay)
       }
@@ -319,13 +330,15 @@ export default class Engine {
 
     // Move Cat
     if (this.cat.CatX > GAME.defaultCatX) {
-      this.cat.CatX -= Math.floor((this.game.movementSpeed / 3) * 2)
+      this.cat.CatX -= this.target.atPosition ? this.game.movementSpeed : Math.floor((this.game.movementSpeed / 3) * 2)
     } else {
       if (!this.cat.atPosition) this.bgMotion.start(Math.floor((this.game.updateTime / 2) * 3))
       this.cat.atPosition = true
-      if (this.target.nameLast != 'none') {
-        // this.movementSpeed = 4
-      }
+    }
+
+    if (this.cat.atPosition && this.target.atPosition) {
+      setTimeout(() => (this.game.action = 'stay'), 0)
+      this.bgMotion.stop()
     }
   }
 
@@ -371,7 +384,8 @@ export default class Engine {
 
     switch (this.game.action) {
       case 'return':
-        this.sceneReturn()
+        // this.sceneReturn()
+        this.sceneChange()
         this.draw.drawCat(this.cat.source.image, this.cat.CatX, this.cat.CatY)
         break
       case 'scene':
@@ -387,18 +401,20 @@ export default class Engine {
       default: //'stay'
         this.draw.drawCat(this.cat.source.frames[2].image, this.cat.CatX, this.cat.CatY)
     }
-		this.fly.render()
+    this.fly.render()
     if (this.game.definingTrajectory || this.updateIsNeeded()) setTimeout(this.update, this.game.updateTime)
     // Performance meter
     performance.mark('endRenderProcess')
-    const measure = performance.measure('measureRenderProcess', 'beginRenderProcess', 'endRenderProcess')
-    const duration = Math.floor(measure.duration * 1000)
-    if (duration > 0) this.performance.push(duration)
-    if (this.performance.length > 10) this.performance.shift()
-    const summ = this.performance.reduce((aver, curr) => aver + curr, 0)
-    const average = Math.floor(summ / this.performance.length)
-    this.game.ctx!.fillStyle = 'black'
-    this.game.ctx!.fillText(`mms/frame: ${average}`, 540, 18)
+    if (this.performance.length > 0) {
+      const measure = performance.measure('measureRenderProcess', 'beginRenderProcess', 'endRenderProcess')
+      const duration = Math.floor(measure.duration * 1000)
+      if (duration > 0) this.performance.push(duration)
+      if (this.performance.length > 10) this.performance.shift()
+      const summ = this.performance.reduce((aver, curr) => aver + curr, 0)
+      const average = Math.floor(summ / this.performance.length)
+      this.game.ctx!.fillStyle = 'black'
+      this.game.ctx!.fillText(`mms/frame: ${average}`, 540, 18)
+    }
   }
 
   private updateIsNeeded = (): boolean => {
@@ -434,7 +450,7 @@ export default class Engine {
     this.target.heightLast = this.target.heightCurr
     this.target.xLast = this.target.xCurr
     this.target.yLast = this.target.yCurr
-    this.target.xCurr = Math.max(this.cat.CatX + CANVAS.width / 2, CANVAS.width)
+    this.target.xCurr = Math.floor(Math.max(this.cat.CatX + CANVAS.width / 2, CANVAS.width))
     this.target.yCurr = GAME.defaultTargetY
     this.target.nameCurr = targets[rand]
     this.target.isBarrier = BARRIER_LIST.includes(this.target.nameCurr)
@@ -449,6 +465,7 @@ export default class Engine {
     this.game.movementSpeed = 6
     this.game.fullJump = this.target.nameCurr == 'puddle' || ANIMAL_LIST.includes(this.target.nameCurr)
     this.cat.atPosition = false
+    this.target.atPosition = false
     // console.log(`Level ${level}:`, {speed: this.game.SPEED, rand: `${rand}/${targets.length}`, target: this.target})
 
     this.bgMotion.start(this.game.updateTime)
@@ -456,8 +473,12 @@ export default class Engine {
     this.game.action = 'scene'
   }
 
+  private canJump = (): boolean => {
+    return !this.game.definingTrajectory && this.game.action !== 'jump'
+  }
+
   private onkeydown = (event: KeyboardEvent) => {
-    if (!this.game.definingTrajectory && event.code == 'Space') {
+    if (this.canJump() && event.code == 'Space') {
       this.prepareJumpStart()
     }
   }
@@ -474,7 +495,9 @@ export default class Engine {
   private touchstart = (event: MouseEvent | TouchEvent) => {
     event.preventDefault()
     if (event.target && event.target instanceof HTMLDivElement && event.target.ariaLabel) return
-    this.prepareJumpStart()
+    if (this.canJump()) {
+      this.prepareJumpStart()
+    }
   }
 
   private touchend = (event: MouseEvent | TouchEvent) => {
@@ -506,7 +529,7 @@ export default class Engine {
     this.game.ctx = this.canvas.getContext('2d')
     this.draw = new Draw(this.game.ctx!)
     this.fly = new FlyingValues(this.game.ctx!)
-		this.game.ctx!.font = "18px Arial"
+    this.game.ctx!.font = '18px Arial'
     this.registerEvents()
     this.levelPrepare()
   }
@@ -541,6 +564,7 @@ export default class Engine {
         Engine.__instance.handleGameOver = handlers.handleGameOver
         Engine.__instance.showLevel = handlers.setLevel
         Engine.__instance.showScore = handlers.setScore
+        Engine.__instance.showCombo = handlers.setCombo
         Engine.__instance.setTooltip = handlers.setTooltip
         Engine.__instance.setCatched = handlers.setCatched
       }

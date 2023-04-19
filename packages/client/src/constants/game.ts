@@ -18,9 +18,10 @@ export const SpriteSize = {
 
 // Core game constants
 export const GAME = {
-  scorePerLevel: 100,
+  version: 2001.001,
+  scorePerLevel: 1000,
   initialScore: 20, // Need to prevent 'Game over' after the first fail
-	catchRange: 10,	// A range
+  catchRange: 10, // A range where an animal can be catched
   actionPositionVertical: Math.floor(CANVAS.height * 0.88),
   shadowsEnable: false,
   trajectoryStep: 2,
@@ -39,7 +40,19 @@ export const GAME = {
   stepTargetHeight: 10,
   defaultRunAwayDelay: 8000, // The time after which the target will escape
   stepTargetDelay: 1000,
+  get versionName(): string {
+    return getVersionName()
+  },
 }
+
+export const getVersionName = (ver = GAME.version): string => {
+  const releaseName = ['dev', 'alpha', 'beta', 'live']
+  const release = Math.floor(ver / 1000)
+  const major = Math.floor(ver - release * 1000)
+  const minor = Math.ceil((ver - Math.floor(ver)) * 1000)
+  return `${releaseName[release] || releaseName[0]}.${major}.${minor}`
+}
+
 export type AnimalName = 'butterfly' | 'grasshopper' | 'bird' | 'mouse'
 
 export type TargetName = AnimalName | 'cactus' | 'puddle' | 'flowerpot' | 'gnome' | 'none'

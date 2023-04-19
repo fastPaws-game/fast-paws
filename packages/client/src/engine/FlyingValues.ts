@@ -1,5 +1,5 @@
 // Not for review!
-import { CANVAS, GAME, SpriteSize } from '../constants/game'
+import { GAME, SpriteSize } from '../constants/game'
 
 type Message = {
   text: string
@@ -37,7 +37,7 @@ export default class FlyingValues {
     if (this.messages.length == 0) window.clearTimeout(this.timer)
   }
 
-  public throw = (value: number | string, x: number, y?: number) => {
+  public throw = (value: number | string, multiplier: number, x: number, y?: number) => {
     let text = value.toString()
     let color = 'yellow'
     let Y = y || txtStartY
@@ -46,6 +46,7 @@ export default class FlyingValues {
       color = value < 0 ? 'red' : 'green'
       Y = y || numStartY
     }
+    if (multiplier > 1) text = text + ' x' + multiplier
     this.messages.push({ text, color, X: x, Y, minY: Y - delta })
     // window.clearTimeout(this.timer)
     // this.timer = window.setInterval(this.render, 17 * 2)

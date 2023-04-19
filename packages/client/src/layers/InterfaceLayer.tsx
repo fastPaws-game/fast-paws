@@ -2,6 +2,7 @@ import { FC, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
+import { GAME } from '../constants/game'
 
 import IconSettings from '../assets/icons/IconSettings.svg'
 import IconFullscreen from '../assets/icons/IconFullscreen.svg'
@@ -19,6 +20,7 @@ import Beep from '../assets/sounds/Beep'
 type Props = {
   level: number
   score: number
+  combo: number
   tooltip: string
   catched: {
     butterfly: number
@@ -58,8 +60,9 @@ const InterfaceLayer: FC<Props> = props => {
     <Layer>
       <HorisontalBlock>
         <ScoreBlock>
-          <div>Level: {props.level < 5 ? props.level + 1 : 'MAX'}</div>
-          <div>Score: {props.score}</div>
+          <Info>Level: {props.level < 5 ? props.level + 1 : 'MAX'}</Info>
+          <Info>Score: {props.score}</Info>
+          <Info type="combo">{props.combo > 1 ? `Combo: x${props.combo}` : ''}</Info>
         </ScoreBlock>
         <HorisontalBlock>
           <IconAnimal icon={IconButterfly} />
@@ -80,12 +83,22 @@ const InterfaceLayer: FC<Props> = props => {
       <div></div>
       <HorisontalBlock>
         <UIButton aria-label="button" icon={IconSettings} onClick={handleClick('settings')} />
-        <BrowserButton aria-label="button" icon={IconFullscreen} onClick={handleClick('fullscreen')} />
-        <DeviceButton aria-label="button" icon={IconPause} onClick={handleClick('pause')} />
+        <HorisontalBlock>
+          <GameVersion>{GAME.versionName}</GameVersion>
+          <BrowserButton aria-label="button" icon={IconFullscreen} onClick={handleClick('fullscreen')} />
+          <DeviceButton aria-label="button" icon={IconPause} onClick={handleClick('pause')} />
+        </HorisontalBlock>
       </HorisontalBlock>
     </Layer>
   )
 }
+
+const Info = styled.div<{ type?: string }>`
+  color: ${props => (props.type == 'combo' ? 'yellow' : props.theme.colors.tertiary)};
+  font-weight: ${props => (props.type == 'combo' ? 400 : 600)};
+  text-shadow: ${props =>
+    props.type == 'combo' ? '-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000' : 'none'};
+`
 
 const UIButton = styled.div<{ icon: string }>`
   width: 40px;
@@ -135,6 +148,9 @@ const HorisontalBlock = styled.div`
 `
 const GameTip = styled.div`
   align-self: center;
+`
+const GameVersion = styled.div`
+  align-self: flex-end;
 `
 
 function browserOnly(WrappedComponent: FC) {
