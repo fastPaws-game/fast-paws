@@ -13,6 +13,7 @@ import Draw from './Draw'
 import Resource, { GifObject } from '../engine/ResourceLoader'
 import BgMotion from '../engine/BgMotion'
 import FlyingValues from './FlyingValues'
+import Queue from '../utils/Queue'
 
 type Action = 'run' | 'stay' | 'jump' | 'path' | 'scene' | 'return' | null
 type Target = {
@@ -131,7 +132,7 @@ export default class Engine {
   private draw: Draw
   private fly: FlyingValues
   private bgMotion: BgMotion
-  private performance = [100] // Dev element. Set [100] to show, [] to disable
+  private meterStack = new Queue()
   private setPauseVisible: (pause: boolean) => void
   private handleGameOver: () => void
   private showLevel: (value: number) => void
@@ -409,15 +410,12 @@ export default class Engine {
     if (this.game.definingTrajectory || this.updateIsNeeded()) setTimeout(this.update, this.game.updateTime)
     // Performance meter
     performance.mark('endRenderProcess')
-    if (this.performance.length > 0) {
+    if (GAME.meter) {
       const measure = performance.measure('measureRenderProcess', 'beginRenderProcess', 'endRenderProcess')
       const duration = Math.floor(measure.duration * 1000)
-      if (duration > 0) this.performance.push(duration)
-      if (this.performance.length > 10) this.performance.shift()
-      const summ = this.performance.reduce((aver, curr) => aver + curr, 0)
-      const average = Math.floor(summ / this.performance.length)
+      if (duration > 0) this.meterStack.enqueue(duration)
       this.game.ctx!.fillStyle = 'black'
-      this.game.ctx!.fillText(`mms/frame: ${average}`, 540, 18)
+      this.game.ctx!.fillText(`mms/frame: ${this.meterStack.average(10)}`, 540, 18)
     }
   }
 
