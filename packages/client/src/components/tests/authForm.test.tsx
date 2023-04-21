@@ -1,9 +1,16 @@
 import AuthForm from '../AuthForm'
-import { render, fireEvent, waitFor, screen } from '../../utils/test-utils'
+import { render, renderWithoutRouter, fireEvent, waitFor, screen } from '../../utils/test-utils'
+import '@testing-library/jest-dom'
 import userEvent from '@testing-library/user-event'
-
+import { Routes, Route, MemoryRouter, useLocation } from "react-router-dom"
 import { Provider } from 'react-redux'
 import {store} from '../../store/index'
+
+const LocationDisplay = () => {
+  const location = useLocation()
+
+  return <div data-testid="location-display">{location.pathname}</div>
+}
 
 describe('AuthForm components', () => {
   const handleSubmit = jest.fn()
@@ -18,7 +25,7 @@ describe('AuthForm components', () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test('Submit button without inputs data', async () => {
+  test('Check errorMessage', async () => {
     const { getByText } = render(
       <Provider store={store}>
         <AuthForm onSubmitFrom={handleSubmit} />
@@ -35,25 +42,41 @@ describe('AuthForm components', () => {
     })
   })
 
-  test.skip('rendering and submitting a basic form', async () => {
-    render(<AuthForm onSubmitFrom={handleSubmit} />)
+  test('check value in input', async () => {
     const user = userEvent.setup()
-
-    await user.type(screen.getByRole('textbox', { name: '' }), 'John')
-
-    await user.click(screen.getByRole('button', { name: /Log in/i }))
-
-    await waitFor(() =>
-      expect(handleSubmit).toHaveBeenCalledWith({
-        login: 'John',
-      })
+    render(
+    <Provider store={store}>
+      <AuthForm onSubmitFrom={handleSubmit} />
+    </Provider>
     )
+    const inputLogin = screen.getByPlaceholderText('Login')
+    const inputPassword = screen.getByPlaceholderText('Password')
+
+    await user.type(inputLogin, 'LoginTest')
+    await user.type(inputPassword, 'LoginPassword')
+
+    expect(inputLogin).toHaveValue('LoginTest')
+    expect(inputPassword).toHaveValue('LoginPassword')
   })
 
-  test.skip('Link', async () => {
-    const { getByText } = render(<AuthForm onSubmitFrom={handleSubmit} />)
-    const link = getByText('Registration')
+  test('Link', async () => {
+    const user = userEvent.setup()
+    const { getByText } = renderWithoutRouter(
+    <Provider store={store}>
+      <MemoryRouter>
+        <Routes>
+          <Route path="/" element={<AuthForm onSubmitFrom={handleSubmit} />} />
+          <Route path="/signup" element={<LocationDisplay />} />
+        </Routes>
+      </MemoryRouter>
+    </Provider>
+    )
 
-    fireEvent.click(link)
+    expect(screen.getByText('Login')).toBeInTheDocument()
+
+    const link = getByText('Registration')
+    await user.click(link)
+
+    expect(screen.getByTestId('location-display')).toHaveTextContent("/signup")
   })
 })
