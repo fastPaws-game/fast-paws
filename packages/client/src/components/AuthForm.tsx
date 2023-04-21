@@ -62,6 +62,7 @@ const AuthForm: FC<Props> = props => {
   }
 
   return (
+		<Wrapper>
     <Form onSubmit={handleSubmit(onSubmit)}>
       <H3 accent>Login</H3>
       <InputContainer>
@@ -90,8 +91,19 @@ const AuthForm: FC<Props> = props => {
         <Link to={Routes.SIGNUP}>Registration</Link>
       </ButtonContainer>
     </Form>
+		<Button onClick={()=>navigate('/game')}>Play unregistered</Button>
+		</Wrapper>
   )
 }
+
+const Wrapper=styled.div`
+	width: 100%;
+  max-width: 380px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 2em;
+`
 const Error = styled.p`
   color: ${props => props.theme.text.error};
   margin: 0;
@@ -119,7 +131,6 @@ const Form = styled.form`
     height: 270px;
   }
 `
-
 const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -129,7 +140,6 @@ const InputContainer = styled.div`
   max-width: 246px;
   padding-top: 20px;
 `
-
 const ButtonContainer = styled.div`
   display: flex;
   width: 100%;

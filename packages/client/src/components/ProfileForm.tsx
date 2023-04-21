@@ -4,7 +4,7 @@ import Button from '../ui/button'
 import styled from 'styled-components'
 import profileSchema from '../utils/validation/profileSchema'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { FC, useState, useCallback } from 'react'
+import { FC, useState, useCallback, useEffect } from 'react'
 import { H3 } from '../assets/styles/texts'
 import ContrastingWrapper from './ContrastingWrapper'
 import { PasswordsPopup } from './PasswordsPopup'
@@ -12,11 +12,11 @@ import { TProfile } from '../models/ProfileModel'
 
 type Props = {
   onSubmitForm: (data: TProfile) => void
-  defaultFormValues: TProfile
+  formValues: TProfile
 }
 
 const ProfileForm: FC<Props> = props => {
-  const { onSubmitForm, defaultFormValues } = props
+  const { onSubmitForm, formValues } = props
   const [modal, setModal] = useState(false)
 
   const {
@@ -24,7 +24,7 @@ const ProfileForm: FC<Props> = props => {
     handleSubmit,
     formState: { errors, isSubmitting, isDirty },
   } = useForm({
-    defaultValues: defaultFormValues,
+    defaultValues: formValues,
     mode: 'onBlur',
     criteriaMode: 'all',
     resolver: yupResolver(profileSchema),
@@ -122,6 +122,7 @@ const FormFields = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
+	gap: 18px;
   button {
     margin-bottom: 1em;
   }

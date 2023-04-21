@@ -91,7 +91,6 @@ const InputProfileStyled = styled.input<{ errorOn?: boolean }>`
   background: ${props => props.theme.colors.secondary};
   color: ${props => (props.errorOn ? props.theme.text.error : props.theme.text.textInvert)};
   caret-color: ${props => props.theme.text.caretColor};
-  margin-bottom: 24px;
 
   &::placeholder {
     color: ${props => props.theme.text.placeholder};

@@ -7,7 +7,7 @@ const enum METHODS {
 
 type Options = {
   method?: string
-  body?: null | string
+  body?: null | string | FormData
   headers?: Headers
 }
 type Request = <T>(url: string, options?: Options) => Promise<Response>
@@ -48,7 +48,7 @@ export class FetchApi {
     const buildedUrl = this.buildUrl(url)
     return fetch(buildedUrl, {
       ...options,
-      ...configOptions,
+      ...(options.body instanceof FormData ? {} : configOptions),
       method: METHODS.PUT,
     })
   }
