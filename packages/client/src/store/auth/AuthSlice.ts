@@ -2,7 +2,6 @@ import { RequestStatus } from '../types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { handleError } from '../../utils/handleError'
 import { TUser } from '../../models/UserModel'
-import LocalStorage from '../../utils/localStorage'
 import { getUser, logOut, registration, signInUser, updateUser } from './AuthActions'
 
 type AuthSlice = {
@@ -63,7 +62,6 @@ export const authSlice = createSlice({
         state.signInStatus = 'success'
         state.isAuth = true
         state.signInError = null
-        LocalStorage.set('isAuth', true)
       })
       .addCase(signInUser.rejected, (state, action) => {
         state.signInStatus = 'error'
@@ -78,7 +76,6 @@ export const authSlice = createSlice({
         state.isAuth = true
         state.signInError = null
         state.signUpError = null
-        LocalStorage.set('isAuth', true)
       })
       .addCase(registration.rejected, (state, action) => {
         state.signUpStatus = 'error'
@@ -92,7 +89,6 @@ export const authSlice = createSlice({
         state.isAuth = false
         state.logOutError = null
         state.user = null
-        LocalStorage.set('isAuth', false)
       })
       .addCase(logOut.rejected, (state, action) => {
         state.logOutStatus = 'error'
@@ -104,10 +100,13 @@ export const authSlice = createSlice({
       .addCase(getUser.fulfilled, (state, action) => {
         state.userStatus = 'success'
         state.user = action.payload
+        state.isAuth = true
         state.userError = null
       })
       .addCase(getUser.rejected, (state, action) => {
         state.userStatus = 'error'
+        state.isAuth = false
+        state.user = null
         state.userError = handleError(action.payload)
       })
 

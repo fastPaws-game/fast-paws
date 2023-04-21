@@ -1,34 +1,48 @@
 import { useLocation } from 'react-router'
 import { Routes } from '../constants/routes'
-import { useAppSelector } from './store'
+import { useAppDispatch } from './store'
 import { useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
+import { getUser } from '../store/auth/AuthActions'
 
 const pathsRequireAuth = [
-  Routes.MAIN,
-  // Routes.GAME,
   Routes.FORUM,
   Routes.LEADERBOARD,
-  // Routes.SETTINGS,
+  Routes.SETTINGS,
+  Routes.HOME
 ]
-const pathForAuth = [Routes.SIGNUP, Routes.HOME]
+
+const pathForAuth = [Routes.SIGNUP, Routes.SIGNIN]
 
 export const useRedirect = () => {
   const location = useLocation()
   const navigate = useNavigate()
-  const isAuth = useAppSelector(store => store.auth.isAuth)
+  const dispatch = useAppDispatch()
+
+  let isAuth: boolean
 
   useEffect(() => {
-    const pathName = location.pathname as Routes
-    const isAuthRequirePage = pathsRequireAuth.includes(pathName)
+    (async () => {
+      await dispatch(getUser())
+        .unwrap()
+        .then(() => {
+          isAuth = true
+        })
+        .catch(() => {
+          isAuth = false
+        })
 
-    const isAuthPages = pathForAuth.includes(pathName)
+      const pathName = location.pathname as Routes
+      const isAuthRequirePage = pathsRequireAuth.includes(pathName)
+      const isAuthPages = pathForAuth.includes(pathName)
 
-    if (isAuthRequirePage && !isAuth) {
-      navigate(Routes.HOME)
-    }
-    if (isAuthPages && isAuth) {
-      navigate(Routes.MAIN)
-    }
-  }, [isAuth, location.pathname, navigate])
+      if (isAuthRequirePage && !isAuth) {
+        navigate(Routes.SIGNIN)
+      }
+      if (isAuthPages && isAuth) {
+        navigate(Routes.HOME)
+      }
+    })()
+  }, [])
+
 }

@@ -17,9 +17,9 @@ export const Router = () => {
   useRedirect()
   return (
     <Routes>
-      <Route path={routes.HOME} errorElement={<LazyError />} element={<LazyAuth />} />
+      <Route path={routes.HOME} errorElement={<LazyError />} element={<LazyMain />} />
       <Route path={routes.SIGNUP} element={<LazyReg />} />
-      <Route path={routes.MAIN} element={<LazyMain />} />
+      <Route path={routes.SIGNIN} element={<LazyAuth />} />
       <Route path={routes.SETTINGS} element={<LazySettings />} />
       <Route path={routes.FORUM} element={<LazyForum />} />
       <Route path={`${routes.FORUM}/:forumId`} element={<LazyTopic />} />

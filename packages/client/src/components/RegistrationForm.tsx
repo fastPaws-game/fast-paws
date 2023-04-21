@@ -129,7 +129,7 @@ const RegistrationForm: FC<Props> = props => {
         <Button type="submit" disabled={!isDirty || isSubmitting}>
           Sign up
         </Button>
-        <Link to={Routes.HOME}>Log in</Link>
+        <Link to={Routes.SIGNIN}>Log in</Link>
       </Column>
     </Form>
   )

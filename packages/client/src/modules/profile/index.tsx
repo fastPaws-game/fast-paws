@@ -25,29 +25,16 @@ const Profile = () => {
 
   const handleLogOut = useCallback(() => {
     dispatch(logOut())
-    navigate(Routes.HOME)
+    navigate(Routes.SIGNIN)
   }, [dispatch])
 
   useEffect(() => {
-    ;(async () => {
-      if (!hasUserData) {
-        await dispatch(getUser())
-          .unwrap()
-          .then(originalPromiseResult => {
-            setDefaultValues({
-              ...originalPromiseResult,
-              display_name:
-                originalPromiseResult.display_name ??
-                `${originalPromiseResult.first_name} ${originalPromiseResult.second_name}`,
-            })
-          })
-      } else {
-        setDefaultValues({
-          ...user,
-          display_name: user.display_name ?? `${user.first_name} ${user.second_name}`,
-        })
-      }
-    })()
+
+    if (hasUserData)
+      setDefaultValues({
+        ...user,
+        display_name: user.display_name ?? `${user.first_name} ${user.second_name}`,
+      })
   }, [])
 
   useEffect(() => {
@@ -58,16 +45,19 @@ const Profile = () => {
       })
   }, [user])
 
-  return (
-    <>
-      <ProfileAvatar />
-      {!!hasUserData && userValues && <ProfileForm onSubmitForm={handleSubmit} defaultFormValues={userValues} />}
-      <Footer>
-        <Button onClick={toggleTheme}>Toggle theme</Button>
-        <Button onClick={handleLogOut}>Log out</Button>
-      </Footer>
-    </>
-  )
+  if (!!hasUserData && userValues) {
+    return (
+      <>
+        <ProfileAvatar />
+        <ProfileForm onSubmitForm={handleSubmit} defaultFormValues={userValues} />
+        <Footer>
+          <Button onClick={toggleTheme}>Toggle theme</Button>
+          <Button onClick={handleLogOut}>Log out</Button>
+        </Footer>
+      </>
+    )
+  }
+
 }
 
 const Footer = styled.div`
