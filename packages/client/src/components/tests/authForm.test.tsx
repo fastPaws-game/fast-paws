@@ -2,9 +2,9 @@ import AuthForm from '../AuthForm'
 import { render, renderWithoutRouter, fireEvent, waitFor, screen } from '../../utils/test-utils'
 import '@testing-library/jest-dom'
 import userEvent from '@testing-library/user-event'
-import { Routes, Route, MemoryRouter, useLocation } from "react-router-dom"
+import { Routes, Route, MemoryRouter, useLocation } from 'react-router-dom'
 import { Provider } from 'react-redux'
-import {store} from '../../store/index'
+import { store } from '../../store/index'
 
 const LocationDisplay = () => {
   const location = useLocation()
@@ -20,7 +20,7 @@ describe('AuthForm components', () => {
       <Provider store={store}>
         <AuthForm onSubmitFrom={handleSubmit} />
       </Provider>
-      )
+    )
 
     expect(tree).toMatchSnapshot()
   })
@@ -30,7 +30,7 @@ describe('AuthForm components', () => {
       <Provider store={store}>
         <AuthForm onSubmitFrom={handleSubmit} />
       </Provider>
-      )
+    )
 
     fireEvent.submit(getByText('Log in'))
 
@@ -45,9 +45,9 @@ describe('AuthForm components', () => {
   test('check value in input', async () => {
     const user = userEvent.setup()
     render(
-    <Provider store={store}>
-      <AuthForm onSubmitFrom={handleSubmit} />
-    </Provider>
+      <Provider store={store}>
+        <AuthForm onSubmitFrom={handleSubmit} />
+      </Provider>
     )
     const inputLogin = screen.getByPlaceholderText('Login')
     const inputPassword = screen.getByPlaceholderText('Password')
@@ -62,14 +62,14 @@ describe('AuthForm components', () => {
   test('Link', async () => {
     const user = userEvent.setup()
     const { getByText } = renderWithoutRouter(
-    <Provider store={store}>
-      <MemoryRouter>
-        <Routes>
-          <Route path="/" element={<AuthForm onSubmitFrom={handleSubmit} />} />
-          <Route path="/signup" element={<LocationDisplay />} />
-        </Routes>
-      </MemoryRouter>
-    </Provider>
+      <Provider store={store}>
+        <MemoryRouter>
+          <Routes>
+            <Route path="/" element={<AuthForm onSubmitFrom={handleSubmit} />} />
+            <Route path="/signup" element={<LocationDisplay />} />
+          </Routes>
+        </MemoryRouter>
+      </Provider>
     )
 
     expect(screen.getByText('Login')).toBeInTheDocument()
@@ -77,6 +77,6 @@ describe('AuthForm components', () => {
     const link = getByText('Registration')
     await user.click(link)
 
-    expect(screen.getByTestId('location-display')).toHaveTextContent("/signup")
+    expect(screen.getByTestId('location-display')).toHaveTextContent('/signup')
   })
 })
