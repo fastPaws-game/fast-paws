@@ -22,7 +22,7 @@ export const GAME = {
   scorePerLevel: 1000,
   initialScore: 20, // Need to prevent 'Game over' after the first fail
   catchRange: 10, // A range where an animal can be catched
-	meter: true,	//Performance meter
+  meter: true, //Performance meter
   actionPositionVertical: Math.floor(CANVAS.height * 0.88),
   shadowsEnable: false,
   trajectoryStep: 2,
