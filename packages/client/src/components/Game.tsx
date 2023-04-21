@@ -15,6 +15,7 @@ const GamePage: FC<Props> = props => {
   const [gameOverVisible, setGameOverVisible] = useState(false)
   const [level, setLevel] = useState(0)
   const [score, setScore] = useState(0)
+  const [combo, setCombo] = useState(1)
   const [tooltip, setTooltip] = useState('')
   const [catched, setCatched] = useState({ mouse: 0, grasshopper: 0, butterfly: 0, bird: 0 })
 
@@ -40,13 +41,13 @@ const GamePage: FC<Props> = props => {
   }, [setGameOverVisible])
 
   const actionLayerProps = useMemo(
-    () => ({ setPauseVisible, handleGameOver, setLevel, setScore, setTooltip, setCatched }),
-    [setPauseVisible, handleGameOver, setLevel, setScore, setTooltip, setCatched]
+    () => ({ setPauseVisible, handleGameOver, setLevel, setScore, setCombo, setTooltip, setCatched }),
+    [setPauseVisible, handleGameOver, setLevel, setScore, setCombo, setTooltip, setCatched]
   )
 
   const interfaceLayerProps = useMemo(
-    () => ({ level, score, tooltip, catched, switchFullScreen: props.switchFullScreen, handlePause }),
-    [level, score, tooltip, catched, props.switchFullScreen, handlePause]
+    () => ({ level, score, combo, tooltip, catched, switchFullScreen: props.switchFullScreen, handlePause }),
+    [level, score, tooltip, catched, combo, props.switchFullScreen, handlePause]
   )
 
   return (
