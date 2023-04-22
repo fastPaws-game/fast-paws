@@ -7,8 +7,8 @@ type Props = {
 } & PropsWithChildren
 
 const ContrastingWrapper: FC<Props> = props => {
-  const { children } = props
-  return <Wrapper>{children}</Wrapper>
+  const { children, padding } = props
+  return <Wrapper padding={padding}>{children}</Wrapper>
 }
 
 const Wrapper = styled.div<{ padding?: number | string }>`

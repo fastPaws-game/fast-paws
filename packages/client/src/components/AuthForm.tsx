@@ -101,6 +101,7 @@ const Error = styled.p`
 const Form = styled.form`
   width: 100%;
   max-width: 380px;
+  min-width: 340px;
   height: 100%;
   max-height: 285px;
   display: flex;

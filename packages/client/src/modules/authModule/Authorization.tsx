@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router'
 import AuthForm from '../../components/AuthForm'
+import ContrastingWrapper from '../../components/ContrastingWrapper'
 import { Routes } from '../../constants/routes'
 import { useAppDispatch, useAppSelector } from '../../hooks/store'
 import { TSignIn } from '../../models/SignInModel'
@@ -19,7 +20,9 @@ const Authorization = () => {
   const handleSubmit = async (data: TSignIn) => {
     dispatch(signInUser(data))
   }
-  return <AuthForm onSubmitFrom={handleSubmit} />
+  return(  <ContrastingWrapper padding='25px'>
+  <AuthForm onSubmitFrom={handleSubmit} />
+  </ContrastingWrapper>)
 }
 
 export { Authorization }
