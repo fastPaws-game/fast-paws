@@ -4,11 +4,9 @@ import { LeaderBoard } from '../modules/leaderBoardModule'
 
 const LeaderBoardPage = () => {
   return (
-    <RequireAuth>
     <LayoutWithHeader title="Leaderboard">
       <LeaderBoard />
     </LayoutWithHeader>
-    </RequireAuth>
   )
 }
 

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { ChangeEvent, MouseEvent, useCallback, useEffect, useRef, useState } from 'react'
 import ProfileAvatar from '../../components/ProfileAvatar'
 import ProfileForm from '../../components/ProfileForm'
 import { useAppDispatch, useAppSelector } from '../../hooks/store'
@@ -11,6 +11,7 @@ import { Routes } from '../../constants/routes'
 import { useNavigate } from 'react-router'
 import { TProfile } from '../../models/ProfileModel'
 import RequireAuth from '../../hocs/RequireAuth'
+import { themeSelectors } from '../../store/theme/ThemeSelectors'
 
 const Profile = () => {
   const { toggleTheme } = useChangeTheme()
@@ -19,6 +20,14 @@ const Profile = () => {
   const navigate = useNavigate()
   const user = useAppSelector(authSelectors.getUser)
   const hasUserData = !!user?.email
+  const themeBtnRef = useRef<HTMLButtonElement | null>(null);
+
+  const handleToggleTheme = (e: MouseEvent<HTMLButtonElement>)=> {
+    toggleTheme()
+    if (e.target instanceof HTMLElement) {
+      e.target.blur();
+  }
+  }
 
   const handleSubmit = async (data: TProfile) => {
     dispatch(updateUser(data))
@@ -49,17 +58,16 @@ const Profile = () => {
   if (!!hasUserData && userValues) {
     return (
       <>
-
         <ProfileAvatar />
         <ProfileForm onSubmitForm={handleSubmit} defaultFormValues={userValues} />
         <Footer>
-          <Button onClick={toggleTheme}>Toggle theme</Button>
-          <Button onClick={handleLogOut}>Log out</Button>
+          <Button onClick={handleToggleTheme}>Toggle theme</Button>
+          <Button onClick={handleLogOut} ref={themeBtnRef}>Log out</Button>
         </Footer>
       </>
     )
   }
-  else{
+  else {
     return <></>
   }
 

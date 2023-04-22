@@ -4,17 +4,18 @@ import Button from '../ui/button'
 import styled from 'styled-components'
 import profileSchema from '../utils/validation/profileSchema'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { FC, useState, useCallback } from 'react'
+import { FC, useState, useCallback, useRef, useEffect } from 'react'
 import { H3 } from '../assets/styles/texts'
 import ContrastingWrapper from './ContrastingWrapper'
 import { PasswordsPopup } from './PasswordsPopup'
 import { TProfile } from '../models/ProfileModel'
+import { useAppSelector } from '../hooks/store'
+import { themeSelectors } from '../store/theme/ThemeSelectors'
 
 type Props = {
   onSubmitForm: (data: TProfile) => void
   defaultFormValues: TProfile
 }
-
 const ProfileForm: FC<Props> = props => {
   const { onSubmitForm, defaultFormValues } = props
   const [modal, setModal] = useState(false)
@@ -128,11 +129,31 @@ const FormFields = styled.div`
   button:last-of-type {
     background: transparent;
     box-shadow: none;
-    color: ${props => props.theme.text.everWhite};
+    color: ${props => props.theme.colors.link};
     transition: all 0.5s ease-out;
+    position:relative;
+
+    &::before {
+    content: '';
+    position: absolute;
+    width: 80%;
+    height: 2px;
+    border-radius: 4px;
+    background-color: ${props => props.theme.colors.accent};
+    bottom: 0px;
+    left: 15px;
+    transform-origin: right;
+    transform: scaleX(0);
+    transition: transform .3s ease-in-out;
+  }
+
   }
   button:last-of-type:hover {
-    text-decoration: underline;
+
+    &::before {
+    transform-origin: left;
+    transform: scaleX(1);
+  }
   }
   button:last-of-type:active,
   button:last-of-type:hover,

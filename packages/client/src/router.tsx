@@ -1,6 +1,7 @@
 import React from 'react'
 import { Route, Routes } from 'react-router'
 import { Routes as routes } from './constants/routes'
+import RequireAuth from './hocs/RequireAuth'
 import { useRedirect } from './hooks/useRedirect'
 
 const LazyAuth = React.lazy(() => import('./pages/AuthPage'))
@@ -15,16 +16,19 @@ const LazyGame = React.lazy(() => import('./pages/GameLoaderPage'))
 
 export const Router = () => {
   useRedirect()
+
   return (
     <Routes>
+      <Route element={<RequireAuth />}>
+        <Route path={routes.SETTINGS} element={<LazySettings />} />
+        <Route path={routes.FORUM} element={<LazyForum />} />
+        <Route path={`${routes.FORUM}/:forumId`} element={<LazyTopic />} />
+        <Route path={routes.LEADERBOARD} element={<LazyBoard />} />
+      </Route>
       <Route path={routes.HOME} errorElement={<LazyError />} element={<LazyMain />} />
       <Route path={routes.SIGNUP} element={<LazyReg />} />
       <Route path={routes.SIGNIN} element={<LazyAuth />} />
-      <Route path={routes.SETTINGS} element={<LazySettings />} />
-      <Route path={routes.FORUM} element={<LazyForum />} />
-      <Route path={`${routes.FORUM}/:forumId`} element={<LazyTopic />} />
       <Route path={routes.GAME} element={<LazyGame />} />
-      <Route path={routes.LEADERBOARD} element={<LazyBoard />} />
       <Route path={routes.NOT_FOUND} element={<LazyError />} />
     </Routes>
   )

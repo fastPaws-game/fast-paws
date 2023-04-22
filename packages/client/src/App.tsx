@@ -16,7 +16,7 @@ function App() {
   const { theme } = useChangeTheme()
   const currentTheme = LocalStorage.get('Theme') || 'light'
   const dispatch = useAppDispatch()
-  const [isLoading, setIsLoading]=useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
   let isAuth: boolean
 
   useEffect(() => {
@@ -38,16 +38,18 @@ function App() {
   }, [])
 
   return (
-    <ThemeProvider theme={theme }>
-        <GlobalStyles />
+    <>
+      <GlobalStyles />
+      <ThemeProvider theme={theme}>
         <BrowserRouter>
           <PageWrapper>
-          <Suspense fallback={<LoadingPage />}>
-            {!isLoading&&<Router />}
+            <Suspense fallback={<LoadingPage />}>
+              {!isLoading && <Router />}
             </Suspense>
           </PageWrapper>
         </BrowserRouter>
-    </ThemeProvider>
+      </ThemeProvider>
+    </>
   )
 }
 

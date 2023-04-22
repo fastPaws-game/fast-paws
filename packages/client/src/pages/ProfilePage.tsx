@@ -4,11 +4,9 @@ import Profile from '../modules/profile'
 
 const ProfilePage = () => {
   return (
-    <RequireAuth>
       <LayoutWithHeader title="Settings">
         <Profile />
       </LayoutWithHeader>
-    </RequireAuth>
   )
 }
 
