@@ -3,22 +3,26 @@ import { GlobalStyles } from './assets/styles/globalStyle'
 import { BrowserRouter } from 'react-router-dom'
 import { Router } from './router'
 import PageWrapper from './pages/PageWrapper'
-import { Suspense, useEffect } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { useAppDispatch } from './hooks/store'
 import { getUser, setIsAuth } from './store/auth/AuthActions'
 import LocalStorage from './utils/localStorage'
 import { changeTheme } from './store/theme/ThemeSlice'
 import LoadingPage from './components/LoadingScreen'
-import { Themes } from './constants/themes'
+import { useChangeTheme } from './hooks/useChangeTheme'
+
 
 function App() {
+  const { theme } = useChangeTheme()
   const currentTheme = LocalStorage.get('Theme') || 'light'
   const dispatch = useAppDispatch()
+  const [isLoading, setIsLoading]=useState<boolean>(false)
   let isAuth: boolean
 
   useEffect(() => {
     (async () => {
       dispatch(changeTheme(currentTheme))
+      setIsLoading(true)
       await dispatch(getUser())
         .unwrap()
         .then(() => {
@@ -28,20 +32,21 @@ function App() {
           isAuth = false
         })
       dispatch(setIsAuth(isAuth))
+      setIsLoading(false)
     }
     )()
   }, [])
 
   return (
-    <ThemeProvider theme={Themes[currentTheme]}>
-      <Suspense fallback={<LoadingPage />}>
+    <ThemeProvider theme={theme }>
         <GlobalStyles />
         <BrowserRouter>
           <PageWrapper>
-            <Router />
+          <Suspense fallback={<LoadingPage />}>
+            {!isLoading&&<Router />}
+            </Suspense>
           </PageWrapper>
         </BrowserRouter>
-      </Suspense>
     </ThemeProvider>
   )
 }

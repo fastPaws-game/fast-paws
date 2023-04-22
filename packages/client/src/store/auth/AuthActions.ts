@@ -52,6 +52,21 @@ export const logOut = createAsyncThunk('auth/logout', async (_, { rejectWithValu
   }
 })
 
+export const updateAvatar = async (data: FormData) => {
+  try {
+    const response = await UserApi.updateUserAvatar(data)
+    if (response.status !== 200) {
+      const error = await response.json()
+      console.log(response.status, error.reason)
+    } else {
+      console.log(response)
+    }
+    return data
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 export const getUser = createAsyncThunk('user/getUser', async (_, { rejectWithValue }) => {
   try {
     const response = await UserApi.getUser()

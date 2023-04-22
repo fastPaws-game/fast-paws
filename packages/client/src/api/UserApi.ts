@@ -7,11 +7,17 @@ class UserApi {
   public getUser() {
     return FetchApi.get<TUser>('/auth/user')
   }
+
   public updateUser(data: TProfile) {
     return FetchApi.put('/user/profile', { body: JSON.stringify(data) })
   }
+
   public updatePassword(data: TChangingPasswords) {
     return FetchApi.put('/user/password', { body: JSON.stringify(data) })
+  }
+
+  public updateUserAvatar(data: FormData) {
+    return FetchApi.put('/user/profile/avatar', { body: data })
   }
 }
 

@@ -1,17 +1,24 @@
 import { createRef, ChangeEvent } from 'react'
 import styled from 'styled-components'
 import DefaultAvatar from '../assets/icons/DefaultAvatar.svg'
+import { updateAvatar } from '../store/auth/AuthActions'
 
-export default function ProfileAvatar() {
+export default function ProfileAvatar(props: { avatarUrl: string | null }) {
   const fileUpload = createRef<HTMLInputElement>()
   const image = createRef<HTMLImageElement>()
+  const BASE_URL = 'https://ya-praktikum.tech/api/v2'
+  const avatar = props.avatarUrl ? `${BASE_URL}/resources${props.avatarUrl}` : DefaultAvatar
 
   function fileChange(event: ChangeEvent<HTMLInputElement>) {
     const target = event.target as HTMLInputElement
     const file = target.files ? target.files[0] : null
     if (file) {
       image.current!.src = URL.createObjectURL(file)
-      const data = new FormData()
+      const formData = new FormData()
+      formData.append('avatar', file, file.name)
+      updateAvatar(formData)
+
+      /*      const data = new FormData()
       data.append('avatar', file)
       /* Change profile avatar API
       console.log(file)
@@ -40,7 +47,7 @@ export default function ProfileAvatar() {
         hidden
         accept="image/png, image/jpeg, image/gif"
       />
-      <img src={DefaultAvatar} ref={image} />
+      <img src={avatar} ref={image} />
     </Avatar>
   )
 }
