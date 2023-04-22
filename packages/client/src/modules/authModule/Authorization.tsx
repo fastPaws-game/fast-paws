@@ -12,14 +12,13 @@ const Authorization = () => {
   const isAuth = useAppSelector(authSelectors.getIsAuth)
   const navigate = useNavigate()
 
-  const handleSubmit = async (data: TSignIn) => {
-    dispatch(signInUser(data))
-  }
-
   useEffect(() => {
     if (isAuth) navigate(Routes.HOME)
   }, [isAuth])
 
+  const handleSubmit = async (data: TSignIn) => {
+    dispatch(signInUser(data))
+  }
   return <AuthForm onSubmitFrom={handleSubmit} />
 }
 

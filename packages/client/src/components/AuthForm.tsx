@@ -27,8 +27,6 @@ type Props = {
 
 const AuthForm: FC<Props> = props => {
   const { onSubmitFrom } = props
-  //TODO Николай хочет добавить переход на страницу с игрой
-  const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const serverError = useSelector(authSelectors.getSignInError)
   const signInStatus = useSelector(authSelectors.getSignInStatus)

@@ -3,13 +3,16 @@ import Forum from '../modules/forums/Forum'
 import catImg from '../assets/images/bigCat.png'
 import styled from 'styled-components'
 import { media } from '../assets/styles/media'
+import RequireAuth from '../hocs/RequireAuth'
 
 const ForumPage = () => {
   return (
-    <LayoutWithHeader title="Forums">
-      <Forum />
-      <IMG src={catImg} />
-    </LayoutWithHeader>
+    <RequireAuth>
+      <LayoutWithHeader title="Forums">
+        <Forum />
+        <IMG src={catImg} />
+      </LayoutWithHeader>
+    </RequireAuth>
   )
 }
 

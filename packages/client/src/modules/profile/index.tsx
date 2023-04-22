@@ -10,6 +10,7 @@ import { authSelectors } from '../../store/auth/AuthSelectors'
 import { Routes } from '../../constants/routes'
 import { useNavigate } from 'react-router'
 import { TProfile } from '../../models/ProfileModel'
+import RequireAuth from '../../hocs/RequireAuth'
 
 const Profile = () => {
   const { toggleTheme } = useChangeTheme()
@@ -48,6 +49,7 @@ const Profile = () => {
   if (!!hasUserData && userValues) {
     return (
       <>
+
         <ProfileAvatar />
         <ProfileForm onSubmitForm={handleSubmit} defaultFormValues={userValues} />
         <Footer>
@@ -56,6 +58,9 @@ const Profile = () => {
         </Footer>
       </>
     )
+  }
+  else{
+    return <></>
   }
 
 }
