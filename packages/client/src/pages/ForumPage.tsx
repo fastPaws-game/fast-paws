@@ -7,10 +7,10 @@ import RequireAuth from '../hocs/RequireAuth'
 
 const ForumPage = () => {
   return (
-      <LayoutWithHeader title="Forums">
-        <Forum />
-        <IMG src={catImg} />
-      </LayoutWithHeader>
+    <LayoutWithHeader title="Forums">
+      <Forum />
+      <IMG src={catImg} />
+    </LayoutWithHeader>
   )
 }
 

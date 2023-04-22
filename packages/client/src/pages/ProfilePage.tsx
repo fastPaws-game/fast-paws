@@ -3,9 +3,9 @@ import Profile from '../modules/profile'
 
 const ProfilePage = () => {
   return (
-      <LayoutWithHeader title="Settings">
-        <Profile />
-      </LayoutWithHeader>
+    <LayoutWithHeader title="Settings">
+      <Profile />
+    </LayoutWithHeader>
   )
 }
 

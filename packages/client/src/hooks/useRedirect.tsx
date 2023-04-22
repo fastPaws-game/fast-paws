@@ -6,11 +6,7 @@ import { useEffect } from 'react'
 import { getUser } from '../store/auth/AuthActions'
 import { authSelectors } from '../store/auth/AuthSelectors'
 
-const pathsRequireAuth = [
-  Routes.FORUM,
-  Routes.LEADERBOARD,
-  Routes.SETTINGS,
-]
+const pathsRequireAuth = [Routes.FORUM, Routes.LEADERBOARD, Routes.SETTINGS]
 
 const pathForAuth = [Routes.SIGNUP, Routes.SIGNIN, Routes.HOME]
 

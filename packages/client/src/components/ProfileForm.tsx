@@ -41,7 +41,7 @@ const ProfileForm: FC<Props> = props => {
     setModal(true)
   }
 
-  const onSubmit: SubmitHandler<TProfile> = async (data) => {
+  const onSubmit: SubmitHandler<TProfile> = async data => {
     const { fileAvatar, avatar, ...profileData } = data
     await onSubmitAvatar(fileAvatar)
     await onSubmitUser(profileData)
@@ -50,7 +50,7 @@ const ProfileForm: FC<Props> = props => {
   return (
     <>
       <ContrastingWrapper>
-        <Form onSubmit={handleSubmit(onSubmit)} >
+        <Form onSubmit={handleSubmit(onSubmit)}>
           <ProfileAvatar name="fileAvatar" register={register} />
           <Title accent>Profile</Title>
           <FormFields>
@@ -136,29 +136,27 @@ const FormFields = styled.div`
     box-shadow: none;
     color: ${props => props.theme.colors.link};
     transition: all 0.5s ease-out;
-    position:relative;
+    position: relative;
 
     &::before {
-    content: '';
-    position: absolute;
-    width: 80%;
-    height: 2px;
-    border-radius: 4px;
-    background-color: ${props => props.theme.colors.accent};
-    bottom: 0px;
-    left: 15px;
-    transform-origin: right;
-    transform: scaleX(0);
-    transition: transform .3s ease-in-out;
-  }
-
+      content: '';
+      position: absolute;
+      width: 80%;
+      height: 2px;
+      border-radius: 4px;
+      background-color: ${props => props.theme.colors.accent};
+      bottom: 0px;
+      left: 15px;
+      transform-origin: right;
+      transform: scaleX(0);
+      transition: transform 0.3s ease-in-out;
+    }
   }
   button:last-of-type:hover {
-
     &::before {
-    transform-origin: left;
-    transform: scaleX(1);
-  }
+      transform-origin: left;
+      transform: scaleX(1);
+    }
   }
   button:last-of-type:active,
   button:last-of-type:hover,

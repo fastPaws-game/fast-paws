@@ -7,9 +7,9 @@ const enum METHODS {
 
 type Options = {
   method?: string
-  body?: null | string|FormData
+  body?: null | string | FormData
   headers?: Headers
-  isFormData?: boolean,
+  isFormData?: boolean
 }
 
 type Request = <T>(url: string, options?: Options) => Promise<Response>
@@ -20,7 +20,6 @@ const configOptions = {
   headers: {
     'Content-Type': 'application/json;charset=utf-8',
   },
-
 }
 
 export class FetchApi {
@@ -56,7 +55,6 @@ export class FetchApi {
     })
   }
   public putData: Request = async (url: string, options = {}) => {
-
     const buildedUrl = this.buildUrl(url)
     return fetch(buildedUrl, {
       ...options,

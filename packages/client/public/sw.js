@@ -14,7 +14,7 @@ const CACHE_ASSETS = STATIC_ASSETS.concat(getCacheUrls())
 
 self.addEventListener('install', event => {
   console.log('INSTALL')
-  self.skipWaiting();
+  self.skipWaiting()
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
       cache.addAll(CACHE_ASSETS)

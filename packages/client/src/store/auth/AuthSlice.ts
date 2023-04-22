@@ -52,7 +52,7 @@ export const authSlice = createSlice({
       state.signUpError = null
       state.signUpStatus = 'pending'
     },
-    setUser:(state, action: PayloadAction<TUser>) => {
+    setUser: (state, action: PayloadAction<TUser>) => {
       state.user = action.payload
     },
   },
@@ -119,7 +119,6 @@ export const authSlice = createSlice({
       .addCase(updateAvatar.fulfilled, (state, action) => {
         state.userStatus = 'success'
         state.user = action.payload
-
       })
       .addCase(updateAvatar.rejected, (state, action) => {
         state.userStatus = 'error'

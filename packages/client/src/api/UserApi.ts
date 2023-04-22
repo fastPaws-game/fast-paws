@@ -17,7 +17,7 @@ class UserApi {
   }
 
   public updateUserAvatar(data: FormData) {
-    return FetchApi.putData('/user/profile/avatar', {body:data })
+    return FetchApi.putData('/user/profile/avatar', { body: data })
   }
 }
 

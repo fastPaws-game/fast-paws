@@ -11,7 +11,6 @@ import { changeTheme } from './store/theme/ThemeSlice'
 import LoadingPage from './components/LoadingScreen'
 import { useChangeTheme } from './hooks/useChangeTheme'
 
-
 function App() {
   const { theme } = useChangeTheme()
   const currentTheme = LocalStorage.get('Theme') || 'light'
@@ -20,7 +19,7 @@ function App() {
   let isAuth: boolean
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       dispatch(changeTheme(currentTheme))
       setIsLoading(true)
       await dispatch(getUser())
@@ -33,8 +32,7 @@ function App() {
         })
       dispatch(setIsAuth(isAuth))
       setIsLoading(false)
-    }
-    )()
+    })()
   }, [])
 
   return (
@@ -43,9 +41,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <BrowserRouter>
           <PageWrapper>
-            <Suspense fallback={<LoadingPage />}>
-              {!isLoading && <Router />}
-            </Suspense>
+            <Suspense fallback={<LoadingPage />}>{!isLoading && <Router />}</Suspense>
           </PageWrapper>
         </BrowserRouter>
       </ThemeProvider>

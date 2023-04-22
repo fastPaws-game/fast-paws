@@ -1,7 +1,7 @@
 import { MouseEvent, useCallback, useEffect, useRef, useState } from 'react'
 import ProfileForm from '../../components/ProfileForm'
 import { useAppDispatch, useAppSelector } from '../../hooks/store'
-import {  logOut, updateAvatar, updateUser } from '../../store/auth/AuthActions'
+import { logOut, updateAvatar, updateUser } from '../../store/auth/AuthActions'
 import Button from '../../ui/button'
 import styled from 'styled-components'
 import { useChangeTheme } from '../../hooks/useChangeTheme'
@@ -18,12 +18,12 @@ const Profile = () => {
   const user = useAppSelector(authSelectors.getUser)
 
   const hasUserData = !!user?.email
-  const themeBtnRef = useRef<HTMLButtonElement | null>(null);
+  const themeBtnRef = useRef<HTMLButtonElement | null>(null)
 
   const handleToggleTheme = (e: MouseEvent<HTMLButtonElement>) => {
     toggleTheme()
     if (e.target instanceof HTMLElement) {
-      e.target.blur();
+      e.target.blur()
     }
   }
 
@@ -45,10 +45,10 @@ const Profile = () => {
 
   useEffect(() => {
     if (hasUserData)
-    setDefaultValues({
-      ...user,
-      display_name: user.display_name ?? `${user.first_name} ${user.second_name}`,
-    })
+      setDefaultValues({
+        ...user,
+        display_name: user.display_name ?? `${user.first_name} ${user.second_name}`,
+      })
   }, [])
 
   useEffect(() => {
@@ -62,18 +62,22 @@ const Profile = () => {
   if (!!hasUserData && userValues) {
     return (
       <>
-        <ProfileForm onSubmitUser={handleSubmitUser} onSubmitAvatar ={handleSubmitAvatar} defaultFormValues={userValues} />
+        <ProfileForm
+          onSubmitUser={handleSubmitUser}
+          onSubmitAvatar={handleSubmitAvatar}
+          defaultFormValues={userValues}
+        />
         <Footer>
           <Button onClick={handleToggleTheme}>Toggle theme</Button>
-          <Button onClick={handleLogOut} ref={themeBtnRef}>Log out</Button>
+          <Button onClick={handleLogOut} ref={themeBtnRef}>
+            Log out
+          </Button>
         </Footer>
       </>
     )
-  }
-  else {
+  } else {
     return <></>
   }
-
 }
 
 const Footer = styled.div`
