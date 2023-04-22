@@ -2,7 +2,7 @@ import { RequestStatus } from '../types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { handleError } from '../../utils/handleError'
 import { TUser } from '../../models/UserModel'
-import { getUser, logOut, registration, signInUser, updateUser } from './AuthActions'
+import { getUser, logOut, registration, signInUser, updateUser, updateAvatar } from './AuthActions'
 
 type AuthSlice = {
   user: TUser | null
@@ -107,6 +107,20 @@ export const authSlice = createSlice({
         state.userStatus = 'error'
         state.isAuth = false
         state.user = null
+        state.userError = handleError(action.payload)
+      })
+
+
+      .addCase(updateAvatar.pending, state => {
+        state.userStatus = 'pending'
+      })
+      .addCase(updateAvatar.fulfilled, (state, action) => {
+        state.userStatus = 'success'
+        state.user = state.user ? { ...state.user, ...action.payload } : null
+        state.userError = null
+      })
+      .addCase(updateAvatar.rejected, (state, action) => {
+        state.userStatus = 'error'
         state.userError = handleError(action.payload)
       })
 

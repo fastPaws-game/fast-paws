@@ -7,9 +7,11 @@ const enum METHODS {
 
 type Options = {
   method?: string
-  body?: null | string
+  body?: null | string|FormData
   headers?: Headers
+  isFormData?: boolean,
 }
+
 type Request = <T>(url: string, options?: Options) => Promise<Response>
 
 const configOptions = {
@@ -18,6 +20,7 @@ const configOptions = {
   headers: {
     'Content-Type': 'application/json;charset=utf-8',
   },
+
 }
 
 export class FetchApi {
@@ -52,6 +55,25 @@ export class FetchApi {
       method: METHODS.PUT,
     })
   }
-}
+  public putData: Request = async (url: string, options = {}) => {
 
+    const buildedUrl = this.buildUrl(url)
+    return fetch(buildedUrl, {
+      ...options,
+      credentials: 'include' as RequestCredentials | undefined,
+      method: METHODS.PUT,
+    })
+  }
+}
+/* isFormData: true,
+      data: formData,
+
+          const {
+      method = METHODS.GET,
+      data,
+      headers,
+      isFormData = false,
+    } = options;
+
+    */
 export default new FetchApi()

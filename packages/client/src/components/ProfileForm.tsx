@@ -11,13 +11,15 @@ import { PasswordsPopup } from './PasswordsPopup'
 import { TProfile } from '../models/ProfileModel'
 import { useAppSelector } from '../hooks/store'
 import { themeSelectors } from '../store/theme/ThemeSelectors'
+import ProfileAvatar from './ProfileAvatar'
 
 type Props = {
-  onSubmitForm: (data: TProfile) => void
+  onSubmitUser: (data: TProfile) => void
+  onSubmitAvatar: (data: any) => void
   defaultFormValues: TProfile
 }
 const ProfileForm: FC<Props> = props => {
-  const { onSubmitForm, defaultFormValues } = props
+  const { onSubmitUser, defaultFormValues, onSubmitAvatar } = props
   const [modal, setModal] = useState(false)
 
   const {
@@ -39,15 +41,22 @@ const ProfileForm: FC<Props> = props => {
     setModal(true)
   }
 
-  const onSubmit: SubmitHandler<TProfile> = data => {
-    onSubmitForm(data)
+  const onSubmit: SubmitHandler<TProfile> = async (data) => {
+
+    const { fileAvatar, avatar, ...profileData } = data
+    console.log(fileAvatar,'fileAvatar')
+
+
+    await onSubmitUser(profileData)
+    await onSubmitAvatar(fileAvatar)
   }
 
   return (
     <>
       <ContrastingWrapper>
-        <Form onSubmit={handleSubmit(onSubmit)}>
+        <Form onSubmit={handleSubmit(onSubmit)} >
           <Title accent>Profile</Title>
+          <ProfileAvatar name="fileAvatar" register={register} />
           <FormFields>
             <Input
               typeStyle={typeStyleInput.profile}

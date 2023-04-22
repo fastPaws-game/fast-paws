@@ -21,6 +21,26 @@ export const updateUser = createAsyncThunk(
     }
   }
 )
+export const updateAvatar =createAsyncThunk(
+  'user/updateAvatar',
+   async (data: FormData, { dispatch, rejectWithValue }) => {
+    console.log(data instanceof FormData)
+  try {
+    const response = await UserApi.updateUserAvatar(data)
+
+    if (response.status !== 200) {
+      const error = await response.json()
+      return rejectWithValue(error.reason)
+    } else {
+      const res = await response.json()
+      return res.data
+    }
+  }
+  catch (err) {
+    console.log(err)
+  }
+})
+
 export const signInUser = createAsyncThunk(
   'user/signIn',
   async (body: TSignIn, { dispatch, rejectWithValue }) => {
@@ -52,20 +72,7 @@ export const logOut = createAsyncThunk('auth/logout', async (_, { rejectWithValu
   }
 })
 
-export const updateAvatar = async (data: FormData) => {
-  try {
-    const response = await UserApi.updateUserAvatar(data)
-    if (response.status !== 200) {
-      const error = await response.json()
-      console.log(response.status, error.reason)
-    } else {
-      console.log(response)
-    }
-    return data
-  } catch (err) {
-    console.log(err)
-  }
-}
+
 
 export const getUser = createAsyncThunk('user/getUser', async (_, { rejectWithValue }) => {
   try {

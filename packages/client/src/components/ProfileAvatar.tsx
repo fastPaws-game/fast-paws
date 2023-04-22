@@ -1,55 +1,58 @@
-import { createRef, ChangeEvent, FC } from 'react'
+import React, { createRef, ChangeEvent, FC, useState, useCallback } from 'react'
 import styled from 'styled-components'
 import DefaultAvatar from '../assets/icons/DefaultAvatar.svg'
 import { useAppSelector } from '../hooks/store'
 import { updateAvatar } from '../store/auth/AuthActions'
 import { authSelectors } from '../store/auth/AuthSelectors'
+import { getBase64 } from '../utils/getBase64'
 
-const ProfileAvatar: FC = () => {
-  const avatar = useAppSelector(authSelectors.getAvatar)
-  const fileUpload = createRef<HTMLInputElement>()
-  const image = createRef<HTMLImageElement>()
+const ProfileAvatar: FC<any> =({ name,  register }) => {
+  const { onChange, ref } = register(name);
+  const [image, setImage] = useState<any>(null);
 
-  function fileChange(event: ChangeEvent<HTMLInputElement>) {
-    const target = event.target as HTMLInputElement
+  const fileChange = useCallback(async (event: ChangeEvent<HTMLInputElement>) => {
+    const target = event.target
     const file = target.files ? target.files[0] : null
+
     if (file) {
-      image.current!.src = URL.createObjectURL(file)
-      const data = new FormData()
-      data.append('avatar', file)
-      /* Change profile avatar API
-      console.log(file)
-      alert(JSON.stringify(data));
-      */
+      const base64 = await getBase64(file);
+      setImage(base64);
+      onChange(event);
     }
-  }
+  }, []);
+
+
+  const avatar = useAppSelector(authSelectors.getAvatar)
+
+
   function fileChoose() {
-    const node = fileUpload.current
+    console.log('555')
+    const node = ref.current
     if (node) {
       node.click()
     }
   }
 
   return (
-    <Avatar onClick={fileChoose}>
+    <Avatar >
       <label htmlFor={'file'}>
         <span>Change</span>
       </label>
       <input
         type="file"
-        ref={fileUpload}
+        ref={ref}
         onChange={fileChange}
-        name="file"
-        hidden
+        name={name}
+
         accept="image/png, image/jpeg, image/gif"
       />
-      <img src={avatar??DefaultAvatar} ref={image} />
+      <img src={image??avatar??DefaultAvatar}  />
     </Avatar>
   )
 }
 
 const Avatar = styled.div`
-  color: transparent;
+  /*color: transparent;
   transition: all 0.3s ease;
   display: flex;
   justify-content: center;
@@ -77,9 +80,9 @@ const Avatar = styled.div`
       margin-bottom: 0;
       cursor: pointer;
     }
-  }
+  }*/
   img {
-    position: absolute;
+
     width: 120px;
     height: 120px;
     border-radius: 50%;

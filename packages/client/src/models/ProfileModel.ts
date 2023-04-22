@@ -5,4 +5,6 @@ export type TProfile = {
   login: string
   email: string
   phone: string
+  avatar?:string
+  fileAvatar?: any
 }
