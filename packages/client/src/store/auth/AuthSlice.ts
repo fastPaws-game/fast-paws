@@ -52,6 +52,9 @@ export const authSlice = createSlice({
       state.signUpError = null
       state.signUpStatus = 'pending'
     },
+    setUser:(state, action: PayloadAction<TUser>) => {
+      state.user = action.payload
+    },
   },
   extraReducers: builder => {
     builder
@@ -110,14 +113,13 @@ export const authSlice = createSlice({
         state.userError = handleError(action.payload)
       })
 
-
       .addCase(updateAvatar.pending, state => {
         state.userStatus = 'pending'
       })
       .addCase(updateAvatar.fulfilled, (state, action) => {
         state.userStatus = 'success'
-        state.user = state.user ? { ...state.user, ...action.payload } : null
-        state.userError = null
+        state.user = action.payload
+
       })
       .addCase(updateAvatar.rejected, (state, action) => {
         state.userStatus = 'error'

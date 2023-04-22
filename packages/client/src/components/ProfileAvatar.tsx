@@ -24,7 +24,6 @@ const ProfileAvatar: FC<any> =({ name,  register }) => {
 
   const avatar = useAppSelector(authSelectors.getAvatar)
 
-
   function fileChoose() {
     console.log('555')
     const node = ref.current
@@ -43,7 +42,6 @@ const ProfileAvatar: FC<any> =({ name,  register }) => {
         ref={ref}
         onChange={fileChange}
         name={name}
-
         accept="image/png, image/jpeg, image/gif"
       />
       <img src={image??avatar??DefaultAvatar}  />

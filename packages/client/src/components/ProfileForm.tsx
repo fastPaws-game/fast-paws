@@ -42,13 +42,9 @@ const ProfileForm: FC<Props> = props => {
   }
 
   const onSubmit: SubmitHandler<TProfile> = async (data) => {
-
     const { fileAvatar, avatar, ...profileData } = data
-    console.log(fileAvatar,'fileAvatar')
-
-
-    await onSubmitUser(profileData)
     await onSubmitAvatar(fileAvatar)
+    await onSubmitUser(profileData)
   }
 
   return (

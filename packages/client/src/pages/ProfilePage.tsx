@@ -1,4 +1,3 @@
-import RequireAuth from '../hocs/RequireAuth'
 import LayoutWithHeader from '../layouts/LayoutWithHeader'
 import Profile from '../modules/profile'
 

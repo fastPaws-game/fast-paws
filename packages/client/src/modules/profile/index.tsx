@@ -1,8 +1,7 @@
-import { ChangeEvent, MouseEvent, useCallback, useEffect, useRef, useState } from 'react'
-import ProfileAvatar from '../../components/ProfileAvatar'
+import { MouseEvent, useCallback, useEffect, useRef, useState } from 'react'
 import ProfileForm from '../../components/ProfileForm'
 import { useAppDispatch, useAppSelector } from '../../hooks/store'
-import { getUser, logOut, updateAvatar, updateUser } from '../../store/auth/AuthActions'
+import {  logOut, updateAvatar, updateUser } from '../../store/auth/AuthActions'
 import Button from '../../ui/button'
 import styled from 'styled-components'
 import { useChangeTheme } from '../../hooks/useChangeTheme'
@@ -17,6 +16,7 @@ const Profile = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const user = useAppSelector(authSelectors.getUser)
+
   const hasUserData = !!user?.email
   const themeBtnRef = useRef<HTMLButtonElement | null>(null);
 
@@ -28,18 +28,15 @@ const Profile = () => {
   }
 
   const handleSubmitUser = async (data: TProfile) => {
-    console.log(data)
     dispatch(updateUser(data))
   }
 
+  //TODO типизация
   const handleSubmitAvatar = async (data: any) => {
-
     const newAvatar = new FormData()
     newAvatar.append('avatar', data[0])
-
     dispatch(updateAvatar(newAvatar))
   }
-
 
   const handleLogOut = useCallback(() => {
     dispatch(logOut())
@@ -47,14 +44,20 @@ const Profile = () => {
   }, [dispatch])
 
   useEffect(() => {
-
     if (hasUserData)
-
     setDefaultValues({
       ...user,
       display_name: user.display_name ?? `${user.first_name} ${user.second_name}`,
     })
   }, [])
+/*
+  useEffect(() => {
+    if (hasUserData)
+    setDefaultValues({
+      ...user,
+      display_name: user.display_name ?? `${user.first_name} ${user.second_name}`,
+    })
+  }, [user])*/
 
   useEffect(() => {
     if (hasUserData)
@@ -67,7 +70,6 @@ const Profile = () => {
   if (!!hasUserData && userValues) {
     return (
       <>
-
         <ProfileForm onSubmitUser={handleSubmitUser} onSubmitAvatar ={handleSubmitAvatar} defaultFormValues={userValues} />
         <Footer>
           <Button onClick={handleToggleTheme}>Toggle theme</Button>

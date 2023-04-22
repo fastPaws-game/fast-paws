@@ -15,16 +15,16 @@ export const updateUser = createAsyncThunk(
         const error = await response.json()
         return rejectWithValue(error.reason)
       }
-      return body
+      const res = await response.json()
+      return res
     } catch (e) {
       rejectWithValue(e)
     }
   }
 )
-export const updateAvatar =createAsyncThunk(
+export const updateAvatar = createAsyncThunk(
   'user/updateAvatar',
-   async (data: FormData, { dispatch, rejectWithValue }) => {
-    console.log(data instanceof FormData)
+   async (data: FormData, { rejectWithValue }) => {
   try {
     const response = await UserApi.updateUserAvatar(data)
 
@@ -33,11 +33,11 @@ export const updateAvatar =createAsyncThunk(
       return rejectWithValue(error.reason)
     } else {
       const res = await response.json()
-      return res.data
+      return res
     }
   }
   catch (err) {
-    console.log(err)
+    rejectWithValue(err)
   }
 })
 
@@ -71,7 +71,6 @@ export const logOut = createAsyncThunk('auth/logout', async (_, { rejectWithValu
     rejectWithValue(e)
   }
 })
-
 
 
 export const getUser = createAsyncThunk('user/getUser', async (_, { rejectWithValue }) => {
