@@ -10,8 +10,6 @@ import { authSelectors } from '../../store/auth/AuthSelectors'
 import { Routes } from '../../constants/routes'
 import { useNavigate } from 'react-router'
 import { TProfile } from '../../models/ProfileModel'
-import RequireAuth from '../../hocs/RequireAuth'
-import { themeSelectors } from '../../store/theme/ThemeSelectors'
 
 const Profile = () => {
   const { toggleTheme } = useChangeTheme()

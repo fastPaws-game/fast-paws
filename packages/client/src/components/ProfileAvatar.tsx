@@ -1,32 +1,28 @@
-import { createRef, ChangeEvent } from 'react'
+import { createRef, ChangeEvent, FC } from 'react'
 import styled from 'styled-components'
 import DefaultAvatar from '../assets/icons/DefaultAvatar.svg'
+import { useAppSelector } from '../hooks/store'
 import { updateAvatar } from '../store/auth/AuthActions'
+import { authSelectors } from '../store/auth/AuthSelectors'
 
-export default function ProfileAvatar(props: { avatarUrl: string | null }) {
+const ProfileAvatar: FC = () => {
+  const avatar = useAppSelector(authSelectors.getAvatar)
   const fileUpload = createRef<HTMLInputElement>()
   const image = createRef<HTMLImageElement>()
-  const BASE_URL = 'https://ya-praktikum.tech/api/v2'
-  const avatar = props.avatarUrl ? `${BASE_URL}/resources${props.avatarUrl}` : DefaultAvatar
 
   function fileChange(event: ChangeEvent<HTMLInputElement>) {
     const target = event.target as HTMLInputElement
     const file = target.files ? target.files[0] : null
     if (file) {
       image.current!.src = URL.createObjectURL(file)
-      const formData = new FormData()
-      formData.append('avatar', file, file.name)
-      updateAvatar(formData)
-
-      /*      const data = new FormData()
+      const data = new FormData()
       data.append('avatar', file)
       /* Change profile avatar API
       console.log(file)
-			alert(JSON.stringify(data));
-			*/
+      alert(JSON.stringify(data));
+      */
     }
   }
-
   function fileChoose() {
     const node = fileUpload.current
     if (node) {
@@ -47,7 +43,7 @@ export default function ProfileAvatar(props: { avatarUrl: string | null }) {
         hidden
         accept="image/png, image/jpeg, image/gif"
       />
-      <img src={avatar} ref={image} />
+      <img src={avatar??DefaultAvatar} ref={image} />
     </Avatar>
   )
 }
@@ -90,3 +86,4 @@ const Avatar = styled.div`
     z-index: 0;
   }
 `
+export default ProfileAvatar
