@@ -51,8 +51,8 @@ const ProfileForm: FC<Props> = props => {
     <>
       <ContrastingWrapper>
         <Form onSubmit={handleSubmit(onSubmit)} >
-          <Title accent>Profile</Title>
           <ProfileAvatar name="fileAvatar" register={register} />
+          <Title accent>Profile</Title>
           <FormFields>
             <Input
               typeStyle={typeStyleInput.profile}

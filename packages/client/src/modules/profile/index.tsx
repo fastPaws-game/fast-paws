@@ -50,14 +50,6 @@ const Profile = () => {
       display_name: user.display_name ?? `${user.first_name} ${user.second_name}`,
     })
   }, [])
-/*
-  useEffect(() => {
-    if (hasUserData)
-    setDefaultValues({
-      ...user,
-      display_name: user.display_name ?? `${user.first_name} ${user.second_name}`,
-    })
-  }, [user])*/
 
   useEffect(() => {
     if (hasUserData)
