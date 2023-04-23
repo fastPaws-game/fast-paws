@@ -54,41 +54,41 @@ const AuthForm: FC<Props> = props => {
     }
   }, [isDirty])
 
-const onSubmit: SubmitHandler<TSignIn> = data => {
-  onSubmitFrom(data)
-  reset()
-}
+  const onSubmit: SubmitHandler<TSignIn> = data => {
+    onSubmitFrom(data)
+    reset()
+  }
 
-return (
-  <Form onSubmit={handleSubmit(onSubmit)}>
-    <H3 accent>Login</H3>
-    <InputContainer>
-      <Input
-        typeStyle={typeStyleInput.form}
-        placeholder="Login"
-        {...register('login')}
-        errorOn={!!errors.login || signInStatus === 'error'}
-        errorMessage={errors.login?.message}
-      />
-      <Input
-        typeStyle={typeStyleInput.form}
-        placeholder="Password"
-        type="password"
-        {...register('password')}
-        errorOn={!!errors.password || signInStatus === 'error'}
-        errorMessage={errors.password?.message}
-      />
-    </InputContainer>
+  return (
+    <Form onSubmit={handleSubmit(onSubmit)}>
+      <H3 accent>Login</H3>
+      <InputContainer>
+        <Input
+          typeStyle={typeStyleInput.form}
+          placeholder="Login"
+          {...register('login')}
+          errorOn={!!errors.login || signInStatus === 'error'}
+          errorMessage={errors.login?.message}
+        />
+        <Input
+          typeStyle={typeStyleInput.form}
+          placeholder="Password"
+          type="password"
+          {...register('password')}
+          errorOn={!!errors.password || signInStatus === 'error'}
+          errorMessage={errors.password?.message}
+        />
+      </InputContainer>
 
-    <ButtonContainer>
-      {serverError && <Error>{serverError}</Error>}
-      <Button type="submit" disabled={!isDirty || isSubmitting}>
-        Log in
-      </Button>
-      <Link to={Routes.SIGNUP}>Registration</Link>
-    </ButtonContainer>
-  </Form>
-)
+      <ButtonContainer>
+        {serverError && <Error>{serverError}</Error>}
+        <Button type="submit" disabled={!isDirty || isSubmitting}>
+          Log in
+        </Button>
+        <Link to={Routes.SIGNUP}>Registration</Link>
+      </ButtonContainer>
+    </Form>
+  )
 }
 const Error = styled.p`
   color: ${props => props.theme.text.error};

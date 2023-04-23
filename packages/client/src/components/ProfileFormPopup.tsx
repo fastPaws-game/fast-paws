@@ -16,7 +16,7 @@ type Props = {
   handleClose: () => void
   outSideClickEnable?: boolean
   successMessageProp?: string
-  title?:string
+  title?: string
 }
 const DEFAULT_ERROR = 'Произошла ошибка!'
 const SUCCESS_MESSAGE = 'Пароль успешно изменен!'
@@ -28,7 +28,7 @@ const defaultValuesForm = {
 }
 
 const ProfileFormPopup: FC<Props> = props => {
-  const { handleClose, successMessageProp, title='Passwords' } = props
+  const { handleClose, successMessageProp, title = 'Passwords' } = props
   const [successMessage, setSuccessMessage] = useState<string>(successMessageProp || '')
 
   const {

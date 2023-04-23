@@ -16,45 +16,18 @@ const SUCCESS_MESSAGE = 'Данные успешно обновлены!'
 
 const Profile = () => {
   const { toggleTheme } = useChangeTheme()
-  const [userValues, setDefaultValues] = useState<TProfile | null>(null)
-  const [isUpdateUser, setIsUpdateUser] = useState<boolean>(false)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const user = useAppSelector(authSelectors.getUser)
-  const userStatus = useAppSelector(authSelectors.getUserStatus)
-  const hasUserData = !!user?.email
-  const themeBtnRef = useRef<HTMLButtonElement | null>(null)
-  const serverError = useAppSelector(authSelectors.getUserError)
 
+  const [userValues, setDefaultValues] = useState<TProfile | null>(null)
+  const [isUpdateUser, setIsUpdateUser] = useState<boolean>(false)
   const [modalSuccess, setModalSuccess] = useState(false)
 
-  const closeModalSuccess = useCallback(() => {
-    setModalSuccess(false)
-  }, [setModalSuccess])
-
-  useEffect(() => {
-    if (userStatus === 'success' && isUpdateUser && !serverError) {
-      setModalSuccess(true)
-      setIsUpdateUser(false)
-    }
-  }, [userStatus])
-
-  const handleToggleTheme = (e: MouseEvent<HTMLButtonElement>) => {
-    toggleTheme()
-    themeBtnRef?.current?.blur()
-  }
-
-  const handleSubmitUser = (data: TProfile) => {
-    setIsUpdateUser(true)
-    dispatch(updateUser(data))
-  }
-
-
-
-  const handleLogOut = useCallback(() => {
-    dispatch(logOut())
-    navigate(Routes.SIGNIN)
-  }, [dispatch])
+  const user = useAppSelector(authSelectors.getUser)
+  const userStatus = useAppSelector(authSelectors.getUserStatus)
+  const serverError = useAppSelector(authSelectors.getUserError)
+  const themeBtnRef = useRef<HTMLButtonElement | null>(null)
+  const hasUserData = !!user?.email
 
   useEffect(() => {
     if (hasUserData)
@@ -72,19 +45,42 @@ const Profile = () => {
       })
   }, [user])
 
+  useEffect(() => {
+    if (userStatus === 'success' && isUpdateUser && !serverError) {
+      setModalSuccess(true)
+      setIsUpdateUser(false)
+    }
+  }, [userStatus])
+
+  const handleToggleTheme = (e: MouseEvent<HTMLButtonElement>) => {
+    toggleTheme()
+    themeBtnRef?.current?.blur()
+  }
+
+  const closeModalSuccess = useCallback(() => {
+    setModalSuccess(false)
+  }, [setModalSuccess])
+
+  const handleSubmitUser = (data: TProfile) => {
+    setIsUpdateUser(true)
+    dispatch(updateUser(data))
+  }
+
+  const handleLogOut = useCallback(() => {
+    dispatch(logOut())
+    navigate(Routes.SIGNIN)
+  }, [dispatch])
+
   if (hasUserData && userValues) {
     return (
       <>
         <ProfileAvatar />
-        <ProfileForm
-          onSubmitUser={handleSubmitUser}
-          defaultFormValues={userValues}
-        />
+        <ProfileForm onSubmitUser={handleSubmitUser} defaultFormValues={userValues} />
         <Footer>
-          <Button onClick={handleToggleTheme} ref={themeBtnRef}>Toggle theme</Button>
-          <Button onClick={handleLogOut} >
-            Log out
+          <Button onClick={handleToggleTheme} ref={themeBtnRef}>
+            Toggle theme
           </Button>
+          <Button onClick={handleLogOut}>Log out</Button>
         </Footer>
         <ProfileFormPopup
           title={'Profile'}

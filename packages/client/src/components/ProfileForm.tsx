@@ -93,13 +93,13 @@ const ProfileForm: FC<Props> = props => {
               errorMessage={errors.phone?.message}
               {...register('phone')}
             />
-              {serverError && <Error>{serverError}</Error>}
-              <Button type="submit" disabled={!isDirty || isSubmitting}>
-                Update
-              </Button>
-              <Button type="button" onClick={handleClick}>
-                Change password
-              </Button>
+            {serverError && <Error>{serverError}</Error>}
+            <Button type="submit" disabled={!isDirty || isSubmitting}>
+              Update
+            </Button>
+            <Button type="button" onClick={handleClick}>
+              Change password
+            </Button>
           </FormFields>
         </Form>
       </ContrastingWrapper>
@@ -125,7 +125,6 @@ const Title = styled(H3)`
 `
 const Error = styled.p`
   color: ${props => props.theme.text.error};
-  margin: 0;
   position: absolute;
   bottom: 130px;
   margin: auto;

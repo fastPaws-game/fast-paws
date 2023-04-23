@@ -31,7 +31,7 @@ export const updateAvatar = createAsyncThunk('user/updateAvatar', async (data: F
       return res
     }
   } catch (err) {
-    rejectWithValue(err)
+    return rejectWithValue(err)
   }
 })
 

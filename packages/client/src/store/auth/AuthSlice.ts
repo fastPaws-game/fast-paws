@@ -16,6 +16,9 @@ type AuthSlice = {
   logOutStatus: RequestStatus
   logOutError: string | null
 
+  avatarStatus: RequestStatus
+  avatarError: string | null
+
   userStatus: RequestStatus
   userError: string | null
 }
@@ -32,6 +35,9 @@ const initialState: AuthSlice = {
 
   logOutStatus: 'initial',
   logOutError: null,
+
+  avatarStatus: 'initial',
+  avatarError: null,
 
   userStatus: 'initial',
   userError: null,
@@ -112,17 +118,15 @@ export const authSlice = createSlice({
         state.user = null
         state.userError = handleError(action.payload)
       })
-
-      .addCase(updateAvatar.pending, state => {
-        state.userStatus = 'pending'
-      })
       .addCase(updateAvatar.fulfilled, (state, action) => {
         state.userStatus = 'success'
+        state.avatarStatus = 'success'
+        state.avatarError = null
         state.user = action.payload
       })
       .addCase(updateAvatar.rejected, (state, action) => {
-        state.userStatus = 'error'
-        state.userError = handleError(action.payload)
+        state.avatarStatus = 'error'
+        state.avatarError = handleError(action.payload)
       })
 
       .addCase(updateUser.pending, state => {
