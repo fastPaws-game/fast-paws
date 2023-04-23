@@ -1,14 +1,19 @@
 import { ChangeEvent, FC, useState, useCallback } from 'react'
+import { UseFormRegister } from 'react-hook-form'
 import styled from 'styled-components'
 import DefaultAvatar from '../assets/icons/DefaultAvatar.svg'
 import { useAppSelector } from '../hooks/store'
 import { authSelectors } from '../store/auth/AuthSelectors'
 import { getBase64 } from '../utils/getBase64'
+import { TProfile } from '../models/ProfileModel'
 
-const ProfileAvatar: FC<any> = ({ name, register }) => {
-  const { onChange, ref } = register(name)
-  //TODO тпизация
-  const [image, setImage] = useState<any>(null)
+type Props = {
+  register: UseFormRegister<TProfile>
+}
+
+const ProfileAvatar: FC<Props> = ({ register }) => {
+  const { onChange, ref } = register("fileAvatar")
+  const [image, setImage] = useState<string | null>(null)
   const avatar = useAppSelector(authSelectors.getAvatar)
 
   const fileChange = useCallback(async (event: ChangeEvent<HTMLInputElement>) => {
@@ -17,8 +22,10 @@ const ProfileAvatar: FC<any> = ({ name, register }) => {
 
     if (file) {
       //TODO добавить лоадер на загрузку аватара-это позволяет сделать promise
+      //TODO добавить test на размер файла
       const base64 = await getBase64(file)
-      setImage(base64)
+      //TODO убрать as если кто-то знает как, то уберите
+      setImage(base64 as string)
       onChange(event)
     }
   }, [])
@@ -28,7 +35,7 @@ const ProfileAvatar: FC<any> = ({ name, register }) => {
       <label htmlFor={'file'}>
         <span>Change</span>
       </label>
-      <input type="file" ref={ref} onChange={fileChange} name={name} accept="image/png, image/jpeg, image/gif" />
+      <input type="file" ref={ref} onChange={fileChange} name="fileAvatar" accept="image/png, image/jpeg, image/gif" />
       <img src={image ?? avatar ?? DefaultAvatar} />
     </Avatar>
   )

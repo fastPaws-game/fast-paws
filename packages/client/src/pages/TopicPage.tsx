@@ -4,7 +4,6 @@ import AddNewTopic from '../components/AddNewTopic'
 import { useCallback, useState } from 'react'
 import Button from '../ui/button'
 import styled from 'styled-components'
-import RequireAuth from '../hocs/RequireAuth'
 
 const TopicPage = () => {
   const [modal, setModal] = useState(false)
@@ -18,7 +17,6 @@ const TopicPage = () => {
   }
 
   return (
-    <RequireAuth>
       <LayoutWithHeader title="New Games">
         <ButtonAdd onClick={handleClick}>+ Add new topic</ButtonAdd>
         <Topics />
@@ -28,7 +26,6 @@ const TopicPage = () => {
           handleClose={handleClose}
           handleSubmit={() => console.log('submit')}></AddNewTopic>
       </LayoutWithHeader>
-    </RequireAuth>
   )
 }
 

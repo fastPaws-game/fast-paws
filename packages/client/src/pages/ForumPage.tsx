@@ -3,7 +3,6 @@ import Forum from '../modules/forums/Forum'
 import catImg from '../assets/images/bigCat.png'
 import styled from 'styled-components'
 import { media } from '../assets/styles/media'
-import RequireAuth from '../hocs/RequireAuth'
 
 const ForumPage = () => {
   return (
