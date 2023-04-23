@@ -1,7 +1,7 @@
 import { MouseEvent, useCallback, useEffect, useRef, useState } from 'react'
 import ProfileForm from '../../components/ProfileForm'
 import { useAppDispatch, useAppSelector } from '../../hooks/store'
-import { logOut, updateAvatar, updateUser } from '../../store/auth/AuthActions'
+import { logOut, updateUser } from '../../store/auth/AuthActions'
 import Button from '../../ui/button'
 import styled from 'styled-components'
 import { useChangeTheme } from '../../hooks/useChangeTheme'

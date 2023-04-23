@@ -30,7 +30,6 @@ export const GlobalStyles = createGlobalStyle`
     font-style: normal;
     font-weight: 400;
     margin: 0;
-    scrollbar-gutter: stable;
   }
 
   * {
@@ -41,7 +40,6 @@ export const GlobalStyles = createGlobalStyle`
 
   html {
     text-size-adjust: 100%;
-    scrollbar-gutter: stable;
   }
 
   main {
