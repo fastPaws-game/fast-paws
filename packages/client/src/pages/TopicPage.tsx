@@ -17,15 +17,15 @@ const TopicPage = () => {
   }
 
   return (
-      <LayoutWithHeader title="New Games">
-        <ButtonAdd onClick={handleClick}>+ Add new topic</ButtonAdd>
-        <Topics />
-        <AddNewTopic
-          visible={modal}
-          outSideClickEnable
-          handleClose={handleClose}
-          handleSubmit={() => console.log('submit')}></AddNewTopic>
-      </LayoutWithHeader>
+    <LayoutWithHeader title="New Games">
+      <ButtonAdd onClick={handleClick}>+ Add new topic</ButtonAdd>
+      <Topics />
+      <AddNewTopic
+        visible={modal}
+        outSideClickEnable
+        handleClose={handleClose}
+        handleSubmit={() => console.log('submit')}></AddNewTopic>
+    </LayoutWithHeader>
   )
 }
 

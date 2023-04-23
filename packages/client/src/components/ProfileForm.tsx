@@ -49,7 +49,7 @@ const ProfileForm: FC<Props> = props => {
     <>
       <ContrastingWrapper>
         <Form onSubmit={handleSubmit(onSubmit)}>
-          <ProfileAvatar  register={register} />
+          <ProfileAvatar register={register} />
           <Title accent>Profile</Title>
           <FormFields>
             <Input

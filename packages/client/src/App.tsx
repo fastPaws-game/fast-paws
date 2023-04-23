@@ -19,7 +19,7 @@ function App() {
   let isAuth: boolean
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       dispatch(changeTheme(currentTheme))
       setIsLoading(true)
       await dispatch(getUser())

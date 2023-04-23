@@ -64,10 +64,13 @@ const RegistrationForm: FC<Props> = props => {
     if (isDirty) dispatch(resetSignUpError())
   }, [isDirty])
 
-  const onSubmit: SubmitHandler<TSignUpFormValues> = useCallback(async (data: TSignUpFormValues) => {
-    await handleRegistration(data)
-    reset()
-  }, [handleRegistration])
+  const onSubmit: SubmitHandler<TSignUpFormValues> = useCallback(
+    async (data: TSignUpFormValues) => {
+      await handleRegistration(data)
+      reset()
+    },
+    [handleRegistration]
+  )
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>

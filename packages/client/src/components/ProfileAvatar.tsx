@@ -12,7 +12,7 @@ type Props = {
 }
 
 const ProfileAvatar: FC<Props> = ({ register }) => {
-  const { onChange, ref } = register("fileAvatar")
+  const { onChange, ref } = register('fileAvatar')
   const [image, setImage] = useState<string | null>(null)
   const avatar = useAppSelector(authSelectors.getAvatar)
 
