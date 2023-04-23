@@ -13,7 +13,7 @@ const Button: FC<Props> = forwardRef((props, ref) => {
   const { icon, children } = props
   const ButtonStyled = icon ? ButtonIconStyled : ButtonMainStyled
 
-  return <ButtonStyled {...props}>{icon ? icon : children}</ButtonStyled>
+  return <ButtonStyled ref={ref} {...props}>{icon ? icon : children}</ButtonStyled>
 })
 
 const ButtonMainStyled = styled.button<{ size?: string; darkblue?: boolean }>`

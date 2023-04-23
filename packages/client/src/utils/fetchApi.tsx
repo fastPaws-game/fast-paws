@@ -25,6 +25,10 @@ const configOptions = {
 export class FetchApi {
   static API_URL = 'https://ya-praktikum.tech/api/v2'
 
+  getApiUrl = () => {
+    return FetchApi.API_URL
+  }
+
   private buildUrl = (path: string) => {
     return FetchApi.API_URL + path
   }
@@ -63,15 +67,5 @@ export class FetchApi {
     })
   }
 }
-/* isFormData: true,
-      data: formData,
 
-          const {
-      method = METHODS.GET,
-      data,
-      headers,
-      isFormData = false,
-    } = options;
-
-    */
 export default new FetchApi()

@@ -3,7 +3,7 @@ import { FC } from 'react'
 import { H2 } from '../assets/styles/texts'
 
 type Props = { progress?: number }
-const LoadingPage: FC<Props> = ({ progress = '' }) => {
+const LoadingPage: FC<Props> = ({ progress }) => {
   return (
     <Wrapper>
       <H2>Loading... {progress ? `${progress}%` : ''}</H2>
