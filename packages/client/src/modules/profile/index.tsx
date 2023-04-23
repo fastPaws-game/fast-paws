@@ -37,7 +37,6 @@ const Profile = () => {
     setIsUpdateUser(false)
   }, [userStatus])
 
-
   const handleToggleTheme = (e: MouseEvent<HTMLButtonElement>) => {
     toggleTheme()
     if (e.target instanceof HTMLElement) {
@@ -50,8 +49,7 @@ const Profile = () => {
     setIsUpdateUser(true)
   }
 
-  //TODO типизация
-  const handleSubmitAvatar = async (data: any) => {
+  const handleSubmitAvatar = async (data: File[]) => {
     const newAvatar = new FormData()
     newAvatar.append('avatar', data[0])
     dispatch(updateAvatar(newAvatar))
@@ -92,7 +90,12 @@ const Profile = () => {
             Log out
           </Button>
         </Footer>
-        <ProfileFormPopup visible={modalSuccess} outSideClickEnable handleClose={closeModalSuccess} successMessageProp={SUCCESS_MESSAGE} />
+        <ProfileFormPopup
+          visible={modalSuccess}
+          outSideClickEnable
+          handleClose={closeModalSuccess}
+          successMessageProp={SUCCESS_MESSAGE}
+        />
       </>
     )
   } else {

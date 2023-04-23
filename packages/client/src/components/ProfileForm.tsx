@@ -97,7 +97,9 @@ const ProfileForm: FC<Props> = props => {
             <Button type="submit" disabled={!isDirty || isSubmitting}>
               Update
             </Button>
-            <Button type="button" onClick={handleClick}>Change password</Button>
+            <Button type="button" onClick={handleClick}>
+              Change password
+            </Button>
           </FormFields>
         </Form>
       </ContrastingWrapper>

@@ -22,11 +22,10 @@ const Registration = () => {
 
   const handleSubmit = async (data: TSignUpFormValues) => {
     dispatch(registration(data))
-
   }
 
   return (
-    <ContrastingWrapper padding='25px'>
+    <ContrastingWrapper padding="25px">
       <H3 accent weight="700">
         Sign up
       </H3>

@@ -28,7 +28,7 @@ const defaultValuesForm = {
 
 const ProfileFormPopup: FC<Props> = props => {
   const { handleClose, successMessageProp } = props
-  const [successMessage, setSuccessMessage] = useState<string>(successMessageProp||'')
+  const [successMessage, setSuccessMessage] = useState<string>(successMessageProp || '')
 
   const {
     register,
@@ -44,7 +44,7 @@ const ProfileFormPopup: FC<Props> = props => {
   })
 
   const onCloseClick = () => {
-    setSuccessMessage(successMessageProp||'')
+    setSuccessMessage(successMessageProp || '')
     handleClose()
   }
   const onSubmit: SubmitHandler<TPasswordsFormValues> = async (data: TPasswordsFormValues) => {

@@ -20,9 +20,11 @@ const Authorization = () => {
   const handleSubmit = async (data: TSignIn) => {
     dispatch(signInUser(data))
   }
-  return(  <ContrastingWrapper padding='25px'>
-  <AuthForm onSubmitFrom={handleSubmit} />
-  </ContrastingWrapper>)
+  return (
+    <ContrastingWrapper padding="25px">
+      <AuthForm onSubmitFrom={handleSubmit} />
+    </ContrastingWrapper>
+  )
 }
 
 export { Authorization }
