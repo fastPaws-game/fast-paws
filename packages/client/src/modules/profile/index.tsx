@@ -39,9 +39,7 @@ const Profile = () => {
 
   const handleToggleTheme = (e: MouseEvent<HTMLButtonElement>) => {
     toggleTheme()
-    if (e.target instanceof HTMLElement) {
-      e.target.blur()
-    }
+    themeBtnRef?.current?.blur()
   }
 
   const handleSubmitUser = async (data: TProfile) => {
@@ -85,8 +83,8 @@ const Profile = () => {
           defaultFormValues={userValues}
         />
         <Footer>
-          <Button onClick={handleToggleTheme}>Toggle theme</Button>
-          <Button onClick={handleLogOut} ref={themeBtnRef}>
+          <Button onClick={handleToggleTheme} ref={themeBtnRef}>Toggle theme</Button>
+          <Button onClick={handleLogOut} >
             Log out
           </Button>
         </Footer>
