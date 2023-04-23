@@ -35,9 +35,9 @@ const ProfileForm: FC<Props> = props => {
     setModalChangePassword(false)
   }, [setModalChangePassword])
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     setModalChangePassword(true)
-  }
+  }, [setModalChangePassword])
 
   const onSubmit: SubmitHandler<TProfile> = async data => {
     const { fileAvatar, avatar, ...profileData } = data

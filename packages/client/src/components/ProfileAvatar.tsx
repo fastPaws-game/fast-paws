@@ -16,6 +16,7 @@ const ProfileAvatar: FC<any> = ({ name, register }) => {
     const file = target.files ? target.files[0] : null
 
     if (file) {
+      //TODO добавить лоадер на загрузку аватара-это позволяет сделать promise
       const base64 = await getBase64(file)
       setImage(base64)
       onChange(event)
