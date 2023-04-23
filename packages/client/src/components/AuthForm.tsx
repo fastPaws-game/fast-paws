@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import { useSelector } from 'react-redux'
 import Input, { typeStyleInput } from '../ui/input'
 import Button from '../ui/button'
 import Link from '../ui/link'
@@ -10,9 +9,8 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import authSchema from '../utils/validation/authSchema'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Routes } from '../constants/routes'
-import { useNavigate } from 'react-router'
 import { authSelectors } from '../store/auth/AuthSelectors'
-import { useAppDispatch } from '../hooks/store'
+import { useAppDispatch, useAppSelector } from '../hooks/store'
 import { resetSignInError } from '../store/auth/AuthActions'
 import { TSignIn } from '../models/SignInModel'
 
@@ -28,8 +26,8 @@ type Props = {
 const AuthForm: FC<Props> = props => {
   const { onSubmitFrom } = props
   const dispatch = useAppDispatch()
-  const serverError = useSelector(authSelectors.getSignInError)
-  const signInStatus = useSelector(authSelectors.getSignInStatus)
+  const serverError = useAppSelector(authSelectors.getSignInError)
+  const signInStatus = useAppSelector(authSelectors.getSignInStatus)
 
   const {
     register,
@@ -51,44 +49,46 @@ const AuthForm: FC<Props> = props => {
   }, [serverError])
 
   useEffect(() => {
-    if (isDirty) dispatch(resetSignInError())
+    if (isDirty) {
+      dispatch(resetSignInError())
+    }
   }, [isDirty])
 
-  const onSubmit: SubmitHandler<TSignIn> = data => {
-    onSubmitFrom(data)
-    reset()
-  }
+const onSubmit: SubmitHandler<TSignIn> = data => {
+  onSubmitFrom(data)
+  reset()
+}
 
-  return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
-      <H3 accent>Login</H3>
-      <InputContainer>
-        <Input
-          typeStyle={typeStyleInput.form}
-          placeholder="Login"
-          {...register('login')}
-          errorOn={!!errors.login || signInStatus === 'error'}
-          errorMessage={errors.login?.message}
-        />
-        <Input
-          typeStyle={typeStyleInput.form}
-          placeholder="Password"
-          type="password"
-          {...register('password')}
-          errorOn={!!errors.password || signInStatus === 'error'}
-          errorMessage={errors.password?.message}
-        />
-      </InputContainer>
+return (
+  <Form onSubmit={handleSubmit(onSubmit)}>
+    <H3 accent>Login</H3>
+    <InputContainer>
+      <Input
+        typeStyle={typeStyleInput.form}
+        placeholder="Login"
+        {...register('login')}
+        errorOn={!!errors.login || signInStatus === 'error'}
+        errorMessage={errors.login?.message}
+      />
+      <Input
+        typeStyle={typeStyleInput.form}
+        placeholder="Password"
+        type="password"
+        {...register('password')}
+        errorOn={!!errors.password || signInStatus === 'error'}
+        errorMessage={errors.password?.message}
+      />
+    </InputContainer>
 
-      <ButtonContainer>
-        {serverError && <Error>{serverError}</Error>}
-        <Button type="submit" disabled={!isDirty || isSubmitting}>
-          Log in
-        </Button>
-        <Link to={Routes.SIGNUP}>Registration</Link>
-      </ButtonContainer>
-    </Form>
-  )
+    <ButtonContainer>
+      {serverError && <Error>{serverError}</Error>}
+      <Button type="submit" disabled={!isDirty || isSubmitting}>
+        Log in
+      </Button>
+      <Link to={Routes.SIGNUP}>Registration</Link>
+    </ButtonContainer>
+  </Form>
+)
 }
 const Error = styled.p`
   color: ${props => props.theme.text.error};

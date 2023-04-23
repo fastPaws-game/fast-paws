@@ -79,7 +79,7 @@ const InputFormStyled = styled.input<{ errorOn?: boolean }>`
     margin: 0;
     position: absolute;
     top: 37px;
-    left: 3px;
+    left: 13px;
     text-align: left;
   }
 `
@@ -108,6 +108,9 @@ const InputProfileStyled = styled.input<{ errorOn?: boolean }>`
   + p {
     color: ${props => props.theme.text.error};
     margin: 0;
+    position: absolute;
+    top: 28px;
+    left: 0;
   }
 `
 

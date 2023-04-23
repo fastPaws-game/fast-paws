@@ -23,6 +23,7 @@ const Profile = () => {
   const userStatus = useAppSelector(authSelectors.getUserStatus)
   const hasUserData = !!user?.email
   const themeBtnRef = useRef<HTMLButtonElement | null>(null)
+  const serverError = useAppSelector(authSelectors.getUserError)
 
   const [modalSuccess, setModalSuccess] = useState(false)
 
@@ -31,10 +32,10 @@ const Profile = () => {
   }, [setModalSuccess])
 
   useEffect(() => {
-    if (userStatus && isUpdateUser) {
+    if (userStatus === 'success' && isUpdateUser && !serverError) {
       setModalSuccess(true)
+      setIsUpdateUser(false)
     }
-    setIsUpdateUser(false)
   }, [userStatus])
 
   const handleToggleTheme = (e: MouseEvent<HTMLButtonElement>) => {
@@ -43,8 +44,8 @@ const Profile = () => {
   }
 
   const handleSubmitUser = async (data: TProfile) => {
-    dispatch(updateUser(data))
     setIsUpdateUser(true)
+    await dispatch(updateUser(data))
   }
 
   const handleSubmitAvatar = async (data: File[]) => {
@@ -79,7 +80,6 @@ const Profile = () => {
       <>
         <ProfileForm
           onSubmitUser={handleSubmitUser}
-          onSubmitAvatar={handleSubmitAvatar}
           defaultFormValues={userValues}
         />
         <Footer>
@@ -89,6 +89,7 @@ const Profile = () => {
           </Button>
         </Footer>
         <ProfileFormPopup
+          title={'Profile'}
           visible={modalSuccess}
           outSideClickEnable
           handleClose={closeModalSuccess}

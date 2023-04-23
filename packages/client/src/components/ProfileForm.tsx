@@ -9,16 +9,17 @@ import { H3 } from '../assets/styles/texts'
 import ContrastingWrapper from './ContrastingWrapper'
 import { ProfileFormPopup } from './ProfileFormPopup'
 import { TProfile } from '../models/ProfileModel'
-import ProfileAvatar from './ProfileAvatar'
+import { useAppSelector } from '../hooks/store'
+import { authSelectors } from '../store/auth/AuthSelectors'
 
 type Props = {
   onSubmitUser: (data: TProfile) => void
-  onSubmitAvatar: (data: any) => void
   defaultFormValues: TProfile
 }
 const ProfileForm: FC<Props> = props => {
-  const { onSubmitUser, defaultFormValues, onSubmitAvatar } = props
+  const { onSubmitUser, defaultFormValues } = props
   const [modalChangePassword, setModalChangePassword] = useState(false)
+  const serverError = useAppSelector(authSelectors.getUserError)
 
   const {
     register,
@@ -40,8 +41,7 @@ const ProfileForm: FC<Props> = props => {
   }, [setModalChangePassword])
 
   const onSubmit: SubmitHandler<TProfile> = async data => {
-    const { fileAvatar, avatar, ...profileData } = data
-    await onSubmitAvatar(fileAvatar)
+    const { avatar, ...profileData } = data
     await onSubmitUser(profileData)
   }
 
@@ -49,7 +49,6 @@ const ProfileForm: FC<Props> = props => {
     <>
       <ContrastingWrapper>
         <Form onSubmit={handleSubmit(onSubmit)}>
-          <ProfileAvatar register={register} />
           <Title accent>Profile</Title>
           <FormFields>
             <Input
@@ -94,12 +93,13 @@ const ProfileForm: FC<Props> = props => {
               errorMessage={errors.phone?.message}
               {...register('phone')}
             />
-            <Button type="submit" disabled={!isDirty || isSubmitting}>
-              Update
-            </Button>
-            <Button type="button" onClick={handleClick}>
-              Change password
-            </Button>
+              {serverError && <Error>{serverError}</Error>}
+              <Button type="submit" disabled={!isDirty || isSubmitting}>
+                Update
+              </Button>
+              <Button type="button" onClick={handleClick}>
+                Change password
+              </Button>
           </FormFields>
         </Form>
       </ContrastingWrapper>
@@ -116,11 +116,20 @@ const Form = styled.form`
   padding: 35px;
   padding-top: 15px;
   padding-bottom: 10px;
+  position: relative;
 `
 const Title = styled(H3)`
   color: ${({ theme }) => theme.text.textInvert};
   align-self: flex-start;
   margin-bottom: 22px;
+`
+const Error = styled.p`
+  color: ${props => props.theme.text.error};
+  margin: 0;
+  position: absolute;
+  bottom: 130px;
+  margin: auto;
+  text-align: left;
 `
 
 const FormFields = styled.div`
@@ -130,6 +139,9 @@ const FormFields = styled.div`
   width: 100%;
   button {
     margin-bottom: 1em;
+  }
+  button:first-of-type {
+    margin: 25px;
   }
   button:last-of-type {
     background: transparent;
