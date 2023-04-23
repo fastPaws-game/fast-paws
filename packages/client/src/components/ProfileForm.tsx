@@ -4,13 +4,11 @@ import Button from '../ui/button'
 import styled from 'styled-components'
 import profileSchema from '../utils/validation/profileSchema'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { FC, useState, useCallback, useRef, useEffect } from 'react'
+import { FC, useState, useCallback } from 'react'
 import { H3 } from '../assets/styles/texts'
 import ContrastingWrapper from './ContrastingWrapper'
-import { PasswordsPopup } from './PasswordsPopup'
+import { ProfileFormPopup } from './ProfileFormPopup'
 import { TProfile } from '../models/ProfileModel'
-import { useAppSelector } from '../hooks/store'
-import { themeSelectors } from '../store/theme/ThemeSelectors'
 import ProfileAvatar from './ProfileAvatar'
 
 type Props = {
@@ -20,7 +18,7 @@ type Props = {
 }
 const ProfileForm: FC<Props> = props => {
   const { onSubmitUser, defaultFormValues, onSubmitAvatar } = props
-  const [modal, setModal] = useState(false)
+  const [modalChangePassword, setModalChangePassword] = useState(false)
 
   const {
     register,
@@ -33,12 +31,12 @@ const ProfileForm: FC<Props> = props => {
     resolver: yupResolver(profileSchema),
   })
 
-  const handleClose = useCallback(() => {
-    setModal(false)
-  }, [setModal])
+  const closeModalChangePassword = useCallback(() => {
+    setModalChangePassword(false)
+  }, [setModalChangePassword])
 
   const handleClick = () => {
-    setModal(true)
+    setModalChangePassword(true)
   }
 
   const onSubmit: SubmitHandler<TProfile> = async data => {
@@ -99,11 +97,11 @@ const ProfileForm: FC<Props> = props => {
             <Button type="submit" disabled={!isDirty || isSubmitting}>
               Update
             </Button>
-            <Button onClick={handleClick}>Change password</Button>
+            <Button type="button" onClick={handleClick}>Change password</Button>
           </FormFields>
         </Form>
       </ContrastingWrapper>
-      <PasswordsPopup visible={modal} outSideClickEnable handleClose={handleClose} />
+      <ProfileFormPopup visible={modalChangePassword} outSideClickEnable handleClose={closeModalChangePassword} />
     </>
   )
 }

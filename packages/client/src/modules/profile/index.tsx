@@ -9,16 +9,34 @@ import { authSelectors } from '../../store/auth/AuthSelectors'
 import { Routes } from '../../constants/routes'
 import { useNavigate } from 'react-router'
 import { TProfile } from '../../models/ProfileModel'
+import { ProfileFormPopup } from '../../components/ProfileFormPopup'
+
+const SUCCESS_MESSAGE = 'Данные успешно обновлены!'
 
 const Profile = () => {
   const { toggleTheme } = useChangeTheme()
   const [userValues, setDefaultValues] = useState<TProfile | null>(null)
+  const [isUpdateUser, setIsUpdateUser] = useState<boolean>(false)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const user = useAppSelector(authSelectors.getUser)
-
+  const userStatus = useAppSelector(authSelectors.getUserStatus)
   const hasUserData = !!user?.email
   const themeBtnRef = useRef<HTMLButtonElement | null>(null)
+
+  const [modalSuccess, setModalSuccess] = useState(false)
+
+  const closeModalSuccess = useCallback(() => {
+    setModalSuccess(false)
+  }, [setModalSuccess])
+
+  useEffect(() => {
+    if (userStatus && isUpdateUser) {
+      setModalSuccess(true)
+    }
+    setIsUpdateUser(false)
+  }, [userStatus])
+
 
   const handleToggleTheme = (e: MouseEvent<HTMLButtonElement>) => {
     toggleTheme()
@@ -29,6 +47,7 @@ const Profile = () => {
 
   const handleSubmitUser = async (data: TProfile) => {
     dispatch(updateUser(data))
+    setIsUpdateUser(true)
   }
 
   //TODO типизация
@@ -73,6 +92,7 @@ const Profile = () => {
             Log out
           </Button>
         </Footer>
+        <ProfileFormPopup visible={modalSuccess} outSideClickEnable handleClose={closeModalSuccess} successMessageProp={SUCCESS_MESSAGE} />
       </>
     )
   } else {

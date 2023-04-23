@@ -15,6 +15,7 @@ type Props = {
   visible: boolean
   handleClose: () => void
   outSideClickEnable?: boolean
+  successMessageProp?: string
 }
 const DEFAULT_ERROR = 'Произошла ошибка!'
 const SUCCESS_MESSAGE = 'Пароль успешно изменен!'
@@ -25,9 +26,9 @@ const defaultValuesForm = {
   repeated_password: '',
 }
 
-const PasswordsPopup: FC<Props> = props => {
-  const { handleClose } = props
-  const [successMessage, setSuccessMessage] = useState<string>('')
+const ProfileFormPopup: FC<Props> = props => {
+  const { handleClose, successMessageProp } = props
+  const [successMessage, setSuccessMessage] = useState<string>(successMessageProp||'')
 
   const {
     register,
@@ -41,8 +42,9 @@ const PasswordsPopup: FC<Props> = props => {
     criteriaMode: 'all',
     resolver: yupResolver(passwordsSchema),
   })
+
   const onCloseClick = () => {
-    setSuccessMessage('')
+    setSuccessMessage(successMessageProp||'')
     handleClose()
   }
   const onSubmit: SubmitHandler<TPasswordsFormValues> = async (data: TPasswordsFormValues) => {
@@ -139,4 +141,4 @@ const Form = styled.form`
     margin-bottom: 15px;
   }
 `
-export { PasswordsPopup }
+export { ProfileFormPopup }
