@@ -10,6 +10,7 @@ import { Routes } from '../../constants/routes'
 import { useNavigate } from 'react-router'
 import { TProfile } from '../../models/ProfileModel'
 import { ProfileFormPopup } from '../../components/ProfileFormPopup'
+import ProfileAvatar from '../../components/ProfileAvatar'
 
 const SUCCESS_MESSAGE = 'Данные успешно обновлены!'
 
@@ -43,16 +44,12 @@ const Profile = () => {
     themeBtnRef?.current?.blur()
   }
 
-  const handleSubmitUser = async (data: TProfile) => {
+  const handleSubmitUser = (data: TProfile) => {
     setIsUpdateUser(true)
-    await dispatch(updateUser(data))
+    dispatch(updateUser(data))
   }
 
-  const handleSubmitAvatar = async (data: File[]) => {
-    const newAvatar = new FormData()
-    newAvatar.append('avatar', data[0])
-    dispatch(updateAvatar(newAvatar))
-  }
+
 
   const handleLogOut = useCallback(() => {
     dispatch(logOut())
@@ -75,9 +72,10 @@ const Profile = () => {
       })
   }, [user])
 
-  if (!!hasUserData && userValues) {
+  if (hasUserData && userValues) {
     return (
       <>
+        <ProfileAvatar />
         <ProfileForm
           onSubmitUser={handleSubmitUser}
           defaultFormValues={userValues}

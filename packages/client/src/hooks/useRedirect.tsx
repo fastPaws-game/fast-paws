@@ -1,9 +1,8 @@
 import { useLocation } from 'react-router'
 import { Routes } from '../constants/routes'
-import { useAppDispatch, useAppSelector } from './store'
+import {  useAppSelector } from './store'
 import { useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
-import { getUser } from '../store/auth/AuthActions'
 import { authSelectors } from '../store/auth/AuthSelectors'
 
 const pathsRequireAuth = [Routes.FORUM, Routes.LEADERBOARD, Routes.SETTINGS]
