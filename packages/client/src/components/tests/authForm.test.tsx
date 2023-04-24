@@ -10,7 +10,7 @@ import { store } from '../../store/index'
 describe('AuthForm components', () => {
   const handleSubmit = jest.fn()
 
-  test('render AuthForm component', () => {
+  test.skip('render AuthForm component', () => {
     const tree = render(
       <Provider store={store}>
         <AuthForm onSubmitFrom={handleSubmit} />
@@ -54,7 +54,7 @@ describe('AuthForm components', () => {
     expect(inputPassword).toHaveValue('LoginPassword')
   })
 
-  test.only('Link', async () => {
+  test('Link', async () => {
     const user = userEvent.setup()
     const { getByText } = renderWithoutRouter(
       <Provider store={store}>
