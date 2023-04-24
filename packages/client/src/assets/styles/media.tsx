@@ -1,5 +1,5 @@
 type Breakpoints<T = number> = {
-  xl?: T,
+  xl?: T
   large?: T
   middle?: T
   small?: T

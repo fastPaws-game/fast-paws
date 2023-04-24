@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import { useSelector } from 'react-redux'
 import Input, { typeStyleInput } from '../ui/input'
 import Button from '../ui/button'
 import Link from '../ui/link'
@@ -10,9 +9,8 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import authSchema from '../utils/validation/authSchema'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Routes } from '../constants/routes'
-import { useNavigate } from 'react-router'
 import { authSelectors } from '../store/auth/AuthSelectors'
-import { useAppDispatch } from '../hooks/store'
+import { useAppDispatch, useAppSelector } from '../hooks/store'
 import { resetSignInError } from '../store/auth/AuthActions'
 import { TSignIn } from '../models/SignInModel'
 
@@ -27,11 +25,9 @@ type Props = {
 
 const AuthForm: FC<Props> = props => {
   const { onSubmitFrom } = props
-  //TODO Николай хочет добавить переход на страницу с игрой
-  const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const serverError = useSelector(authSelectors.getSignInError)
-  const signInStatus = useSelector(authSelectors.getSignInStatus)
+  const serverError = useAppSelector(authSelectors.getSignInError)
+  const signInStatus = useAppSelector(authSelectors.getSignInStatus)
 
   const {
     register,
@@ -53,7 +49,9 @@ const AuthForm: FC<Props> = props => {
   }, [serverError])
 
   useEffect(() => {
-    if (isDirty) dispatch(resetSignInError())
+    if (isDirty) {
+      dispatch(resetSignInError())
+    }
   }, [isDirty])
 
   const onSubmit: SubmitHandler<TSignIn> = data => {
@@ -103,6 +101,7 @@ const Error = styled.p`
 const Form = styled.form`
   width: 100%;
   max-width: 380px;
+  min-width: 340px;
   height: 100%;
   max-height: 285px;
   display: flex;

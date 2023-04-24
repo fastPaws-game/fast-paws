@@ -38,8 +38,8 @@ const GameOver: FC<Props> = props => {
         </Header>
         <Footer>
           <Button icon={<IconRestart />} size={'small'} onClick={handleClick()} darkblue />
-          <Button icon={<IconSettings />} size={'small'} onClick={handleClick('/settings')} darkblue/>
-          <Button icon={<IconStar />} size={'small'} onClick={handleClick('/leaderboard')} darkblue/>
+          <Button icon={<IconSettings />} size={'small'} onClick={handleClick('/settings')} darkblue />
+          <Button icon={<IconStar />} size={'small'} onClick={handleClick('/leaderboard')} darkblue />
         </Footer>
       </Content>
     </Modal>

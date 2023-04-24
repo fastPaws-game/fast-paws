@@ -22,6 +22,7 @@ export const mainProfileSchema = yup.object({
 const profileSchema = yup
   .object({
     display_name: yup.string().min(3, 'Имя должно быть длиннее 3 символов'),
+    fileAvatar: yup.mixed(),
   })
   .concat(mainProfileSchema)
 

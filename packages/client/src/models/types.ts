@@ -1,4 +1,4 @@
-import { TUser } from "./UserModel"
+import { TUser } from './UserModel'
 
 export type TAppState = {
   user: TUser | null
@@ -108,4 +108,3 @@ export type TDeletedChat = {
     avatar: string
   }
 }
-

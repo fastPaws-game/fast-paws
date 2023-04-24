@@ -1,35 +1,52 @@
 import { ThemeProvider } from 'styled-components'
-import { useChangeTheme } from './hooks/useChangeTheme'
 import { GlobalStyles } from './assets/styles/globalStyle'
 import { BrowserRouter } from 'react-router-dom'
 import { Router } from './router'
 import PageWrapper from './pages/PageWrapper'
-import { useEffect } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { useAppDispatch } from './hooks/store'
-import { setIsAuth } from './store/auth/AuthActions'
+import { getUser, setIsAuth } from './store/auth/AuthActions'
 import LocalStorage from './utils/localStorage'
 import { changeTheme } from './store/theme/ThemeSlice'
+import LoadingPage from './components/LoadingScreen'
+import { useChangeTheme } from './hooks/useChangeTheme'
+import ErrorBoundary from './components/ErrorBoundary'
 
 function App() {
   const { theme } = useChangeTheme()
+  const currentTheme = LocalStorage.get('Theme') || 'light'
   const dispatch = useAppDispatch()
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+  let isAuth: boolean
 
   useEffect(() => {
-    const isAuth = LocalStorage.get('isAuth')
-    const currentTheme = LocalStorage.get('Theme') || 'light'
-    dispatch(setIsAuth(isAuth))
-    dispatch(changeTheme(currentTheme))
+    ;(async () => {
+      dispatch(changeTheme(currentTheme))
+      setIsLoading(true)
+      await dispatch(getUser())
+        .unwrap()
+        .then(() => {
+          isAuth = true
+        })
+        .catch(() => {
+          isAuth = false
+        })
+      dispatch(setIsAuth(isAuth))
+      setIsLoading(false)
+    })()
   }, [])
 
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <GlobalStyles />
-      <BrowserRouter>
-        <PageWrapper>
-          <Router />
-        </PageWrapper>
-      </BrowserRouter>
-    </ThemeProvider>
+      <ThemeProvider theme={theme}>
+        <BrowserRouter>
+          <ErrorBoundary>
+            <PageWrapper>{isLoading ? <LoadingPage /> : <Router />}</PageWrapper>
+          </ErrorBoundary>
+        </BrowserRouter>
+      </ThemeProvider>
+    </>
   )
 }
 
