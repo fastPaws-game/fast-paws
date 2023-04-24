@@ -6,13 +6,14 @@ import Game from './Game'
 // @ts-ignore
 import switchFullscreen from '../utils/fullscreen.js'
 
-const W3C = () => document.fullscreenElement
-// @ts-ignore
-const Firefox = () => document.mozFullScreenElemen
-// @ts-ignore
-const Safari = () => document.webkitFullscreenElement
-// @ts-ignore
-const Edge = () => document.msRequestFullscreen
+type FullscreenElement = typeof document.fullscreenElement
+declare global {
+  interface Document {
+    mozFullScreenElemen: FullscreenElement
+    webkitFullscreenElement: FullscreenElement
+    msRequestFullscreen: FullscreenElement
+  }
+}
 
 const DeviceSelector = () => {
   const [fullScreen, setFullScreen] = useState(false)
@@ -43,8 +44,12 @@ const DeviceSelector = () => {
     }
   }
 
-  function fullscreenchange() {
-    const isFullscreenMode = W3C() || Firefox() || Safari() || Edge()
+  function fullscreenChange() {
+    const isFullscreenMode =
+      document.fullscreenElement ||
+      document.mozFullScreenElemen ||
+      document.webkitFullscreenElement ||
+      document.msRequestFullscreen
     // Was pressed Escape
     if (!isFullscreenMode) setFullScreen(false)
     // Switching full screen have delayed animation
@@ -52,13 +57,17 @@ const DeviceSelector = () => {
   }
 
   useEffect(() => {
-    const isFullscreenMode = W3C() || Firefox() || Safari() || Edge()
-    if (isFullscreenMode != fullScreen) switchFullscreen(fullScreen)
+    const isFullscreenMode =
+      document.fullscreenElement ||
+      document.mozFullScreenElemen ||
+      document.webkitFullscreenElement ||
+      document.msRequestFullscreen
+    if (!!isFullscreenMode != fullScreen) switchFullscreen(fullScreen)
     // window.addEventListener('resize', setDimensions)	// Was used in stretch mode
-    document.addEventListener('fullscreenchange', fullscreenchange)
+    document.addEventListener('fullscreenchange', fullscreenChange)
     return () => {
       // window.removeEventListener('resize', setDimensions)
-      document.removeEventListener('fullscreenchange', fullscreenchange)
+      document.removeEventListener('fullscreenchange', fullscreenChange)
     }
   }, [fullScreen])
 

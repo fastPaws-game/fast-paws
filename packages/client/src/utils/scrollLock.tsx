@@ -8,7 +8,7 @@ const scrollLock = {
       this.body.style.scrollbarGutter = 'stable'
     }
     if (this.html) {
-      this.html.style.scrollbarGutter = 'stable'
+      this.html.style.scrollbarGutter = 'auto'
     }
   },
   disable(): void {
