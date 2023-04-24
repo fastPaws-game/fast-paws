@@ -61,7 +61,7 @@ describe('AuthForm components', () => {
         <MemoryRouter>
           <Routes>
             <Route path="/" element={<AuthForm onSubmitFrom={handleSubmit} />} />
-            <Route path="/signup" element={<RegistrationForm handleRegistration={handleSubmit}/>} />
+            <Route path="/signup" element={<RegistrationForm handleRegistration={handleSubmit} />} />
           </Routes>
         </MemoryRouter>
       </Provider>
