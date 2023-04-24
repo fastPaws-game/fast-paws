@@ -1,7 +1,7 @@
 import React, { createRef } from 'react'
 import styled from 'styled-components'
-import { CANVAS } from '../constants/game'
-import Engine from '../engine/Engine'
+import { CANVAS } from '../../constants/game'
+import Engine from '../../engine/Engine'
 
 export default class ActionLayer extends React.Component {
   private ref: React.RefObject<HTMLCanvasElement> | undefined

@@ -6,6 +6,14 @@ import Game from './Game'
 // @ts-ignore
 import switchFullscreen from '../utils/fullscreen.js'
 
+const W3C = () => document.fullscreenElement
+// @ts-ignore
+const Firefox = () => document.mozFullScreenElemen
+// @ts-ignore
+const Safari = () => document.webkitFullscreenElement
+// @ts-ignore
+const Edge = () => document.msRequestFullscreen
+
 const DeviceSelector = () => {
   const [fullScreen, setFullScreen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
@@ -36,8 +44,7 @@ const DeviceSelector = () => {
   }
 
   function fullscreenchange() {
-    // @ts-ignore
-    const isFullscreenMode = document.fullscreenElement || document.mozFullScreenElemen || document.webkitFullscreenElement
+    const isFullscreenMode = W3C() || Firefox() || Safari() || Edge()
     // Was pressed Escape
     if (!isFullscreenMode) setFullScreen(false)
     // Switching full screen have delayed animation
@@ -45,8 +52,7 @@ const DeviceSelector = () => {
   }
 
   useEffect(() => {
-    // @ts-ignore
-    const isFullscreenMode = document.fullscreenElement || document.mozFullScreenElemen || document.webkitFullscreenElement
+    const isFullscreenMode = W3C() || Firefox() || Safari() || Edge()
     if (isFullscreenMode != fullScreen) switchFullscreen(fullScreen)
     // window.addEventListener('resize', setDimensions)	// Was used in stretch mode
     document.addEventListener('fullscreenchange', fullscreenchange)

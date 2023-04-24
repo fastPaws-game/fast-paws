@@ -2,20 +2,20 @@ import { FC, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
-import { GAME } from '../constants/game'
+import { GAME } from '../../constants/game'
 
-import IconFullscreen from '../assets/icons/fullscreen.svg'
-import IconFullscreenExit from '../assets/icons/fullscreen-exit.svg'
-import IconPause from '../assets/icons/IconPause.svg'
-import IconSoundOn from '../assets/icons/IconSoundOn.svg'
-import IconSoundOff from '../assets/icons/IconSoundOff.svg'
+import IconFullscreen from '../../assets/icons/fullscreen.svg'
+import IconFullscreenExit from '../../assets/icons/fullscreen-exit.svg'
+import IconPause from '../../assets/icons/IconPause.svg'
+import IconSoundOn from '../../assets/icons/IconSoundOn.svg'
+import IconSoundOff from '../../assets/icons/IconSoundOff.svg'
 
-import IconMouse from '../assets/icons/IconMouse.svg'
-import IconButterfly from '../assets/icons/IconButterfly.svg'
-import IconBird from '../assets/icons/IconBird.svg'
-import IconFrog from '../assets/icons/IconFrog.svg'
+import IconMouse from '../../assets/icons/IconMouse.svg'
+import IconButterfly from '../../assets/icons/IconButterfly.svg'
+import IconBird from '../../assets/icons/IconBird.svg'
+import IconFrog from '../../assets/icons/IconFrog.svg'
 
-import Beep from '../assets/sounds/Beep'
+import Beep from '../../assets/sounds/Beep'
 
 type Props = {
   level: number
