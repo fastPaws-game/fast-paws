@@ -2,11 +2,12 @@ import { FC, useState, useMemo, useCallback } from 'react'
 import ActionLayer from '../layers/ActionLayer'
 import InterfaceLayer from '../layers/InterfaceLayer'
 import BackgroundLayer from '../layers/BackgroundLayer'
-import GamePause from '../components/gamePause'
+import GamePause from './GamePause'
 import GameOver from '../components/GameOver'
 import Engine from '../engine/Engine'
 
 type Props = {
+  fullScreen: boolean
   switchFullScreen: () => void
 }
 const GamePage: FC<Props> = props => {
@@ -45,8 +46,17 @@ const GamePage: FC<Props> = props => {
   )
 
   const interfaceLayerProps = useMemo(
-    () => ({ level, score, combo, tooltip, catched, switchFullScreen: props.switchFullScreen, handlePause }),
-    [level, score, tooltip, catched, combo, props.switchFullScreen, handlePause]
+    () => ({
+      level,
+      score,
+      combo,
+      tooltip,
+      catched,
+      fullScreen: props.fullScreen,
+      switchFullScreen: props.switchFullScreen,
+      handlePause,
+    }),
+    [level, score, tooltip, catched, combo, props.fullScreen, props.switchFullScreen, handlePause]
   )
 
   return (

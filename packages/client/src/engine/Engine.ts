@@ -221,7 +221,7 @@ export default class Engine {
     }
     this.showFirstTooltip(reason)
 
-    this.game.combo = 1
+    this.game.combo = 0
     this.showCombo(this.game.combo)
     this.game.success = false
     if (reason != 'timeout') {
@@ -286,13 +286,14 @@ export default class Engine {
       this.game.definingTrajectory = false
       this.cat.jumpStage = -Math.PI
     }
-    this.draw.drawTrajectory(this.cat.CatX, this.cat.CatY, this.cat.jumpHeight)
+    this.draw.drawTrajectory(this.cat.CatX, this.cat.CatY, this.cat.jumpHeight, !this.target.isBarrier)
   }
 
   private defineJump = () => {
+    const modifier = this.target.isBarrier ? 1 : 0.5
     const r = this.cat.jumpHeight // Circle radius
     const points = r / 4 // Position count
-    const step = Math.PI / points
+    const step = Math.PI / points / modifier
     this.cat.jumpStage += step
     const i = this.cat.jumpStage
     if (!this.game.fullJump && !this.game.success && i > -Math.PI / 2) {
@@ -300,7 +301,7 @@ export default class Engine {
     }
     if (i < 0) {
       this.cat.CatX = Math.floor(GAME.defaultCatX + r + r * Math.cos(i))
-      const y = this.cat.CatY + r * Math.sin(i)
+      const y = this.cat.CatY + r * Math.sin(i) * modifier
       const frameIndex = Math.floor(((i + Math.PI) / Math.PI) * 3)
       this.draw.drawCat(this.cat.source.frames[frameIndex].image, this.cat.CatX, y)
     } else {
@@ -417,7 +418,7 @@ export default class Engine {
       const duration = Math.floor(measure.duration * 1000)
       if (duration > 0) this.meterStack.enqueue(duration)
       this.game.ctx!.fillStyle = 'black'
-      this.game.ctx!.fillText(`mms/frame: ${this.meterStack.average(10)}`, 540, 18)
+      this.game.ctx!.fillText(`mms/frame: ${this.meterStack.average(10)}`, 580, 18)
     }
   }
 

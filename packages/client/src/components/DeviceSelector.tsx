@@ -59,7 +59,7 @@ const DeviceSelector = () => {
   return (
     <RootWrapper>
       <GameWrapper ref={ref}>
-        <Game switchFullScreen={switchFullScreen} />
+        <Game fullScreen={fullScreen} switchFullScreen={switchFullScreen} />
       </GameWrapper>
     </RootWrapper>
   )
