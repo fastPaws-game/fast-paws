@@ -10,6 +10,7 @@ import LocalStorage from './utils/localStorage'
 import { changeTheme } from './store/theme/ThemeSlice'
 import LoadingPage from './components/LoadingScreen'
 import { useChangeTheme } from './hooks/useChangeTheme'
+import ErrorBoundary from './components/ErrorBoundary'
 
 function App() {
   const { theme } = useChangeTheme()
@@ -19,7 +20,7 @@ function App() {
   let isAuth: boolean
 
   useEffect(() => {
-    ;(async () => {
+    (async () => {
       dispatch(changeTheme(currentTheme))
       setIsLoading(true)
       await dispatch(getUser())
@@ -40,9 +41,9 @@ function App() {
       <GlobalStyles />
       <ThemeProvider theme={theme}>
         <BrowserRouter>
-          <PageWrapper>
+          <ErrorBoundary>
             <Suspense fallback={<LoadingPage />}>{!isLoading && <Router />}</Suspense>
-          </PageWrapper>
+          </ErrorBoundary>
         </BrowserRouter>
       </ThemeProvider>
     </>
