@@ -1,10 +1,10 @@
 export enum Routes {
   HOME = '/',
   SIGNUP = '/signup',
+  SIGNIN = '/signin',
   SETTINGS = '/settings',
   FORUM = '/forum',
   GAME = '/game',
-  MAIN = '/main',
   LEADERBOARD = '/leaderboard',
   NOT_FOUND = '*',
 }

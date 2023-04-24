@@ -6,7 +6,7 @@ import Link from '../ui/link'
 import styled from 'styled-components'
 import { Routes } from '../constants/routes'
 import { media } from '../assets/styles/media'
-import { FC, useEffect } from 'react'
+import { FC, useCallback, useEffect } from 'react'
 import { TSignUpFormValues } from '../models/RegistrationModel'
 import { registrationSchema } from '../utils/validation/registrationSchema'
 import { useAppDispatch, useAppSelector } from '../hooks/store'
@@ -64,10 +64,13 @@ const RegistrationForm: FC<Props> = props => {
     if (isDirty) dispatch(resetSignUpError())
   }, [isDirty])
 
-  const onSubmit: SubmitHandler<TSignUpFormValues> = async (data: TSignUpFormValues) => {
-    await handleRegistration(data)
-    reset()
-  }
+  const onSubmit: SubmitHandler<TSignUpFormValues> = useCallback(
+    async (data: TSignUpFormValues) => {
+      await handleRegistration(data)
+      reset()
+    },
+    [handleRegistration]
+  )
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
@@ -129,7 +132,7 @@ const RegistrationForm: FC<Props> = props => {
         <Button type="submit" disabled={!isDirty || isSubmitting}>
           Sign up
         </Button>
-        <Link to={Routes.HOME}>Log in</Link>
+        <Link to={Routes.SIGNIN}>Log in</Link>
       </Column>
     </Form>
   )

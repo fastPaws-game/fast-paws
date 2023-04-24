@@ -4,14 +4,14 @@ import { Routes } from '../constants/routes'
 import { useAppSelector } from '../hooks/store'
 import { authSelectors } from '../store/auth/AuthSelectors'
 
-const RequireAuth: FC = () => {
+const RequireUnAuth: FC = () => {
   const location = useLocation()
   const isAuth = useAppSelector(authSelectors.getIsAuth)
 
-  if (!isAuth) {
-    return <Navigate to={Routes.SIGNIN} state={{ from: location }} replace />
+  if (isAuth) {
+    return <Navigate to={Routes.HOME} state={{ from: location }} replace />
   }
   return <Outlet />
 }
 
-export default RequireAuth
+export default RequireUnAuth

@@ -6,7 +6,7 @@ import Paws from '../components/Paws'
 const MainPage = () => {
   return (
     <BaseLayout>
-      <Paws/>
+      <Paws />
       <MainContent />
     </BaseLayout>
   )

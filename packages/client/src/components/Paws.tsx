@@ -61,7 +61,7 @@ const Paw1 = styled.div`
   ${media.middle} {
     left: 30px;
     top: 430px;
-  transform: rotate(-20deg);
+    transform: rotate(-20deg);
   }
 
   ${media.small} {
@@ -96,7 +96,7 @@ const Paw3 = styled.div`
   ${media.middle} {
     left: 270px;
     top: 370px;
-  transform: rotate(-20deg);
+    transform: rotate(-20deg);
   }
 
   ${media.small} {

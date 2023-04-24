@@ -8,7 +8,7 @@ const Link: FC<Props> = ({ children, ...props }) => {
   return (
     <div>
       <LinkStyled {...props}>{children}</LinkStyled>
-    </div> 
+    </div>
   )
 }
 
@@ -31,9 +31,9 @@ const LinkStyled = styled(ReactLink)`
     left: 0;
     transform-origin: right;
     transform: scaleX(0);
-    transition: transform .3s ease-in-out;
+    transition: transform 0.3s ease-in-out;
   }
-    
+
   &:not(:has(button)):hover::before {
     transform-origin: left;
     transform: scaleX(1);

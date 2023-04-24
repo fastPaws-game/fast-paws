@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 import { PlayerItem } from './PlayerItem'
-import LayoutWithHeader from '../../layouts/LayoutWithHeader'
 
 export type PlayerItemType = {
   id: number

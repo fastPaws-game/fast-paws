@@ -1,4 +1,5 @@
 import AuthForm from '../../components/AuthForm'
+import ContrastingWrapper from '../../components/ContrastingWrapper'
 import { useAppDispatch } from '../../hooks/store'
 import { TSignIn } from '../../models/SignInModel'
 import { signInUser } from '../../store/auth/AuthActions'
@@ -9,8 +10,10 @@ const Authorization = () => {
   const handleSubmit = async (data: TSignIn) => {
     dispatch(signInUser(data))
   }
-
-  return <AuthForm onSubmitFrom={handleSubmit} />
+  return (
+    <ContrastingWrapper padding="25px">
+      <AuthForm onSubmitFrom={handleSubmit} />
+    </ContrastingWrapper>
+  )
 }
-
 export { Authorization }

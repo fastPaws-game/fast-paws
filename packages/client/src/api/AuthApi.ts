@@ -1,6 +1,6 @@
 import FetchApi from '../utils/fetchApi'
 import { TSignIn } from '../models/SignInModel'
-import {  TSignUpFormValues} from '../models/RegistrationModel'
+import { TSignUpFormValues } from '../models/RegistrationModel'
 import { TProfile } from '../models/ProfileModel'
 
 class AuthApi {

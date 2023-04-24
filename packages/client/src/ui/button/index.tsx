@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, FC, ReactElement } from 'react'
+import { ButtonHTMLAttributes, FC, ForwardedRef, forwardRef, ReactElement } from 'react'
 import styled from 'styled-components'
 import { media } from '../../assets/styles/media'
 
@@ -6,14 +6,19 @@ type Props = {
   icon?: ReactElement
   size?: 'small' | 'middle' | 'big'
   darkblue?: boolean
+  ref?: ForwardedRef<HTMLButtonElement>
 } & ButtonHTMLAttributes<HTMLButtonElement>
 
-const Button: FC<Props> = props => {
+const Button: FC<Props> = forwardRef((props, ref) => {
   const { icon, children } = props
   const ButtonStyled = icon ? ButtonIconStyled : ButtonMainStyled
 
-  return <ButtonStyled {...props}>{icon ? icon : children}</ButtonStyled>
-}
+  return (
+    <ButtonStyled ref={ref} {...props}>
+      {icon ? icon : children}
+    </ButtonStyled>
+  )
+})
 
 const ButtonMainStyled = styled.button<{ size?: string; darkblue?: boolean }>`
   width: ${props => (props.size === 'big' ? '395px' : props.size === 'middle' ? '280px' : '145px')};
@@ -40,6 +45,7 @@ const ButtonMainStyled = styled.button<{ size?: string; darkblue?: boolean }>`
   &:not([disabled]):focus {
     background-color: ${props => props.theme.colors.accentHover};
     transition: 0.3s;
+    cursor: pointer;
   }
 
   &:not([disabled]):focus {
@@ -72,6 +78,7 @@ const ButtonIconStyled = styled.button<{ size?: string; darkblue?: boolean }>`
   &:not([disabled]):focus {
     background-color: ${props => props.theme.colors.accentHover};
     transition: 0.3s;
+    cursor: pointer;
   }
 
   &:not([disabled]):focus {

@@ -7,17 +7,19 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { FC, useState, useCallback } from 'react'
 import { H3 } from '../assets/styles/texts'
 import ContrastingWrapper from './ContrastingWrapper'
-import { PasswordsPopup } from './PasswordsPopup'
+import { ProfileFormPopup } from './ProfileFormPopup'
 import { TProfile } from '../models/ProfileModel'
+import { useAppSelector } from '../hooks/store'
+import { authSelectors } from '../store/auth/AuthSelectors'
 
 type Props = {
-  onSubmitForm: (data: TProfile) => void
+  onSubmitUser: (data: TProfile) => void
   defaultFormValues: TProfile
 }
-
 const ProfileForm: FC<Props> = props => {
-  const { onSubmitForm, defaultFormValues } = props
-  const [modal, setModal] = useState(false)
+  const { onSubmitUser, defaultFormValues } = props
+  const [modalChangePassword, setModalChangePassword] = useState(false)
+  const serverError = useAppSelector(authSelectors.getUserError)
 
   const {
     register,
@@ -30,16 +32,17 @@ const ProfileForm: FC<Props> = props => {
     resolver: yupResolver(profileSchema),
   })
 
-  const handleClose = useCallback(() => {
-    setModal(false)
-  }, [setModal])
+  const closeModalChangePassword = useCallback(() => {
+    setModalChangePassword(false)
+  }, [setModalChangePassword])
 
-  const handleClick = () => {
-    setModal(true)
-  }
+  const handleClick = useCallback(() => {
+    setModalChangePassword(true)
+  }, [setModalChangePassword])
 
-  const onSubmit: SubmitHandler<TProfile> = data => {
-    onSubmitForm(data)
+  const onSubmit: SubmitHandler<TProfile> = async data => {
+    const { avatar, ...profileData } = data
+    await onSubmitUser(profileData)
   }
 
   return (
@@ -90,14 +93,17 @@ const ProfileForm: FC<Props> = props => {
               errorMessage={errors.phone?.message}
               {...register('phone')}
             />
+            {serverError && <Error>{serverError}</Error>}
             <Button type="submit" disabled={!isDirty || isSubmitting}>
               Update
             </Button>
-            <Button onClick={handleClick}>Change password</Button>
+            <Button type="button" onClick={handleClick}>
+              Change password
+            </Button>
           </FormFields>
         </Form>
       </ContrastingWrapper>
-      <PasswordsPopup visible={modal} outSideClickEnable handleClose={handleClose} />
+      <ProfileFormPopup visible={modalChangePassword} outSideClickEnable handleClose={closeModalChangePassword} />
     </>
   )
 }
@@ -110,11 +116,19 @@ const Form = styled.form`
   padding: 35px;
   padding-top: 15px;
   padding-bottom: 10px;
+  position: relative;
 `
 const Title = styled(H3)`
   color: ${({ theme }) => theme.text.textInvert};
   align-self: flex-start;
   margin-bottom: 22px;
+`
+const Error = styled.p`
+  color: ${props => props.theme.text.error};
+  position: absolute;
+  bottom: 130px;
+  margin: auto;
+  text-align: left;
 `
 
 const FormFields = styled.div`
@@ -125,14 +139,35 @@ const FormFields = styled.div`
   button {
     margin-bottom: 1em;
   }
+  button:first-of-type {
+    margin: 25px;
+  }
   button:last-of-type {
     background: transparent;
     box-shadow: none;
-    color: ${props => props.theme.text.everWhite};
+    color: ${props => props.theme.colors.link};
     transition: all 0.5s ease-out;
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      width: 80%;
+      height: 2px;
+      border-radius: 4px;
+      background-color: ${props => props.theme.colors.accent};
+      bottom: 0px;
+      left: 15px;
+      transform-origin: right;
+      transform: scaleX(0);
+      transition: transform 0.3s ease-in-out;
+    }
   }
   button:last-of-type:hover {
-    text-decoration: underline;
+    &::before {
+      transform-origin: left;
+      transform: scaleX(1);
+    }
   }
   button:last-of-type:active,
   button:last-of-type:hover,

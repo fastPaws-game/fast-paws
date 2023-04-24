@@ -27,7 +27,7 @@ const GamePause: FC<Props> = props => {
           Continue
         </Button>
         <Footer>
-          <Button icon={<IconForum />} size="small" onClick={handleClick('/forum')} darkblue/>
+          <Button icon={<IconForum />} size="small" onClick={handleClick('/forum')} darkblue />
           <Button icon={<IconSettings />} size="small" onClick={handleClick('/settings')} darkblue />
           <Button icon={<IconStar />} size="small" onClick={handleClick('/leaderboard')} darkblue />
         </Footer>

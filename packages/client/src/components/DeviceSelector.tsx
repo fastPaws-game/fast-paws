@@ -37,7 +37,8 @@ const DeviceSelector = () => {
 
   function fullscreenchange() {
     // @ts-ignore
-    const isFullscreenMode = document.fullscreenElement || document.mozFullScreenElemen || document.webkitFullscreenElement
+    const isFullscreenMode =
+      document.fullscreenElement || document.mozFullScreenElemen || document.webkitFullscreenElement
     // Was pressed Escape
     if (!isFullscreenMode) setFullScreen(false)
     // Switching full screen have delayed animation
@@ -46,7 +47,8 @@ const DeviceSelector = () => {
 
   useEffect(() => {
     // @ts-ignore
-    const isFullscreenMode = document.fullscreenElement || document.mozFullScreenElemen || document.webkitFullscreenElement
+    const isFullscreenMode =
+      document.fullscreenElement || document.mozFullScreenElemen || document.webkitFullscreenElement
     if (isFullscreenMode != fullScreen) switchFullscreen(fullScreen)
     // window.addEventListener('resize', setDimensions)	// Was used in stretch mode
     document.addEventListener('fullscreenchange', fullscreenchange)
