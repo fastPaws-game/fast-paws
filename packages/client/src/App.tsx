@@ -20,7 +20,7 @@ function App() {
   let isAuth: boolean
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       dispatch(changeTheme(currentTheme))
       setIsLoading(true)
       await dispatch(getUser())
@@ -42,7 +42,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <BrowserRouter>
           <ErrorBoundary>
-            <Suspense fallback={<LoadingPage />}>{!isLoading && <Router />}</Suspense>
+            <PageWrapper>{isLoading ? <LoadingPage /> : <Router />}</PageWrapper>
           </ErrorBoundary>
         </BrowserRouter>
       </ThemeProvider>
