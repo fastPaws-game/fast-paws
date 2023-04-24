@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router'
 import { Routes as routes } from './constants/routes'
 import RequireAuth from './hocs/RequireAuth'
 import { useRedirect } from './hooks/useRedirect'
+import RequireUnAuth from './hocs/RequireUnAuth'
 
 const LazyAuth = React.lazy(() => import('./pages/AuthPage'))
 const LazyReg = React.lazy(() => import('./pages/RegistrationPage'))
@@ -25,9 +26,11 @@ export const Router = () => {
         <Route path={`${routes.FORUM}/:forumId`} element={<LazyTopic />} />
         <Route path={routes.LEADERBOARD} element={<LazyBoard />} />
       </Route>
+      <Route element={<RequireUnAuth />}>
+        <Route path={routes.SIGNUP} element={<LazyReg />} />
+        <Route path={routes.SIGNIN} element={<LazyAuth />} />
+      </Route>
       <Route path={routes.HOME} errorElement={<LazyError />} element={<LazyMain />} />
-      <Route path={routes.SIGNUP} element={<LazyReg />} />
-      <Route path={routes.SIGNIN} element={<LazyAuth />} />
       <Route path={routes.GAME} element={<LazyGame />} />
       <Route path={routes.NOT_FOUND} element={<LazyError />} />
     </Routes>
