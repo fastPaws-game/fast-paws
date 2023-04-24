@@ -1,16 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { GAME } from '../../constants/game'
 import LocalStorage from '../../utils/localStorage'
+import { TCatched } from '../../engine/@engine'
 
 type GameSlice = {
   score: number
-  catched: {
-    mouse: number
-    grasshopper: number
-    frog: number
-    butterfly: number
-    bird: number
-  }
+  catched: TCatched
 }
 
 const score = LocalStorage.get('score') || GAME.initialScore
@@ -33,11 +28,9 @@ const gameSlice = createSlice({
   reducers: {
     saveScore: (state, action: PayloadAction<GameSlice['score']>) => {
       state.score = action.payload
-      LocalStorage.set('score', action.payload)
     },
     saveCatched: (state, action: PayloadAction<GameSlice['catched']>) => {
       state.catched = action.payload
-      LocalStorage.set('catched', action.payload)
     },
   },
 })
