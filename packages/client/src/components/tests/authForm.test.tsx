@@ -1,16 +1,11 @@
 import AuthForm from '../AuthForm'
+import RegistrationForm from '../RegistrationForm'
 import { render, renderWithoutRouter, fireEvent, waitFor, screen } from '../../utils/test-utils'
 import '@testing-library/jest-dom'
 import userEvent from '@testing-library/user-event'
-import { Routes, Route, MemoryRouter, useLocation } from 'react-router-dom'
+import { Routes, Route, MemoryRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { store } from '../../store/index'
-
-const LocationDisplay = () => {
-  const location = useLocation()
-
-  return <div data-testid="location-display">{location.pathname}</div>
-}
 
 describe('AuthForm components', () => {
   const handleSubmit = jest.fn()
@@ -59,24 +54,24 @@ describe('AuthForm components', () => {
     expect(inputPassword).toHaveValue('LoginPassword')
   })
 
-  test('Link', async () => {
+  test.only('Link', async () => {
     const user = userEvent.setup()
     const { getByText } = renderWithoutRouter(
       <Provider store={store}>
         <MemoryRouter>
           <Routes>
             <Route path="/" element={<AuthForm onSubmitFrom={handleSubmit} />} />
-            <Route path="/signup" element={<LocationDisplay />} />
+            <Route path="/signup" element={<RegistrationForm handleRegistration={handleSubmit}/>} />
           </Routes>
         </MemoryRouter>
       </Provider>
     )
 
-    expect(screen.getByText('Login')).toBeInTheDocument()
+    expect(screen.getByText('Log in')).toBeInTheDocument()
 
     const link = getByText('Registration')
     await user.click(link)
 
-    expect(screen.getByTestId('location-display')).toHaveTextContent('/signup')
+    expect(screen.getByText('Sign up')).toBeInTheDocument()
   })
 })
