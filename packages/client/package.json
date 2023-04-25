@@ -8,7 +8,9 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build && npx tsx ./src/getUrlList.ts",
+    "build": "tsc && vite build --config vite.config.ts",
+    "build:ssr": "tsc && vite build --config ssr.config.ts",
+    "build:old": "tsc && vite build && npx tsx ./src/getUrlList.ts",
     "preview": "vite preview",
     "lint": "eslint . & stylelint src/**/*.{js,ts,tsx,mts} --fix",
     "format": "prettier --write .",
