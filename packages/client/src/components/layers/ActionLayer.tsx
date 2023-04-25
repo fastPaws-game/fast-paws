@@ -15,7 +15,6 @@ export default class ActionLayer extends React.Component {
   }
 
   componentDidMount() {
-    console.log('Game: Mount')
     const ctx = this.ref!.current!.getContext('2d')
     if (ctx) {
       this.engine = Engine.get(this.handlers)
@@ -24,7 +23,6 @@ export default class ActionLayer extends React.Component {
   }
 
   componentWillUnmount() {
-    console.log('Game: Unmount')
     this.engine?.stop()
   }
 

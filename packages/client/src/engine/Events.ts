@@ -1,6 +1,6 @@
 import { TGame } from './@engine'
 
-export class Events {
+export default class Events {
   private game: TGame
   private prepareJumpStart: () => void
   private prepareJumpEnd: () => void

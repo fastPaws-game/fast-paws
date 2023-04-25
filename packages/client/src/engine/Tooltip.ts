@@ -1,6 +1,6 @@
 import { TOOLTIP } from '../constants/game'
 
-export class Tooltip {
+export default class Tooltip {
   private tooltip = {
     shown: false,
     firstTip: true,
@@ -34,7 +34,6 @@ export class Tooltip {
   }
 
   public show = (reason?: 'start' | 'timeout' | 'barrier' | 'animal') => {
-		console.log('Tooltip:',reason)
     switch (reason) {
       case 'start':
         if (this.tooltip.firstTip) {
@@ -54,7 +53,7 @@ export class Tooltip {
           this.set(TOOLTIP.firstTimeout)
         }
         break
-			case 'animal':
+      case 'animal':
         if (this.tooltip.firstAnimal) {
           this.tooltip.firstAnimal = false
           this.set(TOOLTIP.firstAnimal)

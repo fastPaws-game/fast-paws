@@ -1,3 +1,4 @@
+// Game core engine class
 import {
   CANVAS,
   GAME,
@@ -12,10 +13,10 @@ import Resource, { GifObject } from '../engine/ResourceLoader'
 import BgMotion from '../engine/BgMotion'
 import FlyingValues from './FlyingValues'
 import Queue from '../utils/Queue'
-import { Target, TGame, TCat } from './@engine'
-import { Events } from './Events'
-import { Tooltip } from './Tooltip'
-import { getScore, updateScore, getCatched, updateCatched } from '../store/game/GameProgress'
+import Events from './Events'
+import Tooltip from './Tooltip'
+import * as store from '../store/game/GameProgress'
+import type { Target, TGame, TCat } from './@engine'
 
 export default class Engine {
   private game: TGame = {
@@ -111,7 +112,7 @@ export default class Engine {
     const combo = Math.max(this.game.combo, 1)
     this.game.score += value * multiplier * combo
     this.showScore(this.game.score)
-    updateScore(this.game.score)
+    store.updateScore(this.game.score)
     if (value != 0) this.fly.throw(value * combo, multiplier, this.cat.CatX)
     if (this.game.success) this.Tooltip.hide()
   }
@@ -150,7 +151,7 @@ export default class Engine {
       const name: AnimalName = this.target.nameCurr as AnimalName
       this.game.catched[name] += 1
       this.showCatched(this.game.catched)
-      updateCatched(this.game.catched)
+      store.updateCatched(this.game.catched)
       this.target.nameCurr = 'none'
     }
     this.levelPrepare()
@@ -379,8 +380,8 @@ export default class Engine {
     this.Events = new Events(this.game, this.prepareJumpStart, this.prepareJumpEnd, this.pause)
     this.Tooltip = new Tooltip(this.setTooltip)
     this.game.ctx!.font = '18px Arial'
-    this.game.score = getScore()
-    this.game.catched = getCatched()
+    this.game.score = store.getScore()
+    this.game.catched = store.getCatched()
     this.Events.registerEvents()
     this.levelPrepare()
     this.Tooltip.show('start')
