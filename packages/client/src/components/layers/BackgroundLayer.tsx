@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react'
 import styled from 'styled-components'
-import { CANVAS } from '../constants/game'
-import BgMotion from '../engine/BgMotion'
+import { CANVAS } from '../../constants/game'
+import BgMotion from '../../engine/BgMotion'
 
 const InterfaceLayer = () => {
   const canvas = useRef<HTMLCanvasElement>(null)

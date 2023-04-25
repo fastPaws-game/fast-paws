@@ -2,20 +2,20 @@ import { FC, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
-import { GAME } from '../constants/game'
+import { GAME } from '../../constants/game'
 
-import IconSettings from '../assets/icons/IconSettings.svg'
-import IconFullscreen from '../assets/icons/IconFullscreen.svg'
-import IconPause from '../assets/icons/IconPause.svg'
-import IconSoundOn from '../assets/icons/IconSoundOn.svg'
-import IconSoundOff from '../assets/icons/IconSoundOff.svg'
+import IconFullscreen from '../../assets/icons/fullscreen.svg'
+import IconFullscreenExit from '../../assets/icons/fullscreen-exit.svg'
+import IconPause from '../../assets/icons/IconPause.svg'
+import IconSoundOn from '../../assets/icons/IconSoundOn.svg'
+import IconSoundOff from '../../assets/icons/IconSoundOff.svg'
 
-import IconMouse from '../assets/icons/IconMouse.svg'
-import IconButterfly from '../assets/icons/IconButterfly.svg'
-import IconBird from '../assets/icons/IconBird.svg'
-import IconFrog from '../assets/icons/IconFrog.svg'
+import IconMouse from '../../assets/icons/IconMouse.svg'
+import IconButterfly from '../../assets/icons/IconButterfly.svg'
+import IconBird from '../../assets/icons/IconBird.svg'
+import IconFrog from '../../assets/icons/IconFrog.svg'
 
-import Beep from '../assets/sounds/Beep'
+import Beep from '../../assets/sounds/Beep'
 
 type Props = {
   level: number
@@ -28,6 +28,7 @@ type Props = {
     bird: number
     mouse: number
   }
+  fullScreen: boolean
   switchFullScreen: () => void
   handlePause: () => void
 }
@@ -74,19 +75,19 @@ const InterfaceLayer: FC<Props> = props => {
           <IconAnimal icon={IconMouse} />
           <span> {props.catched.mouse}</span>
         </HorisontalBlock>
-        <HorisontalBlock>
-          <UIButton aria-label="button" icon={sound ? IconSoundOn : IconSoundOff} onClick={handleClick('sound')} />
-          <BrowserButton aria-label="button" icon={IconPause} onClick={handleClick('pause')} />
-        </HorisontalBlock>
+        <UIButton aria-label="button" icon={sound ? IconSoundOn : IconSoundOff} onClick={handleClick('sound')} />
       </HorisontalBlock>
       <GameTip>{props.tooltip}</GameTip>
       <div></div>
       <HorisontalBlock>
-        <UIButton aria-label="button" icon={IconSettings} onClick={handleClick('settings')} />
+        <UIButton aria-label="button" icon={IconPause} onClick={handleClick('pause')} />
         <HorisontalBlock>
           <GameVersion>{GAME.versionName}</GameVersion>
-          <BrowserButton aria-label="button" icon={IconFullscreen} onClick={handleClick('fullscreen')} />
-          <DeviceButton aria-label="button" icon={IconPause} onClick={handleClick('pause')} />
+          <BrowserButton
+            aria-label="button"
+            icon={props.fullScreen ? IconFullscreenExit : IconFullscreen}
+            onClick={handleClick('fullscreen')}
+          />
         </HorisontalBlock>
       </HorisontalBlock>
     </Layer>

@@ -18,7 +18,7 @@ export const SpriteSize = {
 
 // Core game constants
 export const GAME = {
-  version: 20101008,
+  version: 20102009,
   scorePerLevel: 1000,
   initialScore: 20, // Need to prevent 'Game over' after the first fail
   catchRange: 10, // A range where an animal can be catched
@@ -57,7 +57,7 @@ export const getVersionName = (ver = GAME.version): string => {
   }.${patch}`
 }
 
-export type AnimalName = 'butterfly' | 'grasshopper' | 'bird' | 'mouse'
+export type AnimalName = 'butterfly' | 'grasshopper' | 'frog' | 'bird' | 'mouse'
 
 export type TargetName = AnimalName | 'cactus' | 'puddle' | 'flowerpot' | 'gnome' | 'none'
 
@@ -79,6 +79,7 @@ export const TARGET_SCORE: Record<TargetName, Record<'success' | 'fail', number>
 
   butterfly: { success: 10, fail: 0 },
   grasshopper: { success: 10, fail: 0 },
+  frog: { success: 10, fail: -5 },
   bird: { success: 10, fail: -5 },
   mouse: { success: 10, fail: -10 },
 

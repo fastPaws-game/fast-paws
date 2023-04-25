@@ -1,74 +1,22 @@
+// Game core engine class
 import {
   CANVAS,
   GAME,
   TARGET_SCORE,
-  TargetName,
   AnimalName,
   ANIMAL_LIST,
   BARRIER_LIST,
   DIFFICULTY_PER_LEVEL,
-  TOOLTIP,
 } from '../constants/game'
 import Draw from './Draw'
 import Resource, { GifObject } from '../engine/ResourceLoader'
 import BgMotion from '../engine/BgMotion'
 import FlyingValues from './FlyingValues'
 import Queue from '../utils/Queue'
-
-type Action = 'run' | 'stay' | 'jump' | 'path' | 'scene' | 'return' | null
-type Target = {
-  nameCurr: TargetName
-  nameLast: TargetName
-  xCurr: number
-  yCurr: number
-  PositionX: number
-  xLast: number
-  yLast: number
-  heightCurr: number
-  heightLast: number
-  isBarrier: boolean
-  runAwayDelay: number
-  atPosition: boolean
-}
-type TGame = {
-  SPEED: number
-  successHeightModifer: number
-  updateTime: number
-  action: Action
-  ctx: CanvasRenderingContext2D | null
-  definingTrajectory: boolean
-  timer: number
-  movementSpeed: number
-  runAwaySpeed: number
-  successHeight: number
-  success: boolean
-  fullJump: boolean
-  paused: boolean
-  combo: number
-  tooltip: {
-    shown: boolean
-    firstTip: boolean
-    firstVictim: boolean
-    firstBarrier: boolean
-    firstTimeout: boolean
-  }
-  score: number
-  catched: {
-    butterfly: number
-    grasshopper: number
-    bird: number
-    mouse: number
-  }
-}
-type TCat = {
-  source: GifObject
-  jumpHeight: number
-  jumpStage: number
-  trajectoryDirection: number
-  CatX: number
-  CatY: number
-  atPosition: boolean
-}
+import Events from './Events'
+import Tooltip from './Tooltip'
+import * as store from '../store/game/GameProgress'
+import type { Target, TGame, TCat } from './@engine'
 
 export default class Engine {
   private game: TGame = {
@@ -88,18 +36,12 @@ export default class Engine {
     success: false,
     fullJump: true, // To know does current target need a full jump
     paused: false,
-    combo: 1, // Combo multiplier for score
-    tooltip: {
-      shown: false,
-      firstTip: true,
-      firstVictim: true,
-      firstBarrier: true,
-      firstTimeout: true,
-    },
-    score: 0,
+    combo: 0, // Combo multiplier for score
+    score: GAME.initialScore,
     catched: {
       butterfly: 0,
       grasshopper: 0,
+      frog: 0,
       bird: 0,
       mouse: 0,
     },
@@ -131,6 +73,8 @@ export default class Engine {
   private resource: Resource
   private draw: Draw
   private fly: FlyingValues
+  private Events: Events
+  private Tooltip: Tooltip
   private bgMotion: BgMotion
   private meterStack = new Queue()
   private setPauseVisible: (pause: boolean) => void
@@ -139,7 +83,7 @@ export default class Engine {
   private showScore: (value: number) => void
   private showCombo: (value: number) => void
   private setTooltip: (tooltip: string) => void
-  private setCatched: (catched: Record<string, number>) => void
+  private showCatched: (catched: Record<string, number>) => void
   private static __instance: Engine
 
   private constructor(handlers: Record<string, (value?: any) => void>) {
@@ -149,7 +93,7 @@ export default class Engine {
     this.showScore = handlers.setScore
     this.showCombo = handlers.setCombo
     this.setTooltip = handlers.setTooltip
-    this.setCatched = handlers.setCatched
+    this.showCatched = handlers.setCatched
 
     this.canvas = document.getElementById('game_canvas') as HTMLCanvasElement
     this.game.ctx = this.canvas.getContext('2d')
@@ -157,53 +101,20 @@ export default class Engine {
     this.draw = new Draw(this.game.ctx!)
     this.fly = new FlyingValues(this.game.ctx!)
     this.bgMotion = new BgMotion()
+    this.Events = new Events(this.game, this.prepareJumpStart, this.prepareJumpEnd, this.pause)
+    this.Tooltip = new Tooltip(this.setTooltip)
 
     this.resource = Resource.get()
     this.cat.source = this.resource.sprite.cat as GifObject
-    this.game.score = GAME.initialScore // Get score from store
-  }
-
-  private showTooltip(text?: string) {
-    if (!text && this.game.tooltip.shown) {
-      this.setTooltip('')
-      this.game.tooltip.shown = false
-      this.game.tooltip.firstTip = false
-      return
-    }
-    if (typeof text == 'string') {
-      this.setTooltip(text)
-      this.game.tooltip.shown = true
-    }
-  }
-
-  private showFirstTooltip = (reason?: 'timeout') => {
-    if (this.target.isBarrier) {
-      if (this.game.tooltip.firstBarrier) {
-        this.game.tooltip.firstBarrier = false
-        this.showTooltip(TOOLTIP.firstBarrier)
-      }
-      return
-    }
-
-    if (reason === 'timeout') {
-      if (this.game.tooltip.firstTimeout) {
-        this.game.tooltip.firstTimeout = false
-        this.showTooltip(TOOLTIP.firstTimeout)
-      }
-      return
-    }
-
-    if (this.game.tooltip.firstVictim) {
-      this.game.tooltip.firstVictim = false
-      this.showTooltip(TOOLTIP.firstAnimal)
-    }
   }
 
   private setScore = (value: number, multiplier = 1) => {
-    this.game.score += value * multiplier * this.game.combo
+    const combo = Math.max(this.game.combo, 1)
+    this.game.score += value * multiplier * combo
     this.showScore(this.game.score)
-    if (value != 0) this.fly.throw(value * this.game.combo, multiplier, this.cat.CatX)
-    if (this.game.success) this.showTooltip() // Hide tooltip
+    store.updateScore(this.game.score)
+    if (value != 0) this.fly.throw(value * combo, multiplier, this.cat.CatX)
+    if (this.game.success) this.Tooltip.hide()
   }
 
   private commitFail = (reason?: 'timeout') => {
@@ -211,18 +122,16 @@ export default class Engine {
       this.game.score = GAME.initialScore
       this.game.paused = true
       this.game.action = null
-      // this.bgMotion.stop()
       this.handleGameOver()
       return
     }
-    this.showFirstTooltip(reason)
+    this.Tooltip.show(reason || (this.target.isBarrier ? 'barrier' : 'animal'))
 
-    this.game.combo = 1
+    this.game.combo = 0
     this.showCombo(this.game.combo)
     this.game.success = false
     if (reason != 'timeout') {
       this.game.action = 'return'
-      // this.bgMotion.start(!this.cat.atPosition ? Math.floor((this.game.updateTime / 3) * 2) : this.game.updateTime)
     }
     this.setScore(TARGET_SCORE[this.target.nameCurr].fail)
     if (!this.target.isBarrier) this.levelPrepare()
@@ -234,29 +143,31 @@ export default class Engine {
     if (!this.target.isBarrier) {
       if (this.game.combo < 5) {
         this.game.combo += 1
-        this.showCombo(this.game.combo)
-        this.fly.throw('Combo:', this.game.combo, this.cat.CatX)
+        if (this.game.combo > 1) {
+          this.showCombo(this.game.combo)
+          this.fly.throw('Combo:', this.game.combo, this.cat.CatX)
+        }
       }
       const name: AnimalName = this.target.nameCurr as AnimalName
       this.game.catched[name] += 1
-      this.setCatched(this.game.catched)
+      this.showCatched(this.game.catched)
+      store.updateCatched(this.game.catched)
       this.target.nameCurr = 'none'
     }
     this.levelPrepare()
   }
 
-  private prepareJumpStart() {
+  private prepareJumpStart = () => {
     this.cat.jumpHeight = GAME.jumpHeightMin
     this.cat.trajectoryDirection = 1
     this.game.definingTrajectory = true
     if (!this.updateIsNeeded()) requestAnimationFrame(this.update)
   }
 
-  private prepareJumpEnd() {
+  private prepareJumpEnd = () => {
     this.game.definingTrajectory = false
     // Prevent accidentially tapping
     if (this.cat.jumpHeight > GAME.jumpHeightMin + GAME.trajectoryStep * 2) {
-      // this.bgMotion.stop()
       this.game.action = 'jump'
       this.cat.atPosition = false
       this.cat.jumpStage = -Math.PI
@@ -281,13 +192,14 @@ export default class Engine {
       this.game.definingTrajectory = false
       this.cat.jumpStage = -Math.PI
     }
-    this.draw.drawTrajectory(this.cat.CatX, this.cat.CatY, this.cat.jumpHeight)
+    this.draw.drawTrajectory(this.cat.CatX, this.cat.CatY, this.cat.jumpHeight, !this.target.isBarrier)
   }
 
   private defineJump = () => {
+    const modifier = this.target.isBarrier ? 1 : 0.5
     const r = this.cat.jumpHeight // Circle radius
     const points = r / 4 // Position count
-    const step = Math.PI / points
+    const step = Math.PI / points / modifier
     this.cat.jumpStage += step
     const i = this.cat.jumpStage
     if (!this.game.fullJump && !this.game.success && i > -Math.PI / 2) {
@@ -295,7 +207,7 @@ export default class Engine {
     }
     if (i < 0) {
       this.cat.CatX = Math.floor(GAME.defaultCatX + r + r * Math.cos(i))
-      const y = this.cat.CatY + r * Math.sin(i)
+      const y = this.cat.CatY + r * Math.sin(i) * modifier
       const frameIndex = Math.floor(((i + Math.PI) / Math.PI) * 3)
       this.draw.drawCat(this.cat.source.frames[frameIndex].image, this.cat.CatX, y)
     } else {
@@ -326,20 +238,17 @@ export default class Engine {
       if (!this.target.isBarrier) {
         this.game.timer = window.setTimeout(() => this.commitFail('timeout'), this.target.runAwayDelay)
       }
-      // this.bgMotion.stop()
     }
 
     // Move Cat
     if (this.cat.CatX > GAME.defaultCatX) {
       this.cat.CatX -= this.target.atPosition ? Math.floor((this.game.movementSpeed / 3) * 2) : this.game.movementSpeed
     } else {
-      // if (!this.cat.atPosition) this.bgMotion.start(this.game.updateTime)
       this.cat.atPosition = true
     }
 
     if (this.cat.atPosition && this.target.atPosition) {
       setTimeout(() => (this.game.action = 'stay'), 0)
-      // this.bgMotion.stop()
     }
   }
 
@@ -362,15 +271,6 @@ export default class Engine {
 
     this.target.xLast -= this.cat.atPosition ? this.game.movementSpeed : Math.floor((this.game.movementSpeed / 2) * 3)
     return
-  }
-
-  private sceneReturn = () => {
-    // Move Cat
-    if (this.cat.CatX > GAME.defaultCatX) {
-      this.cat.CatX -= this.game.movementSpeed
-    } else {
-      this.game.action = 'stay'
-    }
   }
 
   // Renders one frame
@@ -415,7 +315,7 @@ export default class Engine {
       const duration = Math.floor(measure.duration * 1000)
       if (duration > 0) this.meterStack.enqueue(duration)
       this.game.ctx!.fillStyle = 'black'
-      this.game.ctx!.fillText(`mms/frame: ${this.meterStack.average(10)}`, 540, 18)
+      this.game.ctx!.fillText(`mms/frame: ${this.meterStack.average(10)}`, 580, 18)
     }
   }
 
@@ -443,8 +343,6 @@ export default class Engine {
     window.clearTimeout(this.game.timer)
     const level = Math.min(Math.floor(Math.max(this.game.score, 0) / GAME.scorePerLevel), 5)
     this.showLevel(level)
-    this.showScore(this.game.score)
-    if (this.game.tooltip.firstTip) this.showTooltip(TOOLTIP.newGame)
     this.game.SPEED = 0.5 + level * 0.1
     const targets = DIFFICULTY_PER_LEVEL[0] // ToDo change to a level
     const rand = Math.floor(Math.random() * targets.length)
@@ -470,60 +368,8 @@ export default class Engine {
     this.target.atPosition = false
     // console.log(`Level ${level}:`, {speed: this.game.SPEED, rand: `${rand}/${targets.length}`, target: this.target})
 
-    //  this.bgMotion.start(!this.cat.atPosition ? Math.floor((this.game.updateTime / 3) * 2) : this.game.updateTime)
     if (!this.updateIsNeeded()) requestAnimationFrame(this.update)
     this.game.action = 'scene'
-  }
-
-  private canJump = (): boolean => {
-    return !this.game.definingTrajectory && this.game.action !== 'jump'
-  }
-
-  private onkeydown = (event: KeyboardEvent) => {
-    if (this.canJump() && event.code == 'Space') {
-      this.prepareJumpStart()
-    }
-  }
-
-  private onkeyup = (event: KeyboardEvent) => {
-    if (this.game.definingTrajectory && event.code == 'Space') {
-      this.prepareJumpEnd()
-    }
-    if (event.code == 'Escape') {
-      this.pause(true)
-    }
-  }
-
-  private touchstart = (event: MouseEvent | TouchEvent) => {
-    event.preventDefault()
-    if (event.target && event.target instanceof HTMLDivElement && event.target.ariaLabel) return
-    if (this.canJump()) {
-      this.prepareJumpStart()
-    }
-  }
-
-  private touchend = (event: MouseEvent | TouchEvent) => {
-    if (this.game.definingTrajectory) {
-      this.prepareJumpEnd()
-    }
-  }
-
-  private registerEvents = () => {
-    window.addEventListener('keydown', this.onkeydown)
-    window.addEventListener('keyup', this.onkeyup)
-    window.addEventListener('touchstart', this.touchstart)
-    window.addEventListener('touchend', this.touchend)
-    window.addEventListener('mousedown', this.touchstart)
-    window.addEventListener('mouseup', this.touchend)
-  }
-
-  private unRegister = () => {
-    window.removeEventListener('keydown', this.onkeydown)
-    window.removeEventListener('keyup', this.onkeyup)
-    window.removeEventListener('touchstart', this.touchstart)
-    window.removeEventListener('touchend', this.touchend)
-    window.removeEventListener('mousedown', this.touchstart)
-    window.removeEventListener('mouseup', this.touchend)
   }
 
   public start() {
@@ -531,29 +377,34 @@ export default class Engine {
     this.game.ctx = this.canvas.getContext('2d')
     this.draw = new Draw(this.game.ctx!)
     this.fly = new FlyingValues(this.game.ctx!)
+    this.Events = new Events(this.game, this.prepareJumpStart, this.prepareJumpEnd, this.pause)
+    this.Tooltip = new Tooltip(this.setTooltip)
     this.game.ctx!.font = '18px Arial'
-    this.registerEvents()
+    this.game.score = store.getScore()
+    this.game.catched = store.getCatched()
+    this.Events.registerEvents()
     this.levelPrepare()
+    this.Tooltip.show('start')
+    this.showScore(this.game.score)
+    this.showCatched(this.game.catched)
   }
 
   public stop() {
-    this.unRegister()
-    // this.bgMotion.stop()
+    this.Events.unRegisterEvents()
     window.clearTimeout(this.game.timer)
   }
 
   public pause = (state: boolean) => {
     if (this.game.paused == state) return
     this.game.paused = state
-    console.log(`Game: ${this.game.paused ? 'Pause' : 'Continue'}`)
+    console.log(`Game: ${this.game.paused ? 'Paused' : 'Continued'}`)
 
     if (this.game.paused) {
-      this.unRegister()
-      // this.bgMotion.stop()
+      this.Events.unRegisterEvents()
       this.setPauseVisible(true)
       window.clearTimeout(this.game.timer)
     } else {
-      this.registerEvents()
+      this.Events.registerEvents()
       requestAnimationFrame(this.update)
     }
   }
@@ -568,7 +419,7 @@ export default class Engine {
         Engine.__instance.showScore = handlers.setScore
         Engine.__instance.showCombo = handlers.setCombo
         Engine.__instance.setTooltip = handlers.setTooltip
-        Engine.__instance.setCatched = handlers.setCatched
+        Engine.__instance.showCatched = handlers.setCatched
       }
       return Engine.__instance
     }
