@@ -79,7 +79,7 @@ async function startServer() {
   })
 
   app.listen(PORT, () => {
-    console.log(`  ➜ 🎸 Server is listening on port: ${PORT}`)
+    console.log(`\x1b[33m  ➜ ✨ Server is listening on port: \x1b[96m${PORT}\x1b[0m`)
   })
 }
 
