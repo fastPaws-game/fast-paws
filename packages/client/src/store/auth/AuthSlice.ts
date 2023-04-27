@@ -2,7 +2,7 @@ import { RequestStatus } from '../types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { handleError } from '../../utils/handleError'
 import { TUser } from '../../models/UserModel'
-import { getUser, logOut, registration, signInUser, updateUser, updateAvatar } from './AuthActions'
+import { getUser, logOut, registration, signInUser, updateUser, updateAvatar, signInOAuth, getServiceId } from './AuthActions'
 
 type AuthSlice = {
   user: TUser | null
@@ -21,6 +21,9 @@ type AuthSlice = {
 
   userStatus: RequestStatus
   userError: string | null
+
+  serviceIdStatus: RequestStatus
+  serviceIdError: string | null
 }
 
 const initialState: AuthSlice = {
@@ -41,6 +44,9 @@ const initialState: AuthSlice = {
 
   userStatus: 'initial',
   userError: null,
+
+  serviceIdStatus: 'initial',
+  serviceIdError: null,
 }
 
 export const authSlice = createSlice({
@@ -75,6 +81,29 @@ export const authSlice = createSlice({
       .addCase(signInUser.rejected, (state, action) => {
         state.signInStatus = 'error'
         state.signInError = handleError(action.payload)
+      })
+      .addCase(signInOAuth.pending, state => {
+        state.signInStatus = 'pending'
+      })
+      .addCase(signInOAuth.fulfilled, state => {
+        state.signInStatus = 'success'
+        state.isAuth = true
+        state.signInError = null
+      })
+      .addCase(signInOAuth.rejected, (state, action) => {
+        state.signInStatus = 'error'
+        state.signInError = handleError(action.payload)
+      })
+      .addCase(getServiceId.pending, state => {
+        state.serviceIdStatus = 'pending'
+      })
+      .addCase(getServiceId.fulfilled, state => {
+        state.serviceIdStatus = 'success'
+        state.serviceIdError = null
+      })
+      .addCase(getServiceId.rejected, (state, action) => {
+        state.serviceIdStatus = 'error'
+        state.serviceIdError = handleError(action.payload)
       })
       .addCase(registration.pending, state => {
         state.signUpStatus = 'pending'

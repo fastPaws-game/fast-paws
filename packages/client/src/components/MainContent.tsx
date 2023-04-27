@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Button from '../ui/button'
 import IconForum from '../assets/icons/IconForum'
 import IconSettings from '../assets/icons/IconSettings'
@@ -7,8 +7,21 @@ import styled from 'styled-components'
 import { H1 } from '../assets/styles/texts'
 import Link from '../ui/link'
 import { media } from '../assets/styles/media'
+import { signInOAuth } from '../store/auth/AuthActions'
+import { useAppDispatch } from '../hooks/store'
 
 const MainContent = () => {
+  const dispatch = useAppDispatch()
+  const search = new URLSearchParams(document.location.search)
+  const code = search.get('code')
+
+  useEffect(() => {
+    if (code) {
+      history.pushState(null, document.title, document.location.origin)
+      dispatch(signInOAuth(code))
+    }
+  }, [code])
+
   return (
     <Root>
       <MainTitle>Fast Paws</MainTitle>
