@@ -1,5 +1,5 @@
 import styled, { keyframes, css } from 'styled-components'
-import { FC } from 'react'
+import React, { FC } from 'react'
 import paw from '../assets/icons/paw.svg'
 import { media } from '../assets/styles/media'
 

@@ -6,18 +6,18 @@ import * as fs from 'fs'
 import * as path from 'path'
 import cookieParser from 'cookie-parser'
 import UserAPI from './src/api/UserAPI'
-import { proxy } from './src/middlewares/proxy';
-import dotenv from 'dotenv';
+import { proxy } from './src/middlewares/proxy'
+import dotenv from 'dotenv'
 
-dotenv.config();
+dotenv.config()
 
-const PORT = Number(process.env.SERVER_PORT) || 3001;
+const PORT = Number(process.env.SERVER_PORT) || 3001
 const isDev = process.env.NODE_ENV === 'development'
 
 async function startServer() {
   const app = express()
   app.use(cors())
-	app.use('/api/v2/*', proxy);
+  app.use('/api/v2/*', proxy)
 
   let vite: ViteDevServer | undefined
   const distPath = path.dirname(require.resolve('client/dist/index.html'))
@@ -31,9 +31,9 @@ async function startServer() {
       appType: 'custom',
     })
     app.use(vite.middlewares)
-  } else {		
+  } else {
     app.use('/assets', express.static(path.resolve(distPath, 'assets')))
-	}
+  }
 
   app.get('/api', (_, res) => {
     res.json('👋 Howdy from the server :)')
@@ -46,7 +46,6 @@ async function startServer() {
       let template: string
       if (isDev) {
         template = fs.readFileSync(path.resolve(ssrPath, 'index.html'), 'utf-8')
-
         template = await vite!.transformIndexHtml(url, template)
       } else {
         template = fs.readFileSync(path.resolve(distPath, 'index.html'), 'utf-8')
@@ -58,14 +57,14 @@ async function startServer() {
       } else {
         render = (await import(ssrDistPath)).render
       }
-
-      const [initialState, appHtml, css] = await render(url, new UserAPI(req.headers['cookie']));
-      const stateMarkup = `<script>window.__REDUX_STATE__ = '${JSON.stringify(initialState)}'</script>`
+      const [initialState, appHtml, css] = await render(url, new UserAPI(req.headers['cookie']))
+      const initStateSerialized = JSON.stringify(initialState).replace(/</g, '\\u003c')
+      const stateMarkup = `<script>window.__REDUX_STATE__ = ${initStateSerialized}</script>`
 
       const html = template
         .replace('<!--css-outlet-->', css)
         .replace('<!--ssr-outlet-->', appHtml)
-        .replace('<!--ssr-store-state-->', stateMarkup)
+        .replace('<!--store-data-->', stateMarkup)
 
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
     } catch (err) {
@@ -74,9 +73,9 @@ async function startServer() {
     }
   })
 
-	app.listen(PORT, () => {
-		console.log(`\x1b[33m  ➜ ✨ Server is listening on port: \x1b[96m${PORT}\x1b[0m`)
-	})
+  app.listen(PORT, () => {
+    console.log(`\x1b[33m  ➜ ✨ Server is listening on port: \x1b[96m${PORT}\x1b[0m`)
+  })
 }
 
 startServer()

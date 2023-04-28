@@ -1,19 +1,29 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
-// import { startServiceWorker } from '../src/utils/startServiceWorker.mjs'
-// import { store } from '../src/store'
-// import { Provider } from 'react-redux'
+import { BrowserRouter } from 'react-router-dom'
+import { Provider } from 'react-redux'
+import { createStore } from './store'
+import { UserService, UserAPI } from './api/UserAPI'
+import { StoreState } from './store'
 
-// const store = createStore(window.__REDUX_STATE__)
-// delete window.__REDUX_STATE__
+declare global {
+  interface Window {
+    __REDUX_STATE__?: StoreState
+  }
+}
+
+const initialState = window.__REDUX_STATE__
+delete window.__REDUX_STATE__
+console.log('REDUX_STATE:', initialState)
+
+const store = createStore(new UserService(new UserAPI()), initialState)
 
 ReactDOM.hydrateRoot(
   document.getElementById('root') as HTMLElement,
-  <React.StrictMode>
-    {/* <Provider store={store}> */}
+  <BrowserRouter>
+    <Provider store={store}>
       <App />
-    {/* </Provider> */}
-  </React.StrictMode>
+    </Provider>
+  </BrowserRouter>
 )
-// if (import.meta.env.PROD) startServiceWorker()

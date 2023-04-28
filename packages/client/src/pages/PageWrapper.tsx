@@ -5,9 +5,10 @@ import React, { FC, PropsWithChildren, Suspense } from 'react'
 const PageWrapper: FC<PropsWithChildren> = ({ children }) => {
   return (
     <ErrorBoundary>
-      <Suspense fallback={<LoadingPage />}>{children}</Suspense>
+      {children}
     </ErrorBoundary>
   )
 }
+// <Suspense fallback={<LoadingPage />}>{children}</Suspense>
 
 export default PageWrapper
