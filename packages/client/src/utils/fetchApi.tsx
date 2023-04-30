@@ -1,3 +1,5 @@
+import baseApiConfigConnection from '../constants/baseApiConfigConnection'
+
 const enum METHODS {
   GET = 'GET',
   POST = 'POST',
@@ -12,18 +14,16 @@ type Options = {
   isFormData?: boolean
 }
 
-type Request = <T>(url: string, options?: Options) => Promise<Response>
+type Request = (url: string, options?: Options) => Promise<Response>
 
 const configOptions = {
   method: METHODS.GET,
   credentials: 'include' as RequestCredentials | undefined,
-  headers: {
-    'Content-Type': 'application/json;charset=utf-8',
-  },
+  headers: baseApiConfigConnection.headers,
 }
 
 export class FetchApi {
-  static API_URL = 'https://ya-praktikum.tech/api/v2'
+  static API_URL = baseApiConfigConnection.url
 
   getApiUrl = () => {
     return FetchApi.API_URL

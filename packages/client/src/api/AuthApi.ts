@@ -16,4 +16,5 @@ class AuthApi {
     return FetchApi.post('/auth/signup', { body: JSON.stringify(data) })
   }
 }
+
 export default new AuthApi()

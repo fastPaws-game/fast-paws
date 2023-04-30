@@ -19,6 +19,7 @@ export const updateUser = createAsyncThunk('user/updateUser', async (body: TProf
     rejectWithValue(e)
   }
 })
+
 export const updateAvatar = createAsyncThunk('user/updateAvatar', async (data: FormData, { rejectWithValue }) => {
   try {
     const response = await UserApi.updateUserAvatar(data)
@@ -76,6 +77,7 @@ export const getUser = createAsyncThunk('user/getUser', async (_, { rejectWithVa
     rejectWithValue(e)
   }
 })
+
 export const registration = createAsyncThunk(
   'auth/signup',
   async (body: TSignUpFormValues, { dispatch, rejectWithValue }) => {
