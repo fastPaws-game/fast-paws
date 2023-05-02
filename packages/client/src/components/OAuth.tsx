@@ -7,7 +7,7 @@ import { authSelectors } from '../store/auth/AuthSelectors'
 
 const OAuth = () => {
   const dispatch = useAppDispatch()
-  const ServiceIdStatus = useAppSelector(authSelectors.getServiceIdStatus)
+  const serviceIdStatus = useAppSelector(authSelectors.getServiceIdStatus)
 
   const handleClick = () => {
     dispatch(getServiceId())
@@ -19,7 +19,7 @@ const OAuth = () => {
         Log in with
         <IconYandex />
       </ButtonStyled>
-      {ServiceIdStatus === 'error' && <Error>Server error</Error>}
+      {serviceIdStatus === 'error' && <Error>Server error</Error>}
     </>
   )
 }
@@ -30,6 +30,7 @@ const ButtonStyled = styled(Button)`
   align-items: center;
   justify-content: center;
   margin-top: 15px;
+  gap: 5px;
 `
 
 const Error = styled.p`

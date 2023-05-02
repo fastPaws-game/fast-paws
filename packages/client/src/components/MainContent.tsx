@@ -7,18 +7,18 @@ import styled from 'styled-components'
 import { H1 } from '../assets/styles/texts'
 import Link from '../ui/link'
 import { media } from '../assets/styles/media'
-import { signInOAuth } from '../store/auth/AuthActions'
+import { signInUser } from '../store/auth/AuthActions'
 import { useAppDispatch } from '../hooks/store'
 
 const MainContent = () => {
   const dispatch = useAppDispatch()
-  const search = new URLSearchParams(document.location.search)
+  const search = new URLSearchParams(window.location.search)
   const code = search.get('code')
 
   useEffect(() => {
     if (code) {
-      history.pushState(null, document.title, document.location.origin)
-      dispatch(signInOAuth(code))
+      history.pushState(null, document.title, window.location.origin)
+      dispatch(signInUser(code))
     }
   }, [code])
 
