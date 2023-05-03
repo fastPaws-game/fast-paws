@@ -1,4 +1,4 @@
-function activateFullscreen(el) {
+function activateFullscreen(el: HTMLElement) {
   const element = el || document.documentElement
   const fullscreenEnabled =
     document.fullscreenEnabled || document.mozFullScreenEnable || document.webkitFullscreenEnabled
@@ -26,18 +26,19 @@ function deactivateFullscreen() {
   }
 }
 
-function switchFullscreen(fullscreen, el) {
+function switchFullscreen(fullscreen: boolean, el: HTMLElement = document.documentElement) {
   if (fullscreen) {
     activateFullscreen(el)
   } else {
     const fullscreenElement =
-      document.fullscreenElement || document.mozFullScreenElemen || document.webkitFullscreenElement
+      document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement
     if (fullscreenElement) {
       deactivateFullscreen()
     }
   }
 }
-/* 
+
+/*
 document.addEventListener('fullscreenchange', event => {
   const fullscreenElement =
     document.fullscreenElement || document.mozFullScreenElemen || document.webkitFullscreenElement

@@ -8,7 +8,8 @@
     "dev": "cross-env NODE_ENV=development nodemon index.ts",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "test": "jest ."
+    "test": "jest .",
+    "link:client": "yarn link client"
   },
   "dependencies": {
     "cookie-parser": "^1.4.6",

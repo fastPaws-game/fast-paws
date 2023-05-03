@@ -1,6 +1,6 @@
 import cors from 'cors'
-import { createServer as createViteServer } from 'vite'
 import type { ViteDevServer } from 'vite'
+import { createServer as createViteServer } from 'vite'
 import express from 'express'
 import * as fs from 'fs'
 import * as path from 'path'
@@ -21,23 +21,19 @@ async function startServer() {
 
   let vite: ViteDevServer | undefined
   const distPath = path.dirname(require.resolve('client/dist/index.html'))
-  const ssrPath = path.dirname(require.resolve('client/ssr/index.html'))
+  const ssrPath = path.dirname(require.resolve('client/index.html'))
   const ssrDistPath = require.resolve('client/dist-ssr/client.cjs')
 
   if (isDev) {
     vite = await createViteServer({
       server: { middlewareMode: true },
       root: ssrPath,
-      appType: 'custom',
+      appType: 'custom'
     })
     app.use(vite.middlewares)
   } else {
     app.use('/assets', express.static(path.resolve(distPath, 'assets')))
   }
-
-  app.get('/api', (_, res) => {
-    res.json('👋 Howdy from the server :)')
-  })
 
   app.use('*', cookieParser(), async (req, res, next) => {
     const url = req.originalUrl
@@ -53,7 +49,7 @@ async function startServer() {
 
       let render: (url: string, userData: any) => Promise<string>
       if (isDev) {
-        render = (await vite!.ssrLoadModule(path.resolve(ssrPath, 'ssr.tsx'))).render
+        render = (await vite!.ssrLoadModule(path.resolve(ssrPath, 'ssr/ssr.tsx'))).render
       } else {
         render = (await import(ssrDistPath)).render
       }

@@ -1,5 +1,4 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { authSlice } from './AuthSlice'
 import AuthApi from '../../api/AuthApi'
 import UserApi from '../../api/UserApi'
 import { TSignIn } from '../../models/SignInModel'
@@ -92,5 +91,3 @@ export const registration = createAsyncThunk(
     }
   }
 )
-
-export const { setIsAuth, resetSignInError, resetSignUpError } = authSlice.actions

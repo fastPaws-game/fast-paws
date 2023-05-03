@@ -6,5 +6,11 @@ import gameSlice from './game/GameSlice'
 export const rootReducer = combineReducers({
   auth: authSlice,
   theme: themeSlice,
-	game: gameSlice,
+  game: gameSlice
 })
+
+export const reducers = {
+  auth: authSlice,
+  theme: themeSlice,
+  game: gameSlice
+}

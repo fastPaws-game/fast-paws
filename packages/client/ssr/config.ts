@@ -5,16 +5,19 @@ import * as path from 'path'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  define: {
+    __SERVER_PORT__: process.env.SERVER_PORT || 3001
+  },
   build: {
     lib: {
       entry: path.resolve(__dirname, '/ssr/ssr.tsx'),
       name: 'Client',
-      formats: ['cjs'],
+      formats: ['cjs']
     },
     rollupOptions: {
       output: {
-        dir: 'dist-ssr',
-      },
-    },
-  },
+        dir: 'dist-ssr'
+      }
+    }
+  }
 })

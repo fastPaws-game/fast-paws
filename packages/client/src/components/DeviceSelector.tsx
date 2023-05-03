@@ -1,19 +1,9 @@
-import { useState, useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import styled from 'styled-components'
 import { CANVAS } from '../constants/game'
 import Game from './Game'
-// @ts-ignore
-import switchFullscreen from '../utils/fullscreen.js'
-
-type FullscreenElement = typeof document.fullscreenElement
-declare global {
-  interface Document {
-    mozFullScreenElemen: FullscreenElement
-    webkitFullscreenElement: FullscreenElement
-    msRequestFullscreen: FullscreenElement
-  }
-}
+import switchFullscreen from '../utils/fullscreen'
 
 const DeviceSelector = () => {
   const [fullScreen, setFullScreen] = useState(false)
@@ -47,7 +37,7 @@ const DeviceSelector = () => {
   function fullscreenChange() {
     const isFullscreenMode =
       document.fullscreenElement ||
-      document.mozFullScreenElemen ||
+      document.mozFullScreenElement ||
       document.webkitFullscreenElement ||
       document.msRequestFullscreen
     // Was pressed Escape
@@ -59,10 +49,10 @@ const DeviceSelector = () => {
   useEffect(() => {
     const isFullscreenMode =
       document.fullscreenElement ||
-      document.mozFullScreenElemen ||
+      document.mozFullScreenElement ||
       document.webkitFullscreenElement ||
       document.msRequestFullscreen
-    if (!!isFullscreenMode != fullScreen) switchFullscreen(fullScreen)
+    if (!!isFullscreenMode !== fullScreen) switchFullscreen(fullScreen)
     // window.addEventListener('resize', setDimensions)	// Was used in stretch mode
     document.addEventListener('fullscreenchange', fullscreenChange)
     return () => {
@@ -87,6 +77,7 @@ const GameWrapper = styled.div`
   left: 0px;
   top: 0px;
   overflow: clip;
+
   & canvas {
     width: 100%;
     height: 100%;
