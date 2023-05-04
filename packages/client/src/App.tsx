@@ -3,9 +3,9 @@ import { GlobalStyles } from './assets/styles/globalStyle'
 import { BrowserRouter } from 'react-router-dom'
 import { Router } from './router'
 import PageWrapper from './pages/PageWrapper'
-import { Suspense, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAppDispatch } from './hooks/store'
-import { getUser, setIsAuth } from './store/auth/AuthActions'
+import { getUser, setIsAuth, signInUser } from './store/auth/AuthActions'
 import LocalStorage from './utils/localStorage'
 import { changeTheme } from './store/theme/ThemeSlice'
 import LoadingPage from './components/LoadingScreen'
@@ -18,23 +18,35 @@ function App() {
   const dispatch = useAppDispatch()
   const [isLoading, setIsLoading] = useState<boolean>(true)
   let isAuth: boolean
+  const search = new URLSearchParams(window.location.search)
+  const code = search.get('code')
 
   useEffect(() => {
     ;(async () => {
       dispatch(changeTheme(currentTheme))
       setIsLoading(true)
-      await dispatch(getUser())
-        .unwrap()
-        .then(() => {
+      if (code) {
+        dispatch(signInUser(code)).unwrap().then(() => {
+          history.pushState(null, document.title, window.location.origin)
           isAuth = true
-        })
-        .catch(() => {
+        }
+        ).catch(() => {
           isAuth = false
         })
+      } else {
+        await dispatch(getUser())
+          .unwrap()
+          .then(() => {
+            isAuth = true
+          })
+          .catch(() => {
+            isAuth = false
+          })
+      }
       dispatch(setIsAuth(isAuth))
       setIsLoading(false)
     })()
-  }, [])
+  }, [code])
 
   return (
     <>

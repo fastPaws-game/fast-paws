@@ -94,6 +94,7 @@ export const getUser = createAsyncThunk('user/getUser', async (_, { rejectWithVa
     rejectWithValue(e)
   }
 })
+
 export const registration = createAsyncThunk(
   'auth/signup',
   async (body: TSignUpFormValues, { dispatch, rejectWithValue }) => {
