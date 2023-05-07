@@ -7,14 +7,12 @@ const enum METHODS {
   DELETE = 'DELETE',
 }
 
-type Options = {
-  method?: string
-  body?: null | string | FormData
-  headers?: Headers
+type Options<T> = {
+  body?: null | T
   isFormData?: boolean
-}
+} & Omit<RequestInit, 'body'>
 
-type Request = (url: string, options?: Options) => Promise<Response>
+type Request<T> = (url: string, options?: Options<T>) => Promise<Response>
 
 const configOptions = {
   method: METHODS.GET,
@@ -33,7 +31,7 @@ export class FetchApi {
     return FetchApi.API_URL + path
   }
 
-  public get: Request = async (url: string, options = {}) => {
+  public get: Request<null> = async (url: string, options = {}) => {
     const buildedUrl = this.buildUrl(url)
     return fetch(buildedUrl, {
       ...options,
@@ -41,29 +39,36 @@ export class FetchApi {
     })
   }
 
-  public post: Request = async (url: string, options = {}) => {
+  public post: Request<unknown> = async (url: string, options = {}) => {
     const buildedUrl = this.buildUrl(url)
+    const { body } = options
     return fetch(buildedUrl, {
       ...options,
       ...configOptions,
       method: METHODS.POST,
+      body: JSON.stringify(body),
     })
   }
 
-  public put: Request = async (url: string, options = {}) => {
+  public put: Request<unknown> = async (url: string, options = {}) => {
     const buildedUrl = this.buildUrl(url)
+    const { body } = options
     return fetch(buildedUrl, {
       ...options,
       ...configOptions,
       method: METHODS.PUT,
+      body: JSON.stringify(body),
     })
   }
-  public putData: Request = async (url: string, options = {}) => {
+
+  public putData: Request<FormData> = async (url: string, options = {}) => {
     const buildedUrl = this.buildUrl(url)
+    const { body } = options
     return fetch(buildedUrl, {
       ...options,
       credentials: 'include' as RequestCredentials | undefined,
       method: METHODS.PUT,
+      body: body,
     })
   }
 }

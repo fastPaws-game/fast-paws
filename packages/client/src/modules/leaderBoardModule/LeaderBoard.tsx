@@ -1,4 +1,3 @@
-import fetchApi from '../../utils/fetchApi'
 import { useEffect } from 'react'
 import { useAppSelector, useAppDispatch } from '../../hooks/store'
 import styled from 'styled-components'
@@ -24,11 +23,9 @@ const LeaderBoard = () => {
 
   return (
     <Wrapper>
-      {liderboardItems.map((item, index) => {
+      {liderboardItems?.map((item, index) => {
         const { id, name, points, avatarUrl } = item.data
-        const avatar = `${fetchApi.getApiUrl()}/resources${avatarUrl}`
-
-        return <PlayerItem numbering={index + 1} name={name} points={points} avatarUrl={avatar} key={id} />
+        return <PlayerItem numbering={index + 1} name={name} points={points} avatarUrl={avatarUrl} key={id} />
       })}
     </Wrapper>
   )

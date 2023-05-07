@@ -2,7 +2,6 @@ export type TPlayerItemType = {
   id: number | undefined
   name: string | undefined
   points: number
-  rating?: number
   avatarUrl?: string | null
 }
 
@@ -20,4 +19,8 @@ export type TLeaderboardRequest = {
   ratingFieldName: string
   cursor: number
   limit: number
+}
+
+export type TLeaderBoardRequestError = {
+  reason: string
 }

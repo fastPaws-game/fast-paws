@@ -1,11 +1,10 @@
 import FetchApi from '../utils/fetchApi'
 import { TSignIn } from '../models/SignInModel'
 import { TSignUpFormValues } from '../models/RegistrationModel'
-import { TProfile } from '../models/ProfileModel'
 
 class AuthApi {
   public signin(data: TSignIn) {
-    return FetchApi.post('/auth/signin', { body: JSON.stringify(data) })
+    return FetchApi.post('/auth/signin', { body: data })
   }
 
   public logout() {
@@ -13,7 +12,7 @@ class AuthApi {
   }
 
   public signup(data: TSignUpFormValues) {
-    return FetchApi.post('/auth/signup', { body: JSON.stringify(data) })
+    return FetchApi.post('/auth/signup', { body: data })
   }
 }
 

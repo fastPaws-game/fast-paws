@@ -3,15 +3,15 @@ import { TLeaderboardAddUser, TLeaderboardRequest } from '../models/LeaderBoardM
 
 class LeaderboardApi {
   public addUserToLeaderboard(data: TLeaderboardAddUser) {
-    return FetchApi.post('/leaderboard', { body: JSON.stringify(data) })
+    return FetchApi.post('/leaderboard', { body: data })
   }
 
   public getTeamLeaderboard(data: TLeaderboardRequest, teamName: string) {
-    return FetchApi.post(`/leaderboard/${teamName}`, { body: JSON.stringify(data) })
+    return FetchApi.post(`/leaderboard/${teamName}`, { body: data })
   }
 
   public getAllLeaderboard(data: TLeaderboardRequest) {
-    return FetchApi.post('/leaderboard/all', { body: JSON.stringify(data) })
+    return FetchApi.post('/leaderboard/all', { body: data })
   }
 }
 

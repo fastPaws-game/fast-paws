@@ -3,6 +3,4 @@ export const leaderboardConstants = {
   ratingFieldName: 'points',
   cursor: 0,
   limit: 10,
-  rating: 0,
-  points: 0,
 }

@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react'
 import Button from '../ui/button'
 import IconForum from '../assets/icons/IconForum'
 import IconSettings from '../assets/icons/IconSettings'
@@ -7,34 +6,8 @@ import styled from 'styled-components'
 import { H1 } from '../assets/styles/texts'
 import Link from '../ui/link'
 import { media } from '../assets/styles/media'
-import { useAppDispatch, useAppSelector } from '../hooks/store'
-import { authSelectors } from '../store/auth/AuthSelectors'
-import { addUserToLiderboard } from '../store/leaderboard/LiaderboardActions'
-import { leaderboardConstants } from '../constants/leaderBoard'
 
 const MainContent = () => {
-  const dispatch = useAppDispatch()
-  const signUpStatus = useAppSelector(authSelectors.getSignUpStatus)
-  const user = useAppSelector(authSelectors.getUser)
-
-  useEffect(() => {
-    if (signUpStatus === 'success' && user !== null) {
-      const body = {
-        data: {
-          id: user.id,
-          name: user.login,
-          avatarUrl: user.avatar,
-          rating: leaderboardConstants.rating,
-          points: leaderboardConstants.points,
-        },
-        ratingFieldName: leaderboardConstants.ratingFieldName,
-        teamName: leaderboardConstants.TEAM_NAME,
-      }
-
-      dispatch(addUserToLiderboard(body))
-    }
-  }, [])
-
   return (
     <Root>
       <MainTitle>Fast Paws</MainTitle>

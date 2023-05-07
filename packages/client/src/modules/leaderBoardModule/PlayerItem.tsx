@@ -4,10 +4,10 @@ import { P1 } from '../../assets/styles/texts'
 import defaultAvatar from '../../assets/images/catAvatar.png'
 import { media } from '../../assets/styles/media'
 import { TPlayerItemType } from '../../models/LeaderBoardModel'
+import fetchApi from '../../utils/fetchApi'
 
 type Props = Omit<TPlayerItemType, 'id'> & {
   numbering: number
-  avatarUrl: string
 }
 
 const PlayerItem: FC<Props> = props => {
@@ -17,7 +17,7 @@ const PlayerItem: FC<Props> = props => {
     <Wrapper>
       <P>{numbering}.</P>
       <AvatarImage>
-        <img src={avatarUrl && defaultAvatar} alt="" />
+        <img src={avatarUrl != null ? `${fetchApi.getApiUrl()}/resources${avatarUrl}` : defaultAvatar} alt="" />
       </AvatarImage>
       <P weight="700">{name}</P>
       <P weight="300">{points}</P>
