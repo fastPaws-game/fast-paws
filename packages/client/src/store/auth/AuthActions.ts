@@ -20,6 +20,7 @@ export const updateUser = createAsyncThunk('user/updateUser', async (body: TProf
     rejectWithValue(e)
   }
 })
+
 export const updateAvatar = createAsyncThunk('user/updateAvatar', async (data: FormData, { rejectWithValue }) => {
   try {
     const response = await UserApi.updateUserAvatar(data)
@@ -44,7 +45,6 @@ export const signInUser = createAsyncThunk('user/signIn', async (body: TSignIn |
       return rejectWithValue(error.reason)
     }
     await dispatch(getUser())
-    return
   } catch (e) {
     rejectWithValue(e)
   }
@@ -57,10 +57,8 @@ export const getServiceId = createAsyncThunk('auth/getServiceId', async (_, { re
       const error = await response.json()
       return rejectWithValue(error.reason)
     } else {
-      const data = await response.json()  
-      const serviceId = data.service_id
+      const { service_id: serviceId } = await response.json()
       location.href = OAuthApi.getOAuthUrl(serviceId)
-      return
     }
   } catch (e) {
     rejectWithValue(e)
@@ -75,7 +73,6 @@ export const logOut = createAsyncThunk('auth/logout', async (_, { rejectWithValu
       const error = await response.json()
       return rejectWithValue(error.reason)
     }
-    return
   } catch (e) {
     rejectWithValue(e)
   }
@@ -105,7 +102,6 @@ export const registration = createAsyncThunk(
         return rejectWithValue(error.reason)
       }
       await dispatch(getUser())
-      return
     } catch (e) {
       rejectWithValue(e)
     }

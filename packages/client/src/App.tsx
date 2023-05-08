@@ -1,6 +1,5 @@
 import { ThemeProvider } from 'styled-components'
-import { GlobalStyles } from './assets/styles/globalStyle'
-import { BrowserRouter } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import { Router } from './router'
 import PageWrapper from './pages/PageWrapper'
 import { useEffect, useState } from 'react'
@@ -18,8 +17,8 @@ function App() {
   const dispatch = useAppDispatch()
   const [isLoading, setIsLoading] = useState<boolean>(true)
   let isAuth: boolean
-  const search = new URLSearchParams(window.location.search)
-  const code = search.get('code')
+  const [searchParams, setSearchParams] = useSearchParams()
+  const code = searchParams.get('code')
 
   useEffect(() => {
     ;(async () => {
@@ -27,7 +26,7 @@ function App() {
       setIsLoading(true)
       if (code) {
         dispatch(signInUser(code)).unwrap().then(() => {
-          history.pushState(null, document.title, window.location.origin)
+          setSearchParams()
           isAuth = true
         }
         ).catch(() => {
@@ -50,13 +49,10 @@ function App() {
 
   return (
     <>
-      <GlobalStyles />
       <ThemeProvider theme={theme}>
-        <BrowserRouter>
           <ErrorBoundary>
             <PageWrapper>{isLoading ? <LoadingPage /> : <Router />}</PageWrapper>
           </ErrorBoundary>
-        </BrowserRouter>
       </ThemeProvider>
     </>
   )
