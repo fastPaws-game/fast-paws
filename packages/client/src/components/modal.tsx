@@ -1,6 +1,6 @@
 import { FC, memo, MouseEvent, PropsWithChildren, useCallback, useEffect } from 'react'
 import styled from 'styled-components'
-// import scrollLock from '../utils/scrollLock'
+import scrollLock from '../utils/scrollLock'
 
 type Props = {
   visible: boolean
@@ -20,11 +20,11 @@ const Modal: FC<Props> = props => {
   useEffect(() => {
     if (visible) {
       window.addEventListener('keyup', onkeyup)
-      // scrollLock.enable()
+      scrollLock.enable()
     } else {
       window.removeEventListener('keyup', onkeyup)
     }
-    // return () => scrollLock.disable()
+    return () => scrollLock.disable()
   }, [visible])
 
   const handleOutSideClick = useCallback(

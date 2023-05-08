@@ -1,5 +1,5 @@
 import { ThemeProvider } from 'styled-components'
-import { Router } from './router'
+import { Index } from './router'
 import PageWrapper from './pages/PageWrapper'
 import React from 'react'
 import { useChangeTheme } from './hooks/useChangeTheme'
@@ -10,7 +10,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <PageWrapper>
-        <Router />
+        <Index />
       </PageWrapper>
     </ThemeProvider>
   )

@@ -5,7 +5,7 @@ import { ServerStyleSheet, StyleSheetManager } from 'styled-components'
 import { Provider } from 'react-redux'
 import { createStore } from './src/store'
 import { GlobalStyles } from './src/assets/styles/globalStyle'
-import { routes } from './src/routes'
+import { routes } from './src/router/routes'
 import { matchPath } from 'react-router'
 import { UserRepository, UserService } from './src/services/userService'
 
