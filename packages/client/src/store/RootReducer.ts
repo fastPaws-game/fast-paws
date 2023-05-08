@@ -8,9 +8,3 @@ export const rootReducer = combineReducers({
   theme: themeSlice,
   game: gameSlice,
 })
-
-export const reducers = {
-  auth: authSlice,
-  theme: themeSlice,
-  game: gameSlice,
-}
