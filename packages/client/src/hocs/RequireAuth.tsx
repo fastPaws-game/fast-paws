@@ -1,17 +1,17 @@
-import { FC, PropsWithChildren } from 'react'
-import { Navigate, useLocation } from 'react-router'
-import LocalStorage from '../utils/localStorage'
+import { FC } from 'react'
+import { Navigate, Outlet, useLocation } from 'react-router'
+import { Routes } from '../constants/routes'
+import { useAppSelector } from '../hooks/store'
+import { authSelectors } from '../store/auth/AuthSelectors'
 
-const RequireAuth: FC<PropsWithChildren> = props => {
-  const { children } = props
+const RequireAuth: FC = () => {
   const location = useLocation()
-  const isAuth = LocalStorage.get('isAuth')
+  const isAuth = useAppSelector(authSelectors.getIsAuth)
 
-  if (isAuth === 'false') {
-    return <Navigate to="/" state={{ from: location }} replace />
+  if (!isAuth) {
+    return <Navigate to={Routes.SIGNIN} state={{ from: location }} replace />
   }
-
-  return <>{children}</>
+  return <Outlet />
 }
 
 export default RequireAuth

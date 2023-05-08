@@ -7,13 +7,27 @@ const enum METHODS {
 
 type Options = {
   method?: string
-  body?: null | string
+  body?: null | string | FormData
   headers?: Headers
+  isFormData?: boolean
 }
+
 type Request = <T>(url: string, options?: Options) => Promise<Response>
+
+const configOptions = {
+  method: METHODS.GET,
+  credentials: 'include' as RequestCredentials | undefined,
+  headers: {
+    'Content-Type': 'application/json;charset=utf-8',
+  },
+}
 
 export class FetchApi {
   static API_URL = 'https://ya-praktikum.tech/api/v2'
+
+  getApiUrl = () => {
+    return FetchApi.API_URL
+  }
 
   private buildUrl = (path: string) => {
     return FetchApi.API_URL + path
@@ -23,11 +37,7 @@ export class FetchApi {
     const buildedUrl = this.buildUrl(url)
     return fetch(buildedUrl, {
       ...options,
-      method: METHODS.GET,
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8',
-      },
+      ...configOptions,
     })
   }
 
@@ -35,11 +45,25 @@ export class FetchApi {
     const buildedUrl = this.buildUrl(url)
     return fetch(buildedUrl, {
       ...options,
+      ...configOptions,
       method: METHODS.POST,
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8',
-      },
+    })
+  }
+
+  public put: Request = async (url: string, options = {}) => {
+    const buildedUrl = this.buildUrl(url)
+    return fetch(buildedUrl, {
+      ...options,
+      ...configOptions,
+      method: METHODS.PUT,
+    })
+  }
+  public putData: Request = async (url: string, options = {}) => {
+    const buildedUrl = this.buildUrl(url)
+    return fetch(buildedUrl, {
+      ...options,
+      credentials: 'include' as RequestCredentials | undefined,
+      method: METHODS.PUT,
     })
   }
 }

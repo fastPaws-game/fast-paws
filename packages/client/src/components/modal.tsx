@@ -1,7 +1,6 @@
-import React, { FC, PropsWithChildren, useEffect, MouseEvent, useCallback, memo } from 'react'
+import { FC, PropsWithChildren, useEffect, MouseEvent, useCallback, memo } from 'react'
 import styled from 'styled-components'
 import scrollLock from '../utils/scrollLock'
-import useEscape from '../hooks/useEscape'
 
 type Props = {
   visible: boolean
@@ -12,12 +11,21 @@ type Props = {
 const Modal: FC<Props> = props => {
   const { visible, handleClose, children, outSideClickEnable = false } = props
 
+  const onkeyup = (event: KeyboardEvent) => {
+    if (event.code == 'Escape') {
+      handleClose()
+    }
+  }
+
   useEffect(() => {
-    if (visible) scrollLock.enable()
+    if (visible) {
+      window.addEventListener('keyup', onkeyup)
+      scrollLock.enable()
+    } else {
+      window.removeEventListener('keyup', onkeyup)
+    }
     return () => scrollLock.disable()
   }, [visible])
-
-  // useEscape(handleClose)
 
   const handleOutSideClick = useCallback(
     (event: MouseEvent<HTMLDivElement>) => {
@@ -35,10 +43,11 @@ const Modal: FC<Props> = props => {
 const Root = styled.div`
   z-index: 900;
   position: fixed;
+  width: 100svw;
+  height: 100%;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
+  margin: auto;
   background: rgba(0, 0, 0, 0.37);
   display: flex;
   align-items: center;

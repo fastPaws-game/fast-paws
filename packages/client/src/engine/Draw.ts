@@ -3,6 +3,7 @@ import Resource, { GifObject } from '../engine/ResourceLoader'
 
 export default class Draw {
   private ctx: CanvasRenderingContext2D | null = null
+  private resource = Resource.get()
 
   constructor(ctx: CanvasRenderingContext2D) {
     this.ctx = ctx
@@ -32,14 +33,14 @@ export default class Draw {
     this.drawObject(image, x, y, SpriteSize.cat.height)
   }
 
-  public drawTrajectory = (x: number, y: number, jumpHeight: number) => {
+  public drawTrajectory = (x: number, y: number, jumpHeight: number, forward = true) => {
     if (this.ctx) {
-      const width = SpriteSize.cat.width
+      const width = jumpHeight * (forward ? 0.5 : 1)
 
       // Outer path
       this.ctx.strokeStyle = 'rgba(70, 119, 24, 0.5)'
       this.ctx.beginPath()
-      this.ctx.ellipse(x + jumpHeight, y - 10, jumpHeight, jumpHeight, 0, Math.PI, 0)
+      this.ctx.ellipse(x + jumpHeight, y - 10, jumpHeight, width, 0, Math.PI, 0)
       this.ctx.lineWidth = 4
       this.ctx.lineCap = 'round'
       this.ctx.stroke()
@@ -47,16 +48,16 @@ export default class Draw {
       // Inner path
       this.ctx.strokeStyle = 'rgba(122, 208, 41, 1)'
       this.ctx.beginPath()
-      this.ctx.ellipse(x + jumpHeight, y - 10, jumpHeight, jumpHeight, 0, Math.PI, 0)
+      this.ctx.ellipse(x + jumpHeight, y - 10, jumpHeight, width, 0, Math.PI, 0)
       this.ctx.lineWidth = 2
       this.ctx.stroke()
 
-      this.drawShadow(x + jumpHeight * 2, y, width, true)
+      this.drawShadow(x + jumpHeight * 2, y, SpriteSize.cat.width, true)
     }
   }
 
   public drawTarget = (name: string, x: number, y: number, height: number, animate = false) => {
-    const image: HTMLImageElement | GifObject = Resource.sprite[name]
+    const image: HTMLImageElement | GifObject = this.resource.sprite[name]
     if (image instanceof HTMLImageElement) {
       let width = (image.width * height) / image.height
       let newY = Math.floor(y - height * 0.9)

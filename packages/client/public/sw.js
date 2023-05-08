@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cats-paws-game-v1'
+const CACHE_NAME = 'cats-paws-game-v4'
 
 const STATIC_ASSETS = ['/', '/index.html', '/FastPaws.svg', '/not-found']
 
@@ -14,6 +14,7 @@ const CACHE_ASSETS = STATIC_ASSETS.concat(getCacheUrls())
 
 self.addEventListener('install', event => {
   console.log('INSTALL')
+  self.skipWaiting()
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
       cache.addAll(CACHE_ASSETS)

@@ -1,11 +1,11 @@
 import styled from 'styled-components'
 import { FC } from 'react'
 import ForumItem from '../ui/forum'
+import { Routes } from '../constants/routes'
 
 type ForumData = {
   name: string
   id: number
-  path: string
   topics: number
 }
 
@@ -19,7 +19,12 @@ const ForumsList: FC<Props> = props => {
   return (
     <ListWrapper>
       {forums.map(forum => (
-        <ForumItem forumName={forum.name} key={forum.id} forumPath={forum.path} topics={forum.topics} />
+        <ForumItem
+          forumName={forum.name}
+          key={forum.id}
+          forumPath={`${Routes.FORUM}/${forum.id}`}
+          topics={forum.topics}
+        />
       ))}
     </ListWrapper>
   )
@@ -33,6 +38,7 @@ const ListWrapper = styled.ul`
   list-style-type: none;
   width: 100%;
   padding: 30px;
+  z-index: 1;
 `
 
 export default ForumsList

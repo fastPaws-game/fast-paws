@@ -1,7 +1,7 @@
 import React, { createRef } from 'react'
 import styled from 'styled-components'
-import { canvas } from '../constants/game'
-import Engine from '../engine/Engine'
+import { CANVAS } from '../../constants/game'
+import Engine from '../../engine/Engine'
 
 export default class ActionLayer extends React.Component {
   private ref: React.RefObject<HTMLCanvasElement> | undefined
@@ -15,7 +15,6 @@ export default class ActionLayer extends React.Component {
   }
 
   componentDidMount() {
-    console.log('Game: Mount')
     const ctx = this.ref!.current!.getContext('2d')
     if (ctx) {
       this.engine = Engine.get(this.handlers)
@@ -24,23 +23,22 @@ export default class ActionLayer extends React.Component {
   }
 
   componentWillUnmount() {
-    console.log('Game: Unmount')
     this.engine?.stop()
   }
 
   render() {
     return (
-      <Layer>
-        <canvas id="game_canvas" ref={this.ref} height={canvas.height} width={canvas.width} />
-      </Layer>
+      <Wrapper>
+        <canvas id="game_canvas" ref={this.ref} width={CANVAS.width} height={CANVAS.height} />
+      </Wrapper>
     )
   }
 }
 
-const Layer = styled.div`
+const Wrapper = styled.div`
   z-index: 2;
-  height: ${canvas.height}px;
-  width: ${canvas.width}px;
+  width: 100%;
+  height: 100%;
   position: absolute;
   left: 0px;
   top: 0px;

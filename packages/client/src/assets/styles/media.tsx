@@ -1,10 +1,12 @@
 type Breakpoints<T = number> = {
+  xl?: T
   large?: T
   middle?: T
   small?: T
 }
 
 export const breakpoints: Breakpoints = {
+  xl: 1300,
   large: 1050,
   middle: 800,
   small: 481,

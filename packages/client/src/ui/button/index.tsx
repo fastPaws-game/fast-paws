@@ -1,21 +1,26 @@
-import { FC, ButtonHTMLAttributes, ReactElement } from 'react'
+import { ButtonHTMLAttributes, FC, ForwardedRef, forwardRef, ReactElement } from 'react'
 import styled from 'styled-components'
 import { media } from '../../assets/styles/media'
 
 type Props = {
   icon?: ReactElement
   size?: 'small' | 'middle' | 'big'
-  light?: boolean
+  darkblue?: boolean
+  ref?: ForwardedRef<HTMLButtonElement>
 } & ButtonHTMLAttributes<HTMLButtonElement>
 
-const Button: FC<Props> = props => {
+const Button: FC<Props> = forwardRef((props, ref) => {
   const { icon, children } = props
   const ButtonStyled = icon ? ButtonIconStyled : ButtonMainStyled
 
-  return <ButtonStyled {...props}>{icon ? icon : children}</ButtonStyled>
-}
+  return (
+    <ButtonStyled ref={ref} {...props}>
+      {icon ? icon : children}
+    </ButtonStyled>
+  )
+})
 
-const ButtonMainStyled = styled.button<{ size?: string }>`
+const ButtonMainStyled = styled.button<{ size?: string; darkblue?: boolean }>`
   width: ${props => (props.size === 'big' ? '395px' : props.size === 'middle' ? '280px' : '145px')};
   height: ${props => (props.size === 'big' ? '100px' : props.size === 'middle' ? '60px' : '35px')};
   border-radius: ${props =>
@@ -23,7 +28,7 @@ const ButtonMainStyled = styled.button<{ size?: string }>`
   border: none;
   transition: 0.3s;
   box-shadow: ${props => props.theme.shadows.secondary};
-  background-color: ${props => props.theme.colors.accent};
+  background-color: ${props => (props.darkblue ? props.theme.colors.tertiary : props.theme.colors.accent)};
   font-size: ${props =>
     props.size === 'big'
       ? props.theme.vars.fontSize.xl
@@ -40,6 +45,7 @@ const ButtonMainStyled = styled.button<{ size?: string }>`
   &:not([disabled]):focus {
     background-color: ${props => props.theme.colors.accentHover};
     transition: 0.3s;
+    cursor: pointer;
   }
 
   &:not([disabled]):focus {
@@ -55,7 +61,7 @@ const ButtonMainStyled = styled.button<{ size?: string }>`
   }
 `
 
-const ButtonIconStyled = styled.button<{ size?: string; light?: boolean }>`
+const ButtonIconStyled = styled.button<{ size?: string; darkblue?: boolean }>`
   width: ${props => (props.size === 'big' ? '100px' : '70px')};
   height: ${props => (props.size === 'big' ? '100px' : '70px')};
   border-radius: ${props => props.theme.borders.round};
@@ -63,14 +69,16 @@ const ButtonIconStyled = styled.button<{ size?: string; light?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 20px;
   transition: 0.3s;
-  background-color: ${props => (props.light ? props.theme.colors.accent : props.theme.colors.play)};
+  background-color: ${props => (props.darkblue ? props.theme.colors.tertiary : props.theme.colors.accent)};
   color: ${props => props.theme.text.textBase};
 
   &:not([disabled]):hover,
   &:not([disabled]):focus {
     background-color: ${props => props.theme.colors.accentHover};
     transition: 0.3s;
+    cursor: pointer;
   }
 
   &:not([disabled]):focus {
