@@ -1,5 +1,5 @@
-import styled, { keyframes, css } from 'styled-components'
-import { FC } from 'react'
+import styled, { css, keyframes } from 'styled-components'
+import React, { FC } from 'react'
 import paw from '../assets/icons/paw.svg'
 import { media } from '../assets/styles/media'
 
@@ -35,9 +35,15 @@ const Paws: FC = () => {
 }
 
 const walk = keyframes`
-  15%  {opacity: 1;}
-  75%  {opacity: 0;}
-  100% {opacity: 0;}
+  15% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
 `
 
 const basePaw = css`

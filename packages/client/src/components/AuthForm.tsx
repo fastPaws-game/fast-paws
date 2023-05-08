@@ -3,7 +3,7 @@ import Input, { typeStyleInput } from '../ui/input'
 import Button from '../ui/button'
 import Link from '../ui/link'
 import { H3 } from '../assets/styles/texts'
-import { FC, useEffect } from 'react'
+import React, { FC, useEffect } from 'react'
 import { media } from '../assets/styles/media'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import authSchema from '../utils/validation/authSchema'
@@ -11,12 +11,13 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { Routes } from '../constants/routes'
 import { authSelectors } from '../store/auth/AuthSelectors'
 import { useAppDispatch, useAppSelector } from '../hooks/store'
-import { resetSignInError } from '../store/auth/AuthActions'
 import { TSignIn } from '../models/SignInModel'
+import { resetSignInError } from '../store/auth/AuthSlice'
+
 
 const defaultAuthFormValues = {
   login: '',
-  password: '',
+  password: ''
 }
 
 type Props = {
@@ -34,17 +35,17 @@ const AuthForm: FC<Props> = props => {
     reset,
     handleSubmit,
     setError,
-    formState: { errors, isSubmitting, isDirty },
+    formState: { errors, isSubmitting, isDirty }
   } = useForm({
     defaultValues: defaultAuthFormValues,
     mode: 'onBlur',
     criteriaMode: 'all',
-    resolver: yupResolver(authSchema),
+    resolver: yupResolver(authSchema)
   })
 
   useEffect(() => {
     setError('root.serverError', {
-      message: serverError ?? '',
+      message: serverError ?? ''
     })
   }, [serverError])
 
@@ -65,15 +66,15 @@ const AuthForm: FC<Props> = props => {
       <InputContainer>
         <Input
           typeStyle={typeStyleInput.form}
-          placeholder="Login"
+          placeholder='Login'
           {...register('login')}
           errorOn={!!errors.login || signInStatus === 'error'}
           errorMessage={errors.login?.message}
         />
         <Input
           typeStyle={typeStyleInput.form}
-          placeholder="Password"
-          type="password"
+          placeholder='Password'
+          type='password'
           {...register('password')}
           errorOn={!!errors.password || signInStatus === 'error'}
           errorMessage={errors.password?.message}
@@ -82,7 +83,7 @@ const AuthForm: FC<Props> = props => {
 
       <ButtonContainer>
         {serverError && <Error>{serverError}</Error>}
-        <Button type="submit" disabled={!isDirty || isSubmitting}>
+        <Button type='submit' disabled={!isDirty || isSubmitting}>
           Log in
         </Button>
         <Link to={Routes.SIGNUP}>Registration</Link>

@@ -4,13 +4,14 @@ import Button from '../ui/button'
 import styled from 'styled-components'
 import profileSchema from '../utils/validation/profileSchema'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { FC, useState, useCallback } from 'react'
+import React, { FC, useCallback, useState } from 'react'
 import { H3 } from '../assets/styles/texts'
 import ContrastingWrapper from './ContrastingWrapper'
 import { ProfileFormPopup } from './ProfileFormPopup'
 import { TProfile } from '../models/ProfileModel'
 import { useAppSelector } from '../hooks/store'
 import { authSelectors } from '../store/auth/AuthSelectors'
+
 
 type Props = {
   onSubmitUser: (data: TProfile) => void
@@ -24,12 +25,12 @@ const ProfileForm: FC<Props> = props => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting, isDirty },
+    formState: { errors, isSubmitting, isDirty }
   } = useForm({
     defaultValues: defaultFormValues,
     mode: 'onBlur',
     criteriaMode: 'all',
-    resolver: yupResolver(profileSchema),
+    resolver: yupResolver(profileSchema)
   })
 
   const closeModalChangePassword = useCallback(() => {
@@ -53,51 +54,51 @@ const ProfileForm: FC<Props> = props => {
           <FormFields>
             <Input
               typeStyle={typeStyleInput.profile}
-              placeholder="First name"
+              placeholder='First name'
               errorOn={!!errors.first_name}
               errorMessage={errors.first_name?.message}
               {...register('first_name')}
             />
             <Input
               typeStyle={typeStyleInput.profile}
-              placeholder="Second name"
+              placeholder='Second name'
               errorOn={!!errors.second_name}
               errorMessage={errors.second_name?.message}
               {...register('second_name')}
             />
             <Input
               typeStyle={typeStyleInput.profile}
-              placeholder="Display name"
+              placeholder='Display name'
               errorOn={!!errors.display_name}
               errorMessage={errors.display_name?.message}
               {...register('display_name')}
             />
             <Input
               typeStyle={typeStyleInput.profile}
-              placeholder="Login*"
+              placeholder='Login*'
               errorOn={!!errors.login}
               errorMessage={errors.login?.message}
               {...register('login')}
             />
             <Input
               typeStyle={typeStyleInput.profile}
-              placeholder="E-mail*"
+              placeholder='E-mail*'
               errorOn={!!errors.email}
               errorMessage={errors.email?.message}
               {...register('email')}
             />
             <Input
               typeStyle={typeStyleInput.profile}
-              placeholder="Phone"
+              placeholder='Phone'
               errorOn={!!errors.phone}
               errorMessage={errors.phone?.message}
               {...register('phone')}
             />
             {serverError && <Error>{serverError}</Error>}
-            <Button type="submit" disabled={!isDirty || isSubmitting}>
+            <Button type='submit' disabled={!isDirty || isSubmitting}>
               Update
             </Button>
-            <Button type="button" onClick={handleClick}>
+            <Button type='button' onClick={handleClick}>
               Change password
             </Button>
           </FormFields>
@@ -136,12 +137,15 @@ const FormFields = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
+
   button {
     margin-bottom: 1em;
   }
+
   button:first-of-type {
     margin: 25px;
   }
+
   button:last-of-type {
     background: transparent;
     box-shadow: none;
@@ -163,12 +167,14 @@ const FormFields = styled.div`
       transition: transform 0.3s ease-in-out;
     }
   }
+
   button:last-of-type:hover {
     &::before {
       transform-origin: left;
       transform: scaleX(1);
     }
   }
+
   button:last-of-type:active,
   button:last-of-type:hover,
   button:last-of-type:not([disabled]):hover,

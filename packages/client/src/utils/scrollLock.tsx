@@ -1,6 +1,8 @@
+import isServer from './isServerChecker'
+
 const scrollLock = {
-  body: document.body,
-  html: document.documentElement,
+  body: !isServer ? document.body : null,
+  html: !isServer ? document.documentElement : null,
 
   enable(): void {
     if (this.body) {
@@ -19,7 +21,7 @@ const scrollLock = {
     if (this.html) {
       this.html.style.removeProperty('scrollbarGutter')
     }
-  },
+  }
 }
 
 export default scrollLock

@@ -8,7 +8,7 @@ type ThemeSlice = {
 }
 
 const initialState: ThemeSlice = {
-  currentTheme: 'light',
+  currentTheme: 'light'
 }
 
 export const themeSlice = createSlice({
@@ -23,8 +23,8 @@ export const themeSlice = createSlice({
     changeTheme: (state, action: PayloadAction<ThemeSlice['currentTheme']>) => {
       state.currentTheme = action.payload
       LocalStorage.set('Theme', action.payload)
-    },
-  },
+    }
+  }
 })
 
 export const { toggleTheme, changeTheme } = themeSlice.actions

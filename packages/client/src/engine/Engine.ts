@@ -1,12 +1,12 @@
 // Game core engine class
 import {
-  CANVAS,
-  GAME,
-  TARGET_SCORE,
-  AnimalName,
   ANIMAL_LIST,
+  AnimalName,
   BARRIER_LIST,
+  CANVAS,
   DIFFICULTY_PER_LEVEL,
+  GAME,
+  TARGET_SCORE
 } from '../constants/game'
 import Draw from './Draw'
 import Resource, { GifObject } from '../engine/ResourceLoader'
@@ -15,8 +15,7 @@ import FlyingValues from './FlyingValues'
 import Queue from '../utils/Queue'
 import Events from './Events'
 import Tooltip from './Tooltip'
-import * as store from '../store/game/GameProgress'
-import type { Target, TGame, TCat } from './@engine'
+import type { Target, TCat, TGame } from './@engine'
 
 export default class Engine {
   private game: TGame = {
@@ -43,8 +42,8 @@ export default class Engine {
       grasshopper: 0,
       frog: 0,
       bird: 0,
-      mouse: 0,
-    },
+      mouse: 0
+    }
   }
   private cat: TCat = {
     source: {} as GifObject,
@@ -53,7 +52,7 @@ export default class Engine {
     trajectoryDirection: 1,
     CatX: GAME.defaultCatX,
     CatY: GAME.defaultCatY,
-    atPosition: false,
+    atPosition: false
   }
   private target: Target = {
     nameCurr: 'none',
@@ -67,7 +66,7 @@ export default class Engine {
     heightLast: GAME.defaultTargetHeight,
     isBarrier: false,
     runAwayDelay: GAME.defaultRunAwayDelay,
-    atPosition: false,
+    atPosition: false
   }
   private canvas: HTMLCanvasElement
   private resource: Resource
@@ -112,7 +111,7 @@ export default class Engine {
     const combo = Math.max(this.game.combo, 1)
     this.game.score += value * multiplier * combo
     this.showScore(this.game.score)
-    store.updateScore(this.game.score)
+    // store.updateScore(this.game.score)
     if (value != 0) this.fly.throw(value * combo, multiplier, this.cat.CatX)
     if (this.game.success) this.Tooltip.hide()
   }
@@ -151,7 +150,7 @@ export default class Engine {
       const name: AnimalName = this.target.nameCurr as AnimalName
       this.game.catched[name] += 1
       this.showCatched(this.game.catched)
-      store.updateCatched(this.game.catched)
+      // store.updateCatched(this.game.catched)
       this.target.nameCurr = 'none'
     }
     this.levelPrepare()
@@ -173,8 +172,8 @@ export default class Engine {
       this.cat.jumpStage = -Math.PI
       this.game.successHeight = this.target.isBarrier
         ? Math.floor(
-            this.target.heightCurr * this.game.successHeightModifer + (this.target.xCurr - this.target.PositionX) / 2
-          )
+          this.target.heightCurr * this.game.successHeightModifer + (this.target.xCurr - this.target.PositionX) / 2
+        )
         : Math.floor((this.target.xCurr - this.cat.CatX) / 2)
       this.game.success =
         (this.target.isBarrier && this.cat.jumpHeight > this.game.successHeight) ||
@@ -380,8 +379,8 @@ export default class Engine {
     this.Events = new Events(this.game, this.prepareJumpStart, this.prepareJumpEnd, this.pause)
     this.Tooltip = new Tooltip(this.setTooltip)
     this.game.ctx!.font = '18px Arial'
-    this.game.score = store.getScore()
-    this.game.catched = store.getCatched()
+    // this.game.score = store.getScore()
+    // this.game.catched = store.getCatched()
     this.Events.registerEvents()
     this.levelPrepare()
     this.Tooltip.show('start')

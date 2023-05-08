@@ -1,6 +1,7 @@
-import { FC, PropsWithChildren } from 'react'
+import React, { FC, PropsWithChildren } from 'react'
 import styled from 'styled-components'
 import { media } from '../assets/styles/media'
+
 
 type Props = {
   padding?: number | string
