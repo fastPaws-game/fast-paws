@@ -1,16 +1,6 @@
 import React from 'react'
 import { Route, Routes } from 'react-router'
-import { Routes as routes } from './constants/routes'
-import ProfilePage from './pages/ProfilePage'
-import ForumPage from './pages/ForumPage'
-import TopicPage from './pages/TopicPage'
-import LeaderBoardPage from './pages/LeaderBoardPage'
-import RegistrationPage from './pages/RegistrationPage'
-import AuthPage from './pages/AuthPage'
-import NotFoundPage from './pages/NotFoundPage'
-import MainPage from './pages/MainPage'
-import RequireUnAuth from './hocs/RequireUnAuth'
-import RequireAuth from './hocs/RequireAuth'
+import { routes } from './routes'
 
 // const LazyAuth = React.lazy(() => import('./pages/AuthPage'))
 // const LazyReg = React.lazy(() => import('./pages/RegistrationPage'))
@@ -23,22 +13,27 @@ import RequireAuth from './hocs/RequireAuth'
 // const LazyGame = React.lazy(() => import('./pages/GameLoaderPage'))
 
 export const Router = () => {
+  // useRedirect()
   return (
     <Routes>
-      <Route element={<RequireAuth />}>
-        <Route path={routes.SETTINGS} element={<ProfilePage />} />
-        <Route path={routes.FORUM} element={<ForumPage />} />
-        <Route path={`${routes.FORUM}/:forumId`} element={<TopicPage />} />
-        <Route path={routes.LEADERBOARD} element={<LeaderBoardPage />} />
-      </Route>
-      <Route element={<RequireUnAuth />}>
-        <Route path={routes.SIGNUP} element={<RegistrationPage />} />
-        <Route path={routes.SIGNIN} element={<AuthPage />} />
-      </Route>
-      <Route path={routes.HOME} errorElement={<NotFoundPage />} element={<MainPage />} />
-      {/*Тут не работает audio на сервере*/}
-      {/*<Route path={routes.GAME} element={<GamePage />} />*/}
-      <Route path={routes.NOT_FOUND} element={<NotFoundPage />} />
+      {routes.map(route => {
+        const { loader: _, ...rest } = route
+        return <Route key={rest.path} {...rest} />
+      })}
+      {/*<Route element={<RequireAuth />}>*/}
+      {/*  <Route path={routes.SETTINGS} element={<ProfilePage />} />*/}
+      {/*  <Route path={routes.FORUM} element={<ForumPage />} />*/}
+      {/*  <Route path={`${routes.FORUM}/:forumId`} element={<TopicPage />} />*/}
+      {/*  <Route path={routes.LEADERBOARD} element={<LeaderBoardPage />} />*/}
+      {/*</Route>*/}
+      {/*<Route element={<RequireUnAuth />}>*/}
+      {/*  <Route path={routes.SIGNUP} element={<RegistrationPage />} />*/}
+      {/*  <Route path={routes.SIGNIN} element={<AuthPage />} />*/}
+      {/*</Route>*/}
+      {/*<Route path={routes.HOME} errorElement={<NotFoundPage />} element={<MainPage />} />*/}
+      {/*/!*Тут не работает audio на сервере*!/*/}
+      {/*/!*<Route path={routes.GAME} element={<GamePage />} />*!/*/}
+      {/*<Route path={routes.NOT_FOUND} element={<NotFoundPage />} />*/}
     </Routes>
   )
 }

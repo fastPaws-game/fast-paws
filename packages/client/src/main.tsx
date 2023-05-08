@@ -2,19 +2,17 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
 import { startServiceWorker } from './utils/startServiceWorker.mjs'
-import createStore from './store'
+import { createStore } from './store'
 import { Provider } from 'react-redux'
 import { GlobalStyles } from './assets/styles/globalStyle'
 import { BrowserRouter } from 'react-router-dom'
+import { UserAPI } from './api/UserApi'
+import { UserService } from './services/userService'
+import isServer from './utils/isServerChecker'
 
-const initialState = window.__REDUX_STATE__
-delete window.__REDUX_STATE__
-console.log('REDUX_STATE:', initialState)
+export const { store } = createStore(new UserService(new UserAPI()))
 
-// const store1 = createStore(new UserService(new UserAPI()), initialState)
-export const { store } = createStore(initialState)
-
-ReactDOM.hydrateRoot(document.getElementById('root') as HTMLElement,
+const initialChildren = (
   <React.StrictMode>
     <Provider store={store}>
       <GlobalStyles />
@@ -24,4 +22,15 @@ ReactDOM.hydrateRoot(document.getElementById('root') as HTMLElement,
     </Provider>
   </React.StrictMode>
 )
+const container = document.getElementById('root') as HTMLElement
+
+if (isServer) {
+  ReactDOM.hydrateRoot(
+    container,
+    initialChildren
+  )
+} else {
+  ReactDOM.createRoot(container).render(initialChildren)
+}
+
 if (import.meta.env.PROD) startServiceWorker()

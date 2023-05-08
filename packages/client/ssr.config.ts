@@ -10,7 +10,7 @@ export default defineConfig({
   },
   build: {
     lib: {
-      entry: path.resolve(__dirname, '/ssr/ssr.tsx'),
+      entry: path.resolve(__dirname, '/ssr.tsx'),
       name: 'Client',
       formats: ['cjs']
     },

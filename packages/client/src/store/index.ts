@@ -1,24 +1,21 @@
 import { rootReducer } from './RootReducer'
 import { configureStore } from '@reduxjs/toolkit'
+import { IUserService } from '../services/userService'
 
 export type RootState = ReturnType<typeof rootReducer>
 
-// export const store = configureStore({
-//   reducer: rootReducer
-// })
-
-// export type AppStore = ReturnType<typeof store.getState>
-// export type AppDispatch = typeof store.dispatch
-
-
-function createStore(initialState = {}) {
+export function createStore(service: IUserService) {
   const store = configureStore({
       reducer: rootReducer,
-      preloadedState: initialState
+      middleware: getDefaultMiddleware => {
+        return getDefaultMiddleware({
+          thunk: {
+            extraArgument: service
+          }
+        })
+      }
     }
   )
 
   return { store }
 }
-
-export default createStore
