@@ -15,7 +15,7 @@ export const Index = () => {
         switch (withAuth) {
           case 'require':
             AuthComponent = RequireAuth
-            break;
+            break
           case 'redirect':
             AuthComponent = RequireUnAuth
         }
@@ -24,7 +24,8 @@ export const Index = () => {
           return (
             <Route key={rest.path} element={<AuthComponent />}>
               <Route {...rest} />
-            </Route>)
+            </Route>
+          )
         }
 
         return <Route key={rest.path} {...rest} />

@@ -10,12 +10,11 @@ import { useNavigate } from 'react-router'
 import { Routes } from '../../constants/routes'
 import { resetSignInError } from '../../store/auth/AuthSlice'
 
-
 const Authorization = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const getSignInError = useAppSelector(authSelectors.getSignInError)
-  
+
   const handleSubmit = async (data: TSignIn) => {
     dispatch(signInUser(data))
   }
@@ -28,7 +27,7 @@ const Authorization = () => {
   }, [getSignInError, navigate])
 
   return (
-    <ContrastingWrapper padding='25px'>
+    <ContrastingWrapper padding="25px">
       <AuthForm onSubmitFrom={handleSubmit} />
     </ContrastingWrapper>
   )

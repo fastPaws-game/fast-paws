@@ -28,13 +28,12 @@ async function startServer() {
     vite = await createViteServer({
       server: { middlewareMode: true },
       root: ssrPath,
-      appType: 'custom'
+      appType: 'custom',
     })
     app.use(vite.middlewares)
   } else {
     app.use('/assets', express.static(path.resolve(distPath, 'assets')))
   }
-
 
   app.use('*', cookieParser(), async (req, res, next) => {
     const url = req.originalUrl
@@ -57,9 +56,7 @@ async function startServer() {
 
       const [appHtml, css] = await render(url, new UserAPIRepository(req.headers['cookie']))
 
-      const html = template
-        .replace('<!--css-outlet-->', css)
-        .replace('<!--ssr-outlet-->', appHtml)
+      const html = template.replace('<!--css-outlet-->', css).replace('<!--ssr-outlet-->', appHtml)
 
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
     } catch (err) {

@@ -17,13 +17,13 @@ export const routes = [
     path: Routes.SIGNIN,
     exact: true,
     element: <AuthPage />,
-    withAuth: 'redirect'
+    withAuth: 'redirect',
   },
   {
     path: Routes.SIGNUP,
     exact: true,
     element: <RegistrationPage />,
-    withAuth: 'redirect'
+    withAuth: 'redirect',
   },
   {
     path: Routes.HOME,
@@ -31,38 +31,38 @@ export const routes = [
     element: <MainPage />,
     loader: (dispatch: AppDispatch) => {
       return dispatch(getUser())
-    }
+    },
   },
   {
     path: Routes.SETTINGS,
     exact: true,
     element: <ProfilePage />,
-    withAuth: 'require'
+    withAuth: 'require',
   },
   {
     path: Routes.FORUM,
     exact: true,
     element: <ForumPage />,
-    withAuth: 'require'
+    withAuth: 'require',
   },
   {
     path: `${Routes.FORUM}/:forumId`,
     element: <TopicPage />,
-    withAuth: 'require'
+    withAuth: 'require',
   },
   {
     path: 'game',
     exact: true,
-    element: <GameLoaderPage />
+    element: <GameLoaderPage />,
   },
   {
     path: Routes.LEADERBOARD,
     exact: true,
     element: <LeaderBoardPage />,
-    withAuth: 'require'
+    withAuth: 'require',
   },
   {
     path: Routes.NOT_FOUND,
-    element: <NotFoundPage />
-  }
+    element: <NotFoundPage />,
+  },
 ]

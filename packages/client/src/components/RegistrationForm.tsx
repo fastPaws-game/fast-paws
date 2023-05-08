@@ -20,7 +20,7 @@ const defaultValuesSignUpForm = {
   second_name: '',
   phone: '',
   password: '',
-  repeated_password: ''
+  repeated_password: '',
 }
 
 type Props = {
@@ -35,12 +35,12 @@ const RegistrationForm: FC<Props> = props => {
     handleSubmit,
     setFocus,
     setError,
-    formState: { errors, isSubmitting, isDirty }
+    formState: { errors, isSubmitting, isDirty },
   } = useForm({
     defaultValues: defaultValuesSignUpForm,
     mode: 'onBlur',
     criteriaMode: 'all',
-    resolver: yupResolver(registrationSchema)
+    resolver: yupResolver(registrationSchema),
   })
   const serverError = useAppSelector(authSelectors.getSignUpError)
   const signInStatus = useAppSelector(authSelectors.getSignUpStatus)
@@ -56,7 +56,7 @@ const RegistrationForm: FC<Props> = props => {
 
   useEffect(() => {
     setError('root.serverError', {
-      message: serverError ?? ''
+      message: serverError ?? '',
     })
   }, [serverError])
 
@@ -76,28 +76,28 @@ const RegistrationForm: FC<Props> = props => {
     <Form onSubmit={handleSubmit(onSubmit)}>
       <Column>
         <Input
-          placeholder='Login'
+          placeholder="Login"
           typeStyle={typeStyleInput.form}
           {...register('login')}
           errorOn={!!errors.login || isUserServerError}
           errorMessage={errors.login?.message}
         />
         <Input
-          placeholder='Email'
+          placeholder="Email"
           typeStyle={typeStyleInput.form}
           {...register('email')}
           errorOn={!!errors.email || isEmailServerError}
           errorMessage={errors.email?.message}
         />
         <Input
-          placeholder='Name'
+          placeholder="Name"
           typeStyle={typeStyleInput.form}
           {...register('first_name')}
           errorOn={!!errors.first_name}
           errorMessage={errors.first_name?.message}
         />
         <Input
-          placeholder='Surname'
+          placeholder="Surname"
           typeStyle={typeStyleInput.form}
           {...register('second_name')}
           errorOn={!!errors.second_name}
@@ -106,30 +106,30 @@ const RegistrationForm: FC<Props> = props => {
       </Column>
       <Column>
         <Input
-          placeholder='Phone'
+          placeholder="Phone"
           typeStyle={typeStyleInput.form}
           {...register('phone')}
           errorOn={!!errors.phone}
           errorMessage={errors.phone?.message}
         />
         <Input
-          placeholder='Password'
+          placeholder="Password"
           typeStyle={typeStyleInput.form}
-          type='password'
+          type="password"
           {...register('password')}
           errorOn={!!errors.password || isPasswordServerError}
           errorMessage={errors.password?.message}
         />
         <Input
-          placeholder='Repeat password'
+          placeholder="Repeat password"
           typeStyle={typeStyleInput.form}
-          type='password'
+          type="password"
           {...register('repeated_password')}
           errorOn={!!errors.repeated_password || isPasswordServerError}
           errorMessage={errors.repeated_password?.message}
         />
         {serverError && <Error>{serverError}</Error>}
-        <Button type='submit' disabled={!isDirty || isSubmitting}>
+        <Button type="submit" disabled={!isDirty || isSubmitting}>
           Sign up
         </Button>
         <Link to={Routes.SIGNIN}>Log in</Link>
