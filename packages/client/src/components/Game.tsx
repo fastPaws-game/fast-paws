@@ -10,7 +10,6 @@ import getLeaderboarBody from '../utils/getLeaderboardBody'
 import { addUserToLiderboard } from '../store/leaderboard/LiaderboardActions'
 import { useAppDispatch, useAppSelector } from '../hooks/store'
 import { authSelectors } from '../store/auth/AuthSelectors'
-import { gameSelectors } from '../store/game/GameSelectors'
 
 type Props = {
   fullScreen: boolean
@@ -29,10 +28,9 @@ const GamePage: FC<Props> = props => {
   const dispatch = useAppDispatch()
   const isAuth = useAppSelector(authSelectors.getIsAuth)
   const user = useAppSelector(authSelectors.getUser)
-  const points = useAppSelector(gameSelectors.getScore)
   const isMounted = useRef(false)
-  const newPoints = useRef(points)
-  newPoints.current = points
+  const newPoints = useRef(score)
+  newPoints.current = score
 
   const handlePause = useCallback(() => {
     const engine = Engine.get()
@@ -75,7 +73,7 @@ const GamePage: FC<Props> = props => {
     }
 
     return () => {
-      if (user !== null && isAuth) {
+      if (user && isAuth) {
         dispatch(addUserToLiderboard(getLeaderboarBody(user, newPoints.current)))
       }
     }

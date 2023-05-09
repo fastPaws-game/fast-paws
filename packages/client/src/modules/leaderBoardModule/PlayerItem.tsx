@@ -17,7 +17,7 @@ const PlayerItem: FC<Props> = props => {
     <Wrapper>
       <P>{numbering}.</P>
       <AvatarImage>
-        <img src={avatarUrl != null ? `${fetchApi.getApiUrl()}/resources${avatarUrl}` : defaultAvatar} alt="" />
+        <img src={avatarUrl ? `${fetchApi.getApiUrl()}/resources${avatarUrl}` : defaultAvatar} alt="" />
       </AvatarImage>
       <P weight="700">{name}</P>
       <P weight="300">{points}</P>
