@@ -54,9 +54,14 @@ async function startServer() {
         render = (await import(ssrDistPath)).render
       }
 
-      const [appHtml, css] = await render(url, new UserAPIRepository(req.headers['cookie']))
+      const [initialState, appHtml, css] = await render(url, new UserAPIRepository(req.headers['cookie']))
 
-      const html = template.replace('<!--css-outlet-->', css).replace('<!--ssr-outlet-->', appHtml)
+      const initStateSerialized = JSON.stringify(initialState)
+console.log(initStateSerialized)
+      const html = template
+        .replace('<!--store-data-->', initStateSerialized)
+        .replace('<!--css-outlet-->', css)
+        .replace('<!--ssr-outlet-->', appHtml)
 
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
     } catch (err) {

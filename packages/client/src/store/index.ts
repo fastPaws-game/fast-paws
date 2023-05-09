@@ -4,17 +4,19 @@ import { IUserService } from '../services/userService'
 
 export type RootState = ReturnType<typeof rootReducer>
 
-export function createStore(service: IUserService) {
+export function createStore(service: IUserService, initialState?:RootState) {
   const store = configureStore({
-    reducer: rootReducer,
-    middleware: getDefaultMiddleware => {
-      return getDefaultMiddleware({
-        thunk: {
-          extraArgument: service,
-        },
-      })
-    },
-  })
+      reducer: rootReducer,
+      preloadedState: initialState,
+      middleware: getDefaultMiddleware => {
+        return getDefaultMiddleware({
+          thunk: {
+            extraArgument: service
+          }
+        })
+      }
+    }
+  )
 
   return { store }
 }
