@@ -7,3 +7,11 @@ export class httpError extends Error {
     this.status = null
   }
 }
+
+interface ErrorWithReason {
+  reason: string
+}
+
+export function isErrorWithReason(error: any): error is ErrorWithReason {
+  return error && error.reason !== undefined
+}

@@ -12,14 +12,14 @@ type Options = {
   isFormData?: boolean
 }
 
-type Request = <T>(url: string, options?: Options) => Promise<Response>
+type Request = (url: string, options?: Options) => Promise<Response>
 
 const configOptions = {
   method: METHODS.GET,
   credentials: 'include' as RequestCredentials | undefined,
   headers: {
-    'Content-Type': 'application/json;charset=utf-8',
-  },
+    'Content-Type': 'application/json;charset=utf-8'
+  }
 }
 
 export class FetchApi {
@@ -37,7 +37,7 @@ export class FetchApi {
     const buildedUrl = this.buildUrl(url)
     return fetch(buildedUrl, {
       ...options,
-      ...configOptions,
+      ...configOptions
     })
   }
 
@@ -46,7 +46,7 @@ export class FetchApi {
     return fetch(buildedUrl, {
       ...options,
       ...configOptions,
-      method: METHODS.POST,
+      method: METHODS.POST
     })
   }
 
@@ -55,7 +55,7 @@ export class FetchApi {
     return fetch(buildedUrl, {
       ...options,
       ...configOptions,
-      method: METHODS.PUT,
+      method: METHODS.PUT
     })
   }
   public putData: Request = async (url: string, options = {}) => {
@@ -63,7 +63,7 @@ export class FetchApi {
     return fetch(buildedUrl, {
       ...options,
       credentials: 'include' as RequestCredentials | undefined,
-      method: METHODS.PUT,
+      method: METHODS.PUT
     })
   }
 }

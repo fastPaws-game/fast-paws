@@ -1,11 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { authSlice } from './AuthSlice'
 import AuthApi from '../../api/AuthApi'
 import UserApi from '../../api/UserApi'
 import { TSignIn } from '../../models/SignInModel'
 import { TProfile } from '../../models/ProfileModel'
 import { TSignUpFormValues } from '../../models/RegistrationModel'
 import OAuthApi from '../../api/OAuthApi'
+import { IUserService } from '../../services/userService'
 
 export const updateUser = createAsyncThunk('user/updateUser', async (body: TProfile, { dispatch, rejectWithValue }) => {
   try {
@@ -78,9 +78,10 @@ export const logOut = createAsyncThunk('auth/logout', async (_, { rejectWithValu
   }
 })
 
-export const getUser = createAsyncThunk('user/getUser', async (_, { rejectWithValue }) => {
+export const getUser = createAsyncThunk('user/getUser', async (_, { rejectWithValue, extra }) => {
+  const service: IUserService = extra as IUserService
   try {
-    const response = await UserApi.getUser()
+    const response = await service.getCurrentUser()
     const data = await response.json()
 
     if (response.status !== 200) {
@@ -107,5 +108,3 @@ export const registration = createAsyncThunk(
     }
   }
 )
-
-export const { setIsAuth, resetSignInError, resetSignUpError } = authSlice.actions

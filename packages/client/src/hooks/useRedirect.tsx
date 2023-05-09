@@ -19,6 +19,7 @@ export const useRedirect = async () => {
     const isAuthRequirePage = pathsRequireAuth.includes(pathName)
     const isAuthPages = pathForAuth.includes(pathName)
 
+    console.log('test', isAuth, isAuthRequirePage, isAuthPages)
     if (isAuthRequirePage && !isAuth) {
       navigate(Routes.SIGNIN)
     }

@@ -1,7 +1,7 @@
 import React, { createRef } from 'react'
 import styled from 'styled-components'
-import { CANVAS } from '../constants/game'
-import Engine from '../engine/Engine'
+import { CANVAS } from '../../constants/game'
+import Engine from '../../engine/Engine'
 
 export default class ActionLayer extends React.Component {
   private ref: React.RefObject<HTMLCanvasElement> | undefined
@@ -15,7 +15,6 @@ export default class ActionLayer extends React.Component {
   }
 
   componentDidMount() {
-    console.log('Game: Mount')
     const ctx = this.ref!.current!.getContext('2d')
     if (ctx) {
       this.engine = Engine.get(this.handlers)
@@ -24,7 +23,6 @@ export default class ActionLayer extends React.Component {
   }
 
   componentWillUnmount() {
-    console.log('Game: Unmount')
     this.engine?.stop()
   }
 

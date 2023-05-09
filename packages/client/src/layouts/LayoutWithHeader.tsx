@@ -1,4 +1,4 @@
-import { FC, ReactNode } from 'react'
+import React, { FC, ReactNode } from 'react'
 import styled from 'styled-components'
 import { H1 } from '../assets/styles/texts'
 import Button from '../ui/button'

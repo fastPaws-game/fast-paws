@@ -6,6 +6,7 @@ import IconSettings from '../assets/icons/IconSettings'
 import IconStar from '../assets/icons/IconStar'
 import { useNavigate } from 'react-router-dom'
 import IconForum from '../assets/icons/IconForum'
+import { Routes } from '../constants/routes'
 
 type Props = {
   visible: boolean
@@ -26,10 +27,13 @@ const GamePause: FC<Props> = props => {
         <Button size="middle" onClick={handleClick()} darkblue>
           Continue
         </Button>
+        <Button size="middle" onClick={handleClick(Routes.HOME)} darkblue>
+          Exit
+        </Button>
         <Footer>
-          <Button icon={<IconForum />} size="small" onClick={handleClick('/forum')} darkblue />
-          <Button icon={<IconSettings />} size="small" onClick={handleClick('/settings')} darkblue />
-          <Button icon={<IconStar />} size="small" onClick={handleClick('/leaderboard')} darkblue />
+          <Button icon={<IconForum />} size="small" onClick={handleClick(Routes.FORUM)} darkblue />
+          <Button icon={<IconSettings />} size="small" onClick={handleClick(Routes.SETTINGS)} darkblue />
+          <Button icon={<IconStar />} size="small" onClick={handleClick(Routes.LEADERBOARD)} darkblue />
         </Footer>
       </Content>
     </Modal>

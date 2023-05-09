@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import React, { FC } from 'react'
 import { Navigate, Outlet, useLocation } from 'react-router'
 import { Routes } from '../constants/routes'
 import { useAppSelector } from '../hooks/store'

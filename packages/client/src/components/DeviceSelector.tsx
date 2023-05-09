@@ -1,10 +1,9 @@
-import { useState, useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import styled from 'styled-components'
 import { CANVAS } from '../constants/game'
 import Game from './Game'
-// @ts-ignore
-import switchFullscreen from '../utils/fullscreen.js'
+import switchFullscreen from '../utils/fullscreen'
 
 const DeviceSelector = () => {
   const [fullScreen, setFullScreen] = useState(false)
@@ -35,10 +34,12 @@ const DeviceSelector = () => {
     }
   }
 
-  function fullscreenchange() {
-    // @ts-ignore
+  function fullscreenChange() {
     const isFullscreenMode =
-      document.fullscreenElement || document.mozFullScreenElemen || document.webkitFullscreenElement
+      document.fullscreenElement ||
+      document.mozFullScreenElement ||
+      document.webkitFullscreenElement ||
+      document.msRequestFullscreen
     // Was pressed Escape
     if (!isFullscreenMode) setFullScreen(false)
     // Switching full screen have delayed animation
@@ -46,22 +47,24 @@ const DeviceSelector = () => {
   }
 
   useEffect(() => {
-    // @ts-ignore
     const isFullscreenMode =
-      document.fullscreenElement || document.mozFullScreenElemen || document.webkitFullscreenElement
-    if (isFullscreenMode != fullScreen) switchFullscreen(fullScreen)
+      document.fullscreenElement ||
+      document.mozFullScreenElement ||
+      document.webkitFullscreenElement ||
+      document.msRequestFullscreen
+    if (!!isFullscreenMode !== fullScreen) switchFullscreen(fullScreen)
     // window.addEventListener('resize', setDimensions)	// Was used in stretch mode
-    document.addEventListener('fullscreenchange', fullscreenchange)
+    document.addEventListener('fullscreenchange', fullscreenChange)
     return () => {
       // window.removeEventListener('resize', setDimensions)
-      document.removeEventListener('fullscreenchange', fullscreenchange)
+      document.removeEventListener('fullscreenchange', fullscreenChange)
     }
   }, [fullScreen])
 
   return (
     <RootWrapper>
       <GameWrapper ref={ref}>
-        <Game switchFullScreen={switchFullScreen} />
+        <Game fullScreen={fullScreen} switchFullScreen={switchFullScreen} />
       </GameWrapper>
     </RootWrapper>
   )
@@ -74,6 +77,7 @@ const GameWrapper = styled.div`
   left: 0px;
   top: 0px;
   overflow: clip;
+
   & canvas {
     width: 100%;
     height: 100%;
