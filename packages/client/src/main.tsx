@@ -10,11 +10,7 @@ import { UserAPI } from './api/UserApi'
 import { UserService } from './services/userService'
 import isServer from './utils/isServerChecker'
 
-const initialState = window.initialState
-
-export const { store } = createStore(new UserService(new UserAPI()), initialState)
-
-delete window.initialState
+export const { store } = createStore(new UserService(new UserAPI()))
 
 const initialChildren = (
   <React.StrictMode>
