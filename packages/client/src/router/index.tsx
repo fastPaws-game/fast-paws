@@ -1,33 +1,14 @@
-import React, { FunctionComponent } from 'react'
+import React from 'react'
 import { Route, Routes } from 'react-router'
 import { routes } from './routes'
-import RequireAuth from '../hocs/RequireAuth'
-import RequireUnAuth from '../hocs/RequireUnAuth'
+import { useRedirect } from '../hooks/useRedirect'
 
-export const Index = () => {
+export const Router = () => {
+  useRedirect()
   return (
     <Routes>
       {routes.map(route => {
-        const { loader: _, withAuth, ...rest } = route
-
-        let AuthComponent: FunctionComponent | null = null
-
-        switch (withAuth) {
-          case 'require':
-            AuthComponent = RequireAuth
-            break
-          case 'redirect':
-            AuthComponent = RequireUnAuth
-        }
-
-        if (AuthComponent) {
-          return (
-            <Route key={rest.path} element={<AuthComponent />}>
-              <Route {...rest} />
-            </Route>
-          )
-        }
-
+        const { loader: _, ...rest } = route
         return <Route key={rest.path} {...rest} />
       })}
     </Routes>

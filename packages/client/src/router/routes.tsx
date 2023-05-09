@@ -11,19 +11,16 @@ import { getUser } from '../store/auth/AuthActions'
 import { Routes } from '../constants/routes'
 import GameLoaderPage from '../pages/GameLoaderPage'
 
-type AuthOption = 'require' | 'redirect' | 'default'
 export const routes = [
   {
     path: Routes.SIGNIN,
     exact: true,
-    element: <AuthPage />,
-    withAuth: 'redirect',
+    element: <AuthPage />
   },
   {
     path: Routes.SIGNUP,
     exact: true,
-    element: <RegistrationPage />,
-    withAuth: 'redirect',
+    element: <RegistrationPage />
   },
   {
     path: Routes.HOME,
@@ -31,38 +28,34 @@ export const routes = [
     element: <MainPage />,
     loader: (dispatch: AppDispatch) => {
       return dispatch(getUser())
-    },
+    }
   },
   {
     path: Routes.SETTINGS,
     exact: true,
-    element: <ProfilePage />,
-    withAuth: 'require',
+    element: <ProfilePage />
   },
   {
     path: Routes.FORUM,
     exact: true,
-    element: <ForumPage />,
-    withAuth: 'require',
+    element: <ForumPage />
   },
   {
     path: `${Routes.FORUM}/:forumId`,
-    element: <TopicPage />,
-    withAuth: 'require',
+    element: <TopicPage />
   },
   {
     path: 'game',
     exact: true,
-    element: <GameLoaderPage />,
+    element: <GameLoaderPage />
   },
   {
     path: Routes.LEADERBOARD,
     exact: true,
-    element: <LeaderBoardPage />,
-    withAuth: 'require',
+    element: <LeaderBoardPage />
   },
   {
     path: Routes.NOT_FOUND,
-    element: <NotFoundPage />,
-  },
+    element: <NotFoundPage />
+  }
 ]
