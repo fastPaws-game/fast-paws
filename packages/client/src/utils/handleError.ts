@@ -9,7 +9,6 @@ export const handleError = (error: unknown) => {
   } else if (typeof error === 'string') {
     return error
   } else {
-
     return BASE_ERROR
   }
 }

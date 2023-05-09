@@ -33,7 +33,7 @@ const Profile = () => {
     if (hasUserData)
       setDefaultValues({
         ...user,
-        display_name: user.display_name ?? `${user.first_name} ${user.second_name}`
+        display_name: user.display_name ?? `${user.first_name} ${user.second_name}`,
       })
   }, [])
 
@@ -41,7 +41,7 @@ const Profile = () => {
     if (hasUserData)
       setDefaultValues({
         ...user,
-        display_name: user.display_name ?? `${user.first_name} ${user.second_name}`
+        display_name: user.display_name ?? `${user.first_name} ${user.second_name}`,
       })
   }, [user])
 

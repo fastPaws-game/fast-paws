@@ -12,7 +12,6 @@ import { TProfile } from '../models/ProfileModel'
 import { useAppSelector } from '../hooks/store'
 import { authSelectors } from '../store/auth/AuthSelectors'
 
-
 type Props = {
   onSubmitUser: (data: TProfile) => void
   defaultFormValues: TProfile
@@ -25,12 +24,12 @@ const ProfileForm: FC<Props> = props => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting, isDirty }
+    formState: { errors, isSubmitting, isDirty },
   } = useForm({
     defaultValues: defaultFormValues,
     mode: 'onBlur',
     criteriaMode: 'all',
-    resolver: yupResolver(profileSchema)
+    resolver: yupResolver(profileSchema),
   })
 
   const closeModalChangePassword = useCallback(() => {
@@ -54,51 +53,51 @@ const ProfileForm: FC<Props> = props => {
           <FormFields>
             <Input
               typeStyle={typeStyleInput.profile}
-              placeholder='First name'
+              placeholder="First name"
               errorOn={!!errors.first_name}
               errorMessage={errors.first_name?.message}
               {...register('first_name')}
             />
             <Input
               typeStyle={typeStyleInput.profile}
-              placeholder='Second name'
+              placeholder="Second name"
               errorOn={!!errors.second_name}
               errorMessage={errors.second_name?.message}
               {...register('second_name')}
             />
             <Input
               typeStyle={typeStyleInput.profile}
-              placeholder='Display name'
+              placeholder="Display name"
               errorOn={!!errors.display_name}
               errorMessage={errors.display_name?.message}
               {...register('display_name')}
             />
             <Input
               typeStyle={typeStyleInput.profile}
-              placeholder='Login*'
+              placeholder="Login*"
               errorOn={!!errors.login}
               errorMessage={errors.login?.message}
               {...register('login')}
             />
             <Input
               typeStyle={typeStyleInput.profile}
-              placeholder='E-mail*'
+              placeholder="E-mail*"
               errorOn={!!errors.email}
               errorMessage={errors.email?.message}
               {...register('email')}
             />
             <Input
               typeStyle={typeStyleInput.profile}
-              placeholder='Phone'
+              placeholder="Phone"
               errorOn={!!errors.phone}
               errorMessage={errors.phone?.message}
               {...register('phone')}
             />
             {serverError && <Error>{serverError}</Error>}
-            <Button type='submit' disabled={!isDirty || isSubmitting}>
+            <Button type="submit" disabled={!isDirty || isSubmitting}>
               Update
             </Button>
-            <Button type='button' onClick={handleClick}>
+            <Button type="button" onClick={handleClick}>
               Change password
             </Button>
           </FormFields>

@@ -6,7 +6,7 @@ import {
   CANVAS,
   DIFFICULTY_PER_LEVEL,
   GAME,
-  TARGET_SCORE
+  TARGET_SCORE,
 } from '../constants/game'
 import Draw from './Draw'
 import Resource, { GifObject } from '../engine/ResourceLoader'
@@ -42,8 +42,8 @@ export default class Engine {
       grasshopper: 0,
       frog: 0,
       bird: 0,
-      mouse: 0
-    }
+      mouse: 0,
+    },
   }
   private cat: TCat = {
     source: {} as GifObject,
@@ -52,7 +52,7 @@ export default class Engine {
     trajectoryDirection: 1,
     CatX: GAME.defaultCatX,
     CatY: GAME.defaultCatY,
-    atPosition: false
+    atPosition: false,
   }
   private target: Target = {
     nameCurr: 'none',
@@ -66,7 +66,7 @@ export default class Engine {
     heightLast: GAME.defaultTargetHeight,
     isBarrier: false,
     runAwayDelay: GAME.defaultRunAwayDelay,
-    atPosition: false
+    atPosition: false,
   }
   private canvas: HTMLCanvasElement
   private resource: Resource
@@ -172,8 +172,8 @@ export default class Engine {
       this.cat.jumpStage = -Math.PI
       this.game.successHeight = this.target.isBarrier
         ? Math.floor(
-          this.target.heightCurr * this.game.successHeightModifer + (this.target.xCurr - this.target.PositionX) / 2
-        )
+            this.target.heightCurr * this.game.successHeightModifer + (this.target.xCurr - this.target.PositionX) / 2
+          )
         : Math.floor((this.target.xCurr - this.cat.CatX) / 2)
       this.game.success =
         (this.target.isBarrier && this.cat.jumpHeight > this.game.successHeight) ||

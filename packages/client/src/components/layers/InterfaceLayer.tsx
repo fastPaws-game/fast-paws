@@ -60,7 +60,7 @@ const InterfaceLayer: FC<Props> = props => {
         <ScoreBlock>
           <Info>Level: {props.level < 5 ? props.level + 1 : 'MAX'}</Info>
           <Info>Score: {props.score}</Info>
-          <Info type='combo'>{props.combo > 1 ? `Combo: x${props.combo}` : ''}</Info>
+          <Info type="combo">{props.combo > 1 ? `Combo: x${props.combo}` : ''}</Info>
         </ScoreBlock>
         <HorisontalBlock>
           <IconAnimal icon={IconButterfly} />
@@ -72,16 +72,16 @@ const InterfaceLayer: FC<Props> = props => {
           <IconAnimal icon={IconMouse} />
           <span> {props.catched.mouse}</span>
         </HorisontalBlock>
-        <UIButton aria-label='button' icon={sound ? IconSoundOn : IconSoundOff} onClick={handleClick('sound')} />
+        <UIButton aria-label="button" icon={sound ? IconSoundOn : IconSoundOff} onClick={handleClick('sound')} />
       </HorisontalBlock>
       <GameTip>{props.tooltip}</GameTip>
       <div></div>
       <HorisontalBlock>
-        <UIButton aria-label='button' icon={IconPause} onClick={handleClick('pause')} />
+        <UIButton aria-label="button" icon={IconPause} onClick={handleClick('pause')} />
         <HorisontalBlock>
           <GameVersion>{GAME.versionName}</GameVersion>
           <BrowserButton
-            aria-label='button'
+            aria-label="button"
             icon={props.fullScreen ? IconFullscreenExit : IconFullscreen}
             onClick={handleClick('fullscreen')}
           />

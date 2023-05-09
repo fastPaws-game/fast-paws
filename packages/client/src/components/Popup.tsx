@@ -2,7 +2,6 @@ import React, { FC, PropsWithChildren } from 'react'
 import styled from 'styled-components'
 import Modal from './modal'
 
-
 type Props = {
   visible: boolean
   handleClose: () => void

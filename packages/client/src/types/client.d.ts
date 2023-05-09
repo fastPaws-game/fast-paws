@@ -36,4 +36,3 @@ declare global {
     msRequestFullscreen: HTMLElement['requestFullscreen']
   }
 }
-

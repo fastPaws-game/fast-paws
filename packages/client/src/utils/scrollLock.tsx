@@ -21,7 +21,7 @@ const scrollLock = {
     if (this.html) {
       this.html.style.removeProperty('scrollbarGutter')
     }
-  }
+  },
 }
 
 export default scrollLock

@@ -40,11 +40,11 @@ const ProfileAvatar: FC = () => {
           <span>Change</span>
         </label>
         <input
-          type='file'
+          type="file"
           ref={fileInputRef}
           onChange={fileChange}
-          name='fileAvatar'
-          accept='image/png, image/jpeg, image/gif'
+          name="fileAvatar"
+          accept="image/png, image/jpeg, image/gif"
         />
         <img src={image ?? avatar ?? DefaultAvatar} />
         {serverError && <Error>{serverError}</Error>}

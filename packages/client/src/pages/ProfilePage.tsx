@@ -4,7 +4,7 @@ import React from 'react'
 
 const ProfilePage = () => {
   return (
-    <LayoutWithHeader title='Settings'>
+    <LayoutWithHeader title="Settings">
       <Profile />
     </LayoutWithHeader>
   )
