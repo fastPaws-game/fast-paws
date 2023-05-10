@@ -45,7 +45,7 @@ export const routes = [
     element: <TopicPage />
   },
   {
-    path: 'game',
+    path: Routes.GAME,
     exact: true,
     element: <GameLoaderPage />
   },
