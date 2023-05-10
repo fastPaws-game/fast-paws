@@ -3,6 +3,7 @@ import ContrastingWrapper from '../../components/ContrastingWrapper'
 import { useAppDispatch, useAppSelector } from '../../hooks/store'
 import { TSignIn } from '../../models/SignInModel'
 import { signInUser } from '../../store/auth/AuthActions'
+import OAuth from '../../components/OAuth'
 import React, { useEffect } from 'react'
 import { authSelectors } from '../../store/auth/AuthSelectors'
 import { ALREADY_LOGIN } from '../../constants/errors'
@@ -29,6 +30,7 @@ const Authorization = () => {
   return (
     <ContrastingWrapper padding="25px">
       <AuthForm onSubmitFrom={handleSubmit} />
+      <OAuth/>
     </ContrastingWrapper>
   )
 }

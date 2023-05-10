@@ -2,7 +2,7 @@ import { RequestStatus } from '../types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { handleError } from '../../utils/handleError'
 import { TUser } from '../../models/UserModel'
-import { getUser, logOut, registration, signInUser, updateAvatar, updateUser } from './AuthActions'
+import { getUser, logOut, registration, signInUser, updateUser, updateAvatar, getServiceId } from './AuthActions'
 import { ALREADY_LOGIN } from '../../constants/errors'
 
 type AuthSlice = {
@@ -22,6 +22,9 @@ type AuthSlice = {
 
   userStatus: RequestStatus
   userError: string | null
+
+  serviceIdStatus: RequestStatus
+  serviceIdError: string | null
 }
 
 const initialState: AuthSlice = {
@@ -42,6 +45,9 @@ const initialState: AuthSlice = {
 
   userStatus: 'initial',
   userError: null,
+
+  serviceIdStatus: 'initial',
+  serviceIdError: null,
 }
 
 export const authSlice = createSlice({
@@ -61,7 +67,7 @@ export const authSlice = createSlice({
     },
     setUser: (state, action: PayloadAction<TUser>) => {
       state.user = action.payload
-    },
+    }
   },
   extraReducers: builder => {
     builder
@@ -79,6 +85,17 @@ export const authSlice = createSlice({
         if (state.signInError === ALREADY_LOGIN) {
           state.isAuth = true
         }
+      })
+      .addCase(getServiceId.pending, state => {
+        state.serviceIdStatus = 'pending'
+      })
+      .addCase(getServiceId.fulfilled, state => {
+        state.serviceIdStatus = 'success'
+        state.serviceIdError = null
+      })
+      .addCase(getServiceId.rejected, (state, action) => {
+        state.serviceIdStatus = 'error'
+        state.serviceIdError = handleError(action.payload)
       })
       .addCase(registration.pending, state => {
         state.signUpStatus = 'pending'
@@ -145,7 +162,7 @@ export const authSlice = createSlice({
         state.userStatus = 'error'
         state.userError = handleError(action.payload)
       })
-  },
+  }
 })
 
 export const { setIsAuth, resetSignInError, resetSignUpError } = authSlice.actions
