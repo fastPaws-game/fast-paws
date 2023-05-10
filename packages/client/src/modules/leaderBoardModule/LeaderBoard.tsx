@@ -1,41 +1,32 @@
+import { useEffect } from 'react'
+import { useAppSelector, useAppDispatch } from '../../hooks/store'
 import styled from 'styled-components'
 import { PlayerItem } from './PlayerItem'
-
-export type PlayerItemType = {
-  id: number
-  name: string
-  rating: number
-  points: number
-  avatarUrl?: string | null
-}
-
-const mockPlayerList: PlayerItemType[] = [
-  {
-    id: 0,
-    name: 'Босс',
-    rating: 1,
-    points: 520,
-    avatarUrl: 'https://nretnil.com/avatar/LawrenceEzekielAmos.png',
-  },
-  { id: 1, name: 'Крутой кошак', rating: 1, points: 520 },
-  { id: 2, name: 'Крутой кошак', rating: 1, points: 520 },
-  { id: 3, name: 'Крутой кошак', rating: 1, points: 520 },
-  { id: 4, name: 'Крутой кошак', rating: 1, points: 520 },
-  { id: 5, name: 'Крутой кошак', rating: 1, points: 520 },
-]
+import { TLeaderboardRequest } from '../../models/LeaderBoardModel'
+import { getTeamLiderboard } from '../../store/leaderboard/LiaderboardActions'
+import { leaderboardSelectors } from '../../store/leaderboard/LeaderboardSelectos'
+import { leaderboardConstants } from '../../constants/leaderBoard'
 
 const LeaderBoard = () => {
+  const dispatch = useAppDispatch()
+  const liderboardItems = useAppSelector(leaderboardSelectors.getLeaderbordItems)
+
+  useEffect(() => {
+    const leaderboardRequires: TLeaderboardRequest = {
+      ratingFieldName: leaderboardConstants.ratingFieldName,
+      cursor: leaderboardConstants.cursor,
+      limit: leaderboardConstants.limit,
+    }
+
+    dispatch(getTeamLiderboard(leaderboardRequires))
+  }, [])
+
   return (
     <Wrapper>
-      {mockPlayerList.map(item => (
-        <PlayerItem
-          name={item.name}
-          rating={item.rating}
-          points={item.points}
-          avatarUrl={item.avatarUrl || null}
-          key={item.id}
-        />
-      ))}
+      {liderboardItems?.map((item, index) => {
+        const { id, name, points, avatarUrl } = item.data
+        return <PlayerItem numbering={index + 1} name={name} points={points} avatarUrl={avatarUrl} key={id} />
+      })}
     </Wrapper>
   )
 }
