@@ -14,10 +14,10 @@ class OAuthApi {
 
   public signin(code: string) {
     return FetchApi.post('/oauth/yandex/', {
-      body: JSON.stringify({
+      body: {
         code,
         redirect_uri: redirectUrl,
-      }),
+      },
     })
   }
 }
