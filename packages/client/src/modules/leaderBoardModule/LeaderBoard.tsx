@@ -5,7 +5,7 @@ import { PlayerItem } from './PlayerItem'
 import { TLeaderboardRequest } from '../../models/LeaderBoardModel'
 import { getTeamLiderboard } from '../../store/leaderboard/LiaderboardActions'
 import { leaderboardSelectors } from '../../store/leaderboard/LeaderboardSelectos'
-import { leaderboardConstants } from '../../constants/leaderBoard'
+import { LEADERBOARD_CONSTS } from '../../constants/leaderBoard'
 
 const LeaderBoard = () => {
   const dispatch = useAppDispatch()
@@ -13,9 +13,9 @@ const LeaderBoard = () => {
 
   useEffect(() => {
     const leaderboardRequires: TLeaderboardRequest = {
-      ratingFieldName: leaderboardConstants.ratingFieldName,
-      cursor: leaderboardConstants.cursor,
-      limit: leaderboardConstants.limit,
+      ratingFieldName: LEADERBOARD_CONSTS.ratingFieldName,
+      cursor: LEADERBOARD_CONSTS.cursor,
+      limit: LEADERBOARD_CONSTS.limit,
     }
 
     dispatch(getTeamLiderboard(leaderboardRequires))

@@ -1,6 +1,6 @@
 export type TPlayerItemType = {
-  id: number | undefined
-  name: string | undefined
+  id?: number
+  name?: string
   points: number
   avatarUrl?: string | null
 }

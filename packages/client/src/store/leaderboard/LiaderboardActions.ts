@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import LeaderboardApi from '../../api/LeaderboardApi'
 import { TLeaderboardRequest, TLeaderboardAddUser } from '../../models/LeaderBoardModel'
-import { leaderboardConstants } from '../../constants/leaderBoard'
+import { LEADERBOARD_CONSTS } from '../../constants/leaderBoard'
 import { LiderboardItem, TLeaderBoardRequestError } from '../../models/LeaderBoardModel'
 
 export const addUserToLiderboard = createAsyncThunk(
@@ -26,7 +26,7 @@ export const getTeamLiderboard = createAsyncThunk(
   'leaderboard/getTeamLiderboard',
   async (body: TLeaderboardRequest, { rejectWithValue }) => {
     try {
-      const response = await LeaderboardApi.getTeamLeaderboard(body, leaderboardConstants.TEAM_NAME)
+      const response = await LeaderboardApi.getTeamLeaderboard(body, LEADERBOARD_CONSTS.teamName)
 
       if (response.status !== 200) {
         const error = await response.json()

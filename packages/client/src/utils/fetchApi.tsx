@@ -8,7 +8,7 @@ const enum METHODS {
 }
 
 type Options<T> = {
-  body?: null | T
+  body?: T | undefined
   isFormData?: boolean
 } & Omit<RequestInit, 'body'>
 
@@ -31,7 +31,7 @@ export class FetchApi {
     return FetchApi.API_URL + path
   }
 
-  public get: Request<null> = async (url: string, options = {}) => {
+  public get: Request<undefined> = async (url: string, options = {}) => {
     const buildedUrl = this.buildUrl(url)
     return fetch(buildedUrl, {
       ...options,
@@ -68,7 +68,7 @@ export class FetchApi {
       ...options,
       credentials: 'include' as RequestCredentials | undefined,
       method: METHODS.PUT,
-      body: body,
+      body,
     })
   }
 }

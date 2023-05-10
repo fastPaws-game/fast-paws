@@ -28,7 +28,6 @@ const GamePage: FC<Props> = props => {
   const dispatch = useAppDispatch()
   const isAuth = useAppSelector(authSelectors.getIsAuth)
   const user = useAppSelector(authSelectors.getUser)
-  const isMounted = useRef(false)
   const newPoints = useRef(score)
   newPoints.current = score
 
@@ -67,11 +66,6 @@ const GamePage: FC<Props> = props => {
   }
 
   useEffect(() => {
-    if (!isMounted.current) {
-      isMounted.current = true
-      return
-    }
-
     return () => {
       if (user && isAuth) {
         dispatch(addUserToLiderboard(getLeaderboarBody(user, newPoints.current)))
