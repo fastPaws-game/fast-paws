@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, FC, ForwardedRef, forwardRef, ReactElement } from 'react'
+import React, { ButtonHTMLAttributes, FC, ForwardedRef, forwardRef, ReactElement } from 'react'
 import styled from 'styled-components'
 import { media } from '../../assets/styles/media'
 

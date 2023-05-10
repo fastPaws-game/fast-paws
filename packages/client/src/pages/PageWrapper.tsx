@@ -1,13 +1,8 @@
+import React, { FC, PropsWithChildren } from 'react'
 import ErrorBoundary from '../components/ErrorBoundary'
-import LoadingPage from '../components/LoadingScreen'
-import { FC, PropsWithChildren, Suspense } from 'react'
 
 const PageWrapper: FC<PropsWithChildren> = ({ children }) => {
-  return (
-    <ErrorBoundary>
-      <Suspense fallback={<LoadingPage />}>{children}</Suspense>
-    </ErrorBoundary>
-  )
+  return <ErrorBoundary>{children}</ErrorBoundary>
 }
 
 export default PageWrapper

@@ -1,5 +1,5 @@
 import styled, { keyframes } from 'styled-components'
-import { FC } from 'react'
+import React, { FC } from 'react'
 import { H2 } from '../assets/styles/texts'
 
 type Props = { progress?: number }

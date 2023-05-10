@@ -12,7 +12,7 @@ type Options = {
   isFormData?: boolean
 }
 
-type Request = <T>(url: string, options?: Options) => Promise<Response>
+type Request = (url: string, options?: Options) => Promise<Response>
 
 const configOptions = {
   method: METHODS.GET,

@@ -2,7 +2,8 @@ import { RequestStatus } from '../types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { handleError } from '../../utils/handleError'
 import { TUser } from '../../models/UserModel'
-import { getUser, logOut, registration, signInUser, updateUser, updateAvatar } from './AuthActions'
+import { getUser, logOut, registration, signInUser, updateAvatar, updateUser } from './AuthActions'
+import { ALREADY_LOGIN } from '../../constants/errors'
 
 type AuthSlice = {
   user: TUser | null
@@ -52,11 +53,11 @@ export const authSlice = createSlice({
     },
     resetSignInError: state => {
       state.signInError = null
-      state.signInStatus = 'pending'
+      state.signInStatus = 'initial'
     },
     resetSignUpError: state => {
       state.signUpError = null
-      state.signUpStatus = 'pending'
+      state.signUpStatus = 'initial'
     },
     setUser: (state, action: PayloadAction<TUser>) => {
       state.user = action.payload
@@ -75,6 +76,9 @@ export const authSlice = createSlice({
       .addCase(signInUser.rejected, (state, action) => {
         state.signInStatus = 'error'
         state.signInError = handleError(action.payload)
+        if (state.signInError === ALREADY_LOGIN) {
+          state.isAuth = true
+        }
       })
       .addCase(registration.pending, state => {
         state.signUpStatus = 'pending'
@@ -143,5 +147,7 @@ export const authSlice = createSlice({
       })
   },
 })
+
+export const { setIsAuth, resetSignInError, resetSignUpError } = authSlice.actions
 
 export default authSlice.reducer

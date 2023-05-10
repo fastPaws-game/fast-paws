@@ -1,4 +1,4 @@
-import { FC, useState, useCallback, useRef, useEffect } from 'react'
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import DefaultAvatar from '../assets/icons/DefaultAvatar.svg'
 import { updateAvatar } from '../store/auth/AuthActions'
@@ -95,6 +95,7 @@ const Avatar = styled.div`
       opacity: 1;
     }
   }
+
   input {
     display: block;
     height: 100%;
@@ -108,6 +109,7 @@ const Avatar = styled.div`
     cursor: pointer;
     z-index: 10;
   }
+
   img {
     width: 120px;
     height: 120px;

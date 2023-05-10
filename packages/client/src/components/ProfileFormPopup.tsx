@@ -1,11 +1,10 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { FC, useState } from 'react'
+import React, { FC, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import UserApi from '../api/UserApi'
 import { H3 } from '../assets/styles/texts'
-import { mapPasswords } from '../models/PasswordsModel'
-import { TPasswordsFormValues } from '../models/PasswordsModel'
+import { mapPasswords, TPasswordsFormValues } from '../models/PasswordsModel'
 import Button from '../ui/button'
 import Input, { typeStyleInput } from '../ui/input'
 import { passwordsSchema } from '../utils/validation/registrationSchema'
@@ -138,6 +137,7 @@ const Form = styled.form`
   button {
     margin-top: 15px;
   }
+
   h3 {
     margin-bottom: 15px;
   }

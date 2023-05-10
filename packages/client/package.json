@@ -8,13 +8,15 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build --config vite.config.ts",
-    "build:ssr": "tsc && vite build --config ssr/ssr.config.ts",
+    "build": "yarn build:ssr && yarn build:client",
+    "build:client": "tsc && vite build --config vite.config.ts",
+    "build:ssr": "tsc && vite build --config ssr.config.ts",
     "build:old": "tsc && vite build && npx tsx ./src/getUrlList.ts",
     "preview": "vite preview",
     "lint": "eslint . & stylelint src/**/*.{js,ts,tsx,mts} --fix",
     "format": "prettier --write .",
-    "test": "jest ./"
+    "test": "jest ./",
+    "link": "yarn link"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.0.0",
@@ -54,8 +56,7 @@
     "stylelint-config-styled-components": "^0.1.1",
     "ts-jest": "^28.0.8",
     "typescript": "^4.8.2",
-    "vite": "^3.0.7",
-    "vite-plugin-babel-macros": "^1.0.6"
+    "vite": "^3.0.7"
   },
   "license": "MIT"
 }
