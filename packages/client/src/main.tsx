@@ -25,10 +25,7 @@ const initialChildren = (
 const container = document.getElementById('root') as HTMLElement
 
 if (isServer) {
-  ReactDOM.hydrateRoot(
-    container,
-    initialChildren
-  )
+  ReactDOM.hydrateRoot(container, initialChildren)
 } else {
   ReactDOM.createRoot(container).render(initialChildren)
 }

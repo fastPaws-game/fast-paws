@@ -13,5 +13,5 @@ interface ErrorWithReason {
 }
 
 export function isErrorWithReason(error: any): error is ErrorWithReason {
-  return error && error.reason !== undefined
+  return error && error.reason
 }

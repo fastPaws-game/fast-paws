@@ -10,7 +10,6 @@ import Input, { typeStyleInput } from '../ui/input'
 import { passwordsSchema } from '../utils/validation/registrationSchema'
 import Popup from './Popup'
 
-
 type Props = {
   visible: boolean
   handleClose: () => void
@@ -24,7 +23,7 @@ const SUCCESS_MESSAGE = 'Пароль успешно изменен!'
 const defaultValuesForm = {
   oldPassword: '',
   password: '',
-  repeated_password: ''
+  repeated_password: '',
 }
 
 const ProfileFormPopup: FC<Props> = props => {
@@ -36,12 +35,12 @@ const ProfileFormPopup: FC<Props> = props => {
     reset,
     handleSubmit,
     setError,
-    formState: { errors }
+    formState: { errors },
   } = useForm({
     defaultValues: defaultValuesForm,
     mode: 'onBlur',
     criteriaMode: 'all',
-    resolver: yupResolver(passwordsSchema)
+    resolver: yupResolver(passwordsSchema),
   })
 
   const onCloseClick = () => {
@@ -59,12 +58,12 @@ const ProfileFormPopup: FC<Props> = props => {
       if (response.status !== 200) {
         const error = await response.json()
         setError('root.serverError', {
-          message: error.reason
+          message: error.reason,
         })
       }
     } catch (e) {
       setError('root.serverError', {
-        message: DEFAULT_ERROR
+        message: DEFAULT_ERROR,
       })
     }
   }
@@ -76,25 +75,25 @@ const ProfileFormPopup: FC<Props> = props => {
         {!successMessage && (
           <>
             <Input
-              placeholder='Old password'
+              placeholder="Old password"
               typeStyle={typeStyleInput.form}
-              type='password'
+              type="password"
               {...register('oldPassword')}
               errorOn={!!errors.oldPassword}
               errorMessage={errors.oldPassword?.message}
             />
             <Input
-              placeholder='Password'
+              placeholder="Password"
               typeStyle={typeStyleInput.form}
-              type='password'
+              type="password"
               {...register('password')}
               errorOn={!!errors.password}
               errorMessage={errors.password?.message}
             />
             <Input
-              placeholder='Repeat password'
+              placeholder="Repeat password"
               typeStyle={typeStyleInput.form}
-              type='password'
+              type="password"
               {...register('repeated_password')}
               errorOn={!!errors.repeated_password}
               errorMessage={errors.repeated_password?.message}
@@ -104,11 +103,11 @@ const ProfileFormPopup: FC<Props> = props => {
         {errors?.root?.serverError && <Error>{errors?.root?.serverError.message}</Error>}
         {!!successMessage && <SuccessMessage>{successMessage}</SuccessMessage>}
         {!successMessage ? (
-          <Button size='small' type='submit'>
+          <Button size="small" type="submit">
             Change
           </Button>
         ) : (
-          <Button size='small' type='button' onClick={onCloseClick}>
+          <Button size="small" type="button" onClick={onCloseClick}>
             Close
           </Button>
         )}

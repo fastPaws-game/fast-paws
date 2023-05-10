@@ -13,8 +13,6 @@ export class UserAPIRepository {
       },
       withCredentials: true
     })
-    return {
-      ...data
-    }
+    return data
   }
 }
