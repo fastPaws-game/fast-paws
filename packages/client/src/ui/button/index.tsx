@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, FC, ForwardedRef, forwardRef, ReactElement } from 'react'
+import React, { ButtonHTMLAttributes, FC, ForwardedRef, forwardRef, ReactElement } from 'react'
 import styled from 'styled-components'
 import { media } from '../../assets/styles/media'
 
@@ -56,7 +56,7 @@ const ButtonMainStyled = styled.button<{ size?: string; darkblue?: boolean }>`
   }
 
   ${media.small} {
-    width: ${props => (props.size === 'big' ? '332px' : props.size === 'middle' ? '200px' : '110px')};
+    width: ${props => (props.size === 'big' ? '332px' : props.size === 'middle' ? '200px' : '130px')};
     height: ${props => (props.size === 'big' ? '85px' : props.size === 'middle' ? '50px' : '30px')};
   }
 `

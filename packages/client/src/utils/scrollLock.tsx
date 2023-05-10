@@ -1,6 +1,8 @@
+import isServer from './isServerChecker'
+
 const scrollLock = {
-  body: document.body,
-  html: document.documentElement,
+  body: !isServer ? document.body : null,
+  html: !isServer ? document.documentElement : null,
 
   enable(): void {
     if (this.body) {

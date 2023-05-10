@@ -1,16 +1,16 @@
-import { MouseEvent, useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import ProfileForm from '../../components/ProfileForm'
 import { useAppDispatch, useAppSelector } from '../../hooks/store'
 import { logOut, updateUser } from '../../store/auth/AuthActions'
 import Button from '../../ui/button'
 import styled from 'styled-components'
-import { useChangeTheme } from '../../hooks/useChangeTheme'
-import { authSelectors } from '../../store/auth/AuthSelectors'
 import { Routes } from '../../constants/routes'
 import { useNavigate } from 'react-router'
 import { TProfile } from '../../models/ProfileModel'
 import { ProfileFormPopup } from '../../components/ProfileFormPopup'
 import ProfileAvatar from '../../components/ProfileAvatar'
+import { authSelectors } from '../../store/auth/AuthSelectors'
+import { useChangeTheme } from '../../hooks/useChangeTheme'
 
 const SUCCESS_MESSAGE = 'Данные успешно обновлены!'
 
@@ -52,7 +52,7 @@ const Profile = () => {
     }
   }, [userStatus])
 
-  const handleToggleTheme = (e: MouseEvent<HTMLButtonElement>) => {
+  const handleToggleTheme = (e: React.MouseEvent<HTMLButtonElement>) => {
     toggleTheme()
     themeBtnRef?.current?.blur()
   }
@@ -71,7 +71,7 @@ const Profile = () => {
     navigate(Routes.SIGNIN)
   }, [dispatch])
 
-  if (hasUserData && userValues) {
+  if (userValues) {
     return (
       <>
         <ProfileAvatar />

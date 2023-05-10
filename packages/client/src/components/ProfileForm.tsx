@@ -4,7 +4,7 @@ import Button from '../ui/button'
 import styled from 'styled-components'
 import profileSchema from '../utils/validation/profileSchema'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { FC, useState, useCallback } from 'react'
+import React, { FC, useCallback, useState } from 'react'
 import { H3 } from '../assets/styles/texts'
 import ContrastingWrapper from './ContrastingWrapper'
 import { ProfileFormPopup } from './ProfileFormPopup'
@@ -136,12 +136,15 @@ const FormFields = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
+
   button {
     margin-bottom: 1em;
   }
+
   button:first-of-type {
     margin: 25px;
   }
+
   button:last-of-type {
     background: transparent;
     box-shadow: none;
@@ -163,12 +166,14 @@ const FormFields = styled.div`
       transition: transform 0.3s ease-in-out;
     }
   }
+
   button:last-of-type:hover {
     &::before {
       transform-origin: left;
       transform: scaleX(1);
     }
   }
+
   button:last-of-type:active,
   button:last-of-type:hover,
   button:last-of-type:not([disabled]):hover,

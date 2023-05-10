@@ -3,7 +3,7 @@ import Input, { typeStyleInput } from '../ui/input'
 import Button from '../ui/button'
 import Link from '../ui/link'
 import { H3 } from '../assets/styles/texts'
-import { FC, useEffect } from 'react'
+import React, { FC, useEffect } from 'react'
 import { media } from '../assets/styles/media'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import authSchema from '../utils/validation/authSchema'
@@ -11,8 +11,8 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { Routes } from '../constants/routes'
 import { authSelectors } from '../store/auth/AuthSelectors'
 import { useAppDispatch, useAppSelector } from '../hooks/store'
-import { resetSignInError } from '../store/auth/AuthActions'
 import { TSignIn } from '../models/SignInModel'
+import { resetSignInError } from '../store/auth/AuthSlice'
 
 const defaultAuthFormValues = {
   login: '',

@@ -2,15 +2,16 @@
   "name": "client-server-template-with-vite",
   "private": true,
   "scripts": {
-    "bootstrap": "yarn && node init.js && lerna clean && yarn && lerna bootstrap",
+    "bootstrap": "yarn && node init.js && lerna clean && yarn && lerna bootstrap && yarn package-link",
     "build": "lerna run build",
-    "dev:client": "lerna run dev  --scope=client",
+    "dev:client": "lerna run dev --scope=client",
     "dev:server": "lerna run dev --scope=server",
     "dev": "lerna run dev",
     "test": "lerna run test",
     "lint": "lerna run lint",
     "format": "lerna run format",
-    "preview": "lerna run preview"
+    "preview": "lerna run preview",
+    "package-link": "yarn build --scope=client && lerna run link --scope=client && lerna run link:client --scope=server"
   },
   "license": "MIT",
   "workspaces": [
@@ -29,6 +30,7 @@
     "styled-components": "^5.3.9"
   },
   "dependencies": {
+    "http-proxy-middleware": "^2.0.6",
     "react-device-detect": "^2.2.3",
     "react-redux": "^8.0.5",
     "redux": "^4.2.1"

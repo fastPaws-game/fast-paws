@@ -25,5 +25,5 @@ export const useRedirect = async () => {
     if (isAuthPages && isAuth) {
       navigate(Routes.HOME)
     }
-  }, [])
+  }, [location.pathname, isAuth, navigate])
 }

@@ -15,8 +15,6 @@ import IconButterfly from '../../assets/icons/IconButterfly.svg'
 import IconBird from '../../assets/icons/IconBird.svg'
 import IconFrog from '../../assets/icons/IconFrog.svg'
 
-import Beep from '../../assets/sounds/Beep'
-
 type Props = {
   level: number
   score: number
@@ -45,7 +43,6 @@ const InterfaceLayer: FC<Props> = props => {
         navigate('/settings')
         break
       case 'sound':
-        Beep.play()
         setSound(!sound)
         break
       case 'pause':
@@ -108,6 +105,7 @@ const UIButton = styled.div<{ icon: string }>`
   background-color: ${props => props.theme.colors.tertiary};
   mask-size: cover;
   mask-image: url(${props => props.icon});
+
   &:hover {
     background-color: ${props => props.theme.colors.accentHover};
     transition: background-color 0.3s ease-in-out;
@@ -157,11 +155,13 @@ const GameVersion = styled.div`
 function browserOnly(WrappedComponent: FC) {
   return (props: any) => (isMobile ? null : <WrappedComponent {...props} />)
 }
+
 const BrowserButton = browserOnly(UIButton)
 
 function deviceOnly(WrappedComponent: FC) {
   return (props: any) => (isMobile ? <WrappedComponent {...props} /> : null)
 }
+
 const DeviceButton = deviceOnly(UIButton)
 
 export default InterfaceLayer

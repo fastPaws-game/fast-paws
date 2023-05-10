@@ -11,7 +11,7 @@ import { TSignUpFormValues } from '../models/RegistrationModel'
 import { registrationSchema } from '../utils/validation/registrationSchema'
 import { useAppDispatch, useAppSelector } from '../hooks/store'
 import { authSelectors } from '../store/auth/AuthSelectors'
-import { resetSignUpError } from '../store/auth/AuthActions'
+import { resetSignUpError } from '../store/auth/AuthSlice'
 
 const defaultValuesSignUpForm = {
   login: '',
@@ -151,6 +151,7 @@ const Form = styled.form`
     padding-top: 30px;
     min-width: 100%;
   }
+
   ${media.small} {
     flex-direction: column;
     align-items: center;
@@ -181,6 +182,7 @@ const Column = styled.div`
     width: 100%;
     text-align: center;
   }
+
   & button {
     margin-top: 15px;
     margin-bottom: 4px;

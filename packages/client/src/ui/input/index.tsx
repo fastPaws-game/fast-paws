@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { ForwardedRef, forwardRef, FC, InputHTMLAttributes } from 'react'
+import React, { ForwardedRef, forwardRef, FC, InputHTMLAttributes } from 'react'
 import { media } from '../../assets/styles/media'
 import { P4 } from '../../assets/styles/texts'
 
