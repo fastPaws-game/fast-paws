@@ -2,28 +2,26 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import LeaderboardApi from '../../api/LeaderboardApi'
 import { TLeaderboardRequest, TLeaderboardAddUser } from '../../models/LeaderBoardModel'
 import { LEADERBOARD_CONSTS } from '../../constants/leaderBoard'
-import { LiderboardItem, TLeaderBoardRequestError } from '../../models/LeaderBoardModel'
+import { TLeaderboardItem, TLeaderboardRequestError } from '../../models/LeaderBoardModel'
 
-export const addUserToLiderboard = createAsyncThunk(
-  'leaderboard/addUserToLiderboard',
+export const addUserToLeaderboard = createAsyncThunk(
+  'leaderboard/addUserToLeaderboard',
   async (body: TLeaderboardAddUser, { rejectWithValue }) => {
     try {
       const response = await LeaderboardApi.addUserToLeaderboard(body)
 
       if (response.status !== 200) {
-        const error: TLeaderBoardRequestError = await response.json()
+        const error: TLeaderboardRequestError = await response.json()
         return rejectWithValue(error)
       }
-
-      return
     } catch (error) {
       rejectWithValue(error)
     }
   }
 )
 
-export const getTeamLiderboard = createAsyncThunk(
-  'leaderboard/getTeamLiderboard',
+export const getTeamLeaderboard = createAsyncThunk(
+  'leaderboard/getTeamLeaderboard',
   async (body: TLeaderboardRequest, { rejectWithValue }) => {
     try {
       const response = await LeaderboardApi.getTeamLeaderboard(body, LEADERBOARD_CONSTS.teamName)
@@ -33,7 +31,7 @@ export const getTeamLiderboard = createAsyncThunk(
         return rejectWithValue(error.reason)
       }
 
-      const result: Array<LiderboardItem> = await response.json()
+      const result: Array<TLeaderboardItem> = await response.json()
       return result
     } catch (error) {
       rejectWithValue(error)

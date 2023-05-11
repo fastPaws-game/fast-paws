@@ -1,15 +1,10 @@
-import { FC, useState, useCallback, useEffect, useRef } from 'react'
+import { FC, useState, useCallback } from 'react'
 import ActionLayer from './layers/ActionLayer'
 import InterfaceLayer from './layers/InterfaceLayer'
 import BackgroundLayer from './layers/BackgroundLayer'
 import GamePause from './GamePause'
 import GameOver from '../components/GameOver'
 import Engine from '../engine/Engine'
-
-import getLeaderboarBody from '../utils/getLeaderboardBody'
-import { addUserToLiderboard } from '../store/leaderboard/LiaderboardActions'
-import { useAppDispatch, useAppSelector } from '../hooks/store'
-import { authSelectors } from '../store/auth/AuthSelectors'
 
 type Props = {
   fullScreen: boolean
@@ -24,12 +19,6 @@ const GamePage: FC<Props> = props => {
   const [combo, setCombo] = useState(1)
   const [tooltip, setTooltip] = useState('')
   const [catched, setCatched] = useState({ mouse: 0, grasshopper: 0, butterfly: 0, bird: 0 })
-
-  const dispatch = useAppDispatch()
-  const isAuth = useAppSelector(authSelectors.getIsAuth)
-  const user = useAppSelector(authSelectors.getUser)
-  const newPoints = useRef(score)
-  newPoints.current = score
 
   const handlePause = useCallback(() => {
     const engine = Engine.get()
@@ -64,14 +53,6 @@ const GamePage: FC<Props> = props => {
     switchFullScreen: props.switchFullScreen,
     handlePause,
   }
-
-  useEffect(() => {
-    return () => {
-      if (user && isAuth) {
-        dispatch(addUserToLiderboard(getLeaderboarBody(user, newPoints.current)))
-      }
-    }
-  }, [])
 
   return (
     <>

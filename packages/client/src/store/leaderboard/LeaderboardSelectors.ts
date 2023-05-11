@@ -1,5 +1,5 @@
 import { RootState } from '../index'
 
-const getLeaderbordItems = (state: RootState) => state.leaderboard.liderboardItems
+const getLeaderbordItems = (state: RootState) => state.leaderboard.leaderboardItems
 
 export const leaderboardSelectors = { getLeaderbordItems }
