@@ -3,7 +3,7 @@ import { useAppSelector, useAppDispatch } from '../../hooks/store'
 import styled from 'styled-components'
 import { PlayerItem } from './PlayerItem'
 import { TLeaderboardRequest } from '../../models/LeaderBoardModel'
-import { getTeamLeaderboard } from '../../store/leaderboard/LiaderboardActions'
+import { getTeamLeaderboard } from '../../store/leaderboard/LeaderboardActions'
 import { leaderboardSelectors } from '../../store/leaderboard/LeaderboardSelectors'
 import { LEADERBOARD_CONSTS } from '../../constants/leaderBoard'
 

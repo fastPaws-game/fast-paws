@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { TLeaderboardItem } from '../../models/LeaderBoardModel'
 import { handleError } from '../../utils/handleError'
-import { addUserToLeaderboard, getTeamLeaderboard } from './LiaderboardActions'
+import { addUserToLeaderboard, getTeamLeaderboard } from './LeaderboardActions'
 import { RequestStatus } from '../types'
 
 export type TLeaderboard = {

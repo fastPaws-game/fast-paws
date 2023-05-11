@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react'
+import React, { FC } from 'react'
 import Modal from './modal'
 import Button from '../ui/button'
 import styled from 'styled-components'
@@ -8,46 +8,26 @@ import { useNavigate } from 'react-router-dom'
 import IconForum from '../assets/icons/IconForum'
 import { Routes } from '../constants/routes'
 
-import getLeaderboardBody from '../utils/getLeaderboardBody'
-import { addUserToLeaderboard } from '../store/leaderboard/LiaderboardActions'
-import { useAppDispatch, useAppSelector } from '../hooks/store'
-import { authSelectors } from '../store/auth/AuthSelectors'
-import { gameSelectors } from '../store/game/GameSelectors'
-
 type Props = {
   visible: boolean
   handleClose: () => void
   outSideClickEnable?: boolean
+  handleContinue: () => void
 }
 
 const GamePause: FC<Props> = props => {
+  const { handleClose, handleContinue } = props
   const navigate = useNavigate()
-  const dispatch = useAppDispatch()
-  const isAuth = useAppSelector(authSelectors.getIsAuth)
-  const user = useAppSelector(authSelectors.getUser)
-  const score = useAppSelector(gameSelectors.getScore)
 
-  console.log(score)
-
-  const saveScoreOfUser = useCallback(() => {
-    if (!isAuth || !user) {
-      return
-    }
-
-    const leaderBoardUpdate = getLeaderboardBody(user, score)
-    dispatch(addUserToLeaderboard(leaderBoardUpdate))
-  }, [score])
-
-  const handleClick = (path?: string) => () => {
-    saveScoreOfUser()
-    if (path) navigate(path)
-    props.handleClose()
+  const handleClick = (path: string) => () => {
+    handleClose()
+    navigate(path)
   }
 
   return (
     <Modal {...props}>
       <Content>
-        <Button size="middle" onClick={handleClick()} darkblue>
+        <Button size="middle" onClick={handleContinue} darkblue>
           Continue
         </Button>
         <Button size="middle" onClick={handleClick(Routes.HOME)} darkblue>
