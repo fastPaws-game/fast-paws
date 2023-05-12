@@ -60,10 +60,13 @@ async function startServer() {
       }
       const [initialState, appHtml, css] = await render(url, new UserAPIRepository(req.headers['cookie']))
 
-      const initStateSerialized = JSON.stringify(initialState)
+      const serializedInitialState = `<script>window.__INITIAL_STATE__ = ${JSON.stringify(initialState).replace(
+        /</g,
+        '\\u003c'
+      )}</script>`
 
       const html = template
-        .replace('<!--store-data-->', initStateSerialized)
+        .replace('<!--store-data-->', serializedInitialState)
         .replace('<!--css-outlet-->', css)
         .replace('<!--ssr-outlet-->', appHtml)
 

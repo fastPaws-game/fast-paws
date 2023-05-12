@@ -13,17 +13,22 @@ import { getUser } from './src/store/auth/AuthActions'
 
 export async function render(url: string, repository: UserRepository) {
   const [pathname] = url.split('?')
+  console.log(12333333)
   const currentRoute = routes.find(route => matchPath(pathname, route.path))
   const { store } = createStore(new UserService(repository))
-  /*
+  console.log(currentRoute)
+
   if (currentRoute) {
     const { loader } = currentRoute
+    console.log(currentRoute)
     if (loader) {
       await loader(store.dispatch)
+      console.log('GeT LOADER')
     }
-  }*/
+  }
   //await store.dispatch(getUser());
   const initialState = store.getState()
+  console.log('initialState', initialState)
 
   const sheet = new ServerStyleSheet()
 
