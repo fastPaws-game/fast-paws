@@ -5,9 +5,10 @@ import { TSignIn } from '../../models/SignInModel'
 import { TProfile } from '../../models/ProfileModel'
 import { TSignUpFormValues } from '../../models/RegistrationModel'
 import OAuthApi from '../../api/OAuthApi'
-import { IUserService } from '../../services/userService'
+import { UserService } from '../../services/userService'
+import { TUser } from '../../models/UserModel'
 
-export const updateUser = createAsyncThunk('user/updateUser', async (body: TProfile, { rejectWithValue }) => {
+export const updateUser = createAsyncThunk('user/updateUser', async (body: TProfile, { dispatch, rejectWithValue }) => {
   try {
     const response = await UserApi.updateUser(body)
     if (response.status !== 200) {
@@ -57,10 +58,11 @@ export const getServiceId = createAsyncThunk('auth/getServiceId', async (_, { re
   try {
     const response = await OAuthApi.getServiceId()
     if (response.status !== 200) {
-      const error = await response.json()
-      return rejectWithValue(error.reason)
+      const error = await response
+      return rejectWithValue(error)
     } else {
-      const { service_id: serviceId } = await response.json()
+      console.log(response)
+      const { service_id: serviceId } = (await response) as any
       location.href = OAuthApi.getOAuthUrl(serviceId)
     }
   } catch (e) {
@@ -81,16 +83,11 @@ export const logOut = createAsyncThunk('auth/logout', async (_, { rejectWithValu
   }
 })
 
-export const getUser = createAsyncThunk('user/getUser', async (_, { rejectWithValue, extra }) => {
-  const service: IUserService = extra as IUserService
+export const getUser = createAsyncThunk('user/getUser', async (_, { rejectWithValue, fulfillWithValue, extra }) => {
+  const service: UserService = extra as UserService
   try {
     const response = await service.getCurrentUser()
-    const data = await response.json()
-
-    if (response.status !== 200) {
-      return rejectWithValue(data)
-    }
-    return data
+    return fulfillWithValue(response)
   } catch (e) {
     rejectWithValue(e)
   }

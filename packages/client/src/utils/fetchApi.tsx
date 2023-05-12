@@ -33,10 +33,12 @@ export class FetchApi {
 
   public get: Request<undefined> = async (url: string, options = {}) => {
     const buildedUrl = this.buildUrl(url)
-    return fetch(buildedUrl, {
+    const res = await fetch(buildedUrl, {
       ...options,
       ...configOptions,
     })
+    const result = await res.json()
+    return result
   }
 
   public post: Request<unknown> = async (url: string, options = {}) => {
