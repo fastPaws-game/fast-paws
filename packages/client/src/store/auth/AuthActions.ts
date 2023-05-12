@@ -43,8 +43,8 @@ export const signInUser = createAsyncThunk(
     try {
       const response = typeof body === 'string' ? await OAuthApi.signin(body) : await AuthApi.signin(body)
       if (response.status !== 200) {
-        const error = await response
-        return rejectWithValue(error)
+        const error = await response.json()
+        return rejectWithValue(error.reason)
       }
       await dispatch(getUser())
     } catch (e) {

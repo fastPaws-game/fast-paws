@@ -3,27 +3,27 @@ import { useAppSelector, useAppDispatch } from '../../hooks/store'
 import styled from 'styled-components'
 import { PlayerItem } from './PlayerItem'
 import { TLeaderboardRequest } from '../../models/LeaderBoardModel'
-import { getTeamLiderboard } from '../../store/leaderboard/LiaderboardActions'
-import { leaderboardSelectors } from '../../store/leaderboard/LeaderboardSelectos'
-import { leaderboardConstants } from '../../constants/leaderBoard'
+import { getTeamLeaderboard } from '../../store/leaderboard/LeaderboardActions'
+import { leaderboardSelectors } from '../../store/leaderboard/LeaderboardSelectors'
+import { LEADERBOARD_CONSTS } from '../../constants/leaderBoard'
 
 const LeaderBoard = () => {
   const dispatch = useAppDispatch()
-  const liderboardItems = useAppSelector(leaderboardSelectors.getLeaderbordItems)
+  const leaderboardItems = useAppSelector(leaderboardSelectors.getLeaderbordItems)
 
   useEffect(() => {
     const leaderboardRequires: TLeaderboardRequest = {
-      ratingFieldName: leaderboardConstants.ratingFieldName,
-      cursor: leaderboardConstants.cursor,
-      limit: leaderboardConstants.limit,
+      ratingFieldName: LEADERBOARD_CONSTS.ratingFieldName,
+      cursor: LEADERBOARD_CONSTS.cursor,
+      limit: LEADERBOARD_CONSTS.limit,
     }
 
-    dispatch(getTeamLiderboard(leaderboardRequires))
+    dispatch(getTeamLeaderboard(leaderboardRequires))
   }, [])
 
   return (
     <Wrapper>
-      {liderboardItems?.map((item, index) => {
+      {leaderboardItems?.map((item, index) => {
         const { id, name, points, avatarUrl } = item.data
         return <PlayerItem numbering={index + 1} name={name} points={points} avatarUrl={avatarUrl} key={id} />
       })}

@@ -3,10 +3,10 @@ import styled from 'styled-components'
 import { P1 } from '../../assets/styles/texts'
 import defaultAvatar from '../../assets/images/catAvatar.png'
 import { media } from '../../assets/styles/media'
-import { TPlayerItemType } from '../../models/LeaderBoardModel'
+import { TPlayerItem } from '../../models/LeaderBoardModel'
 import fetchApi from '../../utils/fetchApi'
 
-type Props = Omit<TPlayerItemType, 'id'> & {
+type Props = Omit<TPlayerItem, 'id'> & {
   numbering: number
 }
 

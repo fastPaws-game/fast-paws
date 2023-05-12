@@ -1,7 +1,7 @@
-import { leaderboardConstants } from '../constants/leaderBoard'
+import { LEADERBOARD_CONSTS } from '../constants/leaderBoard'
 import { TUser } from '../models/UserModel'
 
-const getLeaderboarBody = (user: TUser, score: number) => {
+const getLeaderboardBody = (user: TUser, score: number) => {
   const body = {
     data: {
       id: user.id,
@@ -9,10 +9,10 @@ const getLeaderboarBody = (user: TUser, score: number) => {
       avatarUrl: user.avatar,
       points: score,
     },
-    ratingFieldName: leaderboardConstants.ratingFieldName,
-    teamName: leaderboardConstants.TEAM_NAME,
+    ratingFieldName: LEADERBOARD_CONSTS.ratingFieldName,
+    teamName: LEADERBOARD_CONSTS.teamName,
   }
   return body
 }
 
-export default getLeaderboarBody
+export default getLeaderboardBody

@@ -1,16 +1,16 @@
-export type TPlayerItemType = {
-  id: number | undefined
-  name: string | undefined
+export type TPlayerItem = {
+  id?: number
+  name?: string
   points: number
   avatarUrl?: string | null
 }
 
-export type LiderboardItem = {
-  data: TPlayerItemType
+export type TLeaderboardItem = {
+  data: TPlayerItem
 }
 
 export type TLeaderboardAddUser = {
-  data: TPlayerItemType
+  data: TPlayerItem
   ratingFieldName: string
   teamName: string
 }
@@ -21,6 +21,6 @@ export type TLeaderboardRequest = {
   limit: number
 }
 
-export type TLeaderBoardRequestError = {
+export type TLeaderboardRequestError = {
   reason: string
 }

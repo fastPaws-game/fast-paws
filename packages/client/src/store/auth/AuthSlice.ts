@@ -67,7 +67,7 @@ export const authSlice = createSlice({
     },
     setUser: (state, action: PayloadAction<TUser>) => {
       state.user = action.payload
-    }
+    },
   },
   extraReducers: builder => {
     builder
@@ -162,7 +162,7 @@ export const authSlice = createSlice({
         state.userStatus = 'error'
         state.userError = handleError(action.payload)
       })
-  }
+  },
 })
 
 export const { setIsAuth, resetSignInError, resetSignUpError } = authSlice.actions

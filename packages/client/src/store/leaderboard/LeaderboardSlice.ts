@@ -1,24 +1,24 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { LiderboardItem } from '../../models/LeaderBoardModel'
+import { TLeaderboardItem } from '../../models/LeaderBoardModel'
 import { handleError } from '../../utils/handleError'
-import { addUserToLiderboard, getTeamLiderboard } from './LiaderboardActions'
+import { addUserToLeaderboard, getTeamLeaderboard } from './LeaderboardActions'
 import { RequestStatus } from '../types'
 
-export type Tleaderboard = {
-  liderboardItems: Array<LiderboardItem> | undefined
+export type TLeaderboard = {
+  leaderboardItems: Array<TLeaderboardItem> | undefined
 
-  addUserToLiderboardStatus: RequestStatus
-  addUserToLiderboardError: string | null
+  addUserToLeaderboardStatus: RequestStatus
+  addUserToLeaderboardError: string | null
 
   getTeamStatus: RequestStatus
   getTeamError: string | null
 }
 
-const initialState: Tleaderboard = {
-  liderboardItems: [],
+const initialState: TLeaderboard = {
+  leaderboardItems: [],
 
-  addUserToLiderboardStatus: 'initial',
-  addUserToLiderboardError: null,
+  addUserToLeaderboardStatus: 'initial',
+  addUserToLeaderboardError: null,
 
   getTeamStatus: 'initial',
   getTeamError: null,
@@ -30,27 +30,27 @@ export const leaderboardSlice = createSlice({
   reducers: {},
   extraReducers: builder => {
     builder
-      //AddUserToLiderboard
-      .addCase(addUserToLiderboard.pending, state => {
-        state.addUserToLiderboardStatus = 'pending'
+      //AddUserToLeaderboard
+      .addCase(addUserToLeaderboard.pending, state => {
+        state.addUserToLeaderboardStatus = 'pending'
       })
-      .addCase(addUserToLiderboard.fulfilled, state => {
-        state.addUserToLiderboardStatus = 'success'
+      .addCase(addUserToLeaderboard.fulfilled, state => {
+        state.addUserToLeaderboardStatus = 'success'
       })
-      .addCase(addUserToLiderboard.rejected, state => {
-        state.addUserToLiderboardStatus = 'error'
+      .addCase(addUserToLeaderboard.rejected, state => {
+        state.addUserToLeaderboardStatus = 'error'
       })
 
       //GetLeaderboardByTeamName
-      .addCase(getTeamLiderboard.pending, state => {
+      .addCase(getTeamLeaderboard.pending, state => {
         state.getTeamStatus = 'pending'
       })
-      .addCase(getTeamLiderboard.fulfilled, (state, action) => {
+      .addCase(getTeamLeaderboard.fulfilled, (state, action) => {
         state.getTeamStatus = 'success'
         state.getTeamError = null
-        state.liderboardItems = action.payload
+        state.leaderboardItems = action.payload
       })
-      .addCase(getTeamLiderboard.rejected, (state, action) => {
+      .addCase(getTeamLeaderboard.rejected, (state, action) => {
         state.getTeamStatus = 'error'
         state.getTeamError = handleError(action.payload)
       })
