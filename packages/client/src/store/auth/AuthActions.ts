@@ -37,18 +37,21 @@ export const updateAvatar = createAsyncThunk('user/updateAvatar', async (data: F
   }
 })
 
-export const signInUser = createAsyncThunk('user/signIn', async (body: TSignIn | string , { dispatch, rejectWithValue }) => {
-  try {
-    const response = (typeof body === 'string') ? await OAuthApi.signin(body) : await AuthApi.signin(body)
-    if (response.status !== 200) {
-      const error = await response.json()
-      return rejectWithValue(error.reason)
+export const signInUser = createAsyncThunk(
+  'user/signIn',
+  async (body: TSignIn | string, { dispatch, rejectWithValue }) => {
+    try {
+      const response = typeof body === 'string' ? await OAuthApi.signin(body) : await AuthApi.signin(body)
+      if (response.status !== 200) {
+        const error = await response.json()
+        return rejectWithValue(error.reason)
+      }
+      await dispatch(getUser())
+    } catch (e) {
+      rejectWithValue(e)
     }
-    await dispatch(getUser())
-  } catch (e) {
-    rejectWithValue(e)
   }
-})
+)
 
 export const getServiceId = createAsyncThunk('auth/getServiceId', async (_, { rejectWithValue }) => {
   try {

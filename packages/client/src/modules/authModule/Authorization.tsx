@@ -30,7 +30,7 @@ const Authorization = () => {
   return (
     <ContrastingWrapper padding="25px">
       <AuthForm onSubmitFrom={handleSubmit} />
-      <OAuth/>
+      <OAuth />
     </ContrastingWrapper>
   )
 }

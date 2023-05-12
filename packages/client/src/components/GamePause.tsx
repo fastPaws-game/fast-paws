@@ -12,19 +12,22 @@ type Props = {
   visible: boolean
   handleClose: () => void
   outSideClickEnable?: boolean
+  handleContinue: () => void
 }
+
 const GamePause: FC<Props> = props => {
+  const { handleClose, handleContinue } = props
   const navigate = useNavigate()
 
-  const handleClick = (path?: string) => () => {
-    if (path) navigate(path)
-    props.handleClose()
+  const handleClick = (path: string) => () => {
+    handleClose()
+    navigate(path)
   }
 
   return (
     <Modal {...props}>
       <Content>
-        <Button size="middle" onClick={handleClick()} darkblue>
+        <Button size="middle" onClick={handleContinue} darkblue>
           Continue
         </Button>
         <Button size="middle" onClick={handleClick(Routes.HOME)} darkblue>

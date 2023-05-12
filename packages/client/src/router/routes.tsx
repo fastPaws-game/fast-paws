@@ -15,12 +15,12 @@ export const routes = [
   {
     path: Routes.SIGNIN,
     exact: true,
-    element: <AuthPage />
+    element: <AuthPage />,
   },
   {
     path: Routes.SIGNUP,
     exact: true,
-    element: <RegistrationPage />
+    element: <RegistrationPage />,
   },
   {
     path: Routes.HOME,
@@ -28,34 +28,34 @@ export const routes = [
     element: <MainPage />,
     loader: (dispatch: AppDispatch) => {
       return dispatch(getUser())
-    }
+    },
   },
   {
     path: Routes.SETTINGS,
     exact: true,
-    element: <ProfilePage />
+    element: <ProfilePage />,
   },
   {
     path: Routes.FORUM,
     exact: true,
-    element: <ForumPage />
+    element: <ForumPage />,
   },
   {
     path: `${Routes.FORUM}/:forumId`,
-    element: <TopicPage />
+    element: <TopicPage />,
   },
   {
     path: Routes.GAME,
     exact: true,
-    element: <GameLoaderPage />
+    element: <GameLoaderPage />,
   },
   {
     path: Routes.LEADERBOARD,
     exact: true,
-    element: <LeaderBoardPage />
+    element: <LeaderBoardPage />,
   },
   {
     path: Routes.NOT_FOUND,
-    element: <NotFoundPage />
-  }
+    element: <NotFoundPage />,
+  },
 ]

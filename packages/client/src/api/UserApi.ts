@@ -9,11 +9,11 @@ export class UserAPI implements UserRepository {
   }
 
   public updateUser(data: TProfile) {
-    return FetchApi.put('/user/profile', { body: JSON.stringify(data) })
+    return FetchApi.put('/user/profile', { body: data })
   }
 
   public updatePassword(data: TChangingPasswords) {
-    return FetchApi.put('/user/password', { body: JSON.stringify(data) })
+    return FetchApi.put('/user/password', { body: data })
   }
 
   public updateUserAvatar(data: FormData) {
