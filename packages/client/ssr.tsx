@@ -11,24 +11,21 @@ import { UserRepository, UserService } from './src/services/userService'
 import React from 'react'
 import { getUser } from './src/store/auth/AuthActions'
 
-export async function render(url: string, repository: UserRepository,) {
+export async function render(url: string, repository: UserRepository) {
   const [pathname] = url.split('?')
   const currentRoute = routes.find(route => matchPath(pathname, route.path))
   const { store } = createStore(new UserService(repository))
-
+  /*
   if (currentRoute) {
     const { loader } = currentRoute
     if (loader) {
       await loader(store.dispatch)
     }
-  }
-  await store.dispatch(getUser());
+  }*/
+  //await store.dispatch(getUser());
   const initialState = store.getState()
 
   const sheet = new ServerStyleSheet()
-
-
-
 
   const markupHTML = renderToString(
     <StyleSheetManager sheet={sheet.instance}>

@@ -8,4 +8,5 @@ export const rootReducer = combineReducers({
   auth: authSlice,
   theme: themeSlice,
   game: gameSlice,
+  leaderboard: leaderboardSlice,
 })

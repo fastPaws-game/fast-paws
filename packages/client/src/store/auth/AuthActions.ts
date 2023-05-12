@@ -7,7 +7,7 @@ import { TSignUpFormValues } from '../../models/RegistrationModel'
 import OAuthApi from '../../api/OAuthApi'
 import { IUserService } from '../../services/userService'
 
-export const updateUser = createAsyncThunk('user/updateUser', async (body: TProfile, { dispatch, rejectWithValue }) => {
+export const updateUser = createAsyncThunk('user/updateUser', async (body: TProfile, { rejectWithValue }) => {
   try {
     const response = await UserApi.updateUser(body)
     if (response.status !== 200) {
@@ -37,18 +37,21 @@ export const updateAvatar = createAsyncThunk('user/updateAvatar', async (data: F
   }
 })
 
-export const signInUser = createAsyncThunk('user/signIn', async (body: TSignIn | string , { dispatch, rejectWithValue }) => {
-  try {
-    const response = (typeof body === 'string') ? await OAuthApi.signin(body) : await AuthApi.signin(body)
-    if (response.status !== 200) {
-      const error = await response.json()
-      return rejectWithValue(error.reason)
+export const signInUser = createAsyncThunk(
+  'user/signIn',
+  async (body: TSignIn | string, { dispatch, rejectWithValue }) => {
+    try {
+      const response = typeof body === 'string' ? await OAuthApi.signin(body) : await AuthApi.signin(body)
+      if (response.status !== 200) {
+        const error = await response
+        return rejectWithValue(error)
+      }
+      await dispatch(getUser())
+    } catch (e) {
+      rejectWithValue(e)
     }
-    await dispatch(getUser())
-  } catch (e) {
-    rejectWithValue(e)
   }
-})
+)
 
 export const getServiceId = createAsyncThunk('auth/getServiceId', async (_, { rejectWithValue }) => {
   try {

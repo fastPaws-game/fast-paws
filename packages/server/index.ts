@@ -16,7 +16,13 @@ const isDev = process.env.NODE_ENV === 'development'
 
 async function startServer() {
   const app = express()
-  app.use(cors())
+  app.use(
+    cors({
+      origin: true,
+      credentials: true,
+    })
+  )
+
   app.use('/api/v2', proxy)
 
   let vite: ViteDevServer | undefined
@@ -37,7 +43,6 @@ async function startServer() {
 
   app.use('*', cookieParser(), async (req, res, next) => {
     const url = req.originalUrl
-
     try {
       let template: string
       if (isDev) {
@@ -47,17 +52,16 @@ async function startServer() {
         template = fs.readFileSync(path.resolve(distPath, 'index.html'), 'utf-8')
       }
 
-      let render: (url: string, userData: any) => Promise<string>
+      let render: (url: string, repository: any) => Promise<string>
       if (isDev) {
         render = (await vite!.ssrLoadModule(path.resolve(ssrPath, 'ssr.tsx'))).render
       } else {
         render = (await import(ssrDistPath)).render
       }
-
       const [initialState, appHtml, css] = await render(url, new UserAPIRepository(req.headers['cookie']))
 
       const initStateSerialized = JSON.stringify(initialState)
-console.log(initStateSerialized)
+
       const html = template
         .replace('<!--store-data-->', initStateSerialized)
         .replace('<!--css-outlet-->', css)

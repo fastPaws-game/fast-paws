@@ -41,9 +41,9 @@ export class FetchApi {
 
   public post: Request<unknown> = async (url: string, options = {}) => {
     const buildedUrl = this.buildUrl(url)
-    const { body } = options
+    const { body = {}, ...otherOptions } = options
     return fetch(buildedUrl, {
-      ...options,
+      ...otherOptions,
       ...configOptions,
       method: METHODS.POST,
       body: JSON.stringify(body),
@@ -56,6 +56,8 @@ export class FetchApi {
     return fetch(buildedUrl, {
       ...options,
       ...configOptions,
+      credentials: 'include' as RequestCredentials | undefined,
+      //withCredentials: true,
       method: METHODS.PUT,
       body: JSON.stringify(body),
     })
