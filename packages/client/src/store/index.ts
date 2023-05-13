@@ -6,8 +6,8 @@ export type RootState = ReturnType<typeof rootReducer>
 
 export function createStore(service: UserServiceType, initialState?: RootState) {
   const store = configureStore({
-    reducer: rootReducer,
     preloadedState: initialState,
+    reducer: rootReducer,
     middleware: getDefaultMiddleware => {
       return getDefaultMiddleware({
         thunk: {

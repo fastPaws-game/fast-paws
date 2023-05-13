@@ -43,33 +43,32 @@ async function startServer() {
 
   app.use('*', cookieParser(), async (req, res, next) => {
     const url = req.originalUrl
+
     try {
       let template: string
       if (isDev) {
         template = fs.readFileSync(path.resolve(ssrPath, 'index.html'), 'utf-8')
+        template = await vite!.transformIndexHtml(url, template)
       } else {
         template = fs.readFileSync(path.resolve(distPath, 'index.html'), 'utf-8')
       }
-      template = await vite!.transformIndexHtml(url, template)
 
-      let render: (url: string, repository: any) => Promise<string>
+      let render: (url: string, userData: any) => Promise<string>
       if (isDev) {
         render = (await vite!.ssrLoadModule(path.resolve(ssrPath, 'ssr.tsx'))).render
       } else {
         render = (await import(ssrDistPath)).render
       }
+
       const [initialState, appHtml, css] = await render(url, new UserAPIRepository(req.headers['cookie']))
 
-      const serializedInitialState = `<script>  window.__INITIAL_STATE__=${JSON.stringify(
-        initialState.replace(/</g, '\\u003c')
-      )}
-    </script>`
+      const initStateSerialized = JSON.stringify(initialState).replace(/</g, '\\u003c')
+      const stateMarkup = `<script>window.__INITIAL_STATE__=${initStateSerialized}</script>;`
 
       const html = template
         .replace('<!--css-outlet-->', css)
         .replace('<!--ssr-outlet-->', appHtml)
-        .replace('<!--222-->', '<span></span>')
-        .replace('<!--store-data-->', serializedInitialState)
+        .replace('<!--store-data-->', stateMarkup)
 
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
     } catch (err) {
