@@ -27,7 +27,6 @@ export async function render(url: string, repository: UserRepository) {
   }*/
   await store.dispatch(getUser())
   const initialState = store.getState()
-  console.log(initialState)
 
   const sheet = new ServerStyleSheet()
 

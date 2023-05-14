@@ -15,7 +15,7 @@ let initialState: any | undefined
 if (typeof window !== 'undefined') {
   initialState = window.__INITIAL_STATE__
   console.log(initialState)
-  // delete window.__INITIAL_STATE__
+  delete window.__INITIAL_STATE__
 }
 export const { store } = createStore(new UserService(new UserAPI()), initialState)
 
