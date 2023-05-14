@@ -61,7 +61,7 @@ async function startServer() {
       }
 
       const [initialState, appHtml, css] = await render(url, new UserAPIRepository(req.headers['cookie']))
-      console.log(initialState)
+
       const initStateSerialized = JSON.stringify(initialState).replace(/</g, '\\u003c')
       const stateMarkup = `<script>window.__INITIAL_STATE__=${initStateSerialized}</script>`
 

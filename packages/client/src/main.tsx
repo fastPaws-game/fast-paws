@@ -12,7 +12,7 @@ import { UserAPI } from './api/UserApi'
 
 let initialState: RootState | undefined
 
-if (typeof window !== 'undefined') {
+if (!isServer) {
   initialState = window.__INITIAL_STATE__
   delete window.__INITIAL_STATE__
 }

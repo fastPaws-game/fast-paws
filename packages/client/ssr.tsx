@@ -1,4 +1,3 @@
-import App from './src/App'
 import { renderToString } from 'react-dom/server'
 import { StaticRouter } from 'react-router-dom/server'
 import { ServerStyleSheet, StyleSheetManager } from 'styled-components'
@@ -9,6 +8,7 @@ import { routes } from './src/router/routes'
 import { matchPath } from 'react-router'
 import { UserRepository, UserService } from './src/services/userService'
 import React from 'react'
+
 import StartSSRPage from './src/pages/StartSSRPage'
 
 export async function render(url: string, repository: UserRepository) {
@@ -33,7 +33,7 @@ export async function render(url: string, repository: UserRepository) {
       <StaticRouter location={url}>
         <Provider store={store}>
           <GlobalStyles />
-          <StartSSRPage /> //TODO сихронизировать темную и светлую темы
+          <StartSSRPage />
         </Provider>
       </StaticRouter>
     </StyleSheetManager>
