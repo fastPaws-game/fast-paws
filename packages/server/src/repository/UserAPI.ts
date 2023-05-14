@@ -1,20 +1,22 @@
-import fetch, { Headers } from 'node-fetch'
+import fetch, { Headers, RequestInit } from 'node-fetch'
 const API_ROOT = 'https://ya-praktikum.tech/api/v2/'
 
 const requestHeaders = new Headers()
 requestHeaders.set('Content-Type', 'application/json')
-requestHeaders.set('credentials', 'include')
 
 export class UserAPIRepository {
   constructor(private _cookieHeader: string | undefined) {}
 
   getUser = async (): Promise<unknown> => {
     if (this._cookieHeader) requestHeaders.set('cookie', this._cookieHeader)
+
+    const params = {
+      method: 'GET',
+      withCredentials: true,
+      headers: requestHeaders,
+    }
     try {
-      const res = await fetch(`${API_ROOT}/auth/user`, {
-        method: 'GET',
-        headers: requestHeaders,
-      })
+      const res = await fetch(`${API_ROOT}/auth/user`, params as RequestInit)
 
       const data = await res.json()
 
