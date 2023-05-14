@@ -42,7 +42,7 @@ export const signInUser = createAsyncThunk(
   async (body: TSignIn | string, { dispatch, rejectWithValue }) => {
     try {
       const response = typeof body === 'string' ? await OAuthApi.signin(body) : await AuthApi.signin(body)
-      if (response.status !== 200) {
+      if (response && response.status !== 200) {
         const error = await response.json()
         return rejectWithValue(error.reason)
       }
@@ -60,9 +60,10 @@ export const getServiceId = createAsyncThunk('auth/getServiceId', async (_, { re
       const error = await response
       return rejectWithValue(error)
     } else {
-      console.log(response)
-      const { service_id: serviceId } = (await response) as any
-      location.href = OAuthApi.getOAuthUrl(serviceId)
+      if ('service_id' in response) {
+        const { service_id: serviceId } = response
+        location.href = OAuthApi.getOAuthUrl(serviceId as string)
+      }
     }
   } catch (e) {
     rejectWithValue(e)
