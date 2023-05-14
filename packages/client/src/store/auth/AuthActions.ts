@@ -6,9 +6,8 @@ import { TProfile } from '../../models/ProfileModel'
 import { TSignUpFormValues } from '../../models/RegistrationModel'
 import OAuthApi from '../../api/OAuthApi'
 import { UserService } from '../../services/userService'
-import { TUser } from '../../models/UserModel'
 
-export const updateUser = createAsyncThunk('user/updateUser', async (body: TProfile, { dispatch, rejectWithValue }) => {
+export const updateUser = createAsyncThunk('user/updateUser', async (body: TProfile, { rejectWithValue }) => {
   try {
     const response = await UserApi.updateUser(body)
     if (response.status !== 200) {
@@ -83,13 +82,13 @@ export const logOut = createAsyncThunk('auth/logout', async (_, { rejectWithValu
   }
 })
 
-export const getUser = createAsyncThunk('user/getUser', async (_, { rejectWithValue, fulfillWithValue, extra }) => {
+export const getUser = createAsyncThunk('user/getUser', async (_, { rejectWithValue, extra }) => {
   const service: UserService = extra as UserService
   try {
     const response = await service.getCurrentUser()
-    return fulfillWithValue(response)
+    return response
   } catch (e) {
-    rejectWithValue(e)
+    return rejectWithValue(e)
   }
 })
 

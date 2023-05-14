@@ -1,5 +1,3 @@
-import { TUser } from '../models/UserModel'
-
 export interface UserServiceType {
   getCurrentUser(): Promise<unknown>
 }
