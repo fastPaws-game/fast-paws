@@ -14,6 +14,7 @@ import GameLoaderPage from '../pages/GameLoaderPage'
 export const routes = [
   {
     path: Routes.SIGNIN,
+    requireUnAuth: true,
     exact: true,
     element: <AuthPage />,
     loader: (dispatch: AppDispatch) => {
@@ -23,6 +24,7 @@ export const routes = [
   {
     path: Routes.SIGNUP,
     exact: true,
+    requireUnAuth: true,
     element: <RegistrationPage />,
     loader: (dispatch: AppDispatch) => {
       return dispatch(getUser())
@@ -39,6 +41,7 @@ export const routes = [
   {
     path: Routes.SETTINGS,
     exact: true,
+    requireAuth: true,
     element: <ProfilePage />,
     loader: (dispatch: AppDispatch) => {
       return dispatch(getUser())
@@ -47,6 +50,7 @@ export const routes = [
   {
     path: Routes.FORUM,
     exact: true,
+    requireAuth: true,
     element: <ForumPage />,
     loader: (dispatch: AppDispatch) => {
       return dispatch(getUser())
@@ -54,6 +58,7 @@ export const routes = [
   },
   {
     path: `${Routes.FORUM}/:forumId`,
+    requireAuth: true,
     element: <TopicPage />,
     loader: (dispatch: AppDispatch) => {
       return dispatch(getUser())
@@ -70,6 +75,7 @@ export const routes = [
   {
     path: Routes.LEADERBOARD,
     exact: true,
+    requireAuth: true,
     element: <LeaderBoardPage />,
     loader: (dispatch: AppDispatch) => {
       return dispatch(getUser())
