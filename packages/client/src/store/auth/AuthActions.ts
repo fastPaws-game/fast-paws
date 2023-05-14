@@ -5,7 +5,7 @@ import { TSignIn } from '../../models/SignInModel'
 import { TProfile } from '../../models/ProfileModel'
 import { TSignUpFormValues } from '../../models/RegistrationModel'
 import OAuthApi from '../../api/OAuthApi'
-import { UserService } from '../../services/userService'
+import { IUserService } from '../../services/userService'
 
 export const updateUser = createAsyncThunk('user/updateUser', async (body: TProfile, { rejectWithValue }) => {
   try {
@@ -84,7 +84,7 @@ export const logOut = createAsyncThunk('auth/logout', async (_, { rejectWithValu
 })
 
 export const getUser = createAsyncThunk('user/getUser', async (_, { rejectWithValue, extra }) => {
-  const service: UserService = extra as UserService
+  const service: IUserService = extra as IUserService
   try {
     const response = await service.getCurrentUser()
     return response
