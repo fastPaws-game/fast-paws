@@ -10,10 +10,13 @@ const axiosInstance = axios.create({
 
 registerAuthInterceptor(axiosInstance)
 
+export interface UserRepository {
+  getUser(): Promise<unknown>
+}
 export class UserAPIRepository {
   constructor(private _cookieHeader: string | undefined) {}
 
-  getUser = async (): Promise<any> => {
+  getUser = async (): Promise<unknown> => {
     const { data } = await axiosInstance.get(`${API_ROOT}/auth/user`, {
       headers: {
         cookie: this._cookieHeader,

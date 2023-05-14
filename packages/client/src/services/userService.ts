@@ -1,4 +1,4 @@
-export interface UserServiceType {
+export interface IUserService {
   getCurrentUser(): Promise<unknown>
 }
 

@@ -10,3 +10,4 @@ export const rootReducer = combineReducers({
   game: gameSlice,
   leaderboard: leaderboardSlice,
 })
+export type RootState = ReturnType<typeof rootReducer>

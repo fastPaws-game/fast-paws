@@ -4,7 +4,7 @@ import { createServer as createViteServer } from 'vite'
 import express from 'express'
 import * as fs from 'fs'
 import * as path from 'path'
-import { UserAPIRepository } from './src/repository/UserAPI'
+import { UserAPIRepository, UserRepository } from './src/repository/UserAPI'
 import dotenv from 'dotenv'
 import cookieParser from 'cookie-parser'
 import { proxy } from './src/middlewares/proxy'
@@ -23,7 +23,7 @@ async function startServer() {
     })
   )
 
-  app.use('/api/v2', proxy)
+  app.use('/api/v2/*', proxy)
 
   let vite: ViteDevServer | undefined
   const distPath = path.dirname(require.resolve('client/dist/index.html'))
@@ -53,7 +53,7 @@ async function startServer() {
         template = fs.readFileSync(path.resolve(distPath, 'index.html'), 'utf-8')
       }
 
-      let render: (url: string, userData: any) => Promise<string>
+      let render: (url: string, userService: UserRepository) => Promise<string>
       if (isDev) {
         render = (await vite!.ssrLoadModule(path.resolve(ssrPath, 'ssr.tsx'))).render
       } else {
