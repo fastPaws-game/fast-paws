@@ -68,7 +68,6 @@ const Profile = () => {
 
   const handleLogOut = useCallback(() => {
     dispatch(logOut())
-    navigate(Routes.SIGNIN)
   }, [dispatch])
 
   if (userValues) {

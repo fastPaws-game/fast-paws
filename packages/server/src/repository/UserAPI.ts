@@ -1,35 +1,24 @@
-import fetch, { Headers, RequestInit } from 'node-fetch'
+import axios from 'axios'
+import { registerAuthInterceptor } from './registerAuthInterceptor'
+
 const API_ROOT = 'https://ya-praktikum.tech/api/v2/'
 
-const requestHeaders = new Headers()
-requestHeaders.set('Content-Type', 'application/json')
+const axiosInstance = axios.create({
+  baseURL: API_ROOT,
+  withCredentials: true,
+})
+
+registerAuthInterceptor(axiosInstance)
 
 export class UserAPIRepository {
   constructor(private _cookieHeader: string | undefined) {}
 
-  getUser = async (): Promise<unknown> => {
-    if (this._cookieHeader) requestHeaders.set('cookie', this._cookieHeader)
-
-    const params = {
-      method: 'GET',
-      withCredentials: true,
-      headers: requestHeaders,
-    }
-    try {
-      const res = await fetch(`${API_ROOT}/auth/user`, params as RequestInit)
-
-      const data = await res.json()
-
-      if (res.status === 200) {
-        return data
-      } else {
-        throw new Error(data.reason)
-      }
-    } catch (e) {
-      if (e instanceof Error) {
-        return Promise.reject(e.message)
-      }
-      return Promise.reject(e)
-    }
+  getUser = async (): Promise<any> => {
+    const { data } = await axiosInstance.get(`${API_ROOT}/auth/user`, {
+      headers: {
+        cookie: this._cookieHeader,
+      },
+    })
+    return data
   }
 }
