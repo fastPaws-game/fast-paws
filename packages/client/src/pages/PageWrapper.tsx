@@ -5,7 +5,7 @@ import LoadingScreen from '../components/LoadingScreen'
 const PageWrapper: FC<PropsWithChildren> = ({ children }) => {
   return (
     <ErrorBoundary>
-      {' '}
+      {children}
       <Suspense fallback={<LoadingScreen />}>{children}</Suspense>
     </ErrorBoundary>
   )
