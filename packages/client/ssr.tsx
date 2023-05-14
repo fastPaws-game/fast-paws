@@ -9,7 +9,7 @@ import { routes } from './src/router/routes'
 import { matchPath } from 'react-router'
 import { UserRepository, UserService } from './src/services/userService'
 import React from 'react'
-import { getUser } from './src/store/auth/AuthActions'
+import StartSSRPage from './src/pages/StartSSRPage'
 
 export async function render(url: string, repository: UserRepository) {
   const [pathname] = url.split('?')
@@ -17,15 +17,13 @@ export async function render(url: string, repository: UserRepository) {
   const currentRoute = routes.find(route => matchPath(pathname, route.path))
   const { store } = createStore(new UserService(repository))
 
-  /*if (currentRoute) {
+  if (currentRoute) {
     const { loader } = currentRoute
-
     if (loader) {
       await loader(store.dispatch)
-
     }
-  }*/
-  await store.dispatch(getUser())
+  }
+
   const initialState = store.getState()
 
   const sheet = new ServerStyleSheet()
@@ -35,7 +33,7 @@ export async function render(url: string, repository: UserRepository) {
       <StaticRouter location={url}>
         <Provider store={store}>
           <GlobalStyles />
-          <App />
+          <StartSSRPage /> //TODO сихронизировать темную и светлую темы
         </Provider>
       </StaticRouter>
     </StyleSheetManager>

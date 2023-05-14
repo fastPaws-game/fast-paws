@@ -3,7 +3,7 @@ import React, { FC } from 'react'
 import { H2 } from '../assets/styles/texts'
 
 type Props = { progress?: number }
-const LoadingPage: FC<Props> = ({ progress }) => {
+const LoadingScreen: FC<Props> = ({ progress }) => {
   return (
     <Wrapper>
       <H2>Loading... {progress ? `${progress}%` : ''}</H2>
@@ -118,4 +118,4 @@ const Spinner = styled.div`
   }
 `
 
-export default LoadingPage
+export default LoadingScreen
