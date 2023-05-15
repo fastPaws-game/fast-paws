@@ -11,7 +11,7 @@ import { proxy } from './src/middlewares/proxy'
 
 dotenv.config()
 
-const PORT = Number(process.env.SERVER_PORT) || 3001
+const PORT = Number(process.env.SERVER_PORT) || 5000
 const isDev = process.env.NODE_ENV === 'development'
 
 async function startServer() {

@@ -1,11 +1,6 @@
 import FetchApi from '../utils/fetchApi'
-import isServer from '../utils/isServerChecker'
 
-const CLIENT_URL = 'http://localhost:3000'
-
-const getRedirectUrl = () => (!isServer ? window.location.origin : CLIENT_URL)
-
-const redirectUrl = getRedirectUrl()
+const redirectUrl = 'http://localhost:5000'
 const oauthUrlBase = 'https://oauth.yandex.ru/authorize'
 
 class OAuthApi {

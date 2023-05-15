@@ -8,7 +8,7 @@ var vite_config_default = defineConfig({
     port: Number(process.env.CLIENT_PORT) || 3e3
   },
   define: {
-    __SERVER_PORT__: process.env.SERVER_PORT || 3001
+    __SERVER_PORT__: process.env.SERVER_PORT || 5000
   },
   plugins: [react()]
 });

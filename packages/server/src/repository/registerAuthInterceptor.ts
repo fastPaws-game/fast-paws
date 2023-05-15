@@ -9,7 +9,6 @@ export function registerAuthInterceptor(api: AxiosType) {
           return Promise.reject(new Error(error.response.data.reason))
         }
       }
-
       return Promise.reject(error)
     }
   )
