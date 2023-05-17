@@ -39,7 +39,7 @@ export class FetchApi {
     })
     const result = await res.json()
     if (res.status !== 200 && res.status !== 304) {
-      throw new Error(result)
+      return Promise.reject(result.reason)
     }
     return result
   }
