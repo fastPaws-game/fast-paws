@@ -15,7 +15,7 @@ import FlyingValues from './FlyingValues'
 import Queue from '../utils/Queue'
 import Events from './Events'
 import Tooltip from './Tooltip'
-import type { Target, TCat, TGame } from './@engine'
+import type { Target, TCat, TCatched, TGame } from './@engine'
 
 export default class Engine {
   private game: TGame = {
@@ -83,6 +83,8 @@ export default class Engine {
   private showCombo: (value: number) => void
   private setTooltip: (tooltip: string) => void
   private showCatched: (catched: Record<string, number>) => void
+  private updateScore: (score: number) => void
+  private updateCatched: (id: string) => void
   private static __instance: Engine
 
   private constructor(handlers: Record<string, (value?: any) => void>) {
@@ -93,6 +95,8 @@ export default class Engine {
     this.showCombo = handlers.setCombo
     this.setTooltip = handlers.setTooltip
     this.showCatched = handlers.setCatched
+    this.updateScore = handlers.updateScore
+    this.updateCatched = handlers.updateCatched
 
     this.canvas = document.getElementById('game_canvas') as HTMLCanvasElement
     this.game.ctx = this.canvas.getContext('2d')
@@ -111,7 +115,7 @@ export default class Engine {
     const combo = Math.max(this.game.combo, 1)
     this.game.score += value * multiplier * combo
     this.showScore(this.game.score)
-    // store.updateScore(this.game.score)
+    this.updateScore(this.game.score)
     if (value != 0) this.fly.throw(value * combo, multiplier, this.cat.CatX)
     if (this.game.success) this.Tooltip.hide()
   }
@@ -148,9 +152,9 @@ export default class Engine {
         }
       }
       const name: AnimalName = this.target.nameCurr as AnimalName
-      this.game.catched[name] += 1
+
+      this.updateCatched(name)
       this.showCatched(this.game.catched)
-      // store.updateCatched(this.game.catched)
       this.target.nameCurr = 'none'
     }
     this.levelPrepare()
@@ -371,7 +375,7 @@ export default class Engine {
     this.game.action = 'scene'
   }
 
-  public start() {
+  public start(score = 0, catched: TCatched = this.game.catched) {
     this.canvas = document.getElementById('game_canvas') as HTMLCanvasElement
     this.game.ctx = this.canvas.getContext('2d')
     this.draw = new Draw(this.game.ctx!)
@@ -379,8 +383,8 @@ export default class Engine {
     this.Events = new Events(this.game, this.prepareJumpStart, this.prepareJumpEnd, this.pause)
     this.Tooltip = new Tooltip(this.setTooltip)
     this.game.ctx!.font = '18px Arial'
-    // this.game.score = store.getScore()
-    // this.game.catched = store.getCatched()
+    this.game.score = score
+    this.game.catched = catched
     this.Events.registerEvents()
     this.levelPrepare()
     this.Tooltip.show('start')
@@ -419,6 +423,8 @@ export default class Engine {
         Engine.__instance.showCombo = handlers.setCombo
         Engine.__instance.setTooltip = handlers.setTooltip
         Engine.__instance.showCatched = handlers.setCatched
+        Engine.__instance.updateScore = handlers.updateScore
+        Engine.__instance.updateCatched = handlers.updateCatched
       }
       return Engine.__instance
     }

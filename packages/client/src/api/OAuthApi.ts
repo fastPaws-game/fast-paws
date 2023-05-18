@@ -1,6 +1,6 @@
 import FetchApi from '../utils/fetchApi'
 
-const redirectUrl = 'http://localhost:5000'
+const redirectUrl = 'http://localhost:3001'
 const oauthUrlBase = 'https://oauth.yandex.ru/authorize'
 
 class OAuthApi {
@@ -21,4 +21,5 @@ class OAuthApi {
     })
   }
 }
+
 export default new OAuthApi()
