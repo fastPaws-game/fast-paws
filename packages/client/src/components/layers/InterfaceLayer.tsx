@@ -14,18 +14,13 @@ import IconMouse from '../../assets/icons/IconMouse.svg'
 import IconButterfly from '../../assets/icons/IconButterfly.svg'
 import IconBird from '../../assets/icons/IconBird.svg'
 import IconFrog from '../../assets/icons/IconFrog.svg'
+import { useAppSelector } from '../../hooks/store'
+import { GameSelectors } from '../../store/game/GameSelectors'
 
 type Props = {
   level: number
-  score: number
   combo: number
   tooltip: string
-  catched: {
-    butterfly: number
-    grasshopper: number
-    bird: number
-    mouse: number
-  }
   fullScreen: boolean
   switchFullScreen: () => void
   handlePause: () => void
@@ -34,6 +29,8 @@ type Props = {
 type TAction = 'settings' | 'sound' | 'pause' | 'fullscreen'
 
 const InterfaceLayer: FC<Props> = props => {
+  const score = useAppSelector(GameSelectors.getScore)
+  const catched = useAppSelector(GameSelectors.getCatched)
   const [sound, setSound] = useState(true)
   const navigate = useNavigate()
 
@@ -59,18 +56,18 @@ const InterfaceLayer: FC<Props> = props => {
       <HorisontalBlock>
         <ScoreBlock>
           <Info>Level: {props.level < 5 ? props.level + 1 : 'MAX'}</Info>
-          <Info>Score: {props.score}</Info>
+          <Info>Score: {score}</Info>
           <Info type="combo">{props.combo > 1 ? `Combo: x${props.combo}` : ''}</Info>
         </ScoreBlock>
         <HorisontalBlock>
           <IconAnimal icon={IconButterfly} />
-          <span> {props.catched.butterfly}</span>
+          <span> {catched.butterfly}</span>
           <IconAnimal icon={IconFrog} />
-          <span> {props.catched.grasshopper}</span>
+          <span> {catched.grasshopper}</span>
           <IconAnimal icon={IconBird} />
-          <span> {props.catched.bird}</span>
+          <span> {catched.bird}</span>
           <IconAnimal icon={IconMouse} />
-          <span> {props.catched.mouse}</span>
+          <span> {catched.mouse}</span>
         </HorisontalBlock>
         <UIButton aria-label="button" icon={sound ? IconSoundOn : IconSoundOff} onClick={handleClick('sound')} />
       </HorisontalBlock>
