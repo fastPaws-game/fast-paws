@@ -5,14 +5,14 @@ const enum METHODS {
   POST = 'POST',
   PUT = 'PUT',
   DELETE = 'DELETE',
+  PATCH = 'PATCH',
 }
 
-type Options<T> = {
-  body?: T | undefined
+type Options = {
   isFormData?: boolean
-} & Omit<RequestInit, 'body'>
+} & RequestInit
 
-type Request<T> = (url: string, options?: Options<T>) => Promise<Response>
+type Request<T> = (url: string, options?: Options) => Promise<Response>
 
 const configOptions = {
   method: METHODS.GET,
@@ -22,10 +22,6 @@ const configOptions = {
 
 export class FetchApi {
   static API_URL = baseApiConfigConnection.url
-
-  getApiUrl = () => {
-    return FetchApi.API_URL
-  }
 
   private buildUrl = (path: string) => {
     return FetchApi.API_URL + path
@@ -55,14 +51,22 @@ export class FetchApi {
     })
   }
 
+  public delete: Request<unknown> = async (url: string, options = {}) => {
+    const buildedUrl = this.buildUrl(url)
+    return fetch(buildedUrl, {
+      ...options,
+      ...configOptions,
+      method: METHODS.DELETE,
+    })
+  }
+
   public put: Request<unknown> = async (url: string, options = {}) => {
     const buildedUrl = this.buildUrl(url)
     const { body } = options
     return fetch(buildedUrl, {
       ...options,
       ...configOptions,
-      credentials: 'include' as RequestCredentials | undefined,
-      //withCredentials: true,
+      credentials: 'include',
       method: METHODS.PUT,
       body: JSON.stringify(body),
     })
@@ -73,9 +77,21 @@ export class FetchApi {
     const { body } = options
     return fetch(buildedUrl, {
       ...options,
-      credentials: 'include' as RequestCredentials | undefined,
+      credentials: 'include',
       method: METHODS.PUT,
       body,
+    })
+  }
+
+  public patch: Request<unknown> = async (url: string, options = {}) => {
+    const buildedUrl = this.buildUrl(url)
+    const { body } = options
+    return fetch(buildedUrl, {
+      ...options,
+      ...configOptions,
+      credentials: 'include',
+      method: METHODS.PATCH,
+      body: JSON.stringify(body),
     })
   }
 }
