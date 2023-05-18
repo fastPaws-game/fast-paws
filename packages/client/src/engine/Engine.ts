@@ -79,22 +79,18 @@ export default class Engine {
   private setPauseVisible: (pause: boolean) => void
   private handleGameOver: () => void
   private showLevel: (value: number) => void
-  private showScore: (value: number) => void
   private showCombo: (value: number) => void
   private setTooltip: (tooltip: string) => void
-  private showCatched: (catched: Record<string, number>) => void
   private updateScore: (score: number) => void
-  private updateCatched: (id: string) => void
+  private updateCatched: (id: keyof TCatched) => void
   private static __instance: Engine
 
   private constructor(handlers: Record<string, (value?: any) => void>) {
     this.setPauseVisible = handlers.setPauseVisible
     this.handleGameOver = handlers.handleGameOver
     this.showLevel = handlers.setLevel
-    this.showScore = handlers.setScore
     this.showCombo = handlers.setCombo
     this.setTooltip = handlers.setTooltip
-    this.showCatched = handlers.setCatched
     this.updateScore = handlers.updateScore
     this.updateCatched = handlers.updateCatched
 
@@ -114,7 +110,6 @@ export default class Engine {
   private setScore = (value: number, multiplier = 1) => {
     const combo = Math.max(this.game.combo, 1)
     this.game.score += value * multiplier * combo
-    this.showScore(this.game.score)
     this.updateScore(this.game.score)
     if (value != 0) this.fly.throw(value * combo, multiplier, this.cat.CatX)
     if (this.game.success) this.Tooltip.hide()
@@ -154,7 +149,6 @@ export default class Engine {
       const name: AnimalName = this.target.nameCurr as AnimalName
 
       this.updateCatched(name)
-      this.showCatched(this.game.catched)
       this.target.nameCurr = 'none'
     }
     this.levelPrepare()
@@ -164,7 +158,9 @@ export default class Engine {
     this.cat.jumpHeight = GAME.jumpHeightMin
     this.cat.trajectoryDirection = 1
     this.game.definingTrajectory = true
-    if (!this.updateIsNeeded()) requestAnimationFrame(this.update)
+    if (!this.updateIsNeeded()) {
+      requestAnimationFrame(this.update)
+    }
   }
 
   private prepareJumpEnd = () => {
@@ -388,8 +384,6 @@ export default class Engine {
     this.Events.registerEvents()
     this.levelPrepare()
     this.Tooltip.show('start')
-    this.showScore(this.game.score)
-    this.showCatched(this.game.catched)
   }
 
   public stop() {
@@ -419,10 +413,8 @@ export default class Engine {
         Engine.__instance.setPauseVisible = handlers.setPauseVisible
         Engine.__instance.handleGameOver = handlers.handleGameOver
         Engine.__instance.showLevel = handlers.setLevel
-        Engine.__instance.showScore = handlers.setScore
         Engine.__instance.showCombo = handlers.setCombo
         Engine.__instance.setTooltip = handlers.setTooltip
-        Engine.__instance.showCatched = handlers.setCatched
         Engine.__instance.updateScore = handlers.updateScore
         Engine.__instance.updateCatched = handlers.updateCatched
       }

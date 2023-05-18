@@ -11,6 +11,8 @@ import { addUserToLeaderboard } from '../store/leaderboard/LeaderboardActions'
 import { useAppDispatch, useAppSelector } from '../hooks/store'
 import { authSelectors } from '../store/auth/AuthSelectors'
 import { saveCatched, saveScore } from '../store/game/GameSlice'
+import { TCatched } from '../engine/@engine'
+import { GameSelectors } from '../store/game/GameSelectors'
 
 type Props = {
   fullScreen: boolean
@@ -21,21 +23,27 @@ const GamePage: FC<Props> = props => {
   const [pauseVisible, setPauseVisible] = useState(false)
   const [gameOverVisible, setGameOverVisible] = useState(false)
   const [level, setLevel] = useState(0)
-  const [score, setScore] = useState(0)
   const [combo, setCombo] = useState(1)
   const [tooltip, setTooltip] = useState('')
-  const [catched, setCatched] = useState({ mouse: 0, grasshopper: 0, butterfly: 0, bird: 0 })
 
   const dispatch = useAppDispatch()
   const isAuth = useAppSelector(authSelectors.getIsAuth)
   const user = useAppSelector(authSelectors.getUser)
+  const score = useAppSelector(GameSelectors.getScore)
 
-  const updateScore = (score: number) => {
-    dispatch(saveScore(score))
-  }
-  const updateCatched = (id: string) => {
-    dispatch(saveCatched(id))
-  }
+  const updateScore = useCallback(
+    (score: number) => {
+      dispatch(saveScore(score))
+    },
+    [dispatch]
+  )
+
+  const updateCatched = useCallback(
+    (id: keyof TCatched) => {
+      dispatch(saveCatched(id))
+    },
+    [dispatch]
+  )
 
   const handlePause = useCallback(() => {
     const engine = Engine.get()
@@ -71,20 +79,16 @@ const GamePage: FC<Props> = props => {
     setPauseVisible,
     handleGameOver,
     setLevel,
-    setScore,
     setCombo,
     setTooltip,
-    setCatched,
     updateScore,
     updateCatched,
   }
 
   const interfaceLayerProps = {
     level,
-    score,
     combo,
     tooltip,
-    catched,
     fullScreen: props.fullScreen,
     switchFullScreen: props.switchFullScreen,
     handlePause,
