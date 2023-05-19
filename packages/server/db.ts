@@ -18,7 +18,6 @@ export const sequelize = new Sequelize(sequelizeOptions)
 
 export async function dbConnect() {
   try {
-    console.log(process.env.POSTGRES_PASSWORD)
     await sequelize.authenticate()
     await sequelize.sync()
 
