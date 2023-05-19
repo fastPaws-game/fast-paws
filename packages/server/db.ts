@@ -3,12 +3,13 @@ import { ForumModel } from './src/models/forumModel'
 import { TopicModel } from './src/models/topicModel'
 import { CommentModel } from './src/models/commentModel'
 
+const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT } = process.env
 const sequelizeOptions: SequelizeOptions = {
   host: 'localhost',
-  port: Number(process.env.POSTGRES_PORT) || 5432,
-  username: process.env.POSTGRES_USER || 'postgres',
-  password: process.env.POSTGRES_PASSWORD || 'postgres',
-  database: process.env.POSTGRES_DB || 'postgres',
+  port: Number(POSTGRES_PORT) || 5432,
+  username: POSTGRES_USER || 'postgres',
+  password: POSTGRES_PASSWORD || 'postgres',
+  database: POSTGRES_DB || 'postgres',
   dialect: 'postgres',
   models: [ForumModel, TopicModel, CommentModel],
 }
