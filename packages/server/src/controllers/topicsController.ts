@@ -31,25 +31,24 @@ class TopicsController {
     try {
       const { id } = req.params
 
-      if (Number(id)) {
-        const topic = await TopicModel.findOne({
-          where: { id },
-          attributes: { exclude: ['createdAt', 'updatedAt', 'forumId'] },
-          include: {
-            model: CommentModel,
-            order: [['id', 'ASC']],
-            separate: true,
-            attributes: { exclude: ['topicId', 'updatedAt'] },
-          },
+      if (!Number(id)) {
+        return res.status(400).json({
+          message: TOPIC_ID_ERROR,
         })
-
-        if (topic) {
-          return res.json(topic)
-        }
       }
-      return res.status(400).json({
-        message: TOPIC_ID_ERROR,
+
+      const topic = await TopicModel.findOne({
+        where: { id },
+        attributes: { exclude: ['createdAt', 'updatedAt', 'forumId'] },
+        include: {
+          model: CommentModel,
+          order: [['id', 'ASC']],
+          separate: true,
+          attributes: { exclude: ['topicId', 'updatedAt'] },
+        },
       })
+
+      return res.json(topic)
     } catch {
       return res.status(500).json({
         message: SERVER_ERROR,

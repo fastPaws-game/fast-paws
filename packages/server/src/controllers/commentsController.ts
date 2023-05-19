@@ -6,7 +6,6 @@ class CommentsController {
   async createComment(req: Request, res: Response) {
     try {
       const topicId = Number(req.body.topicId) ?? null
-      console.log(topicId)
       if (!topicId) {
         return res.status(404).json({
           message: TOPIC_ID_ERROR,
@@ -31,19 +30,18 @@ class CommentsController {
     try {
       const { id } = req.params
 
-      if (Number(id)) {
-        const comment = await CommentModel.findOne({
-          where: { id },
-          attributes: { exclude: ['topicId'] },
+      if (!Number(id)) {
+        return res.status(400).json({
+          message: COMMENT_ID_ERROR,
         })
-
-        if (comment) {
-          return res.json(comment)
-        }
       }
-      return res.status(400).json({
-        message: COMMENT_ID_ERROR,
+
+      const comment = await CommentModel.findOne({
+        where: { id },
+        attributes: { exclude: ['topicId'] },
       })
+
+      return res.json(comment)
     } catch {
       return res.status(500).json({
         message: SERVER_ERROR,
