@@ -2,6 +2,9 @@ import { Sequelize, SequelizeOptions } from 'sequelize-typescript'
 import { ForumModel } from './src/models/forumModel'
 import { TopicModel } from './src/models/topicModel'
 import { CommentModel } from './src/models/commentModel'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT } = process.env
 const sequelizeOptions: SequelizeOptions = {
