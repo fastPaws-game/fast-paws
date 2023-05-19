@@ -5,7 +5,7 @@ import { UserRepository } from '../services/userService'
 
 export class UserAPI implements UserRepository {
   public getUser() {
-    return FetchApi.get('/auth/user')
+    return FetchApi.get('/auth/user') as Promise<unknown>
   }
 
   public updateUser(data: TProfile) {

@@ -33,17 +33,22 @@ export class FetchApi {
 
   public get: Request<undefined> = async (url: string, options = {}) => {
     const buildedUrl = this.buildUrl(url)
-    return fetch(buildedUrl, {
+    const res = await fetch(buildedUrl, {
       ...options,
       ...configOptions,
     })
+    const result = await res.json()
+    if (res.status !== 200 && res.status !== 304) {
+      return Promise.reject(result.reason)
+    }
+    return result
   }
 
   public post: Request<unknown> = async (url: string, options = {}) => {
     const buildedUrl = this.buildUrl(url)
-    const { body } = options
+    const { body = {}, ...otherOptions } = options
     return fetch(buildedUrl, {
-      ...options,
+      ...otherOptions,
       ...configOptions,
       method: METHODS.POST,
       body: JSON.stringify(body),
@@ -56,6 +61,8 @@ export class FetchApi {
     return fetch(buildedUrl, {
       ...options,
       ...configOptions,
+      credentials: 'include' as RequestCredentials | undefined,
+      //withCredentials: true,
       method: METHODS.PUT,
       body: JSON.stringify(body),
     })

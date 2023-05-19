@@ -21,15 +21,8 @@
     "ignoreDeprecations": "5.0",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "lib": [
-      "DOM",
-      "es2019",
-      "esnext.asynciterable"
-    ],
-    "types": [
-      "node",
-      "jest"
-    ],
+    "lib": ["DOM", "es2019", "esnext.asynciterable"],
+    "types": ["node", "jest"],
     "baseUrl": ".",
     "paths": {
       "*": [
