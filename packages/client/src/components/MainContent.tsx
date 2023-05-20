@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import Button from '../ui/button'
 import IconForum from '../assets/icons/IconForum'
 import IconSettings from '../assets/icons/IconSettings'
@@ -8,14 +8,13 @@ import { H1 } from '../assets/styles/texts'
 import Link from '../ui/link'
 import { media } from '../assets/styles/media'
 import { useAppDispatch } from '../hooks/store'
-import { getUser } from '../store/auth/AuthActions'
 
 const MainContent = () => {
   const dispatch = useAppDispatch()
 
-  useEffect(() => {
-    dispatch(getUser())
-  }, [])
+  // useEffect(() => {
+  //   dispatch(getUser())
+  // }, [])
 
   return (
     <Root>

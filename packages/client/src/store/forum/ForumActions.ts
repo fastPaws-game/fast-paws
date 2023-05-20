@@ -1,17 +1,18 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { TProfile } from '../../models/ProfileModel'
-import UserApi from '../../api/UserApi'
+import ForumApi from '../../api/ForumApi'
 
-export const updateUser = createAsyncThunk('user/updateUser', async (body: TProfile, { rejectWithValue }) => {
+export const getForums = createAsyncThunk('forum/getForums', async (_, { rejectWithValue }) => {
   try {
-    const response = await UserApi.updateUser(body)
-    if (response.status !== 200) {
-      const error = await response.json()
-      return rejectWithValue(error.reason)
-    }
-    const res = await response.json()
-    return res
+    return await ForumApi.getForums()
   } catch (e) {
-    rejectWithValue(e)
+    return rejectWithValue(e)
+  }
+})
+
+export const getForumById = createAsyncThunk('forum/getForumById', async (id: number, { rejectWithValue }) => {
+  try {
+    return await ForumApi.getForumById(id)
+  } catch (e) {
+    return rejectWithValue(e)
   }
 })

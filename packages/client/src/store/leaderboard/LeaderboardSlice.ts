@@ -1,10 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { TLeaderboardItem } from '../../models/LeaderBoardModel'
-import { handleError } from '../../utils/handleError'
-import { addUserToLeaderboard, getTeamLeaderboard } from './LeaderboardActions'
 import { RequestStatus } from '../types'
+import { buildAddUserToLeaderboard, buildTeamLeaderboard } from './ExtraReducers'
 
-export type TLeaderboard = {
+export type LeaderboardSlice = {
   leaderboardItems: Array<TLeaderboardItem> | undefined
 
   addUserToLeaderboardStatus: RequestStatus
@@ -14,7 +13,7 @@ export type TLeaderboard = {
   getTeamError: string | null
 }
 
-const initialState: TLeaderboard = {
+const initialState: LeaderboardSlice = {
   leaderboardItems: [],
 
   addUserToLeaderboardStatus: 'initial',
@@ -29,31 +28,8 @@ export const leaderboardSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: builder => {
-    builder
-      //AddUserToLeaderboard
-      .addCase(addUserToLeaderboard.pending, state => {
-        state.addUserToLeaderboardStatus = 'pending'
-      })
-      .addCase(addUserToLeaderboard.fulfilled, state => {
-        state.addUserToLeaderboardStatus = 'success'
-      })
-      .addCase(addUserToLeaderboard.rejected, state => {
-        state.addUserToLeaderboardStatus = 'error'
-      })
-
-      //GetLeaderboardByTeamName
-      .addCase(getTeamLeaderboard.pending, state => {
-        state.getTeamStatus = 'pending'
-      })
-      .addCase(getTeamLeaderboard.fulfilled, (state, action) => {
-        state.getTeamStatus = 'success'
-        state.getTeamError = null
-        state.leaderboardItems = action.payload
-      })
-      .addCase(getTeamLeaderboard.rejected, (state, action) => {
-        state.getTeamStatus = 'error'
-        state.getTeamError = handleError(action.payload)
-      })
+    buildAddUserToLeaderboard(builder)
+    buildTeamLeaderboard(builder)
   },
 })
 

@@ -7,7 +7,6 @@ import { GlobalStyles } from './src/assets/styles/globalStyle'
 import { routes } from './src/router/routes'
 import { matchPath } from 'react-router'
 import { UserRepository, UserService } from './src/services/userService'
-import React from 'react'
 
 import StartSSRPage from './src/pages/StartSSRPage'
 

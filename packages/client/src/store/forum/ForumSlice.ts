@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { initialState } from './initialState'
+import { buildGetForumById, buildGetForums } from './extraReducers'
 
 export const forumSlice = createSlice({
   name: 'forum',
@@ -10,7 +11,8 @@ export const forumSlice = createSlice({
     },
   },
   extraReducers: builder => {
-    builder
+    buildGetForums(builder)
+    buildGetForumById(builder)
   },
 })
 
