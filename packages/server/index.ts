@@ -4,7 +4,7 @@ import { createServer as createViteServer } from 'vite'
 import express from 'express'
 import * as fs from 'fs'
 import * as path from 'path'
-import { UserAPIRepository } from './src/repository/UserAPI'
+import { UserAPIRepository, UserRepository } from './src/repository/UserAPI'
 import dotenv from 'dotenv'
 import cookieParser from 'cookie-parser'
 import { proxy } from './src/middlewares/proxy'
@@ -16,8 +16,14 @@ const isDev = process.env.NODE_ENV === 'development'
 
 async function startServer() {
   const app = express()
-  app.use(cors())
-  app.use('/api/v2', proxy)
+  app.use(
+    cors({
+      origin: true,
+      credentials: true,
+    })
+  )
+
+  app.use('/api/v2/*', proxy)
 
   let vite: ViteDevServer | undefined
   const distPath = path.dirname(require.resolve('client/dist/index.html'))
@@ -47,16 +53,22 @@ async function startServer() {
         template = fs.readFileSync(path.resolve(distPath, 'index.html'), 'utf-8')
       }
 
-      let render: (url: string, userData: any) => Promise<string>
+      let render: (url: string, userService: UserRepository) => Promise<string>
       if (isDev) {
         render = (await vite!.ssrLoadModule(path.resolve(ssrPath, 'ssr.tsx'))).render
       } else {
         render = (await import(ssrDistPath)).render
       }
 
-      const [appHtml, css] = await render(url, new UserAPIRepository(req.headers['cookie']))
+      const [initialState, appHtml, css] = await render(url, new UserAPIRepository(req.headers['cookie']))
 
-      const html = template.replace('<!--css-outlet-->', css).replace('<!--ssr-outlet-->', appHtml)
+      const initStateSerialized = JSON.stringify(initialState).replace(/</g, '\\u003c')
+      const stateMarkup = `<script>window.__INITIAL_STATE__=${initStateSerialized}</script>`
+
+      const html = template
+        .replace('<!--css-outlet-->', css)
+        .replace('<!--ssr-outlet-->', appHtml)
+        .replace('<!--store-data-->', stateMarkup)
 
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
     } catch (err) {

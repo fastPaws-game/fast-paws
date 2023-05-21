@@ -4,7 +4,7 @@ import { TSignUpFormValues } from '../models/RegistrationModel'
 
 class AuthApi {
   public signin(data: TSignIn) {
-    return FetchApi.post('/auth/signin', { body: JSON.stringify(data) })
+    return FetchApi.post('/auth/signin', { body: data })
   }
 
   public logout() {
@@ -12,7 +12,7 @@ class AuthApi {
   }
 
   public signup(data: TSignUpFormValues) {
-    return FetchApi.post('/auth/signup', { body: JSON.stringify(data) })
+    return FetchApi.post('/auth/signup', { body: data })
   }
 }
 

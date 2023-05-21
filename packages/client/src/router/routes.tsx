@@ -14,13 +14,21 @@ import GameLoaderPage from '../pages/GameLoaderPage'
 export const routes = [
   {
     path: Routes.SIGNIN,
+    requireUnAuth: true,
     exact: true,
-    element: <AuthPage />
+    element: <AuthPage />,
+    loader: (dispatch: AppDispatch) => {
+      return dispatch(getUser())
+    },
   },
   {
     path: Routes.SIGNUP,
     exact: true,
-    element: <RegistrationPage />
+    requireUnAuth: true,
+    element: <RegistrationPage />,
+    loader: (dispatch: AppDispatch) => {
+      return dispatch(getUser())
+    },
   },
   {
     path: Routes.HOME,
@@ -28,34 +36,56 @@ export const routes = [
     element: <MainPage />,
     loader: (dispatch: AppDispatch) => {
       return dispatch(getUser())
-    }
+    },
   },
   {
     path: Routes.SETTINGS,
     exact: true,
-    element: <ProfilePage />
+    requireAuth: true,
+    element: <ProfilePage />,
+    loader: (dispatch: AppDispatch) => {
+      return dispatch(getUser())
+    },
   },
   {
     path: Routes.FORUM,
     exact: true,
-    element: <ForumPage />
+    requireAuth: true,
+    element: <ForumPage />,
+    loader: (dispatch: AppDispatch) => {
+      return dispatch(getUser())
+    },
   },
   {
     path: `${Routes.FORUM}/:forumId`,
-    element: <TopicPage />
+    requireAuth: true,
+    element: <TopicPage />,
+    loader: (dispatch: AppDispatch) => {
+      return dispatch(getUser())
+    },
   },
   {
     path: Routes.GAME,
     exact: true,
-    element: <GameLoaderPage />
+    element: <GameLoaderPage />,
+    loader: (dispatch: AppDispatch) => {
+      return dispatch(getUser())
+    },
   },
   {
     path: Routes.LEADERBOARD,
     exact: true,
-    element: <LeaderBoardPage />
+    requireAuth: true,
+    element: <LeaderBoardPage />,
+    loader: (dispatch: AppDispatch) => {
+      return dispatch(getUser())
+    },
   },
   {
     path: Routes.NOT_FOUND,
-    element: <NotFoundPage />
-  }
+    element: <NotFoundPage />,
+    loader: (dispatch: AppDispatch) => {
+      return dispatch(getUser())
+    },
+  },
 ]

@@ -1,3 +1,5 @@
+import baseApiConfigConnection from '../constants/baseApiConfigConnection'
+
 const enum METHODS {
   GET = 'GET',
   POST = 'POST',
@@ -5,25 +7,21 @@ const enum METHODS {
   DELETE = 'DELETE',
 }
 
-type Options = {
-  method?: string
-  body?: null | string | FormData
-  headers?: Headers
+type Options<T> = {
+  body?: T | undefined
   isFormData?: boolean
-}
+} & Omit<RequestInit, 'body'>
 
-type Request = (url: string, options?: Options) => Promise<Response>
+type Request<T> = (url: string, options?: Options<T>) => Promise<Response>
 
 const configOptions = {
   method: METHODS.GET,
   credentials: 'include' as RequestCredentials | undefined,
-  headers: {
-    'Content-Type': 'application/json;charset=utf-8',
-  },
+  headers: baseApiConfigConnection.headers,
 }
 
 export class FetchApi {
-  static API_URL = 'https://ya-praktikum.tech/api/v2'
+  static API_URL = baseApiConfigConnection.url
 
   getApiUrl = () => {
     return FetchApi.API_URL
@@ -33,37 +31,51 @@ export class FetchApi {
     return FetchApi.API_URL + path
   }
 
-  public get: Request = async (url: string, options = {}) => {
+  public get: Request<undefined> = async (url: string, options = {}) => {
     const buildedUrl = this.buildUrl(url)
-    return fetch(buildedUrl, {
+    const res = await fetch(buildedUrl, {
       ...options,
       ...configOptions,
     })
+    const result = await res.json()
+    if (res.status !== 200 && res.status !== 304) {
+      return Promise.reject(result.reason)
+    }
+    return result
   }
 
-  public post: Request = async (url: string, options = {}) => {
+  public post: Request<unknown> = async (url: string, options = {}) => {
     const buildedUrl = this.buildUrl(url)
+    const { body = {}, ...otherOptions } = options
     return fetch(buildedUrl, {
-      ...options,
+      ...otherOptions,
       ...configOptions,
       method: METHODS.POST,
+      body: JSON.stringify(body),
     })
   }
 
-  public put: Request = async (url: string, options = {}) => {
+  public put: Request<unknown> = async (url: string, options = {}) => {
     const buildedUrl = this.buildUrl(url)
+    const { body } = options
     return fetch(buildedUrl, {
       ...options,
       ...configOptions,
+      credentials: 'include' as RequestCredentials | undefined,
+      //withCredentials: true,
       method: METHODS.PUT,
+      body: JSON.stringify(body),
     })
   }
-  public putData: Request = async (url: string, options = {}) => {
+
+  public putData: Request<FormData> = async (url: string, options = {}) => {
     const buildedUrl = this.buildUrl(url)
+    const { body } = options
     return fetch(buildedUrl, {
       ...options,
       credentials: 'include' as RequestCredentials | undefined,
       method: METHODS.PUT,
+      body,
     })
   }
 }

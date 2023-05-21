@@ -1,4 +1,3 @@
-import App from './src/App'
 import { renderToString } from 'react-dom/server'
 import { StaticRouter } from 'react-router-dom/server'
 import { ServerStyleSheet, StyleSheetManager } from 'styled-components'
@@ -8,9 +7,13 @@ import { GlobalStyles } from './src/assets/styles/globalStyle'
 import { routes } from './src/router/routes'
 import { matchPath } from 'react-router'
 import { UserRepository, UserService } from './src/services/userService'
+import React from 'react'
+
+import StartSSRPage from './src/pages/StartSSRPage'
 
 export async function render(url: string, repository: UserRepository) {
   const [pathname] = url.split('?')
+
   const currentRoute = routes.find(route => matchPath(pathname, route.path))
   const { store } = createStore(new UserService(repository))
 
@@ -21,6 +24,8 @@ export async function render(url: string, repository: UserRepository) {
     }
   }
 
+  const initialState = store.getState()
+
   const sheet = new ServerStyleSheet()
 
   const markupHTML = renderToString(
@@ -28,7 +33,7 @@ export async function render(url: string, repository: UserRepository) {
       <StaticRouter location={url}>
         <Provider store={store}>
           <GlobalStyles />
-          <App />
+          <StartSSRPage />
         </Provider>
       </StaticRouter>
     </StyleSheetManager>
@@ -37,5 +42,5 @@ export async function render(url: string, repository: UserRepository) {
 
   sheet.seal()
 
-  return [markupHTML, css]
+  return [initialState, markupHTML, css]
 }

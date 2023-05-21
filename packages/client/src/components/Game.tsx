@@ -1,4 +1,4 @@
-import { FC, useState, useCallback } from 'react'
+import { FC, useCallback, useState } from 'react'
 import ActionLayer from './layers/ActionLayer'
 import InterfaceLayer from './layers/InterfaceLayer'
 import BackgroundLayer from './layers/BackgroundLayer'
@@ -6,18 +6,44 @@ import GamePause from './GamePause'
 import GameOver from '../components/GameOver'
 import Engine from '../engine/Engine'
 
+import getLeaderboardBody from '../utils/getLeaderboardBody'
+import { addUserToLeaderboard } from '../store/leaderboard/LeaderboardActions'
+import { useAppDispatch, useAppSelector } from '../hooks/store'
+import { authSelectors } from '../store/auth/AuthSelectors'
+import { saveCatched, saveScore } from '../store/game/GameSlice'
+import { TCatched } from '../engine/@engine'
+import { GameSelectors } from '../store/game/GameSelectors'
+
 type Props = {
   fullScreen: boolean
   switchFullScreen: () => void
 }
+
 const GamePage: FC<Props> = props => {
   const [pauseVisible, setPauseVisible] = useState(false)
   const [gameOverVisible, setGameOverVisible] = useState(false)
   const [level, setLevel] = useState(0)
-  const [score, setScore] = useState(0)
   const [combo, setCombo] = useState(1)
   const [tooltip, setTooltip] = useState('')
-  const [catched, setCatched] = useState({ mouse: 0, grasshopper: 0, butterfly: 0, bird: 0 })
+
+  const dispatch = useAppDispatch()
+  const isAuth = useAppSelector(authSelectors.getIsAuth)
+  const user = useAppSelector(authSelectors.getUser)
+  const score = useAppSelector(GameSelectors.getScore)
+
+  const updateScore = useCallback(
+    (score: number) => {
+      dispatch(saveScore(score))
+    },
+    [dispatch]
+  )
+
+  const updateCatched = useCallback(
+    (id: keyof TCatched) => {
+      dispatch(saveCatched(id))
+    },
+    [dispatch]
+  )
 
   const handlePause = useCallback(() => {
     const engine = Engine.get()
@@ -40,14 +66,29 @@ const GamePage: FC<Props> = props => {
     engine.start()
   }, [setGameOverVisible])
 
-  const actionLayerProps = { setPauseVisible, handleGameOver, setLevel, setScore, setCombo, setTooltip, setCatched }
+  const handleCloseGame = useCallback(() => {
+    if (!isAuth || !user) {
+      return
+    }
+
+    const leaderBoardUpdate = getLeaderboardBody(user, score)
+    dispatch(addUserToLeaderboard(leaderBoardUpdate))
+  }, [score])
+
+  const actionLayerProps = {
+    setPauseVisible,
+    handleGameOver,
+    setLevel,
+    setCombo,
+    setTooltip,
+    updateScore,
+    updateCatched,
+  }
 
   const interfaceLayerProps = {
     level,
-    score,
     combo,
     tooltip,
-    catched,
     fullScreen: props.fullScreen,
     switchFullScreen: props.switchFullScreen,
     handlePause,
@@ -55,10 +96,15 @@ const GamePage: FC<Props> = props => {
 
   return (
     <>
-      <GamePause visible={pauseVisible} handleClose={handleContinue} outSideClickEnable />
+      <GamePause
+        visible={pauseVisible}
+        handleClose={handleCloseGame}
+        handleContinue={handleContinue}
+        outSideClickEnable
+      />
       <GameOver visible={gameOverVisible} handleClose={handleNewGame} />
       <BackgroundLayer />
-      <ActionLayer {...actionLayerProps} />
+      <ActionLayer handlers={actionLayerProps} />
       <InterfaceLayer {...interfaceLayerProps} />
     </>
   )

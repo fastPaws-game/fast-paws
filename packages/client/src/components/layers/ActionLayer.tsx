@@ -1,38 +1,39 @@
-import React, { createRef } from 'react'
+import React, { FunctionComponent, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { CANVAS } from '../../constants/game'
 import Engine from '../../engine/Engine'
+import { useAppSelector } from '../../hooks/store'
+import { GameSelectors } from '../../store/game/GameSelectors'
 
-export default class ActionLayer extends React.Component {
-  private ref: React.RefObject<HTMLCanvasElement> | undefined
-  private engine: Engine | null = null
-  private handlers
+type Props = {
+  handlers: Record<string, (value?: any) => void>
+}
+const ActionLayer: FunctionComponent<Props> = props => {
+  const { handlers } = props
+  let engine: Engine | null = null
 
-  constructor(handlers: Record<string, () => void>) {
-    super(handlers)
-    this.ref = createRef<HTMLCanvasElement>()
-    this.handlers = handlers
-  }
+  const ref = useRef<HTMLCanvasElement>(null)
+  const score = useAppSelector(GameSelectors.getScore)
+  const catched = useAppSelector(GameSelectors.getCatched)
 
-  componentDidMount() {
-    const ctx = this.ref!.current!.getContext('2d')
-    if (ctx) {
-      this.engine = Engine.get(this.handlers)
-      this.engine.start()
+  useEffect(() => {
+    if (ref.current) {
+      const ctx = ref.current.getContext('2d')
+      if (ctx) {
+        engine = Engine.get(handlers)
+        engine.start(score, catched)
+      }
     }
-  }
+    return () => {
+      engine?.stop()
+    }
+  }, [])
 
-  componentWillUnmount() {
-    this.engine?.stop()
-  }
-
-  render() {
-    return (
-      <Wrapper>
-        <canvas id="game_canvas" ref={this.ref} width={CANVAS.width} height={CANVAS.height} />
-      </Wrapper>
-    )
-  }
+  return (
+    <Wrapper>
+      <canvas id="game_canvas" ref={ref} width={CANVAS.width} height={CANVAS.height} />
+    </Wrapper>
+  )
 }
 
 const Wrapper = styled.div`
@@ -40,6 +41,8 @@ const Wrapper = styled.div`
   width: 100%;
   height: 100%;
   position: absolute;
-  left: 0px;
-  top: 0px;
+  left: 0;
+  top: 0;
 `
+
+export default ActionLayer
