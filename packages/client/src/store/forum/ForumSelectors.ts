@@ -1,9 +1,9 @@
 import { RootState } from '../index'
 
 const getForums = (state: RootState) => state.forum.forums
-const getForumById = (state: RootState) => state.forum.currentForum
+const getCurrentForum = (state: RootState) => state.forum.currentForum
 
 export const forumSelectors = {
-  getForumById,
+  getCurrentForum,
   getForums,
 }

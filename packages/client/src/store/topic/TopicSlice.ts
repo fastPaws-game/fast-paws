@@ -1,19 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { initialState } from './initialState'
+import { buildAddTopic, buildDeleteTopic, buildGetTopicById, buildUpdateTopic } from './extraReducers'
 
 export const topicSlice = createSlice({
-  name: 'forum',
+  name: 'topic',
   initialState,
-  reducers: {
-    getTopic: (state, action) => {
-      console.log(state, action)
-    },
-  },
+  reducers: {},
   extraReducers: builder => {
-    builder
+    buildDeleteTopic(builder)
+    buildUpdateTopic(builder)
+    buildAddTopic(builder)
+    buildGetTopicById(builder)
   },
 })
-
-export const { getTopic } = topicSlice.actions
 
 export default topicSlice.reducer

@@ -5,17 +5,11 @@ import { buildGetForumById, buildGetForums } from './extraReducers'
 export const forumSlice = createSlice({
   name: 'forum',
   initialState,
-  reducers: {
-    getForums: (state, action) => {
-      console.log(state, action)
-    },
-  },
+  reducers: {},
   extraReducers: builder => {
     buildGetForums(builder)
     buildGetForumById(builder)
   },
 })
-
-export const { getForums } = forumSlice.actions
 
 export default forumSlice.reducer

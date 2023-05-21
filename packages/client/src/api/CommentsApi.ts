@@ -1,4 +1,5 @@
 import FetchApi from '../utils/fetchApi'
+import { Comment } from '../models/CommentModel'
 
 type AddCommentPayload = {
   topicId: number
@@ -12,11 +13,11 @@ type UpdateCommentPayload = {
 
 class CommentsApi {
   public getComments() {
-    return FetchApi.get(`/comments`)
+    return FetchApi.get<Comment[]>(`/comments`)
   }
 
   public addComment(body: AddCommentPayload) {
-    return FetchApi.post(`/comments`, { body })
+    return FetchApi.post<Comment>(`/comments`, { body })
   }
 
   public updateComment(commentId: number, body: UpdateCommentPayload) {

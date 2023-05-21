@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { TLeaderboardItem } from '../../models/LeaderBoardModel'
 import { RequestStatus } from '../types'
-import { buildAddUserToLeaderboard, buildTeamLeaderboard } from './ExtraReducers'
+import { buildAddUserToLeaderboard, buildTeamLeaderboard } from './extraReducers'
 
 export type LeaderboardSlice = {
   leaderboardItems: Array<TLeaderboardItem> | undefined

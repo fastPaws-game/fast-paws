@@ -12,11 +12,11 @@ class TopicApi {
   }
 
   public getTopicById(id: number) {
-    return FetchApi.get(`/topics/${id}`)
+    return FetchApi.get<Topic>(`/topics/${id}`)
   }
 
   public updateTopic(topicId: number, body: UpdateTopicPayload) {
-    return FetchApi.patch(`/topics/${topicId}`, { body })
+    return FetchApi.patch<Topic>(`/topics/${topicId}`, { body })
   }
 
   public deleteTopic(topicId: number) {
