@@ -1,6 +1,7 @@
 import FetchApi from '../utils/fetchApi'
 
-export const redirectUrl = window.location.origin
+const redirectUrl = 'http://localhost:3001'
+
 const oauthUrlBase = 'https://oauth.yandex.ru/authorize'
 
 class OAuthApi {
@@ -14,11 +15,12 @@ class OAuthApi {
 
   public signin(code: string) {
     return FetchApi.post('/oauth/yandex/', {
-      body: {
+      body: JSON.stringify({
         code,
         redirect_uri: redirectUrl,
-      },
+      }),
     })
   }
 }
+
 export default new OAuthApi()

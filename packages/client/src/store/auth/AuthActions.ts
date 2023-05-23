@@ -7,7 +7,7 @@ import { TSignUpFormValues } from '../../models/RegistrationModel'
 import OAuthApi from '../../api/OAuthApi'
 import { IUserService } from '../../services/userService'
 
-export const updateUser = createAsyncThunk('user/updateUser', async (body: TProfile, { dispatch, rejectWithValue }) => {
+export const updateUser = createAsyncThunk('user/updateUser', async (body: TProfile, { rejectWithValue }) => {
   try {
     const response = await UserApi.updateUser(body)
     if (response.status !== 200) {
@@ -42,7 +42,7 @@ export const signInUser = createAsyncThunk(
   async (body: TSignIn | string, { dispatch, rejectWithValue }) => {
     try {
       const response = typeof body === 'string' ? await OAuthApi.signin(body) : await AuthApi.signin(body)
-      if (response.status !== 200) {
+      if (response && response.status !== 200) {
         const error = await response.json()
         return rejectWithValue(error.reason)
       }
@@ -56,12 +56,12 @@ export const signInUser = createAsyncThunk(
 export const getServiceId = createAsyncThunk('auth/getServiceId', async (_, { rejectWithValue }) => {
   try {
     const response = await OAuthApi.getServiceId()
-    if (response.status !== 200) {
-      const error = await response.json()
-      return rejectWithValue(error.reason)
+
+    if ('service_id' in response) {
+      const { service_id: serviceId } = response
+      location.href = OAuthApi.getOAuthUrl(serviceId as string)
     } else {
-      const { service_id: serviceId } = await response.json()
-      location.href = OAuthApi.getOAuthUrl(serviceId)
+      return rejectWithValue(response)
     }
   } catch (e) {
     rejectWithValue(e)
@@ -85,14 +85,9 @@ export const getUser = createAsyncThunk('user/getUser', async (_, { rejectWithVa
   const service: IUserService = extra as IUserService
   try {
     const response = await service.getCurrentUser()
-    const data = await response.json()
-
-    if (response.status !== 200) {
-      return rejectWithValue(data)
-    }
-    return data
+    return response
   } catch (e) {
-    rejectWithValue(e)
+    return rejectWithValue(e)
   }
 })
 

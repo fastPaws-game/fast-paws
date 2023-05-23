@@ -1,9 +1,9 @@
 export interface IUserService {
-  getCurrentUser(): Promise<Response>
+  getCurrentUser(): Promise<unknown>
 }
 
 export interface UserRepository {
-  getUser(): Promise<Response>
+  getUser(): Promise<unknown>
 }
 
 export class UserService {

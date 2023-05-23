@@ -29,8 +29,9 @@ const gameSlice = createSlice({
     saveScore: (state, action: PayloadAction<GameSlice['score']>) => {
       state.score = action.payload
     },
-    saveCatched: (state, action: PayloadAction<GameSlice['catched']>) => {
-      state.catched = action.payload
+    saveCatched: (state, action: PayloadAction<keyof TCatched>) => {
+      const id = action.payload
+      state.catched[id] += 1
     },
   },
 })

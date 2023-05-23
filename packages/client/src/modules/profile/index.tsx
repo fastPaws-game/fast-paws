@@ -4,8 +4,6 @@ import { useAppDispatch, useAppSelector } from '../../hooks/store'
 import { logOut, updateUser } from '../../store/auth/AuthActions'
 import Button from '../../ui/button'
 import styled from 'styled-components'
-import { Routes } from '../../constants/routes'
-import { useNavigate } from 'react-router'
 import { TProfile } from '../../models/ProfileModel'
 import { ProfileFormPopup } from '../../components/ProfileFormPopup'
 import ProfileAvatar from '../../components/ProfileAvatar'
@@ -17,7 +15,6 @@ const SUCCESS_MESSAGE = 'Данные успешно обновлены!'
 const Profile = () => {
   const { toggleTheme } = useChangeTheme()
   const dispatch = useAppDispatch()
-  const navigate = useNavigate()
 
   const [userValues, setDefaultValues] = useState<TProfile | null>(null)
   const [isUpdateUser, setIsUpdateUser] = useState<boolean>(false)
@@ -68,7 +65,6 @@ const Profile = () => {
 
   const handleLogOut = useCallback(() => {
     dispatch(logOut())
-    navigate(Routes.SIGNIN)
   }, [dispatch])
 
   if (userValues) {

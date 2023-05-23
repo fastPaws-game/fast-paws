@@ -16,7 +16,7 @@ declare module '*.png' {
 
 declare global {
   interface Window {
-    __REDUX_STATE__?: StoreState
+    __INITIAL_STATE__?: StoreState
   }
 
   interface Document {
