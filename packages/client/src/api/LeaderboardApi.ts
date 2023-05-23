@@ -1,5 +1,5 @@
 import FetchApi from '../utils/fetchApi'
-import { TLeaderboardAddUser, TLeaderboardRequest } from '../models/LeaderBoardModel'
+import { TLeaderboardAddUser, TLeaderboardItem, TLeaderboardRequest } from '../models/LeaderBoardModel'
 
 class LeaderboardApi {
   public addUserToLeaderboard(body: TLeaderboardAddUser) {
@@ -7,7 +7,7 @@ class LeaderboardApi {
   }
 
   public getTeamLeaderboard(body: TLeaderboardRequest, teamName: string) {
-    return FetchApi.post(`/leaderboard/${teamName}`, { body })
+    return FetchApi.post<Array<TLeaderboardItem>>(`/leaderboard/${teamName}`, { body })
   }
 
   public getAllLeaderboard(body: TLeaderboardRequest) {
