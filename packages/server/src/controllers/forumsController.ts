@@ -28,16 +28,16 @@ class ForumsController {
 
   async getForum(req: Request, res: Response) {
     try {
-      const forumId = Number(req.params.id) ?? null
+      const { id } = req.params
 
-      if (!forumId) {
+      if (!Number(id)) {
         return res.status(400).json({
           message: FORUM_ID_ERROR,
         })
       }
 
       const forum = await ForumModel.findOne({
-        where: { id: forumId },
+        where: { id },
         include: {
           model: TopicModel,
           order: [['id', 'ASC']],

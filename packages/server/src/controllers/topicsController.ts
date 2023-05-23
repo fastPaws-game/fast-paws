@@ -6,10 +6,9 @@ import { DATA_DELETED, FORUM_ID_ERROR, SERVER_ERROR, TOPIC_ID_ERROR } from '../c
 class TopicsController {
   async createTopic(req: Request, res: Response) {
     try {
-      const forumId = Number(req.body.forumId) ?? null
-      const { title, content, user } = req.body
+      const { title, content, user, forumId } = req.body
 
-      if (!forumId) {
+      if (!Number(forumId)) {
         return res.status(400).json({
           message: FORUM_ID_ERROR,
         })
@@ -32,16 +31,16 @@ class TopicsController {
 
   async getTopic(req: Request, res: Response) {
     try {
-      const topicId = Number(req.params.id) ?? null
+      const { id } = req.params
 
-      if (!topicId) {
+      if (!Number(id)) {
         return res.status(400).json({
           message: TOPIC_ID_ERROR,
         })
       }
 
       const topic = await TopicModel.findOne({
-        where: { id: topicId },
+        where: { id },
         attributes: { exclude: ['createdAt', 'updatedAt', 'forumId'] },
         include: {
           model: CommentModel,
@@ -67,16 +66,16 @@ class TopicsController {
 
   async updateTopic(req: Request, res: Response) {
     try {
-      const topicId = Number(req.params.id) ?? null
       const { title, content } = req.body
+      const { id } = req.params
 
-      if (!topicId) {
+      if (!Number(id)) {
         return res.status(400).json({
           message: TOPIC_ID_ERROR,
         })
       }
 
-      const topic = await TopicModel.findOne({ where: { id: topicId } })
+      const topic = await TopicModel.findOne({ where: { id } })
 
       if (!topic) {
         return res.status(400).json({
@@ -84,8 +83,8 @@ class TopicsController {
         })
       }
 
-      await TopicModel.update({ title, content }, { where: { id: topic.id } })
-      const updTopic = await TopicModel.findOne({ where: { id: topicId } })
+      await TopicModel.update({ title, content }, { where: { id } })
+      const updTopic = await TopicModel.findOne({ where: { id } })
 
       if (!updTopic) {
         return res.status(400).json({
@@ -106,14 +105,14 @@ class TopicsController {
 
   async deleteTopic(req: Request, res: Response) {
     try {
-      const topicId = Number(req.params.id) ?? null
+      const { id } = req.params
 
-      if (!topicId) {
+      if (!Number(id)) {
         return res.status(404).json({
           message: TOPIC_ID_ERROR,
         })
       }
-      const topic = await TopicModel.findOne({ where: { id: topicId } })
+      const topic = await TopicModel.findOne({ where: { id } })
 
       if (!topic) {
         return res.status(404).json({
@@ -121,7 +120,7 @@ class TopicsController {
         })
       }
 
-      await TopicModel.destroy({ where: { id: topic.id } })
+      await TopicModel.destroy({ where: { id } })
 
       return res.json({
         message: DATA_DELETED,

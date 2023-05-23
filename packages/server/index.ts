@@ -1,5 +1,4 @@
 import cors from 'cors'
-import helmet from 'helmet'
 import type { ViteDevServer } from 'vite'
 import { createServer as createViteServer } from 'vite'
 import express from 'express'
@@ -21,8 +20,6 @@ const isDev = process.env.NODE_ENV === 'development'
 async function startServer() {
   dbConnect()
   const app = express()
-
-  app.use(helmet())
 
   app.use(
     cors({
