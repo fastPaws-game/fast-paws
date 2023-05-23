@@ -5,17 +5,22 @@ import express from 'express'
 import * as fs from 'fs'
 import * as path from 'path'
 import { UserAPIRepository, UserRepository } from './src/repository/UserAPI'
-import dotenv from 'dotenv'
+import 'dotenv/config'
 import cookieParser from 'cookie-parser'
 import { proxy } from './src/middlewares/proxy'
-
-dotenv.config()
+import topicsRouter from './src/routes/topics'
+import forumsRouter from './src/routes/forums'
+import commentsRouter from './src/routes/comments'
+import { dbConnect } from './db'
+import { API_VERSION } from './src/constants'
 
 const PORT = Number(process.env.SERVER_PORT) || 3001
 const isDev = process.env.NODE_ENV === 'development'
 
 async function startServer() {
+  dbConnect()
   const app = express()
+
   app.use(
     cors({
       origin: true,
@@ -24,6 +29,11 @@ async function startServer() {
   )
 
   app.use('/api/v2/*', proxy)
+
+  app.use(express.json())
+  app.use(`${API_VERSION}/topics`, topicsRouter)
+  app.use(`${API_VERSION}/forums`, forumsRouter)
+  app.use(`${API_VERSION}/comments`, commentsRouter)
 
   let vite: ViteDevServer | undefined
   const distPath = path.dirname(require.resolve('client/dist/index.html'))
