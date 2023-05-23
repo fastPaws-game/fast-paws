@@ -68,6 +68,5 @@ const baseFetch = async (url: string, method: METHODS, body?: Record<string, any
     return Promise.reject(result.reason)
   }
 
-  // console.log('success', result)
   return result
 }
