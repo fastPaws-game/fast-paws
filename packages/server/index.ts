@@ -1,5 +1,4 @@
 import cors from 'cors'
-import helmet from 'helmet'
 import type { ViteDevServer } from 'vite'
 import { createServer as createViteServer } from 'vite'
 import express from 'express'
@@ -21,20 +20,6 @@ const isDev = process.env.NODE_ENV === 'development'
 async function startServer() {
   dbConnect()
   const app = express()
-
-  app.use(helmet())
-  const validConnectSrc = isDev ? ["'self'"] : ['*']
-  app.use(
-    helmet.contentSecurityPolicy({
-      directives: {
-        defaultSrc: ["'self'"],
-        scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
-        connectSrc: validConnectSrc,
-        styleSrc: ["'self'", "'unsafe-inline'"],
-        imgSrc: ["'self'"],
-      },
-    })
-  )
 
   app.use(
     cors({

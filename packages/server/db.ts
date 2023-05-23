@@ -22,9 +22,9 @@ export async function dbConnect() {
     await sequelize.sync()
 
     // Создание строк в таблице с форумами
-    ForumModel.create({ title: 'New Games' })
-    ForumModel.create({ title: 'Games designers' })
-    ForumModel.create({ title: 'Technologies' })
+    await ForumModel.create({ title: 'New Games' })
+    await ForumModel.create({ title: 'Games designers' })
+    await ForumModel.create({ title: 'Technologies' })
 
     console.log('Connection has been established successfully.')
   } catch (error) {
