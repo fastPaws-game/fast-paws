@@ -33,7 +33,7 @@ export class TopicModel extends Model<ITopic, CreationTopic> {
   @AutoIncrement
   @PrimaryKey
   @Column(DataType.INTEGER)
-  override id: number | undefined
+  declare id: number
 
   @ForeignKey(() => ForumModel)
   @Column

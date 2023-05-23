@@ -1,11 +1,13 @@
 import type { Request, Response } from 'express'
 import { CommentModel } from '../models/commentModel'
-import { COMMENT_ID_ERROR, DATA_DELETED, DATA_UPDATED, SERVER_ERROR, TOPIC_ID_ERROR } from '../constants'
+import { COMMENT_ID_ERROR, DATA_DELETED, SERVER_ERROR, TOPIC_ID_ERROR } from '../constants'
 
 class CommentsController {
   async createComment(req: Request, res: Response) {
     try {
       const topicId = Number(req.body.topicId) ?? null
+      const { content, user } = req.body
+
       if (!topicId) {
         return res.status(404).json({
           message: TOPIC_ID_ERROR,
@@ -13,10 +15,10 @@ class CommentsController {
       }
 
       const comment = await CommentModel.create({
-        ...req.body,
+        content,
+        user,
         topicId,
       })
-      console.log(comment)
 
       return res.status(201).json(comment)
     } catch {
@@ -28,18 +30,24 @@ class CommentsController {
 
   async getComment(req: Request, res: Response) {
     try {
-      const { id } = req.params
+      const commentId = Number(req.params.id) ?? null
 
-      if (!Number(id)) {
+      if (!commentId) {
         return res.status(400).json({
           message: COMMENT_ID_ERROR,
         })
       }
 
       const comment = await CommentModel.findOne({
-        where: { id },
+        where: { id: commentId },
         attributes: { exclude: ['topicId'] },
       })
+
+      if (!comment) {
+        return res.status(400).json({
+          message: COMMENT_ID_ERROR,
+        })
+      }
 
       return res.json(comment)
     } catch {
@@ -51,20 +59,33 @@ class CommentsController {
 
   async updateComment(req: Request, res: Response) {
     try {
+      const commentId = Number(req.params.id) ?? null
       const { content } = req.body
-      const { id } = req.params
 
-      if (!Number(id)) {
+      if (!commentId) {
         return res.status(400).json({
           message: COMMENT_ID_ERROR,
         })
       }
-      const comment = await CommentModel.findOne({ where: { id } })
+      const comment = await CommentModel.findOne({ where: { id: commentId } })
 
-      await CommentModel.update({ content }, { where: { id: comment?.id } })
+      if (!comment) {
+        return res.status(400).json({
+          message: COMMENT_ID_ERROR,
+        })
+      }
+
+      await CommentModel.update({ content }, { where: { id: comment.id } })
+      const updComment = await CommentModel.findOne({ where: { id: commentId } })
+
+      if (!updComment) {
+        return res.status(400).json({
+          message: COMMENT_ID_ERROR,
+        })
+      }
 
       return res.json({
-        message: DATA_UPDATED,
+        content: updComment.content,
       })
     } catch {
       return res.status(500).json({
@@ -72,18 +93,25 @@ class CommentsController {
       })
     }
   }
+
   async deleteComment(req: Request, res: Response) {
     try {
-      const { id } = req.params
+      const commentId = Number(req.params.id) ?? null
 
-      if (!Number(id)) {
+      if (!commentId) {
         return res.status(400).json({
           message: COMMENT_ID_ERROR,
         })
       }
-      const comment = await CommentModel.findOne({ where: { id } })
+      const comment = await CommentModel.findOne({ where: { id: commentId } })
 
-      await CommentModel.destroy({ where: { id: comment?.id } })
+      if (!comment) {
+        return res.status(400).json({
+          message: COMMENT_ID_ERROR,
+        })
+      }
+
+      await CommentModel.destroy({ where: { id: comment.id } })
 
       return res.json({
         message: DATA_DELETED,

@@ -4,7 +4,6 @@ import {
   Model,
   Table,
   AllowNull,
-  Length,
   Column,
   Unique,
   AutoIncrement,
@@ -29,10 +28,9 @@ export class ForumModel extends Model<IForum, CreationForum> {
   @AutoIncrement
   @PrimaryKey
   @Column(DataType.INTEGER)
-  override id: number | undefined
+  declare id: number
 
   @AllowNull(false)
-  @Length({ min: 3, max: 120 })
   @Column(DataType.STRING)
   title!: string
 

@@ -23,18 +23,6 @@ async function startServer() {
   const app = express()
 
   app.use(helmet())
-  const validConnectSrc = isDev ? ["'self'"] : ['*']
-  app.use(
-    helmet.contentSecurityPolicy({
-      directives: {
-        defaultSrc: ["'self'"],
-        scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
-        connectSrc: validConnectSrc,
-        styleSrc: ["'self'", "'unsafe-inline'"],
-        imgSrc: ["'self'"],
-      },
-    })
-  )
 
   app.use(
     cors({

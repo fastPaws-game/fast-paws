@@ -30,7 +30,7 @@ export class CommentModel extends Model<IComment, CreationComment> {
   @AutoIncrement
   @PrimaryKey
   @Column(DataType.INTEGER)
-  override id: number | undefined
+  declare id: number
 
   @ForeignKey(() => TopicModel)
   @Column
