@@ -13,7 +13,7 @@ type Options = {
 type Request = <T>(url: string, options?: Options) => Promise<T>
 
 export class FetchApi {
-  static API_URL = '/api/v2'
+  static API_URL = 'https://ya-praktikum.tech/api/v2'
 
   public get: Request = async (url: string) => {
     return await baseFetch(url, METHODS.GET)
@@ -53,18 +53,24 @@ const baseFetch = async (url: string, method: METHODS, body?: Record<string, any
     method,
     body: bodyFetch,
   })
-
+  console.log(response.json())
   let result
 
   try {
+    console.log(response)
     result = await response.json()
+    console.log(result)
+    console.log('try')
   } catch (e) {
+    console.log('catch')
     if (response.ok) {
+      console.log('catch if')
       result = 'ok'
     }
   }
 
   if (!response.ok) {
+    console.log(result)
     return Promise.reject(result.reason)
   }
 
