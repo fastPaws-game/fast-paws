@@ -17,17 +17,14 @@ import { AuthSlice } from './types'
 export const buildSignInUser = (builder: ActionReducerMapBuilder<AuthSlice>) =>
   builder
     .addCase(signInUser.pending, state => {
-      console.log('pending')
       state.signInStatus = 'pending'
     })
     .addCase(signInUser.fulfilled, state => {
-      console.log('fulfilled')
       state.signInStatus = 'success'
       state.isAuth = true
       state.signInError = null
     })
     .addCase(signInUser.rejected, (state, action) => {
-      console.log('rejected')
       state.signInStatus = 'error'
       state.signInError = handleError(action.payload)
       if (state.signInError === ALREADY_LOGIN) {

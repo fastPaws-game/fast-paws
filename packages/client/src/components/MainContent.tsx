@@ -7,15 +7,8 @@ import styled from 'styled-components'
 import { H1 } from '../assets/styles/texts'
 import Link from '../ui/link'
 import { media } from '../assets/styles/media'
-import { useAppDispatch } from '../hooks/store'
 
 const MainContent = () => {
-  const dispatch = useAppDispatch()
-
-  // useEffect(() => {
-  //   dispatch(getUser())
-  // }, [])
-
   return (
     <Root>
       <MainTitle>Fast Paws</MainTitle>
