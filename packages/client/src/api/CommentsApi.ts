@@ -12,10 +12,6 @@ type UpdateCommentPayload = {
 }
 
 class CommentsApi {
-  public getComments() {
-    return FetchApi.get<Comment[]>(`/comments`)
-  }
-
   public addComment(body: AddCommentPayload) {
     return FetchApi.post<Comment>(`/comments`, { body })
   }

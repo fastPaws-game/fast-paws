@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { initialState } from './initialState'
-import { buildAddComment, buildDeleteComment, buildGetComments, buildUpdateComment } from './extraReducers'
+import { buildAddComment, buildDeleteComment, buildUpdateComment } from './extraReducers'
 
 export const commentsSlice = createSlice({
   name: 'comments',
@@ -10,7 +10,6 @@ export const commentsSlice = createSlice({
     buildDeleteComment(builder)
     buildUpdateComment(builder)
     buildAddComment(builder)
-    buildGetComments(builder)
   },
 })
 

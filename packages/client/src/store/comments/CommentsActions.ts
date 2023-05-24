@@ -7,14 +7,6 @@ type Payload = {
   content: string
 }
 
-export const getComments = createAsyncThunk('comments/getComments', async (_, { rejectWithValue }) => {
-  try {
-    return await CommentsApi.getComments()
-  } catch (e) {
-    return rejectWithValue(e)
-  }
-})
-
 export const addComment = createAsyncThunk('comments/addComment', async (data: Comment, { rejectWithValue }) => {
   try {
     return await CommentsApi.addComment(data)
