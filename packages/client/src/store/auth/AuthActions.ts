@@ -58,8 +58,9 @@ export const getServiceId = createAsyncThunk('auth/getServiceId', async (_, { re
     const response = await OAuthApi.getServiceId()
 
     if ('service_id' in response) {
-      const { service_id: serviceId } = response
-      location.href = OAuthApi.getOAuthUrl(serviceId as string)
+      // Property 'service_id' does not exist on type 'Response'
+      // const { service_id: serviceId } = response
+      // location.href = OAuthApi.getOAuthUrl(serviceId as string)
     } else {
       return rejectWithValue(response)
     }
