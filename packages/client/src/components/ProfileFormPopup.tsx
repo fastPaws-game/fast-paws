@@ -1,14 +1,15 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import styled from 'styled-components'
-import UserApi from '../api/UserApi'
 import { H3 } from '../assets/styles/texts'
 import { mapPasswords, TPasswordsFormValues } from '../models/PasswordsModel'
 import Button from '../ui/button'
 import Input, { typeStyleInput } from '../ui/input'
 import { passwordsSchema } from '../utils/validation/registrationSchema'
 import Popup from './Popup'
+import { useAppDispatch, useAppSelector } from '../hooks/store'
+import { updatePassword } from '../store/auth/AuthActions'
 
 type Props = {
   visible: boolean
@@ -17,7 +18,7 @@ type Props = {
   successMessageProp?: string
   title?: string
 }
-const DEFAULT_ERROR = 'Произошла ошибка!'
+
 const SUCCESS_MESSAGE = 'Пароль успешно изменен!'
 
 const defaultValuesForm = {
@@ -29,6 +30,9 @@ const defaultValuesForm = {
 const ProfileFormPopup: FC<Props> = props => {
   const { handleClose, successMessageProp, title = 'Passwords' } = props
   const [successMessage, setSuccessMessage] = useState<string>(successMessageProp || '')
+  const dispatch = useAppDispatch()
+  const passwordStatus = useAppSelector(state => state.auth.passwordStatus)
+  const passwordError = useAppSelector(state => state.auth.passwordError)
 
   const {
     register,
@@ -47,25 +51,21 @@ const ProfileFormPopup: FC<Props> = props => {
     setSuccessMessage(successMessageProp || '')
     handleClose()
   }
-  const onSubmit: SubmitHandler<TPasswordsFormValues> = async (data: TPasswordsFormValues) => {
-    const preparedData = mapPasswords(data)
-    try {
-      const response = await UserApi.updatePassword(preparedData)
-      if (response.status === 200) {
-        reset()
-        setSuccessMessage(SUCCESS_MESSAGE)
-      }
-      if (response.status !== 200) {
-        const error = await response.json()
-        setError('root.serverError', {
-          message: error.reason,
-        })
-      }
-    } catch (e) {
+
+  useEffect(() => {
+    if (passwordStatus === 'success') {
+      reset()
+      setSuccessMessage(SUCCESS_MESSAGE)
+    }
+    if (passwordStatus === 'error' && passwordError) {
       setError('root.serverError', {
-        message: DEFAULT_ERROR,
+        message: passwordError,
       })
     }
+  }, [passwordStatus, passwordError, reset, setError])
+  const onSubmit: SubmitHandler<TPasswordsFormValues> = async (data: TPasswordsFormValues) => {
+    const preparedData = mapPasswords(data)
+    dispatch(updatePassword(preparedData))
   }
 
   return (
