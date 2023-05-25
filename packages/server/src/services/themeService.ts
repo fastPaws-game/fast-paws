@@ -32,3 +32,8 @@ export async function createNewTheme(themeUID: string, theme: string | null, res
     res.status(400).json({ error: (error as Error).message })
   }
 }
+
+export async function getTheme(themeUID: string) {
+  const themeData = await Theme.findOne({ where: { themeUID } })
+  return themeData?.getDataValue('theme') || null
+}
