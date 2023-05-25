@@ -40,13 +40,13 @@ export async function getThemeController(req: Request, res: Response) {
         // Если запись не найдена, создаем новую тему с UUID и значением по умолчанию
         themeUID = makeUUID()
         res.cookie('themeUID', themeUID) // Установка куки с новым themeUID
-        await createNewTheme(themeUID, 'default', res)
+        await createNewTheme(themeUID, null, res)
       }
     } else {
       // Если нет UUID в куки, создаем новую тему с новым UUID и значением по умолчанию
       themeUID = makeUUID()
       res.cookie('themeUID', themeUID) // Установка куки с новым themeUID
-      await createNewTheme(themeUID, 'default', res)
+      await createNewTheme(themeUID, null, res)
     }
   } catch (error) {
     res.status(400).json({ error: (error as Error).message })
