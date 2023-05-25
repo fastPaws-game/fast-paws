@@ -1,4 +1,4 @@
-export const API_VERSION = '/api/v1'
+export const API_VERSION = '/api/v2'
 
 export const FORUM_ID_ERROR = 'Invalid forum ID'
 export const TOPIC_ID_ERROR = 'Invalid topic ID'

@@ -8,9 +8,12 @@ import { UserAPIRepository, UserRepository } from './src/repository/UserAPI'
 import 'dotenv/config'
 import cookieParser from 'cookie-parser'
 import { proxy } from './src/middlewares/proxy'
+
 import topicsRouter from './src/routes/topics'
 import forumsRouter from './src/routes/forums'
 import commentsRouter from './src/routes/comments'
+import themesRouter from './src/routes/themes'
+
 import { dbConnect } from './db'
 import { API_VERSION } from './src/constants'
 
@@ -28,13 +31,18 @@ async function startServer() {
     })
   )
 
-  app.use('/api/v2/*', proxy)
+  //TODO В отдельную мидвару
+  //dbConnect();
 
+  //app.use(router);
+  app.use(cookieParser())
   app.use(express.json())
   app.use(`${API_VERSION}/topics`, topicsRouter)
   app.use(`${API_VERSION}/forums`, forumsRouter)
   app.use(`${API_VERSION}/comments`, commentsRouter)
+  app.use(`${API_VERSION}/theme`, themesRouter)
 
+  app.use('/api/v2/*', proxy)
   let vite: ViteDevServer | undefined
   const distPath = path.dirname(require.resolve('client/dist/index.html'))
   const ssrPath = path.dirname(require.resolve('client/index.html'))
@@ -51,7 +59,7 @@ async function startServer() {
     app.use('/assets', express.static(path.resolve(distPath, 'assets')))
   }
 
-  app.use('*', cookieParser(), async (req, res, next) => {
+  app.use('*', async (req, res, next) => {
     const url = req.originalUrl
 
     try {
