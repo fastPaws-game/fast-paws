@@ -13,28 +13,38 @@ type Options = {
 type Request = <T>(url: string, options?: Options) => Promise<T>
 
 export class FetchApi {
-  static API_URL = 'https://ya-praktikum.tech/api/v2'
+  static API_URL = '/api/v2'
+  private apiUrl: string
+
+  constructor(apiUrl: string = FetchApi.API_URL) {
+    this.apiUrl = apiUrl
+  }
+
+  public getUrl = () => this.apiUrl
 
   public get: Request = async (url: string) => {
-    return await baseFetch(url, METHODS.GET)
+    return await baseFetch(this.apiUrl + url, METHODS.GET)
   }
 
   public post: Request = async (url: string, options = {}) => {
-    return await baseFetch(url, METHODS.POST, options.body)
+    return await baseFetch(this.apiUrl + url, METHODS.POST, options.body)
   }
 
   public delete: Request = async (url: string) => {
-    return await baseFetch(url, METHODS.DELETE)
+    return await baseFetch(this.apiUrl + url, METHODS.DELETE)
   }
 
   public put: Request = async (url: string, options = {}) => {
-    return await baseFetch(url, METHODS.PUT, options.body)
+    return await baseFetch(this.apiUrl + url, METHODS.PUT, options.body)
   }
 
   public patch: Request = async (url: string, options = {}) => {
-    return await baseFetch(url, METHODS.PATCH, options.body)
+    return await baseFetch(this.apiUrl + url, METHODS.PATCH, options.body)
   }
 }
+
+const FetchForumApi = new FetchApi('api/v1')
+export { FetchForumApi }
 
 export default new FetchApi()
 
@@ -45,7 +55,7 @@ const baseFetch = async (url: string, method: METHODS, body?: Record<string, any
     bodyFetch = body
   }
 
-  const response = await fetch(FetchApi.API_URL + url, {
+  const response = await fetch(url, {
     headers: {
       'Content-Type': isFormData ? 'multipart/form-data' : 'application/json',
     },
@@ -53,24 +63,18 @@ const baseFetch = async (url: string, method: METHODS, body?: Record<string, any
     method,
     body: bodyFetch,
   })
-  console.log(response.json())
+
   let result
 
   try {
-    console.log(response)
     result = await response.json()
-    console.log(result)
-    console.log('try')
   } catch (e) {
-    console.log('catch')
     if (response.ok) {
-      console.log('catch if')
       result = 'ok'
     }
   }
 
   if (!response.ok) {
-    console.log(result)
     return Promise.reject(result.reason)
   }
 

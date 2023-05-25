@@ -14,7 +14,7 @@ import commentsRouter from './src/routes/comments'
 import { dbConnect } from './db'
 import { API_VERSION } from './src/constants'
 
-const PORT = Number(process.env.SERVER_PORT) || 5000
+const PORT = Number(process.env.SERVER_PORT) || 3001
 const isDev = process.env.NODE_ENV === 'development'
 
 async function startServer() {

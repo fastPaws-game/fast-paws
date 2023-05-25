@@ -41,7 +41,7 @@ export const routes = [
   {
     path: Routes.SETTINGS,
     exact: true,
-    requireAuth: true,
+    // requireAuth: true,
     element: <ProfilePage />,
     loader: (dispatch: AppDispatch) => {
       return dispatch(getUser())
@@ -50,7 +50,7 @@ export const routes = [
   {
     path: Routes.FORUM,
     exact: true,
-    requireAuth: true,
+    // requireAuth: true,
     element: <ForumPage />,
     loader: (dispatch: AppDispatch) => {
       return dispatch(getUser())
@@ -58,7 +58,7 @@ export const routes = [
   },
   {
     path: `${Routes.FORUM}/:forumId`,
-    requireAuth: true,
+    // requireAuth: true,
     element: <TopicPage />,
     loader: (dispatch: AppDispatch) => {
       return dispatch(getUser())
