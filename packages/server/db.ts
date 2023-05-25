@@ -2,6 +2,7 @@ import { Sequelize, SequelizeOptions } from 'sequelize-typescript'
 import { ForumModel } from './src/models/forumModel'
 import { TopicModel } from './src/models/topicModel'
 import { CommentModel } from './src/models/commentModel'
+import theme from './src/models/themeModel'
 
 const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT } = process.env
 const sequelizeOptions: SequelizeOptions = {
@@ -16,6 +17,8 @@ const sequelizeOptions: SequelizeOptions = {
 
 export const sequelize = new Sequelize(sequelizeOptions)
 
+export const Theme = sequelize.define('theme', theme, {})
+
 export async function dbConnect() {
   try {
     await sequelize.authenticate()
@@ -25,6 +28,7 @@ export async function dbConnect() {
     await ForumModel.create({ title: 'New Games' })
     await ForumModel.create({ title: 'Games designers' })
     await ForumModel.create({ title: 'Technologies' })
+    // темизация
 
     console.log('Connection has been established successfully.')
   } catch (error) {
