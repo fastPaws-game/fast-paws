@@ -9,6 +9,7 @@ import { matchPath } from 'react-router'
 import { UserRepository, UserService } from './src/services/userService'
 
 import StartSSRPage from './src/pages/StartSSRPage'
+import React from 'react'
 
 export async function render(url: string, repository: UserRepository) {
   const [pathname] = url.split('?')
