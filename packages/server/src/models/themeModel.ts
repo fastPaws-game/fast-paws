@@ -1,13 +1,20 @@
+import type { Optional } from 'sequelize'
 import { DataType, BeforeValidate, Column, Model, Default, Table } from 'sequelize-typescript'
 import { v4 as makeUUID } from 'uuid'
 
+interface ITheme {
+  themeUID: string
+  theme?: string
+  id: number
+}
+
+type CreationTheme = Optional<ITheme, 'id'>
 @Table({
   tableName: 'themes',
 })
-export default class ThemeModel extends Model<any> {
+export default class ThemeModel extends Model<ITheme, CreationTheme> {
   @Column({
     type: DataType.UUID,
-    defaultValue: DataType.UUIDV4,
     allowNull: false,
     unique: true,
   })
