@@ -1,9 +1,11 @@
 import { FC } from 'react'
 import styled from 'styled-components'
-import TopicItem, { Props as TopicProps } from '../ui/topic'
+import TopicItem from '../ui/topic'
+import { FullForum } from '../models/ForumModel'
+import { Routes } from '../constants/routes'
 
 type Props = {
-  topics: Array<TopicProps>
+  topics: FullForum['topics']
 }
 
 const TopicsList: FC<Props> = props => {
@@ -12,7 +14,16 @@ const TopicsList: FC<Props> = props => {
   return (
     <TopicsContainer>
       <ListWrapper>
-        {topics.length === 0 ? 'No topics' : topics.map((topic, index) => <TopicItem key={index} {...topic} />)}
+        {topics.length === 0
+          ? 'no topics'
+          : topics.map(topic => (
+              <TopicItem
+                key={topic.id}
+                topicName={topic.title}
+                topicPath={`${Routes.FORUM}/${topic.id}}`}
+                commentsCount={topic.commentsCount}
+              />
+            ))}
       </ListWrapper>
     </TopicsContainer>
   )

@@ -5,23 +5,20 @@ import Link from '../link'
 export type Props = {
   topicName: string
   topicPath: string
-  comments: number
-  userName: string
-  userPath: string
-  date: string
+  commentsCount: number
 }
 
 const TopicItem: FC<Props> = props => {
-  const { topicName, topicPath, comments, userName, userPath, date } = props
+  const { topicName, topicPath, commentsCount } = props
 
   return (
     <Item>
       <Link to={topicPath}>{topicName}</Link>
-      <Topics>Comments: {comments}</Topics>
-      <LastMessage>
+      <Topics>Comments: {commentsCount}</Topics>
+      {/* <LastMessage>
         <UserName to={userPath}>{userName}</UserName>
         <Date>{date}</Date>
-      </LastMessage>
+      </LastMessage> */}
     </Item>
   )
 }
@@ -41,18 +38,18 @@ const Topics = styled.span`
   font-weight: 700;
 `
 
-const LastMessage = styled.div`
-  display: flex;
-  gap: 15px;
-`
+// const LastMessage = styled.div`
+//   display: flex;
+//   gap: 15px;
+// `
 
-const UserName = styled(Link)`
-  color: ${({ theme }) => theme.text.textInvert} !important;
-  font-weight: 600;
-`
+// const UserName = styled(Link)`
+//   color: ${({ theme }) => theme.text.textInvert} !important;
+//   font-weight: 600;
+// `
 
-const Date = styled.span`
-  color: ${({ theme }) => theme.text.textInvert};
-`
+// const Date = styled.span`
+//   color: ${({ theme }) => theme.text.textInvert};
+// `
 
 export default TopicItem
