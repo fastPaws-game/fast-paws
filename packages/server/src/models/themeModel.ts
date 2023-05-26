@@ -1,18 +1,34 @@
-import { DataType } from 'sequelize-typescript'
+import { DataType, BeforeValidate, Column, Model, Default, Table } from 'sequelize-typescript'
 import { v4 as makeUUID } from 'uuid'
 
-const theme = {
-  themeUID: {
-    type: DataType.UUIDV4,
-    defaultValue: () => makeUUID(),
+@Table({
+  tableName: 'themes',
+})
+export default class ThemeModel extends Model<any> {
+  @Column({
+    type: DataType.UUID,
+    defaultValue: DataType.UUIDV4,
     allowNull: false,
     unique: true,
-  },
-  theme: {
-    type: DataType.ENUM('dark', 'light'),
-    defaultValue: 'dark',
-    allowNull: false,
-  },
-}
+  })
+  themeUID!: string
 
-export default theme
+  @Default('dark')
+  @Column({
+    type: DataType.ENUM('dark', 'light'),
+    allowNull: false,
+  })
+  theme!: string
+
+  @BeforeValidate
+  static generateUUID(instance: ThemeModel) {
+    instance.themeUID = makeUUID()
+  }
+
+  @BeforeValidate
+  static setDefaultTheme(instance: ThemeModel) {
+    if (!instance.theme) {
+      instance.theme = 'dark'
+    }
+  }
+}

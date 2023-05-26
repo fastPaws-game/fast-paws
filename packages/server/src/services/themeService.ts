@@ -1,6 +1,6 @@
 import type { Response } from 'express'
 
-import { Theme } from '../../db'
+import Theme from '../models/themeModel'
 
 export async function updateTheme(themeUID: string, theme: string, res: Response) {
   try {
