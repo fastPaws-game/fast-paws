@@ -13,3 +13,5 @@
 | /comments/    | POST   | Создать новый комментарий: { content: string; user: string; topicId: number}            |
 | /comments/:id | PATCH  | Обновить комментарий { content: string; }                                               |
 | /comments/:id | DELETE | Удалить комментарий                                                                     |
+| /theme        | GET    | Получить текущую цветовую тему                                                          |
+| /theme        | PUT    | Обновить текущую тему                                                                   |

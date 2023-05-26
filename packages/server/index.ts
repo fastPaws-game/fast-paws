@@ -34,7 +34,7 @@ async function startServer() {
   app.use(`${SERVER_API}/topics`, topicsRouter)
   app.use(`${SERVER_API}/forums`, forumsRouter)
   app.use(`${SERVER_API}/comments`, commentsRouter)
-  app.use(`${SERVER_API}/theme`, themesRouter) // Added cookieParser
+  app.use(`${SERVER_API}/theme`, cookieParser(), themesRouter)
 
   let vite: ViteDevServer | undefined
   const distPath = path.dirname(require.resolve('client/dist/index.html'))
