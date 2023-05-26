@@ -1,6 +1,4 @@
 import cors from 'cors'
-import type { ViteDevServer } from 'vite'
-import { createServer as createViteServer } from 'vite'
 import express from 'express'
 import * as fs from 'fs'
 import * as path from 'path'
@@ -35,18 +33,21 @@ async function startServer() {
   app.use(`${API_VERSION}/forums`, forumsRouter)
   app.use(`${API_VERSION}/comments`, commentsRouter)
 
-  let vite: ViteDevServer | undefined
   const distPath = path.dirname(require.resolve('client/dist/index.html'))
-  const ssrPath = path.dirname(require.resolve('client/index.html'))
+  const ssrPath = isDev ? path.dirname(require.resolve('client/index.html')) : ''
   const ssrDistPath = require.resolve('client/dist-ssr/client.cjs')
 
+  /* eslint-disable @typescript-eslint/no-var-requires */
+  const vite = isDev
+    ? await require('vite').createServer({
+        server: { middlewareMode: true },
+        root: ssrPath,
+        appType: 'custom',
+      })
+    : undefined
+
   if (isDev) {
-    vite = await createViteServer({
-      server: { middlewareMode: true },
-      root: ssrPath,
-      appType: 'custom',
-    })
-    app.use(vite.middlewares)
+    app.use(vite!.middlewares)
   } else {
     app.use('/assets', express.static(path.resolve(distPath, 'assets')))
   }
