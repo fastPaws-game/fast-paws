@@ -6,6 +6,8 @@ export async function updateTheme(themeUID: string, theme: string, res: Response
   try {
     const updatedData = await Theme.update({ theme }, { where: { themeUID } })
 
+    console.log(themeUID, updatedData)
+
     if (updatedData[0]) {
       res.status(200).json({
         theme: theme,

@@ -16,7 +16,7 @@ import { dbConnect } from './db'
 import { SERVER_API, PRAKTICUM_API } from './src/constants'
 import themesRouter from './src/routes/themes'
 
-const PORT = Number(process.env.SERVER_PORT) || 3001
+const PORT = Number(process.env.SERVER_PORT) || 5000
 const isDev = process.env.NODE_ENV === 'development'
 
 async function startServer() {
