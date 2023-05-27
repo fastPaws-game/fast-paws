@@ -6,7 +6,6 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { UserAPIRepository, UserRepository } from './src/repository/UserAPI'
 import 'dotenv/config'
-//import themesRouter from './src/routes/themes'
 import cookieParser from 'cookie-parser'
 import { proxy } from './src/middlewares/proxy'
 import topicsRouter from './src/routes/topics'
@@ -15,8 +14,9 @@ import commentsRouter from './src/routes/comments'
 import { dbConnect } from './db'
 import { SERVER_API, PRAKTICUM_API } from './src/constants'
 import themesRouter from './src/routes/themes'
+import { getCurrentThemeMiddleware } from './src/middlewares/getCurrentThemeMiddleware'
 
-const PORT = Number(process.env.SERVER_PORT) || 3001
+const PORT = Number(process.env.SERVER_PORT) || 5000
 const isDev = process.env.NODE_ENV === 'development'
 
 async function startServer() {
@@ -29,6 +29,7 @@ async function startServer() {
       credentials: true,
     })
   )
+
   app.use(`${PRAKTICUM_API}/*`, proxy)
   app.use(express.json())
   app.use(`${SERVER_API}/topics`, topicsRouter)
@@ -52,7 +53,7 @@ async function startServer() {
     app.use('/assets', express.static(path.resolve(distPath, 'assets')))
   }
 
-  app.use('*', cookieParser(), async (req, res, next) => {
+  app.use('*', cookieParser(), getCurrentThemeMiddleware, async (req, res, next) => {
     const url = req.originalUrl
 
     try {
@@ -64,14 +65,15 @@ async function startServer() {
         template = fs.readFileSync(path.resolve(distPath, 'index.html'), 'utf-8')
       }
 
-      let render: (url: string, userService: UserRepository) => Promise<string>
+      let render: (url: string, userService: UserRepository, currentTheme: string) => Promise<string>
       if (isDev) {
         render = (await vite!.ssrLoadModule(path.resolve(ssrPath, 'ssr.tsx'))).render
       } else {
         render = (await import(ssrDistPath)).render
       }
 
-      const [initialState, appHtml, css] = await render(url, new UserAPIRepository(req.headers['cookie']))
+      const currentTheme = res.locals ? res.locals.currentTheme : null
+      const [initialState, appHtml, css] = await render(url, new UserAPIRepository(req.headers['cookie']), currentTheme)
 
       const initStateSerialized = JSON.stringify(initialState).replace(/</g, '\\u003c')
       const stateMarkup = `<script>window.__INITIAL_STATE__=${initStateSerialized}</script>`

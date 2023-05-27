@@ -13,7 +13,7 @@ const getAvatarError = (state: RootState) => state.auth.avatarError
 const getServiceIdStatus = (state: RootState) => state.auth.serviceIdStatus
 const getServiceIdError = (state: RootState) => state.auth.serviceIdError
 const getAvatar = (state: RootState) =>
-  state.auth.user?.avatar ? `${FetchApi.API_URL}/resources${state.auth.user?.avatar}` : null
+  state.auth.user?.avatar ? `${FetchApi.getURL()}/resources${state.auth.user?.avatar}` : null
 
 export const authSelectors = {
   getUserError,

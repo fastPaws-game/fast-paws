@@ -1,8 +1,8 @@
 import { Router } from 'express'
-import { putTheme, getThemeController } from '../controllers/themesControllers'
+import { putTheme } from '../controllers/themesControllers'
 
 const router = Router()
 
-router.route('/').get(getThemeController).put(putTheme)
+router.route('/').put(putTheme)
 
 export default router
