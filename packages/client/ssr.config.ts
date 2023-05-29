@@ -6,7 +6,7 @@ import * as path from 'path'
 export default defineConfig({
   plugins: [react()],
   define: {
-    SERVER_PORT: JSON.stringify(3001),
+    SERVER_PORT: JSON.stringify(5000),
     YANDEX_URL: JSON.stringify('https://ya-praktikum.tech'),
   },
   build: {
