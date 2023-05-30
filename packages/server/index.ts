@@ -3,7 +3,7 @@ import express from 'express'
 import * as fs from 'fs'
 import * as path from 'path'
 import { UserAPIRepository, UserRepository } from './src/repository/UserAPI'
-import 'dotenv/config'
+import dotenv from 'dotenv'
 import cookieParser from 'cookie-parser'
 import { proxy } from './src/middlewares/proxy'
 import topicsRouter from './src/routes/topics'
@@ -11,6 +11,8 @@ import forumsRouter from './src/routes/forums'
 import commentsRouter from './src/routes/comments'
 import { dbConnect } from './db'
 import { API_VERSION } from './src/constants'
+
+dotenv.config({ path: '../../.env' })
 
 const PORT = Number(process.env.SERVER_PORT) || 5000
 const isDev = process.env.NODE_ENV === 'development'

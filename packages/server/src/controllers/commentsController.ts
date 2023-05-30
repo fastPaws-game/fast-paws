@@ -5,7 +5,7 @@ import { COMMENT_ID_ERROR, DATA_DELETED, SERVER_ERROR, TOPIC_ID_ERROR } from '..
 class CommentsController {
   async createComment(req: Request, res: Response) {
     try {
-      const { content, user, topicId } = req.body
+      const { content, user, topicId, parentId } = req.body
 
       if (!Number(topicId)) {
         return res.status(404).json({
@@ -17,6 +17,7 @@ class CommentsController {
         content,
         user,
         topicId,
+        parentId,
       })
 
       return res.status(201).json(comment)
