@@ -105,11 +105,11 @@ export const GlobalStyles = createGlobalStyle`
     line-height: 1.15;
     margin: 0;
   }
-  input {
+  input, textarea {
     overflow: visible;
   }
 
-  input, input:focus {
+  input, input:focus, textarea, textarea:focus {
     border: none;
     box-sizing: border-box;
     outline: thin;

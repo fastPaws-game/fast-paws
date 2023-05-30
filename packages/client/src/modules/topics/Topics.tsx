@@ -1,8 +1,8 @@
 import { FC, useEffect } from 'react'
 import TopicsList from '../../components/TopicsList'
 import { useAppDispatch, useAppSelector } from '../../hooks/store'
-import { forumSelectors } from '../../store/forum/ForumSelectors'
 import { getForumById } from '../../store/forum/ForumActions'
+import { topicsSelectors } from '../../store/topic/topicSelectors'
 
 type Props = {
   forumId: number
@@ -11,19 +11,13 @@ type Props = {
 const Topics: FC<Props> = props => {
   const { forumId } = props
   const dispatch = useAppDispatch()
-  const currentForum = useAppSelector(forumSelectors.getCurrentForum)
-  let topics
-  if (!currentForum) {
-    topics = []
-  } else {
-    topics = currentForum.topics
-  }
+  const currentTopicStatus = useAppSelector(topicsSelectors.getCurrentTopicStatus)
 
   useEffect(() => {
     dispatch(getForumById(forumId))
-  }, [])
+  }, [currentTopicStatus])
 
-  return <TopicsList topics={topics} />
+  return <TopicsList />
 }
 
 export default Topics

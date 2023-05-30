@@ -24,12 +24,14 @@ export const buildAddComment = (builder: ActionReducerMapBuilder<CommentsSlice>)
     })
     .addCase(addComment.fulfilled, (state, action) => {
       state.commentEditStatus = 'success'
+      state.commentsStatus = 'success'
       state.commentEditError = null
 
       state.comments.push(action.payload)
     })
     .addCase(addComment.rejected, (state, action) => {
       state.commentEditStatus = 'error'
+      state.commentsStatus = 'error'
       state.commentEditError = handleError(action.payload)
     })
 

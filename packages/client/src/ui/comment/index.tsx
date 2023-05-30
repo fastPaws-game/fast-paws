@@ -1,30 +1,24 @@
 import { FC } from 'react'
 import styled from 'styled-components'
 import { useAppSelector } from '../../hooks/store'
-import Link from '../link'
 import { authSelectors } from '../../store/auth/AuthSelectors'
 
-export type Props = {
-  topicName: string
-  topicPath: string
-  topicContent: string
-  commentsCount: number
+type Props = {
+  comment: string
 }
 
-const TopicItem: FC<Props> = props => {
+const CommentItem: FC<Props> = props => {
   const user = useAppSelector(authSelectors.getUser)
+  const { comment } = props
   const now = new Date()
-  const { topicName, topicPath, commentsCount, topicContent } = props
 
   return (
     <Item>
       <Container>
-        <Topics>{user?.login}</Topics>
-        <Topics>{now.toUTCString()}</Topics>
-        <Container>Title: {topicName}</Container>
+        {user?.login}
+        {now.toUTCString()}
       </Container>
-      <Container> {topicContent}</Container>
-      <Link to={topicPath}>Comments: {commentsCount}</Link>
+      <Container>{comment}</Container>
     </Item>
   )
 }
@@ -48,8 +42,4 @@ const Container = styled.div`
   font-weight: 600;
 `
 
-const Topics = styled.span`
-  padding-right: 15px;
-`
-
-export default TopicItem
+export default CommentItem

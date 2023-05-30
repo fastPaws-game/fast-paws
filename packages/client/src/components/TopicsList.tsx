@@ -1,29 +1,30 @@
-import { FC } from 'react'
 import styled from 'styled-components'
+import { P1 } from '../assets/styles/texts'
 import TopicItem from '../ui/topic'
-import { FullForum } from '../models/ForumModel'
 import { Routes } from '../constants/routes'
+import { useAppSelector } from '../hooks/store'
+import { forumSelectors } from '../store/forum/ForumSelectors'
 
-type Props = {
-  topics: FullForum['topics']
-}
-
-const TopicsList: FC<Props> = props => {
-  const { topics } = props
+const TopicsList = () => {
+  const currentForum = useAppSelector(forumSelectors.getCurrentForum)
+  const topics = currentForum?.topics
 
   return (
     <TopicsContainer>
       <ListWrapper>
-        {topics.length === 0
-          ? 'no topics'
-          : topics.map(topic => (
-              <TopicItem
-                key={topic.id}
-                topicName={topic.title}
-                topicPath={`${Routes.FORUM}/${topic.id}}`}
-                commentsCount={topic.commentsCount}
-              />
-            ))}
+        {topics === undefined || topics.length === 0 ? (
+          <Title>No Topics</Title>
+        ) : (
+          topics.map(topic => (
+            <TopicItem
+              key={topic.id}
+              topicName={topic.title}
+              topicPath={`${Routes.FORUM}/${Routes.TOPIC}/${topic.id}`}
+              topicContent={topic.content}
+              commentsCount={topic.commentsCount}
+            />
+          ))
+        )}
       </ListWrapper>
     </TopicsContainer>
   )
@@ -35,23 +36,23 @@ const TopicsContainer = styled.div`
   gap: 25px;
   align-items: center;
   justify-content: flex-start;
-  width: 100vw;
-  height: 80vh;
+  width: 100%;
+  height: 100%;
 `
 
 const ListWrapper = styled.ul`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 5px;
+  gap: 15px;
   list-style-type: none;
-  background-color: ${({ theme }) => theme.colors.secondary};
-  box-shadow: ${({ theme }) => theme.shadows.topic};
-  border-radius: 16px;
   width: 90%;
-  max-height: 90%;
-  overflow-y: scroll;
-  padding: 10px 20px;
+  padding: 30px;
+`
+
+const Title = styled(P1)`
+  text-align: center;
+  width: 100%;
 `
 
 export default TopicsList

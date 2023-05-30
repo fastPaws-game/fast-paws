@@ -43,7 +43,7 @@ export class FetchApi {
   }
 }
 
-const FetchForumApi = new FetchApi('api/v1')
+const FetchForumApi = new FetchApi('/api/v1')
 export { FetchForumApi }
 
 export default new FetchApi()
