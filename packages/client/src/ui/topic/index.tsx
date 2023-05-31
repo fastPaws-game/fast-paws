@@ -13,24 +13,12 @@ export type Props = {
 
 const TopicItem: FC<Props> = props => {
   const user = useAppSelector(authSelectors.getUser)
-  const now = new Date()
-  const options: Intl.DateTimeFormatOptions = {
-    weekday: 'short',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
-    hour12: false,
-  }
-  const dateAndTime = now.toLocaleString('en-US', options)
   const { topicName, topicPath, commentsCount, topicContent } = props
 
   return (
     <Item>
       <Container>
-        <Topics>{user?.login}</Topics>
-        <Topics>{dateAndTime}</Topics>
+        {user?.login}
         <Container>Title: {topicName}</Container>
       </Container>
       <Container> {topicContent}</Container>
@@ -56,10 +44,6 @@ const Item = styled.li`
 const Container = styled.div`
   color: ${({ theme }) => theme.text.textInvert};
   font-weight: 600;
-`
-
-const Topics = styled.span`
-  padding-right: 15px;
 `
 
 export default TopicItem

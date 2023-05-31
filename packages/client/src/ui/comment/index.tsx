@@ -5,22 +5,23 @@ import { authSelectors } from '../../store/auth/AuthSelectors'
 
 type Props = {
   comment: string
+  createdAt: string
 }
 
 const CommentItem: FC<Props> = props => {
   const user = useAppSelector(authSelectors.getUser)
-  const { comment } = props
-  const now = new Date()
+  const { comment, createdAt } = props
+  const now = new Date(createdAt)
   const options: Intl.DateTimeFormatOptions = {
-    weekday: 'short',
     year: 'numeric',
-    month: 'long',
+    month: 'numeric',
     day: 'numeric',
     hour: 'numeric',
     minute: 'numeric',
     hour12: false,
   }
-  const dateAndTime = now.toLocaleString('en-US', options)
+  const dateAndTime = now.toLocaleString('ru-RU', options)
+
   const handleReply = () => {
     console.log('Reply')
   }
@@ -61,7 +62,7 @@ const Topics = styled.span`
 `
 
 const Reply = styled.button`
-  width: 5%;
+  width: 2%;
   background-color: transparent;
   border: none;
   color: ${({ theme }) => theme.text.textInvert};

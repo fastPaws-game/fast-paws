@@ -42,7 +42,7 @@ export const routes = [
   {
     path: Routes.SETTINGS,
     exact: true,
-    // requireAuth: true,
+    requireAuth: true,
     element: <ProfilePage />,
     loader: (dispatch: AppDispatch) => {
       return dispatch(getUser())

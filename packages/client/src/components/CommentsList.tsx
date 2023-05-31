@@ -28,7 +28,9 @@ const CommentsList: FC<Props> = props => {
         {comments === undefined || comments.length === 0 ? (
           <Paragraf>No comments</Paragraf>
         ) : (
-          comments.map(comment => <CommentItem key={comment.id} comment={comment.content} />)
+          comments.map(comment => (
+            <CommentItem key={comment.id} comment={comment.content} createdAt={comment.createdAt} />
+          ))
         )}
       </ListWrapper>
     </TopicContainer>
