@@ -11,14 +11,28 @@ const CommentItem: FC<Props> = props => {
   const user = useAppSelector(authSelectors.getUser)
   const { comment } = props
   const now = new Date()
+  const options: Intl.DateTimeFormatOptions = {
+    weekday: 'short',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: false,
+  }
+  const dateAndTime = now.toLocaleString('en-US', options)
+  const handleReply = () => {
+    console.log('Reply')
+  }
 
   return (
     <Item>
       <Container>
-        {user?.login}
-        {now.toUTCString()}
+        <Topics>{user?.login}</Topics>
+        <Topics>{dateAndTime}</Topics>
       </Container>
       <Container>{comment}</Container>
+      <Reply onClick={handleReply}>Reply</Reply>
     </Item>
   )
 }
@@ -38,6 +52,18 @@ const Item = styled.li`
 `
 
 const Container = styled.div`
+  color: ${({ theme }) => theme.text.textInvert};
+  font-weight: 600;
+`
+
+const Topics = styled.span`
+  padding-right: 15px;
+`
+
+const Reply = styled.button`
+  width: 5%;
+  background-color: transparent;
+  border: none;
   color: ${({ theme }) => theme.text.textInvert};
   font-weight: 600;
 `

@@ -14,13 +14,23 @@ export type Props = {
 const TopicItem: FC<Props> = props => {
   const user = useAppSelector(authSelectors.getUser)
   const now = new Date()
+  const options: Intl.DateTimeFormatOptions = {
+    weekday: 'short',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: false,
+  }
+  const dateAndTime = now.toLocaleString('en-US', options)
   const { topicName, topicPath, commentsCount, topicContent } = props
 
   return (
     <Item>
       <Container>
         <Topics>{user?.login}</Topics>
-        <Topics>{now.toUTCString()}</Topics>
+        <Topics>{dateAndTime}</Topics>
         <Container>Title: {topicName}</Container>
       </Container>
       <Container> {topicContent}</Container>

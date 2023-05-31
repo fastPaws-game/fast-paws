@@ -21,6 +21,7 @@ export const buildAddComment = (builder: ActionReducerMapBuilder<CommentsSlice>)
   builder
     .addCase(addComment.pending, state => {
       state.commentEditStatus = 'pending'
+      state.commentsStatus = 'pending'
     })
     .addCase(addComment.fulfilled, (state, action) => {
       state.commentEditStatus = 'success'

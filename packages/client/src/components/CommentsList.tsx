@@ -2,8 +2,8 @@ import { FC, useEffect } from 'react'
 import styled from 'styled-components'
 import { P1 } from '../assets/styles/texts'
 import { useAppDispatch, useAppSelector } from '../hooks/store'
-import { getTopicById } from '../store/topic/TopicActions'
 import { topicsSelectors } from '../store/topic/topicSelectors'
+import { getTopicById } from '../store/topic/TopicActions'
 import { commentsSelectors } from '../store/comments/CommentsSelectors'
 import CommentItem from '../ui/comment'
 
@@ -23,12 +23,7 @@ const CommentsList: FC<Props> = props => {
   }, [currentCommentStatus])
 
   return (
-    <>
-      <Container>
-        <Paragraf>{currentTopic?.user}</Paragraf>
-        <Paragraf>Title: {currentTopic?.title}</Paragraf>
-        <Paragraf>{currentTopic?.content}</Paragraf>
-      </Container>
+    <TopicContainer>
       <ListWrapper>
         {comments === undefined || comments.length === 0 ? (
           <Paragraf>No comments</Paragraf>
@@ -36,9 +31,21 @@ const CommentsList: FC<Props> = props => {
           comments.map(comment => <CommentItem key={comment.id} comment={comment.content} />)
         )}
       </ListWrapper>
-    </>
+    </TopicContainer>
   )
 }
+
+const TopicContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  align-items: center;
+  justify-content: flex-start;
+  width: 90%;
+  height: 100%;
+  overflow-y: scroll;
+  margin: 30px;
+`
 
 const ListWrapper = styled.ul`
   display: flex;
@@ -46,15 +53,13 @@ const ListWrapper = styled.ul`
   align-items: flex-start;
   gap: 15px;
   list-style-type: none;
-  width: 90%;
-  padding: 30px;
+  width: 100%;
+  padding: 0 30px;
 `
 
 const Paragraf = styled(P1)`
   text-align: center;
   width: 100%;
 `
-const Container = styled.div`
-  width: 100%;
-`
+
 export default CommentsList

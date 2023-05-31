@@ -29,7 +29,7 @@ const TextArea: FC<Props> = forwardRef((props, ref) => {
 })
 
 const Wrapper = styled.div`
-  width: 80%;
+  width: 100%;
 `
 const TextAreaCommentStyled = styled.textarea<{ errorOn?: boolean }>`
   width: 100%;

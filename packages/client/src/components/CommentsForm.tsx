@@ -75,10 +75,8 @@ const CommentForm: FC<Props> = props => {
 }
 
 const Form = styled.form`
-  width: 100%;
-  position: fixed;
-  left: 0;
-  bottom: 0;
+  width: 90%;
+  align-self: center;
   display: flex;
   flex-direction: column;
   align-items: center;
