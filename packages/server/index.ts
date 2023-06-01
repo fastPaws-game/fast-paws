@@ -1,24 +1,28 @@
 import cors from 'cors'
-import type { ViteDevServer } from 'vite'
-import { createServer as createViteServer } from 'vite'
 import express from 'express'
 import * as fs from 'fs'
 import * as path from 'path'
 import { UserAPIRepository, UserRepository } from './src/repository/UserAPI'
-import 'dotenv/config'
+import dotenv from 'dotenv'
 import cookieParser from 'cookie-parser'
 import { proxy } from './src/middlewares/proxy'
 import topicsRouter from './src/routes/topics'
 import forumsRouter from './src/routes/forums'
 import commentsRouter from './src/routes/comments'
 import { dbConnect } from './db'
-import { API_VERSION } from './src/constants'
+import { SERVER_API, PRAKTICUM_API } from './src/constants'
+import themesRouter from './src/routes/themes'
+import { getCurrentThemeMiddleware } from './src/middlewares/getCurrentThemeMiddleware'
 
-const PORT = Number(process.env.SERVER_PORT) || 3001
+
+dotenv.config({ path: '../../.env' })
+
+
+const PORT = Number(process.env.SERVER_PORT) || 5000
 const isDev = process.env.NODE_ENV === 'development'
 
 async function startServer() {
-  dbConnect()
+  await dbConnect()
   const app = express()
 
   app.use(
@@ -28,30 +32,33 @@ async function startServer() {
     })
   )
 
-  app.use('/api/v2/*', proxy)
-
+  app.use(`${PRAKTICUM_API}/*`, proxy)
   app.use(express.json())
-  app.use(`${API_VERSION}/topics`, topicsRouter)
-  app.use(`${API_VERSION}/forums`, forumsRouter)
-  app.use(`${API_VERSION}/comments`, commentsRouter)
+  app.use(`${SERVER_API}/topics`, topicsRouter)
+  app.use(`${SERVER_API}/forums`, forumsRouter)
+  app.use(`${SERVER_API}/comments`, commentsRouter)
+  app.use(`${SERVER_API}/theme`, cookieParser(), themesRouter)
 
-  let vite: ViteDevServer | undefined
   const distPath = path.dirname(require.resolve('client/dist/index.html'))
-  const ssrPath = path.dirname(require.resolve('client/index.html'))
+  const ssrPath = isDev ? path.dirname(require.resolve('client/index.html')) : ''
   const ssrDistPath = require.resolve('client/dist-ssr/client.cjs')
 
+  /* eslint-disable @typescript-eslint/no-var-requires */
+  const vite = isDev
+    ? await require('vite').createServer({
+        server: { middlewareMode: true },
+        root: ssrPath,
+        appType: 'custom',
+      })
+    : undefined
+
   if (isDev) {
-    vite = await createViteServer({
-      server: { middlewareMode: true },
-      root: ssrPath,
-      appType: 'custom',
-    })
-    app.use(vite.middlewares)
+    app.use(vite!.middlewares)
   } else {
     app.use('/assets', express.static(path.resolve(distPath, 'assets')))
   }
 
-  app.use('*', cookieParser(), async (req, res, next) => {
+  app.use('*', cookieParser(), getCurrentThemeMiddleware, async (req, res, next) => {
     const url = req.originalUrl
 
     try {
@@ -63,14 +70,15 @@ async function startServer() {
         template = fs.readFileSync(path.resolve(distPath, 'index.html'), 'utf-8')
       }
 
-      let render: (url: string, userService: UserRepository) => Promise<string>
+      let render: (url: string, userService: UserRepository, currentTheme: string) => Promise<string>
       if (isDev) {
         render = (await vite!.ssrLoadModule(path.resolve(ssrPath, 'ssr.tsx'))).render
       } else {
         render = (await import(ssrDistPath)).render
       }
 
-      const [initialState, appHtml, css] = await render(url, new UserAPIRepository(req.headers['cookie']))
+      const currentTheme = res.locals ? res.locals.currentTheme : null
+      const [initialState, appHtml, css] = await render(url, new UserAPIRepository(req.headers['cookie']), currentTheme)
 
       const initStateSerialized = JSON.stringify(initialState).replace(/</g, '\\u003c')
       const stateMarkup = `<script>window.__INITIAL_STATE__=${initStateSerialized}</script>`

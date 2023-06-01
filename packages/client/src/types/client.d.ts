@@ -15,6 +15,9 @@ declare module '*.png' {
 }
 
 declare global {
+  const YANDEX_URL: string
+  const SERVER_PORT: string
+
   interface Window {
     __INITIAL_STATE__?: StoreState
   }

@@ -1,12 +1,11 @@
 import FetchApi from '../utils/fetchApi'
 
-const redirectUrl = 'http://localhost:3001'
-
+const redirectUrl = `http://localhost:5000`
 const oauthUrlBase = 'https://oauth.yandex.ru/authorize'
 
 class OAuthApi {
   public getServiceId() {
-    return FetchApi.get(`/oauth/yandex/service-id/?redirect_uri=${redirectUrl}`)
+    return FetchApi.get<{ service_id: string }>(`/oauth/yandex/service-id/?redirect_uri=${redirectUrl}`)
   }
 
   public getOAuthUrl(serviceId: string) {
@@ -14,11 +13,11 @@ class OAuthApi {
   }
 
   public signin(code: string) {
-    return FetchApi.post('/oauth/yandex/', {
-      body: JSON.stringify({
+    return FetchApi.post<string>('/oauth/yandex/', {
+      body: {
         code,
         redirect_uri: redirectUrl,
-      }),
+      },
     })
   }
 }

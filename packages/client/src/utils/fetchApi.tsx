@@ -1,83 +1,83 @@
-import baseApiConfigConnection from '../constants/baseApiConfigConnection'
-
 const enum METHODS {
   GET = 'GET',
   POST = 'POST',
   PUT = 'PUT',
   DELETE = 'DELETE',
+  PATCH = 'PATCH',
 }
 
-type Options<T> = {
-  body?: T | undefined
-  isFormData?: boolean
-} & Omit<RequestInit, 'body'>
-
-type Request<T> = (url: string, options?: Options<T>) => Promise<Response>
-
-const configOptions = {
-  method: METHODS.GET,
-  credentials: 'include' as RequestCredentials | undefined,
-  headers: baseApiConfigConnection.headers,
+type Options = {
+  body?: Record<string, unknown> | FormData
 }
+
+type Request = <T>(url: string, options?: Options) => Promise<T>
 
 export class FetchApi {
-  static API_URL = baseApiConfigConnection.url
+  static getURL = () => {
+    throw new Error('Method not implemented.')
+  }
+  public API_URL: string
 
-  getApiUrl = () => {
-    return FetchApi.API_URL
+  constructor(apiUrl: string) {
+    this.API_URL = apiUrl
+  }
+  public getURL() {
+    return this.API_URL
   }
 
-  private buildUrl = (path: string) => {
-    return FetchApi.API_URL + path
+  public get: Request = async (url: string) => {
+    return await baseFetch(this.API_URL + url, METHODS.GET)
   }
 
-  public get: Request<undefined> = async (url: string, options = {}) => {
-    const buildedUrl = this.buildUrl(url)
-    const res = await fetch(buildedUrl, {
-      ...options,
-      ...configOptions,
-    })
-    const result = await res.json()
-    if (res.status !== 200 && res.status !== 304) {
-      return Promise.reject(result.reason)
-    }
-    return result
+  public post: Request = async (url: string, options = {}) => {
+    return await baseFetch(this.API_URL + url, METHODS.POST, options.body)
   }
 
-  public post: Request<unknown> = async (url: string, options = {}) => {
-    const buildedUrl = this.buildUrl(url)
-    const { body = {}, ...otherOptions } = options
-    return fetch(buildedUrl, {
-      ...otherOptions,
-      ...configOptions,
-      method: METHODS.POST,
-      body: JSON.stringify(body),
-    })
+  public delete: Request = async (url: string) => {
+    return await baseFetch(this.API_URL + url, METHODS.DELETE)
   }
 
-  public put: Request<unknown> = async (url: string, options = {}) => {
-    const buildedUrl = this.buildUrl(url)
-    const { body } = options
-    return fetch(buildedUrl, {
-      ...options,
-      ...configOptions,
-      credentials: 'include' as RequestCredentials | undefined,
-      //withCredentials: true,
-      method: METHODS.PUT,
-      body: JSON.stringify(body),
-    })
+  public put: Request = async (url: string, options = {}) => {
+    return await baseFetch(this.API_URL + url, METHODS.PUT, options.body)
   }
 
-  public putData: Request<FormData> = async (url: string, options = {}) => {
-    const buildedUrl = this.buildUrl(url)
-    const { body } = options
-    return fetch(buildedUrl, {
-      ...options,
-      credentials: 'include' as RequestCredentials | undefined,
-      method: METHODS.PUT,
-      body,
-    })
+  public patch: Request = async (url: string, options = {}) => {
+    return await baseFetch(this.API_URL + url, METHODS.PATCH, options.body)
   }
 }
 
-export default new FetchApi()
+export default new FetchApi('/api/v2')
+export const fetchApiV1 = new FetchApi('/api/v1')
+
+const baseFetch = async (url: string, method: METHODS, body?: Record<string, any> | FormData) => {
+  const isFormData = body instanceof FormData
+  let bodyFetch: string | FormData = JSON.stringify(body)
+  if (isFormData) {
+    bodyFetch = body
+  }
+
+  const response = await fetch(url, {
+    headers: {
+      'Content-Type': isFormData ? 'multipart/form-data' : 'application/json',
+    },
+    credentials: 'include',
+    method,
+    body: bodyFetch,
+  })
+
+  let result
+
+  try {
+    result = await response.json()
+  } catch (e) {
+    if (response.ok) {
+      result = 'ok'
+    }
+  }
+
+  if (!response.ok) {
+    return Promise.reject(result.reason)
+  }
+
+  return result
+}
