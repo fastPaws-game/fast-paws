@@ -24,12 +24,17 @@ const CommentsList: FC<Props> = props => {
   return (
     <TopicContainer>
       <ListWrapper>
-        {!currentTopic ? (
-          <Paragraf>No comments</Paragraf>
-        ) : (
+        {currentTopic && currentTopic.comments.length !== 0 ? (
           currentTopic.comments.map(comment => (
-            <CommentItem key={comment.id} comment={comment.content} createdAt={comment.createdAt} />
+            <CommentItem
+              key={comment.id}
+              commentId={comment.id}
+              comment={comment.content}
+              createdAt={comment.createdAt}
+            />
           ))
+        ) : (
+          <Paragraf>No comments</Paragraf>
         )}
       </ListWrapper>
     </TopicContainer>

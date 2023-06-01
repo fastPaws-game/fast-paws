@@ -11,18 +11,19 @@ const TopicsList = () => {
   return (
     <TopicsContainer>
       <ListWrapper>
-        {!currentForum ? (
-          <Title>No Topics</Title>
-        ) : (
+        {currentForum && currentForum.topics.length !== 0 ? (
           currentForum.topics.map(topic => (
             <TopicItem
               key={topic.id}
+              topicId={topic.id}
               topicName={topic.title}
               topicPath={`${Routes.FORUM}/${Routes.TOPIC}/${topic.id}`}
               topicContent={topic.content}
               commentsCount={topic.commentsCount}
             />
           ))
+        ) : (
+          <Title>No Topics</Title>
         )}
       </ListWrapper>
     </TopicsContainer>

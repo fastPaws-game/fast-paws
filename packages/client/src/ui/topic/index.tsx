@@ -1,10 +1,12 @@
 import { FC } from 'react'
 import styled from 'styled-components'
-import { useAppSelector } from '../../hooks/store'
+import { useAppDispatch, useAppSelector } from '../../hooks/store'
+import { deleteTopic } from '../../store/topic/TopicActions'
 import Link from '../link'
 import { authSelectors } from '../../store/auth/AuthSelectors'
 
 export type Props = {
+  topicId: number
   topicName: string
   topicPath: string
   topicContent: string
@@ -12,8 +14,17 @@ export type Props = {
 }
 
 const TopicItem: FC<Props> = props => {
+  const dispatch = useAppDispatch()
   const user = useAppSelector(authSelectors.getUser)
-  const { topicName, topicPath, commentsCount, topicContent } = props
+  const { topicId, topicName, topicPath, commentsCount, topicContent } = props
+
+  const handleDelete = () => {
+    dispatch(deleteTopic(topicId))
+  }
+
+  const handleUpdate = () => {
+    console.log('ok')
+  }
 
   return (
     <Item>
@@ -23,6 +34,10 @@ const TopicItem: FC<Props> = props => {
       </Container>
       <Container> {topicContent}</Container>
       <Link to={topicPath}>Comments: {commentsCount}</Link>
+      <Container>
+        <Button onClick={handleUpdate}>Update</Button>
+        <Button onClick={handleDelete}>Delete</Button>
+      </Container>
     </Item>
   )
 }
@@ -46,4 +61,13 @@ const Container = styled.div`
   font-weight: 600;
 `
 
+const Button = styled.button`
+  width: 5%;
+  background-color: ${({ theme }) => theme.colors.secondary};
+  box-shadow: ${({ theme }) => theme.shadows.topic};
+  border-radius: 16px;
+  color: ${({ theme }) => theme.text.textInvert};
+  font-weight: 600;
+  margin-right: 10px;
+`
 export default TopicItem
