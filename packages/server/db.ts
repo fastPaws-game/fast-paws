@@ -3,6 +3,7 @@ import { ForumModel } from './src/models/forumModel'
 import { TopicModel } from './src/models/topicModel'
 import { CommentModel } from './src/models/commentModel'
 import ThemeModel from './src/models/themeModel'
+import dotenv from 'dotenv'
 
 dotenv.config({ path: '../../.env' })
 
