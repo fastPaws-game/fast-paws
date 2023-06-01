@@ -1,6 +1,7 @@
 import ProfilePage from '../pages/ProfilePage'
 import ForumPage from '../pages/ForumPage'
 import TopicPage from '../pages/TopicPage'
+import CommentPage from '../pages/CommentsPage'
 import LeaderBoardPage from '../pages/LeaderBoardPage'
 import RegistrationPage from '../pages/RegistrationPage'
 import AuthPage from '../pages/AuthPage'
@@ -60,6 +61,14 @@ export const routes = [
     path: `${Routes.FORUM}/:forumId`,
     requireAuth: true,
     element: <TopicPage />,
+    loader: (dispatch: AppDispatch) => {
+      return dispatch(getUser())
+    },
+  },
+  {
+    path: `${Routes.FORUM}/${Routes.TOPIC}/:topicId`,
+    requireAuth: true,
+    element: <CommentPage />,
     loader: (dispatch: AppDispatch) => {
       return dispatch(getUser())
     },

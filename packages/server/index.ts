@@ -14,11 +14,10 @@ import { SERVER_API, PRAKTICUM_API } from './src/constants'
 import themesRouter from './src/routes/themes'
 import { getCurrentThemeMiddleware } from './src/middlewares/getCurrentThemeMiddleware'
 
-
 dotenv.config({ path: '../../.env' })
 
-
 const PORT = Number(process.env.SERVER_PORT) || 5000
+
 const isDev = process.env.NODE_ENV === 'development'
 
 async function startServer() {

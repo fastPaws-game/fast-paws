@@ -45,9 +45,12 @@ export class FetchApi {
     return await baseFetch(this.API_URL + url, METHODS.PATCH, options.body)
   }
 }
+        
+const FetchForumApi = new FetchApi('/api/v1')
+export { FetchForumApi }
 
-export default new FetchApi('/api/v2')
 export const fetchApiV1 = new FetchApi('/api/v1')
+export default new FetchApi('/api/v2')
 
 const baseFetch = async (url: string, method: METHODS, body?: Record<string, any> | FormData) => {
   const isFormData = body instanceof FormData

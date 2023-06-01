@@ -1,18 +1,21 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { Topic } from '../../models/TopicModel'
+import { TopicWithoutIdAndComments } from '../../models/TopicModel'
 import TopicApi, { UpdateTopicPayload } from '../../api/TopicApi'
 
 type Payload<T> = {
   id: number
   data: T
 }
-export const addTopic = createAsyncThunk('topic/addTopic', async (data: Topic, { rejectWithValue }) => {
-  try {
-    await TopicApi.addTopic(data)
-  } catch (e) {
-    return rejectWithValue(e)
+export const addTopic = createAsyncThunk(
+  'topic/addTopic',
+  async (data: TopicWithoutIdAndComments, { rejectWithValue }) => {
+    try {
+      await TopicApi.addTopic(data)
+    } catch (e) {
+      return rejectWithValue(e)
+    }
   }
-})
+)
 
 export const getTopicById = createAsyncThunk('topic/getTopicById', async (id: number, { rejectWithValue }) => {
   try {
