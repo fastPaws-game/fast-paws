@@ -23,18 +23,8 @@
     "node": ">=15"
   },
   "devDependencies": {
-    "@evilmartians/lefthook": "^1.1.1",
-    "@types/react-redux": "^7.1.25",
-    "@types/redux": "^3.6.0",
-    "@types/styled-components": "^5.1.26",
-    "lerna": "^5.4.3",
-    "react-hook-form": "^7.43.8",
-    "styled-components": "^5.3.9"
   },
   "dependencies": {
-    "http-proxy-middleware": "^2.0.6",
-    "react-device-detect": "^2.2.3",
-    "react-redux": "^8.0.5",
-    "redux": "^4.2.1"
+    "lerna": "^5.4.3"
   }
 }

@@ -11,8 +11,10 @@ COPY package.json yarn.lock
 RUN yarn install --frozen-lockfile
 
 COPY . .
-# The most resource intensive tasks. Comment next 3 lines to use local dist folders.
-# RUN yarn lerna bootstrap
+# RUN yarn global add lerna
+RUN npm install -g lerna
+RUN yarn lerna bootstrap
+RUN yarn build
 # RUN rm -rf /app/packages/client/dist/ /app/packages/client/dist-ssr/ && yarn build --scope=client
 # RUN rm -rf /app/packages/server/dist/ && yarn build --scope=server
 
@@ -25,9 +27,9 @@ RUN yarn install --production=true
 COPY --from=build /app/packages/client/dist/ /app/node_modules/client/dist/
 COPY --from=build /app/packages/client/dist-ssr/ /app/node_modules/client/dist-ssr/
 
-COPY --from=build /app/packages/server/utils/wait-for.sh /app/wait-for.sh
-RUN chmod +x wait-for.sh
-RUN apt-get -q update && apt-get -qy install netcat
+# COPY --from=build /app/packages/server/utils/wait-for.sh /app/wait-for.sh
+# RUN chmod +x wait-for.sh
+# RUN apt-get -q update && apt-get -qy install netcat
 
 EXPOSE $SERVER_PORT
 
