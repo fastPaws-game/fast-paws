@@ -6,49 +6,48 @@ import { TProfile } from '../../models/ProfileModel'
 import { TSignUpFormValues } from '../../models/RegistrationModel'
 import OAuthApi from '../../api/OAuthApi'
 import { IUserService } from '../../services/userService'
+import { TChangingPasswords } from '../../models/PasswordsModel'
 
 export const updateUser = createAsyncThunk('user/updateUser', async (body: TProfile, { rejectWithValue }) => {
   try {
-    const response = await UserApi.updateUser(body)
-    if (response.status !== 200) {
-      const error = await response.json()
-      return rejectWithValue(error.reason)
-    }
-    const res = await response.json()
-    return res
+    return await UserApi.updateUser(body)
   } catch (e) {
-    rejectWithValue(e)
+    return rejectWithValue(e)
   }
 })
 
 export const updateAvatar = createAsyncThunk('user/updateAvatar', async (data: FormData, { rejectWithValue }) => {
   try {
-    const response = await UserApi.updateUserAvatar(data)
-
-    if (response.status !== 200) {
-      const error = await response.json()
-      return rejectWithValue(error.reason)
-    } else {
-      const res = await response.json()
-      return res
-    }
-  } catch (err) {
-    return rejectWithValue(err)
+    return await UserApi.updateUserAvatar(data)
+  } catch (e) {
+    return rejectWithValue(e)
   }
 })
+
+export const updatePassword = createAsyncThunk(
+  'user/updatePassword',
+  async (data: TChangingPasswords, { rejectWithValue }) => {
+    try {
+      return await UserApi.updatePassword(data)
+    } catch (e) {
+      return rejectWithValue(e)
+    }
+  }
+)
 
 export const signInUser = createAsyncThunk(
   'user/signIn',
   async (body: TSignIn | string, { dispatch, rejectWithValue }) => {
     try {
-      const response = typeof body === 'string' ? await OAuthApi.signin(body) : await AuthApi.signin(body)
-      if (response && response.status !== 200) {
-        const error = await response.json()
-        return rejectWithValue(error.reason)
+      if (typeof body === 'string') {
+        await OAuthApi.signin(body)
+      } else {
+        await AuthApi.signin(body)
       }
-      await dispatch(getUser())
+
+      return await dispatch(getUser())
     } catch (e) {
-      rejectWithValue(e)
+      return rejectWithValue(e)
     }
   }
 )
@@ -57,35 +56,25 @@ export const getServiceId = createAsyncThunk('auth/getServiceId', async (_, { re
   try {
     const response = await OAuthApi.getServiceId()
 
-    if ('service_id' in response) {
-      const { service_id: serviceId } = response
-      location.href = OAuthApi.getOAuthUrl(serviceId as string)
-    } else {
-      return rejectWithValue(response)
-    }
+    const { service_id: serviceId } = response
+    location.href = OAuthApi.getOAuthUrl(serviceId as string)
   } catch (e) {
-    rejectWithValue(e)
+    return rejectWithValue(e)
   }
 })
 
 export const logOut = createAsyncThunk('auth/logout', async (_, { rejectWithValue }) => {
   try {
-    const response = await AuthApi.logout()
-
-    if (response.status !== 200) {
-      const error = await response.json()
-      return rejectWithValue(error.reason)
-    }
+    await AuthApi.logout()
   } catch (e) {
-    rejectWithValue(e)
+    return rejectWithValue(e)
   }
 })
 
 export const getUser = createAsyncThunk('user/getUser', async (_, { rejectWithValue, extra }) => {
   const service: IUserService = extra as IUserService
   try {
-    const response = await service.getCurrentUser()
-    return response
+    return await service.getCurrentUser()
   } catch (e) {
     return rejectWithValue(e)
   }
@@ -95,14 +84,10 @@ export const registration = createAsyncThunk(
   'auth/signup',
   async (body: TSignUpFormValues, { dispatch, rejectWithValue }) => {
     try {
-      const response = await AuthApi.signup(body)
-      if (response.status !== 200) {
-        const error = await response.json()
-        return rejectWithValue(error.reason)
-      }
+      await AuthApi.signup(body)
       await dispatch(getUser())
     } catch (e) {
-      rejectWithValue(e)
+      return rejectWithValue(e)
     }
   }
 )

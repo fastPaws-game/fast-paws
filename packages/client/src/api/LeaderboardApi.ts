@@ -1,17 +1,17 @@
 import FetchApi from '../utils/fetchApi'
-import { TLeaderboardAddUser, TLeaderboardRequest } from '../models/LeaderBoardModel'
+import { TLeaderboardAddUser, TLeaderboardItem, TLeaderboardRequest } from '../models/LeaderBoardModel'
 
 class LeaderboardApi {
-  public addUserToLeaderboard(data: TLeaderboardAddUser) {
-    return FetchApi.post('/leaderboard', { body: data })
+  public addUserToLeaderboard(body: TLeaderboardAddUser) {
+    return FetchApi.post('/leaderboard', { body })
   }
 
-  public getTeamLeaderboard(data: TLeaderboardRequest, teamName: string) {
-    return FetchApi.post(`/leaderboard/${teamName}`, { body: data })
+  public getTeamLeaderboard(body: TLeaderboardRequest, teamName: string) {
+    return FetchApi.post<Array<TLeaderboardItem>>(`/leaderboard/${teamName}`, { body })
   }
 
-  public getAllLeaderboard(data: TLeaderboardRequest) {
-    return FetchApi.post('/leaderboard/all', { body: data })
+  public getAllLeaderboard(body: TLeaderboardRequest) {
+    return FetchApi.post('/leaderboard/all', { body })
   }
 }
 
