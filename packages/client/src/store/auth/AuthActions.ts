@@ -45,7 +45,7 @@ export const signInUser = createAsyncThunk(
         await AuthApi.signin(body)
       }
 
-      return await dispatch(getUser())
+      return dispatch(getUser())
     } catch (e) {
       return rejectWithValue(e)
     }
