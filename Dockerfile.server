@@ -12,8 +12,8 @@ RUN yarn install --frozen-lockfile
 
 COPY . .
 # RUN yarn global add lerna
-RUN npm install -g lerna
-RUN yarn lerna bootstrap
+# RUN npm install -g lerna
+RUN yarn bootstrap
 RUN yarn build
 # RUN rm -rf /app/packages/client/dist/ /app/packages/client/dist-ssr/ && yarn build --scope=client
 # RUN rm -rf /app/packages/server/dist/ && yarn build --scope=server
