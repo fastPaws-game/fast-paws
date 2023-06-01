@@ -9,7 +9,6 @@ import dotenv from 'dotenv'
 
 dotenv.config({ path: '../../.env' })
 
-
 const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT } = process.env
 
 const sequelizeOptions: SequelizeOptions = {
