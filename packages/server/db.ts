@@ -1,4 +1,3 @@
-import dotenv from 'dotenv'
 import { Sequelize, SequelizeOptions } from 'sequelize-typescript'
 import { ForumModel } from './src/models/forumModel'
 import { TopicModel } from './src/models/topicModel'
