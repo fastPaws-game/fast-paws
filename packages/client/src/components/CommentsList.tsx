@@ -16,7 +16,6 @@ const CommentsList: FC<Props> = props => {
   const dispatch = useAppDispatch()
   const currentTopic = useAppSelector(topicsSelectors.getCurrentTopic)
   const currentCommentStatus = useAppSelector(commentsSelectors.getCommentsStatus)
-  const comments = currentTopic?.comments
 
   useEffect(() => {
     dispatch(getTopicById(topicId))
@@ -25,10 +24,10 @@ const CommentsList: FC<Props> = props => {
   return (
     <TopicContainer>
       <ListWrapper>
-        {comments === undefined || comments.length === 0 ? (
+        {!currentTopic ? (
           <Paragraf>No comments</Paragraf>
         ) : (
-          comments.map(comment => (
+          currentTopic.comments.map(comment => (
             <CommentItem key={comment.id} comment={comment.content} createdAt={comment.createdAt} />
           ))
         )}
