@@ -7,10 +7,12 @@ import styled from 'styled-components'
 import { H1 } from '../assets/styles/texts'
 import Link from '../ui/link'
 import { media } from '../assets/styles/media'
+import SwitchTheme from './SwitchTheme'
 
 const MainContent = () => {
   return (
     <Root>
+      <SwitchTheme />
       <MainTitle>Fast Paws</MainTitle>
       <Buttons>
         <Link to={'/game'}>

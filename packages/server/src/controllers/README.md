@@ -13,3 +13,4 @@
 | /comments/    | POST   | Создать новый комментарий: { content: string; user: string; topicId: number}            |
 | /comments/:id | PATCH  | Обновить комментарий { content: string; }                                               |
 | /comments/:id | DELETE | Удалить комментарий                                                                     |
+| /theme        | PUT    | Обновить текущую тему                                                                   |
