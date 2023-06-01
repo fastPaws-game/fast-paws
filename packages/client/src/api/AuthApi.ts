@@ -11,8 +11,8 @@ class AuthApi {
     return FetchApi.post<string>('/auth/logout')
   }
 
-  public signup(data: TSignUpFormValues) {
-    return FetchApi.post<{ id: number }>('/auth/signup', { body: data })
+  public signup(body: TSignUpFormValues) {
+    return FetchApi.post<{ id: number }>('/auth/signup', { body })
   }
 }
 

@@ -1,5 +1,5 @@
 {
-  "name": "client-server-template-with-vite",
+  "name": "fastpaws-client-server-with-vite",
   "private": true,
   "scripts": {
     "bootstrap": "yarn && node init.js && lerna clean && yarn && lerna bootstrap && yarn package-link",
@@ -12,7 +12,8 @@
     "format": "lerna run format",
     "preview": "lerna run preview",
     "package-link": "yarn build --scope=client && lerna run link --scope=client && lerna run link:client --scope=server",
-    "docker:db": "docker-compose -f docker-compose.yml up -d postgres pgadmin"
+    "docker": "docker compose -f docker-compose.yml up server",
+		"docker:db": "docker compose -f docker-compose.yml up -d postgres pgadmin"
   },
   "license": "MIT",
   "workspaces": [

@@ -11,5 +11,11 @@
 | /topics/:id   | PATCH  | Обновить тему { title: string; content: string; }                                    |
 | /topics/:id   | DELETE | Удалить тему                                                                         |
 | /comments/    | POST   | Создать новый комментарий: { content: string; user: string; topicId: number}         |
+| /comments/:id | GET    | Получить комментарий по id                                                           |
 | /comments/:id | PATCH  | Обновить комментарий { content: string; }                                            |
-| /comments/:id | DELETE | Удалить комментарий                                                                  |
+
+# Theme API
+
+| Путь          | Метод  | Описание                                                                             |
+| ------------- | ------ | ------------------------------------------------------------------------------------ |
+| /theme        | PUT    | Обновить текущую тему                                                                |

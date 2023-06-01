@@ -10,7 +10,7 @@ export default defineConfig({
     port: Number(process.env.CLIENT_PORT) || 3000,
   },
   define: {
-    SERVER_PORT: JSON.stringify(3001),
+    SERVER_PORT: JSON.stringify(5000),
     YANDEX_URL: JSON.stringify('https://ya-praktikum.tech'),
   },
   plugins: [react()],

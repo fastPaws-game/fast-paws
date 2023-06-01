@@ -13,40 +13,44 @@ type Options = {
 type Request = <T>(url: string, options?: Options) => Promise<T>
 
 export class FetchApi {
-  static API_URL = '/api/v2'
-  private apiUrl: string
+  static getURL = () => {
+    throw new Error('Method not implemented.')
+  }
+  public API_URL: string
 
-  constructor(apiUrl: string = FetchApi.API_URL) {
-    this.apiUrl = apiUrl
+  constructor(apiUrl: string) {
+    this.API_URL = apiUrl
+  }
+  public getURL() {
+    return this.API_URL
   }
 
-  public getUrl = () => this.apiUrl
-
   public get: Request = async (url: string) => {
-    return await baseFetch(this.apiUrl + url, METHODS.GET)
+    return await baseFetch(this.API_URL + url, METHODS.GET)
   }
 
   public post: Request = async (url: string, options = {}) => {
-    return await baseFetch(this.apiUrl + url, METHODS.POST, options.body)
+    return await baseFetch(this.API_URL + url, METHODS.POST, options.body)
   }
 
   public delete: Request = async (url: string) => {
-    return await baseFetch(this.apiUrl + url, METHODS.DELETE)
+    return await baseFetch(this.API_URL + url, METHODS.DELETE)
   }
 
   public put: Request = async (url: string, options = {}) => {
-    return await baseFetch(this.apiUrl + url, METHODS.PUT, options.body)
+    return await baseFetch(this.API_URL + url, METHODS.PUT, options.body)
   }
 
   public patch: Request = async (url: string, options = {}) => {
-    return await baseFetch(this.apiUrl + url, METHODS.PATCH, options.body)
+    return await baseFetch(this.API_URL + url, METHODS.PATCH, options.body)
   }
 }
-
+        
 const FetchForumApi = new FetchApi('/api/v1')
 export { FetchForumApi }
 
-export default new FetchApi()
+export const fetchApiV1 = new FetchApi('/api/v1')
+export default new FetchApi('/api/v2')
 
 const baseFetch = async (url: string, method: METHODS, body?: Record<string, any> | FormData) => {
   const isFormData = body instanceof FormData
