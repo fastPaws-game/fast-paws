@@ -13,6 +13,7 @@ export type FullForum = {
     {
       id: number
       title: string
+      content: string
       commentsCount: number
       lastMessage: Comment
     }

@@ -2,15 +2,10 @@ import styled from 'styled-components'
 import { FC } from 'react'
 import ForumItem from '../ui/forum'
 import { Routes } from '../constants/routes'
-
-type ForumData = {
-  name: string
-  id: number
-  topics: number
-}
+import { Forum } from '../models/ForumModel'
 
 type Props = {
-  forums: Array<ForumData>
+  forums: Array<Forum>
 }
 
 const ForumsList: FC<Props> = props => {
@@ -20,10 +15,10 @@ const ForumsList: FC<Props> = props => {
     <ListWrapper>
       {forums.map(forum => (
         <ForumItem
-          forumName={forum.name}
+          forumName={forum.title}
           key={forum.id}
           forumPath={`${Routes.FORUM}/${forum.id}`}
-          topics={forum.topics}
+          topics={forum.topicsCount}
         />
       ))}
     </ListWrapper>

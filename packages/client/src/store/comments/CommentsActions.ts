@@ -1,19 +1,30 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import CommentsApi from '../../api/CommentsApi'
-import { Comment } from '../../models/CommentModel'
+import { CommentWithoutIdAndCreatedAtAndUpdatedAt } from '../../models/CommentModel'
 
 type Payload = {
   id: number
   content: string
 }
 
-export const addComment = createAsyncThunk('comments/addComment', async (data: Comment, { rejectWithValue }) => {
+export const getComments = createAsyncThunk('comments/getComments', async (_, { rejectWithValue }) => {
   try {
-    return await CommentsApi.addComment(data)
+    return await CommentsApi.getComments()
   } catch (e) {
     return rejectWithValue(e)
   }
 })
+
+export const addComment = createAsyncThunk(
+  'comments/addComment',
+  async (data: CommentWithoutIdAndCreatedAtAndUpdatedAt, { rejectWithValue }) => {
+    try {
+      return await CommentsApi.addComment(data)
+    } catch (e) {
+      return rejectWithValue(e)
+    }
+  }
+)
 
 export const updateComment = createAsyncThunk(
   'comments/updateComment',

@@ -45,7 +45,7 @@ class ForumsController {
           include: [
             { model: CommentModel, separate: true, attributes: ['id', 'user', 'createdAt'], order: [['id', 'ASC']] },
           ],
-          attributes: ['id', 'title'],
+          attributes: ['id', 'title', 'content'],
         },
       })
 
@@ -58,6 +58,7 @@ class ForumsController {
       const topics = forum.topics.map(topic => ({
         id: topic.id,
         title: topic.title,
+        content: topic.content,
         commentsCount: topic.comments.length,
         lastMessage: topic.comments[topic.comments.length - 1],
       }))

@@ -6,3 +6,5 @@ export type Comment = {
   createdAt: string
   updatedAt: string
 }
+
+export type CommentWithoutIdAndCreatedAtAndUpdatedAt = Omit<Comment, 'id' | 'createdAt' | 'updatedAt'>

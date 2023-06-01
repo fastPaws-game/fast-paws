@@ -17,6 +17,7 @@ import { getCurrentThemeMiddleware } from './src/middlewares/getCurrentThemeMidd
 dotenv.config({ path: '../../.env' })
 
 const PORT = Number(process.env.SERVER_PORT) || 5000
+
 const isDev = process.env.NODE_ENV === 'development'
 
 async function startServer() {
