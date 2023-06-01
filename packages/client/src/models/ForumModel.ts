@@ -9,13 +9,15 @@ export type Forum = {
 export type FullForum = {
   id: number
   title: string
-  topics: [
-    {
-      id: number
-      title: string
-      content: string
-      commentsCount: number
-      lastMessage: Comment
-    }
-  ]
+  topics:
+    | [
+        {
+          id: number
+          title: string
+          content: string
+          commentsCount: number
+          lastMessage: Comment
+        }
+      ]
+    | []
 }

@@ -9,9 +9,7 @@ import { routes } from './src/router/routes'
 import { matchPath } from 'react-router'
 import { UserRepository, UserService } from './src/services/userService'
 import { ThemeVariants, setTheme } from './src/store/theme/ThemeSlice'
-
 import StartSSRPage from './src/pages/StartSSRPage'
-import React from 'react'
 
 export async function render(url: string, repository: UserRepository, currentTheme: ThemeVariants) {
   const [pathname] = url.split('?')
