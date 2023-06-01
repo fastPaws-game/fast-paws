@@ -99,6 +99,10 @@ export const GlobalStyles = createGlobalStyle`
     border-style: none;
   }
 
+  textarea {
+    overflow: auto;
+  }
+
   button, input, optgroup, select, textarea {
     font-family: inherit;
     font-size: 100%;
@@ -158,10 +162,6 @@ export const GlobalStyles = createGlobalStyle`
 
   progress {
     vertical-align: baseline;
-  }
-
-  textarea {
-    overflow: auto;
   }
 
   [type="checkbox"], [type="radio"] {
