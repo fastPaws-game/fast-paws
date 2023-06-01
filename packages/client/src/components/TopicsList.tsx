@@ -7,23 +7,23 @@ import { forumSelectors } from '../store/forum/ForumSelectors'
 
 const TopicsList = () => {
   const currentForum = useAppSelector(forumSelectors.getCurrentForum)
-  const topics = currentForum?.topics
 
   return (
     <TopicsContainer>
       <ListWrapper>
-        {topics === undefined || topics.length === 0 ? (
-          <Title>No Topics</Title>
-        ) : (
-          topics.map(topic => (
+        {currentForum && currentForum.topics.length !== 0 ? (
+          currentForum.topics.map(topic => (
             <TopicItem
               key={topic.id}
+              topicId={topic.id}
               topicName={topic.title}
               topicPath={`${Routes.FORUM}/${Routes.TOPIC}/${topic.id}`}
               topicContent={topic.content}
               commentsCount={topic.commentsCount}
             />
           ))
+        ) : (
+          <Title>No Topics</Title>
         )}
       </ListWrapper>
     </TopicsContainer>

@@ -1,4 +1,3 @@
-import { FetchApi } from '../../utils/fetchApi'
 import { RootState } from '../index'
 
 const getSignInError = (state: RootState) => state.auth.signInError
@@ -12,8 +11,7 @@ const getIsAuth = (state: RootState) => state.auth.isAuth
 const getAvatarError = (state: RootState) => state.auth.avatarError
 const getServiceIdStatus = (state: RootState) => state.auth.serviceIdStatus
 const getServiceIdError = (state: RootState) => state.auth.serviceIdError
-const getAvatar = (state: RootState) =>
-  state.auth.user?.avatar ? `${FetchApi.getURL()}/resources${state.auth.user?.avatar}` : null
+const getAvatar = (state: RootState) => (state.auth.user?.avatar ? `/api/v2/resources${state.auth.user?.avatar}` : null)
 
 export const authSelectors = {
   getUserError,

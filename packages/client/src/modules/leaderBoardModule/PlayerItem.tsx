@@ -4,7 +4,6 @@ import { P1 } from '../../assets/styles/texts'
 import defaultAvatar from '../../assets/images/catAvatar.png'
 import { media } from '../../assets/styles/media'
 import { TPlayerItem } from '../../models/LeaderBoardModel'
-import { FetchApi } from '../../utils/fetchApi'
 
 type Props = Omit<TPlayerItem, 'id'> & {
   numbering: number

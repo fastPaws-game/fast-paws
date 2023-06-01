@@ -1,16 +1,18 @@
 import { FC } from 'react'
 import styled from 'styled-components'
-import { useAppSelector } from '../../hooks/store'
+import { useAppDispatch, useAppSelector } from '../../hooks/store'
 import { authSelectors } from '../../store/auth/AuthSelectors'
-
+import { deleteComment } from '../../store/comments/CommentsActions'
 type Props = {
+  commentId: number
   comment: string
   createdAt: string
 }
 
 const CommentItem: FC<Props> = props => {
+  const dispatch = useAppDispatch()
   const user = useAppSelector(authSelectors.getUser)
-  const { comment, createdAt } = props
+  const { commentId, comment, createdAt } = props
   const now = new Date(createdAt)
   const options: Intl.DateTimeFormatOptions = {
     year: 'numeric',
@@ -26,6 +28,14 @@ const CommentItem: FC<Props> = props => {
     console.log('Reply')
   }
 
+  const handleDelete = () => {
+    dispatch(deleteComment(commentId))
+  }
+
+  const handleUpdate = () => {
+    console.log('ok')
+  }
+
   return (
     <Item>
       <Container>
@@ -33,7 +43,11 @@ const CommentItem: FC<Props> = props => {
         <Topics>{dateAndTime}</Topics>
       </Container>
       <Container>{comment}</Container>
-      <Reply onClick={handleReply}>Reply</Reply>
+      <Container>
+        <Button onClick={handleReply}>Reply</Button>
+        <Button onClick={handleUpdate}>Update</Button>
+        <Button onClick={handleDelete}>Delete</Button>
+      </Container>
     </Item>
   )
 }
@@ -61,12 +75,14 @@ const Topics = styled.span`
   padding-right: 15px;
 `
 
-const Reply = styled.button`
-  width: 2%;
-  background-color: transparent;
-  border: none;
+const Button = styled.button`
+  width: 5%;
+  background-color: ${({ theme }) => theme.colors.secondary};
+  box-shadow: ${({ theme }) => theme.shadows.topic};
+  border-radius: 16px;
   color: ${({ theme }) => theme.text.textInvert};
   font-weight: 600;
+  margin-right: 10px;
 `
 
 export default CommentItem

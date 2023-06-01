@@ -17,7 +17,7 @@ type Props = {
   visible: boolean
   handleClose: () => void
   outSideClickEnable?: boolean
-  forumId: number
+  forumId?: number
 }
 
 type TFormData = {
