@@ -5,7 +5,8 @@ import { CommentModel } from './src/models/commentModel'
 import ThemeModel from './src/models/themeModel'
 import dotenv from 'dotenv'
 
-dotenv.config(process.env.NODE_ENV === 'development' ? { path: '../../.env' } : { path: './.env' })
+if (process.env.NODE_ENV === 'development') dotenv.config({ path: '../../.env' })
+else dotenv.config()
 
 const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT } = process.env
 
@@ -16,6 +17,7 @@ const sequelizeOptions: SequelizeOptions = {
   password: POSTGRES_PASSWORD,
   database: POSTGRES_DB,
   dialect: 'postgres',
+  logging: false,
   models: [ForumModel, TopicModel, CommentModel, ThemeModel],
 }
 

@@ -16,6 +16,10 @@ services:
       - "${SERVER_PORT}:${SERVER_PORT}"
     environment:
       SERVER_PORT: ${SERVER_PORT}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_PORT: ${POSTGRES_PORT}
     # command: sh -c "echo '  ➜ ⏳ Waiting for ${POSTGRES_DB}...' && ./wait-for.sh postgres:${POSTGRES_PORT} -- node /app/index.js"
     command: sh -c "node /app/index.js"
     networks:
