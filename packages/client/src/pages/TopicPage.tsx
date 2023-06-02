@@ -4,8 +4,13 @@ import AddNewTopic from '../components/AddNewTopic'
 import { useCallback, useState } from 'react'
 import Button from '../ui/button'
 import styled from 'styled-components'
+import { useParams } from 'react-router'
+import { forumSelectors } from '../store/forum/ForumSelectors'
+import { useAppSelector } from '../hooks/store'
 
 const TopicPage = () => {
+  const currentForum = useAppSelector(forumSelectors.getCurrentForum)
+  const { forumId } = useParams()
   const [modal, setModal] = useState(false)
 
   const handleClose = useCallback(() => {
@@ -17,14 +22,10 @@ const TopicPage = () => {
   }
 
   return (
-    <LayoutWithHeader title="New Games">
+    <LayoutWithHeader title={currentForum?.title}>
       <ButtonAdd onClick={handleClick}>+ Add new topic</ButtonAdd>
-      <Topics />
-      <AddNewTopic
-        visible={modal}
-        outSideClickEnable
-        handleClose={handleClose}
-        handleSubmit={() => console.log('submit')}></AddNewTopic>
+      <Topics forumId={Number(forumId)} />
+      <AddNewTopic visible={modal} outSideClickEnable handleClose={handleClose} forumId={Number(forumId)} />
     </LayoutWithHeader>
   )
 }

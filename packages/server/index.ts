@@ -10,7 +10,9 @@ import topicsRouter from './src/routes/topics'
 import forumsRouter from './src/routes/forums'
 import commentsRouter from './src/routes/comments'
 import { dbConnect } from './db'
-import { API_VERSION } from './src/constants'
+import { SERVER_API, PRAKTICUM_API } from './src/constants'
+import themesRouter from './src/routes/themes'
+import { getCurrentThemeMiddleware } from './src/middlewares/getCurrentThemeMiddleware'
 
 const isDev = process.env.NODE_ENV === 'development'
 dotenv.config(isDev ? { path: '../../.env' } : { path: './.env' })
@@ -27,12 +29,12 @@ async function startServer() {
     })
   )
 
-  app.use('/api/v2/*', proxy)
-
+  app.use(`${PRAKTICUM_API}/*`, proxy)
   app.use(express.json())
-  app.use(`${API_VERSION}/topics`, topicsRouter)
-  app.use(`${API_VERSION}/forums`, forumsRouter)
-  app.use(`${API_VERSION}/comments`, commentsRouter)
+  app.use(`${SERVER_API}/topics`, topicsRouter)
+  app.use(`${SERVER_API}/forums`, forumsRouter)
+  app.use(`${SERVER_API}/comments`, commentsRouter)
+  app.use(`${SERVER_API}/theme`, cookieParser(), themesRouter)
 
   const distPath = path.dirname(require.resolve('client/dist/index.html'))
   const ssrPath = isDev ? path.dirname(require.resolve('client/index.html')) : ''
@@ -53,7 +55,7 @@ async function startServer() {
     app.use('/assets', express.static(path.resolve(distPath, 'assets')))
   }
 
-  app.use('*', cookieParser(), async (req, res, next) => {
+  app.use('*', cookieParser(), getCurrentThemeMiddleware, async (req, res, next) => {
     const url = req.originalUrl
 
     try {
@@ -65,14 +67,15 @@ async function startServer() {
         template = fs.readFileSync(path.resolve(distPath, 'index.html'), 'utf-8')
       }
 
-      let render: (url: string, userService: UserRepository) => Promise<string>
+      let render: (url: string, userService: UserRepository, currentTheme: string) => Promise<string>
       if (isDev) {
         render = (await vite!.ssrLoadModule(path.resolve(ssrPath, 'ssr.tsx'))).render
       } else {
         render = (await import(ssrDistPath)).render
       }
 
-      const [initialState, appHtml, css] = await render(url, new UserAPIRepository(req.headers['cookie']))
+      const currentTheme = res.locals ? res.locals.currentTheme : null
+      const [initialState, appHtml, css] = await render(url, new UserAPIRepository(req.headers['cookie']), currentTheme)
 
       const initStateSerialized = JSON.stringify(initialState).replace(/</g, '\\u003c')
       const stateMarkup = `<script>window.__INITIAL_STATE__=${initStateSerialized}</script>`

@@ -1,24 +1,17 @@
+import { useEffect } from 'react'
 import ForumsList from '../../components/ForumsList'
-
-const forums = [
-  {
-    name: 'New games',
-    id: 1,
-    topics: 222,
-  },
-  {
-    name: 'Game designers',
-    id: 2,
-    topics: 5,
-  },
-  {
-    name: 'Technologies',
-    id: 3,
-    topics: 590,
-  },
-]
+import { useAppDispatch, useAppSelector } from '../../hooks/store'
+import { getForums } from '../../store/forum/ForumActions'
+import { forumSelectors } from '../../store/forum/ForumSelectors'
 
 const Forum = () => {
+  const dispatch = useAppDispatch()
+  const forums = useAppSelector(forumSelectors.getForums)
+
+  useEffect(() => {
+    dispatch(getForums())
+  }, [])
+
   return <ForumsList forums={forums} />
 }
 

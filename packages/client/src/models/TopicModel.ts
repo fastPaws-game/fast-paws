@@ -8,3 +8,5 @@ export type Topic = {
   user: string
   comments: Comment[]
 }
+
+export type TopicWithoutIdAndComments = Omit<Topic, 'id' | 'comments'>
