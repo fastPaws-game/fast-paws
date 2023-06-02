@@ -1,13 +1,13 @@
-import FetchApi from '../utils/fetchApi'
+import { FetchForumApi } from '../utils/fetchApi'
 import { Forum, FullForum } from '../models/ForumModel'
 
 class ForumApi {
   public getForums() {
-    return FetchApi.get<Forum[]>('/forums')
+    return FetchForumApi.get<Forum[]>('/forums')
   }
 
   public getForumById(id: number) {
-    return FetchApi.get<FullForum>(`/forums/${id}`)
+    return FetchForumApi.get<FullForum>(`/forums/${id}`)
   }
 }
 

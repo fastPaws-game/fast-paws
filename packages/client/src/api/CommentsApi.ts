@@ -1,4 +1,4 @@
-import FetchApi from '../utils/fetchApi'
+import { FetchForumApi } from '../utils/fetchApi'
 import { Comment } from '../models/CommentModel'
 
 type AddCommentPayload = {
@@ -12,16 +12,20 @@ type UpdateCommentPayload = {
 }
 
 class CommentsApi {
+  public getComments() {
+    return FetchForumApi.get<Comment[]>(`/comments`)
+  }
+
   public addComment(body: AddCommentPayload) {
-    return FetchApi.post<Comment>(`/comments`, { body })
+    return FetchForumApi.post<Comment>(`/comments`, { body })
   }
 
   public updateComment(commentId: number, body: UpdateCommentPayload) {
-    return FetchApi.patch(`/comments/${commentId}`, { body })
+    return FetchForumApi.patch(`/comments/${commentId}`, { body })
   }
 
   public deleteComment(commentId: number) {
-    return FetchApi.delete(`/comments/${commentId}`)
+    return FetchForumApi.delete(`/comments/${commentId}`)
   }
 }
 

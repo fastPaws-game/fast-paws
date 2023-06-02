@@ -1,25 +1,35 @@
 import { FC } from 'react'
 import styled from 'styled-components'
 import { useAppDispatch, useAppSelector } from '../../hooks/store'
-import { deleteTopic } from '../../store/topic/TopicActions'
-import Link from '../link'
 import { authSelectors } from '../../store/auth/AuthSelectors'
-
-export type Props = {
-  topicId: number
-  topicName: string
-  topicPath: string
-  topicContent: string
-  commentsCount: number
+import { deleteComment } from '../../store/comments/CommentsActions'
+type Props = {
+  commentId: number
+  comment: string
+  createdAt: string
 }
 
-const TopicItem: FC<Props> = props => {
+const CommentItem: FC<Props> = props => {
   const dispatch = useAppDispatch()
   const user = useAppSelector(authSelectors.getUser)
-  const { topicId, topicName, topicPath, commentsCount, topicContent } = props
+  const { commentId, comment, createdAt } = props
+  const now = new Date(createdAt)
+  const options: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: false,
+  }
+  const dateAndTime = now.toLocaleString('ru-RU', options)
+
+  const handleReply = () => {
+    console.log('Reply')
+  }
 
   const handleDelete = () => {
-    dispatch(deleteTopic(topicId))
+    dispatch(deleteComment(commentId))
   }
 
   const handleUpdate = () => {
@@ -29,12 +39,12 @@ const TopicItem: FC<Props> = props => {
   return (
     <Item>
       <Container>
-        {user?.login}
-        <Container>Title: {topicName}</Container>
+        <Topics>{user?.login}</Topics>
+        <Topics>{dateAndTime}</Topics>
       </Container>
-      <Container> {topicContent}</Container>
-      <Link to={topicPath}>Comments: {commentsCount}</Link>
+      <Container>{comment}</Container>
       <Container>
+        <Button onClick={handleReply}>Reply</Button>
         <Button onClick={handleUpdate}>Update</Button>
         <Button onClick={handleDelete}>Delete</Button>
       </Container>
@@ -61,6 +71,10 @@ const Container = styled.div`
   font-weight: 600;
 `
 
+const Topics = styled.span`
+  padding-right: 15px;
+`
+
 const Button = styled.button`
   width: 5%;
   background-color: ${({ theme }) => theme.colors.secondary};
@@ -70,4 +84,5 @@ const Button = styled.button`
   font-weight: 600;
   margin-right: 10px;
 `
-export default TopicItem
+
+export default CommentItem
