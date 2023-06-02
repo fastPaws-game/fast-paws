@@ -10,13 +10,12 @@ FROM base as build
 COPY package.json yarn.lock
 RUN yarn install --frozen-lockfile
 COPY . .
-# dotenv will be used in 'yarn build' to read enveroment. Не помогло: dotenv -e ./.env -- lerna run build
-RUN yarn global add dotenv-cli
 RUN yarn bootstrap:prod && yarn build
 
 ## Installing external modules
 FROM node:$NODE_VERSION-buster-slim as production
 WORKDIR /app
+COPY --from=build /app/.env /app/.env
 COPY --from=build /app/packages/server/dist/ /app/
 COPY --from=build /app/packages/server/package.json /app/package.json
 RUN yarn install --production=true

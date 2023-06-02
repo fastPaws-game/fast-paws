@@ -3,7 +3,7 @@ import { ForumModel } from './src/models/forumModel'
 import { TopicModel } from './src/models/topicModel'
 import { CommentModel } from './src/models/commentModel'
 import dotenv from 'dotenv'
-// Не помогло:
+
 dotenv.config(process.env.NODE_ENV === 'development' ? { path: '../../.env' } : { path: './.env' })
 
 const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT } = process.env

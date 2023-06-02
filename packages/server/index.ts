@@ -12,10 +12,9 @@ import commentsRouter from './src/routes/comments'
 import { dbConnect } from './db'
 import { API_VERSION } from './src/constants'
 
-dotenv.config({ path: '../../.env' })
-
-const PORT = Number(process.env.SERVER_PORT)
 const isDev = process.env.NODE_ENV === 'development'
+dotenv.config(isDev ? { path: '../../.env' } : { path: './.env' })
+const PORT = Number(process.env.SERVER_PORT)
 
 async function startServer() {
   await dbConnect()

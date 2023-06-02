@@ -3,8 +3,8 @@
   "private": true,
   "scripts": {
     "bootstrap": "yarn && node init.js && lerna clean --yes && yarn && lerna bootstrap && yarn package-link",
-    "bootstrap:prod": "yarn && lerna bootstrap && yarn package-link",
-    "build": "dotenv -e ./.env -- lerna run build",
+    "bootstrap:prod": "yarn && lerna bootstrap",
+    "build": "lerna run build",
     "dev:client": "lerna run dev --scope=client",
     "dev:server": "lerna run dev --scope=server",
     "dev": "lerna run dev",
