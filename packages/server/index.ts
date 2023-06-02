@@ -14,7 +14,7 @@ import { API_VERSION } from './src/constants'
 
 dotenv.config({ path: '../../.env' })
 
-const PORT = Number(process.env.SERVER_PORT) || 5000
+const PORT = Number(process.env.SERVER_PORT)
 const isDev = process.env.NODE_ENV === 'development'
 
 async function startServer() {
