@@ -15,7 +15,6 @@ RUN yarn bootstrap:prod && yarn build
 ## Installing external modules
 FROM node:$NODE_VERSION-buster-slim as production
 WORKDIR /app
-# COPY --from=build /app/.env /app/.env
 COPY --from=build /app/packages/server/dist/ /app/
 COPY --from=build /app/packages/server/package.json /app/package.json
 RUN yarn install --production=true

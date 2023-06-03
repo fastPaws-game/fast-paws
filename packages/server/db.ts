@@ -5,13 +5,14 @@ import { CommentModel } from './src/models/commentModel'
 import ThemeModel from './src/models/themeModel'
 import dotenv from 'dotenv'
 
-if (process.env.NODE_ENV === 'development') dotenv.config({ path: '../../.env' })
+const isDev = process.env.NODE_ENV === 'development'
+if (isDev) dotenv.config({ path: '../../.env' })
 else dotenv.config()
 
-const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT } = process.env
+const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT, POSTGRES_HOST } = process.env
 
 const sequelizeOptions: SequelizeOptions = {
-  host: 'localhost',
+  host: isDev ? 'localhost' : POSTGRES_HOST,
   port: Number(POSTGRES_PORT),
   username: POSTGRES_USER,
   password: POSTGRES_PASSWORD,
@@ -32,6 +33,7 @@ export async function dbConnect() {
       `\x1b[33m  ➜ 🚀 Connection to \x1b[96m${process.env.POSTGRES_DB}\x1b[33m has been established successfully.\x1b[0m`
     )
   } catch (error) {
-    console.error(`  ➜ ❌ Unable to connect to the ${process.env.POSTGRES_DB}:`, error)
+    console.error(`  ➜ ❌ Unable to connect to the ${process.env.POSTGRES_DB}:`)
+    console.error(error)
   }
 }
