@@ -2,7 +2,7 @@ import { Comment } from './CommentModel'
 
 export type Topic = {
   id: number
-  forumId: number
+  forumId: number | undefined
   title: string
   content: string
   user: string
