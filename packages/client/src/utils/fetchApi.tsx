@@ -45,7 +45,7 @@ export class FetchApi {
     return await baseFetch(this.API_URL + url, METHODS.PATCH, options.body)
   }
 }
-        
+
 const FetchForumApi = new FetchApi('/api/v1')
 export { FetchForumApi }
 

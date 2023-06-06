@@ -11,6 +11,12 @@ import { UserRepository, UserService } from './src/services/userService'
 import { ThemeVariants, setTheme } from './src/store/theme/ThemeSlice'
 import StartSSRPage from './src/pages/StartSSRPage'
 
+// suppress useLayoutEffect (and its warnings) when not running in a browser
+if (typeof window === 'undefined')
+  React.useLayoutEffect = () => {
+    // do nothing.
+  }
+
 export async function render(url: string, repository: UserRepository, currentTheme: ThemeVariants) {
   const [pathname] = url.split('?')
 
