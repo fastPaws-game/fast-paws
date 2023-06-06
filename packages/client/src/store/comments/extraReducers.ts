@@ -7,15 +7,18 @@ export const buildAddComment = (builder: ActionReducerMapBuilder<CommentsSlice>)
   builder
     .addCase(addComment.pending, state => {
       state.commentEditStatus = 'pending'
+      state.commentsStatus = 'pending'
     })
     .addCase(addComment.fulfilled, (state, action) => {
       state.commentEditStatus = 'success'
+      state.commentsStatus = 'success'
       state.commentEditError = null
 
       state.comments.push(action.payload)
     })
     .addCase(addComment.rejected, (state, action) => {
       state.commentEditStatus = 'error'
+      state.commentsStatus = 'error'
       state.commentEditError = handleError(action.payload)
     })
 
@@ -44,15 +47,18 @@ export const buildDeleteComment = (builder: ActionReducerMapBuilder<CommentsSlic
   builder
     .addCase(deleteComment.pending, state => {
       state.commentEditStatus = 'pending'
+      state.commentsStatus = 'pending'
     })
     .addCase(deleteComment.fulfilled, (state, action) => {
       state.commentEditStatus = 'success'
+      state.commentsStatus = 'success'
       state.commentEditError = null
 
       const id = action.payload
       state.comments = state.comments.filter(comment => comment.id !== id)
     })
     .addCase(deleteComment.rejected, (state, action) => {
+      state.commentsStatus = 'error'
       state.commentEditStatus = 'error'
       state.commentEditError = handleError(action.payload)
     })

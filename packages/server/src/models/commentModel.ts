@@ -18,6 +18,7 @@ interface IComment {
   topicId: number
   user: string
   content: string
+  parentId: number
 }
 
 type CreationComment = Optional<IComment, 'id'>
@@ -45,4 +46,7 @@ export class CommentModel extends Model<IComment, CreationComment> {
 
   @Column(DataType.STRING)
   content!: string
+
+  @Column(DataType.INTEGER)
+  parentId!: number
 }

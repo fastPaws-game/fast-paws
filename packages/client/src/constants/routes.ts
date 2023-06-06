@@ -4,6 +4,7 @@ export enum Routes {
   SIGNIN = '/signin',
   SETTINGS = '/settings',
   FORUM = '/forum',
+  TOPIC = 'topic',
   GAME = '/game',
   LEADERBOARD = '/leaderboard',
   NOT_FOUND = '*',

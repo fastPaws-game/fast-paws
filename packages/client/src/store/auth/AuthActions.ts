@@ -45,7 +45,7 @@ export const signInUser = createAsyncThunk(
         await AuthApi.signin(body)
       }
 
-      return await dispatch(getUser())
+      return dispatch(getUser())
     } catch (e) {
       return rejectWithValue(e)
     }
@@ -55,7 +55,6 @@ export const signInUser = createAsyncThunk(
 export const getServiceId = createAsyncThunk('auth/getServiceId', async (_, { rejectWithValue }) => {
   try {
     const response = await OAuthApi.getServiceId()
-
     const { service_id: serviceId } = response
     location.href = OAuthApi.getOAuthUrl(serviceId as string)
   } catch (e) {

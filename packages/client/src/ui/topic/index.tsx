@@ -1,58 +1,73 @@
 import { FC } from 'react'
 import styled from 'styled-components'
+import { useAppDispatch, useAppSelector } from '../../hooks/store'
+import { deleteTopic } from '../../store/topic/TopicActions'
 import Link from '../link'
+import { authSelectors } from '../../store/auth/AuthSelectors'
 
 export type Props = {
+  topicId: number
   topicName: string
   topicPath: string
-  comments: number
-  userName: string
-  userPath: string
-  date: string
+  topicContent: string
+  commentsCount: number
 }
 
 const TopicItem: FC<Props> = props => {
-  const { topicName, topicPath, comments, userName, userPath, date } = props
+  const dispatch = useAppDispatch()
+  const user = useAppSelector(authSelectors.getUser)
+  const { topicId, topicName, topicPath, commentsCount, topicContent } = props
+
+  const handleDelete = () => {
+    dispatch(deleteTopic(topicId))
+  }
+
+  const handleUpdate = () => {
+    console.log('ok')
+  }
 
   return (
     <Item>
-      <Link to={topicPath}>{topicName}</Link>
-      <Topics>Comments: {comments}</Topics>
-      <LastMessage>
-        <UserName to={userPath}>{userName}</UserName>
-        <Date>{date}</Date>
-      </LastMessage>
+      <Container>
+        {user?.login}
+        <Container>Title: {topicName}</Container>
+      </Container>
+      <Container> {topicContent}</Container>
+      <Link to={topicPath}>Comments: {commentsCount}</Link>
+      <Container>
+        <Button onClick={handleUpdate}>Update</Button>
+        <Button onClick={handleDelete}>Delete</Button>
+      </Container>
     </Item>
   )
 }
 
 const Item = styled.li`
   display: grid;
-  grid-template-columns: 3fr 1fr 1fr;
-  padding: 10px;
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: 15px;
+  padding: 15px 30px 15px 30px;
   width: 100%;
+  background-color: ${({ theme }) => theme.colors.secondary};
+  box-shadow: ${({ theme }) => theme.shadows.topic};
+  border-radius: 16px;
   &:not(:last-child) {
     border-bottom: 1px solid ${({ theme }) => theme.colors.focus};
   }
 `
 
-const Topics = styled.span`
-  color: ${({ theme }) => theme.colors.accent};
-  font-weight: 700;
-`
-
-const LastMessage = styled.div`
-  display: flex;
-  gap: 15px;
-`
-
-const UserName = styled(Link)`
-  color: ${({ theme }) => theme.text.textInvert} !important;
+const Container = styled.div`
+  color: ${({ theme }) => theme.text.textInvert};
   font-weight: 600;
 `
 
-const Date = styled.span`
+const Button = styled.button`
+  width: 5%;
+  background-color: ${({ theme }) => theme.colors.secondary};
+  box-shadow: ${({ theme }) => theme.shadows.topic};
+  border-radius: 16px;
   color: ${({ theme }) => theme.text.textInvert};
+  font-weight: 600;
+  margin-right: 10px;
 `
-
 export default TopicItem

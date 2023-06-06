@@ -1,3 +1,4 @@
+import React from 'react'
 import { renderToString } from 'react-dom/server'
 import { StaticRouter } from 'react-router-dom/server'
 import { ServerStyleSheet, StyleSheetManager } from 'styled-components'
@@ -7,10 +8,16 @@ import { GlobalStyles } from './src/assets/styles/globalStyle'
 import { routes } from './src/router/routes'
 import { matchPath } from 'react-router'
 import { UserRepository, UserService } from './src/services/userService'
-
+import { ThemeVariants, setTheme } from './src/store/theme/ThemeSlice'
 import StartSSRPage from './src/pages/StartSSRPage'
 
-export async function render(url: string, repository: UserRepository) {
+// suppress useLayoutEffect (and its warnings) when not running in a browser
+if (typeof window === 'undefined')
+  React.useLayoutEffect = () => {
+    // do nothing.
+  }
+
+export async function render(url: string, repository: UserRepository, currentTheme: ThemeVariants) {
   const [pathname] = url.split('?')
 
   const currentRoute = routes.find(route => matchPath(pathname, route.path))
@@ -22,6 +29,7 @@ export async function render(url: string, repository: UserRepository) {
       await loader(store.dispatch)
     }
   }
+  if (currentTheme) store.dispatch(setTheme(currentTheme))
 
   const initialState = store.getState()
 

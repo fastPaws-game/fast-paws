@@ -1,27 +1,31 @@
 ARG NODE_VERSION=16
-ARG SERVER_PORT=5000
+ARG SERVER_PORT=${SERVER_PORT} || 5000
 
+## Preparing node image
 FROM node:$NODE_VERSION-buster as base
-
 WORKDIR /app
 
-FROM base as builder
-
+## Building packages
+FROM base as build
 COPY package.json yarn.lock
 RUN yarn install --frozen-lockfile
-
 COPY . .
+RUN yarn bootstrap:prod && yarn build
 
-RUN yarn lerna bootstrap
-RUN rm -rf /app/packages/server/dist/ && yarn build --scope=server
-
-
+## Installing external modules
 FROM node:$NODE_VERSION-buster-slim as production
 WORKDIR /app
-
-COPY --from=builder /app/packages/server/dist/ /app/
-COPY --from=builder /app/packages/server/package.json /app/package.json
+COPY --from=build /app/packages/server/dist/ /app/
+COPY --from=build /app/packages/server/package.json /app/package.json
 RUN yarn install --production=true
+COPY --from=build /app/packages/client/dist/ /app/node_modules/client/dist/
+COPY --from=build /app/packages/client/dist-ssr/ /app/node_modules/client/dist-ssr/
+
+# COPY --from=build /app/packages/server/utils/wait-for.sh /app/wait-for.sh
+# RUN chmod +x wait-for.sh
+# RUN apt-get -q update && apt-get -qy install netcat
 
 EXPOSE $SERVER_PORT
-CMD [ "node", "/app/index.js" ]
+
+# This command must be run depends on postgres server
+# CMD [ "node", "/app/index.js" ]
