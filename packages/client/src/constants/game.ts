@@ -96,3 +96,10 @@ export const TOOLTIP: Record<Tooltip, string> = {
   firstBarrier: 'Need to jump over the target',
   firstTimeout: 'The animal can run away',
 }
+
+type TAudio = 'sound' | 'music'
+// Volume: 0-10
+export const AudioVolume: Record<TAudio, number> = {
+  sound: 10,
+  music: 4,
+}

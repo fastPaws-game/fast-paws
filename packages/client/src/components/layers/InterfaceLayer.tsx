@@ -24,6 +24,7 @@ type Props = {
   fullScreen: boolean
   switchFullScreen: () => void
   handlePause: () => void
+  audioSwitch: (state: boolean) => void
 }
 
 type TAction = 'settings' | 'sound' | 'pause' | 'fullscreen'
@@ -40,6 +41,7 @@ const InterfaceLayer: FC<Props> = props => {
         navigate('/settings')
         break
       case 'sound':
+        props.audioSwitch(sound)
         setSound(!sound)
         break
       case 'pause':

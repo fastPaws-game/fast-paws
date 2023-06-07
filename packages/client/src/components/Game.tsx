@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from 'react'
+import { FC, useCallback, useState, useEffect } from 'react'
 import ActionLayer from './layers/ActionLayer'
 import InterfaceLayer from './layers/InterfaceLayer'
 import BackgroundLayer from './layers/BackgroundLayer'
@@ -13,6 +13,7 @@ import { authSelectors } from '../store/auth/AuthSelectors'
 import { saveCatched, saveScore } from '../store/game/GameSlice'
 import { TCatched } from '../engine/@engine'
 import { GameSelectors } from '../store/game/GameSelectors'
+import { useAudio } from '../hooks/useAudio'
 
 type Props = {
   fullScreen: boolean
@@ -30,6 +31,20 @@ const GamePage: FC<Props> = props => {
   const isAuth = useAppSelector(authSelectors.getIsAuth)
   const user = useAppSelector(authSelectors.getUser)
   const score = useAppSelector(GameSelectors.getScore)
+  const { playAudio, createAudio, switchAudio, stopAudio, isOn } = useAudio()
+
+  useEffect(() => {
+    createAudio('music.mountains')
+    playAudio('music.mountains')
+    return () => {
+      stopAudio()
+    }
+  }, [])
+
+  const audioSwitch = useCallback((state: boolean) => {
+    switchAudio(state)
+    // Api call
+  }, [])
 
   const updateScore = useCallback(
     (score: number) => {
@@ -92,6 +107,7 @@ const GamePage: FC<Props> = props => {
     fullScreen: props.fullScreen,
     switchFullScreen: props.switchFullScreen,
     handlePause,
+    audioSwitch,
   }
 
   return (
