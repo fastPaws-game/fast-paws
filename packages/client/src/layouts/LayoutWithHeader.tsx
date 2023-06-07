@@ -1,4 +1,4 @@
-import { FC, ReactNode } from 'react'
+import React, { FC, ReactNode } from 'react'
 import styled from 'styled-components'
 import { H1 } from '../assets/styles/texts'
 import Button from '../ui/button'
@@ -20,25 +20,24 @@ const LayoutWithHeader: FC<Props> = props => {
   }
 
   return (
-    <Layout>
-      <Container>
-        <Header>
-          <Button icon={IconBack} onClick={handleClick} light></Button>
-          <H1>{title ?? ''}</H1>
-        </Header>
-        {children}
-      </Container>
-    </Layout>
+    <Container>
+      <Header>
+        <Button icon={IconBack} onClick={handleClick} />
+        <H1>{title ?? ''}</H1>
+      </Header>
+      {children}
+    </Container>
   )
 }
 
 const Container = styled.main`
-  width: 100vw;
+  min-height: 100vh;
+  background: ${({ theme }) => theme.colors.primary};
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  z-index: 10;
+  padding: 3em;
 `
 
 const Header = styled.header`
@@ -46,16 +45,6 @@ const Header = styled.header`
   align-items: center;
   gap: 45px;
   width: 100%;
-  padding: 30px 30px 0;
-`
-
-const Layout = styled.div`
-  background: ${({ theme }) => theme.colors.primary};
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  height: 100vh;
-  overflow: scroll;
 `
 
 export default LayoutWithHeader

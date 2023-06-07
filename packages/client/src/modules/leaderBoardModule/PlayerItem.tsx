@@ -3,18 +3,20 @@ import styled from 'styled-components'
 import { P1 } from '../../assets/styles/texts'
 import defaultAvatar from '../../assets/images/catAvatar.png'
 import { media } from '../../assets/styles/media'
-import { PlayerItemType } from './LeaderBoard'
+import { TPlayerItem } from '../../models/LeaderBoardModel'
 
-type Props = Omit<PlayerItemType, 'id'>
+type Props = Omit<TPlayerItem, 'id'> & {
+  numbering: number
+}
 
 const PlayerItem: FC<Props> = props => {
-  const { avatarUrl, name, rating, points } = props
+  const { numbering, avatarUrl, name, points } = props
 
   return (
     <Wrapper>
-      <P>{rating}.</P>
+      <P>{numbering}.</P>
       <AvatarImage>
-        <img src={avatarUrl || defaultAvatar} alt="" />
+        <img src={avatarUrl ? `/api/v2/resources${avatarUrl}` : defaultAvatar} alt="" />
       </AvatarImage>
       <P weight="700">{name}</P>
       <P weight="300">{points}</P>
@@ -28,6 +30,7 @@ const P = styled(P1)`
       font-size: ${({ theme }) => theme.vars.fontSize.s};
     }
   }
+
   ${media.small} {
     font-size: ${({ theme }) => theme.vars.fontSize.s};
   }

@@ -16,7 +16,8 @@ module.exports = {
   plugins: ['@typescript-eslint', 'react-hooks'],
   rules: {
     '@typescript-eslint/ban-ts-comment': 1,
-    "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn"
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'warn',
+    'comma-dangle': ['error', 'only-multiline']
   }
 }

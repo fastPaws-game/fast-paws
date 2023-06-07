@@ -1,7 +1,6 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import dotenv from 'dotenv'
-import macrosPlugin from 'vite-plugin-babel-macros'
 
 dotenv.config()
 
@@ -11,7 +10,8 @@ export default defineConfig({
     port: Number(process.env.CLIENT_PORT) || 3000,
   },
   define: {
-    __SERVER_PORT__: process.env.SERVER_PORT,
+    SERVER_PORT: JSON.stringify(5000),
+    YANDEX_URL: JSON.stringify('https://ya-praktikum.tech'),
   },
-  plugins: [react(), macrosPlugin()],
+  plugins: [react()],
 })

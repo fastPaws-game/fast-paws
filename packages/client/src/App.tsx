@@ -1,20 +1,13 @@
 import { ThemeProvider } from 'styled-components'
+import { Router } from './router'
 import { useChangeTheme } from './hooks/useChangeTheme'
-import { GlobalStyles } from './assets/styles/globalStyle'
-import { RouterProvider } from 'react-router-dom'
-import { router } from './router'
-import PageWrapper from './pages/PageWrapper'
 
 function App() {
-  const { theme, themeToggler } = useChangeTheme()
+  const { theme } = useChangeTheme()
 
   return (
     <ThemeProvider theme={theme}>
-      <GlobalStyles />
-      <button onClick={themeToggler}>Toggle Theme</button>
-      <PageWrapper>
-        <RouterProvider router={router} />
-      </PageWrapper>
+      <Router />
     </ThemeProvider>
   )
 }

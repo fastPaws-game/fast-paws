@@ -14,7 +14,7 @@ export const GlobalStyles = createGlobalStyle`
     src: url(${PTSans400Woff2}) format('woff2'),
          url(${PTSans400Woff}) format('woff');
   }
-  
+
   /* pt-sans-700 - cyrillic_latin */
   @font-face {
     font-family: 'PT Sans';
@@ -29,6 +29,7 @@ export const GlobalStyles = createGlobalStyle`
     font-family: 'PT Sans', sans-serif;
     font-style: normal;
     font-weight: 400;
+    margin: 0;
   }
 
   * {
@@ -38,11 +39,7 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   html {
-    -webkit-text-size-adjust: 100%;
-  }
-
-  body {
-    margin: 0;
+    text-size-adjust: 100%;
   }
 
   main {
@@ -56,7 +53,7 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   pre {
-    font-family: monospace, monospace;
+    font-family: monospace;
     font-size: 1em;
   }
 
@@ -75,7 +72,7 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   code, kbd, samp {
-    font-family: monospace, monospace;
+    font-family: monospace;
     font-size: 1em;
   }
 
@@ -102,14 +99,21 @@ export const GlobalStyles = createGlobalStyle`
     border-style: none;
   }
 
+  textarea {
+    overflow: auto;
+  }
+
   button, input, optgroup, select, textarea {
     font-family: inherit;
     font-size: 100%;
     line-height: 1.15;
     margin: 0;
   }
+  input, textarea {
+    overflow: visible;
+  }
 
-  input, input:focus {
+  input, input:focus, textarea, textarea:focus {
     border: none;
     box-sizing: border-box;
     outline: thin;
@@ -117,9 +121,6 @@ export const GlobalStyles = createGlobalStyle`
 
   button {
     cursor: pointer;
-  }
-
-  button, input {
     overflow: visible;
   }
 
@@ -128,7 +129,7 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   button, [type="button"], [type="reset"], [type="submit"] {
-    -webkit-appearance: button;
+    appearance: button;
   }
 
   button::-moz-focus-inner,
@@ -163,10 +164,6 @@ export const GlobalStyles = createGlobalStyle`
     vertical-align: baseline;
   }
 
-  textarea {
-    overflow: auto;
-  }
-
   [type="checkbox"], [type="radio"] {
     box-sizing: border-box;
     padding: 0;
@@ -177,16 +174,16 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   [type="search"] {
-    -webkit-appearance: textfield;
+    appearance: textfield;
     outline-offset: -2px;
   }
 
   [type="search"]::-webkit-search-decoration {
-    -webkit-appearance: none;
+    appearance: none;
   }
 
   ::-webkit-file-upload-button {
-    -webkit-appearance: button;
+    appearance: button;
     font: inherit;
   }
 

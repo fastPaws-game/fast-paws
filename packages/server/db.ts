@@ -1,28 +1,39 @@
-import { Client } from 'pg'
+import { Sequelize, SequelizeOptions } from 'sequelize-typescript'
+import { ForumModel } from './src/models/forumModel'
+import { TopicModel } from './src/models/topicModel'
+import { CommentModel } from './src/models/commentModel'
+import ThemeModel from './src/models/themeModel'
+import dotenv from 'dotenv'
 
-const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT } =
-  process.env
+const isDev = process.env.NODE_ENV === 'development'
+if (isDev) dotenv.config({ path: '../../.env' })
+else dotenv.config()
 
-export const createClientAndConnect = async (): Promise<Client | null> => {
+const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT, POSTGRES_HOST } = process.env
+
+const sequelizeOptions: SequelizeOptions = {
+  host: isDev ? 'localhost' : POSTGRES_HOST,
+  port: Number(POSTGRES_PORT),
+  username: POSTGRES_USER,
+  password: POSTGRES_PASSWORD,
+  database: POSTGRES_DB,
+  dialect: 'postgres',
+  logging: false,
+  models: [ForumModel, TopicModel, CommentModel, ThemeModel],
+}
+
+export const sequelize = new Sequelize(sequelizeOptions)
+
+export async function dbConnect() {
   try {
-    const client = new Client({
-      user: POSTGRES_USER,
-      host: 'localhost',
-      database: POSTGRES_DB,
-      password: POSTGRES_PASSWORD,
-      port: Number(POSTGRES_PORT),
-    })
+    await sequelize.authenticate()
+    await sequelize.sync()
 
-    await client.connect()
-
-    const res = await client.query('SELECT NOW()')
-    console.log('  ➜ 🎸 Connected to the database at:', res?.rows?.[0].now)
-    client.end()
-
-    return client
-  } catch (e) {
-    console.error(e)
+    console.log(
+      `\x1b[33m  ➜ 🚀 Connection to \x1b[96m${process.env.POSTGRES_DB}\x1b[33m has been established successfully.\x1b[0m`
+    )
+  } catch (error) {
+    console.error(`  ➜ ❌ Unable to connect to the ${process.env.POSTGRES_DB}:`)
+    console.error(error)
   }
-
-  return null
 }

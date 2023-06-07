@@ -6,6 +6,7 @@ import { P1 } from '../assets/styles/texts'
 import styled from 'styled-components'
 import IconSettings from '../assets/icons/IconSettings'
 import IconStar from '../assets/icons/IconStar'
+import IconRestart from '../assets/icons/IconRestart'
 import { useNavigate } from 'react-router'
 
 type Props = {
@@ -28,25 +29,17 @@ const GameOver: FC<Props> = props => {
           <H1Modify base>Game Over</H1Modify>
           <TextContainer>
             <P1 base>Your score</P1>
-            <P1 base>500</P1>
+            <P1 base>0</P1>
           </TextContainer>
           <TextContainer>
-            <P1 base>You best score</P1>
-            <P1 base>500</P1>
+            <P1 base>Your best score</P1>
+            <P1 base>N/A</P1>
           </TextContainer>
         </Header>
         <Footer>
-          <Button icon={<h1>&lt;</h1>} size={'big'} onClick={handleClick()} />
-          <Button
-            icon={<IconSettings />}
-            size={'big'}
-            onClick={handleClick('/settings')}
-          />
-          <Button
-            icon={<IconStar />}
-            size={'big'}
-            onClick={handleClick('/leaderboard')}
-          />
+          <Button icon={<IconRestart />} size={'small'} onClick={handleClick()} darkblue />
+          <Button icon={<IconSettings />} size={'small'} onClick={handleClick('/settings')} darkblue />
+          <Button icon={<IconStar />} size={'small'} onClick={handleClick('/leaderboard')} darkblue />
         </Footer>
       </Content>
     </Modal>
@@ -65,9 +58,9 @@ const Header = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 30px 0;
-  gap: 25px;
-  background-color: ${props => props.theme.colors.accent};
+  padding: 20px 0;
+  gap: 15px;
+  background-color: ${props => props.theme.colors.tertiary};
   border-radius: ${props => props.theme.borders.secondary};
   box-shadow: ${props => props.theme.shadows.secondary};
 `
@@ -75,6 +68,7 @@ const H1Modify = styled(H1)`
   width: 55%;
   padding-bottom: 5px;
   border-bottom: 1px solid ${props => props.theme.colors.white};
+  color: ${props => props.theme.colors.white};
   text-align: center;
 `
 const TextContainer = styled.div`
@@ -86,6 +80,7 @@ const Footer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0 20px;
 `
 
 export default GameOver

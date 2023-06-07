@@ -1,45 +1,33 @@
+import { useEffect } from 'react'
+import { useAppSelector, useAppDispatch } from '../../hooks/store'
 import styled from 'styled-components'
 import { PlayerItem } from './PlayerItem'
-import LayoutWithHeader from '../../layouts/LayoutWithHeader'
-
-export type PlayerItemType = {
-  id: number
-  name: string
-  rating: number
-  points: number
-  avatarUrl?: string | null
-}
-
-const mockPlayerList: PlayerItemType[] = [
-  {
-    id: 0,
-    name: 'Босс',
-    rating: 1,
-    points: 520,
-    avatarUrl: 'https://nretnil.com/avatar/LawrenceEzekielAmos.png',
-  },
-  { id: 1, name: 'Крутой кошак', rating: 1, points: 520 },
-  { id: 2, name: 'Крутой кошак', rating: 1, points: 520 },
-  { id: 3, name: 'Крутой кошак', rating: 1, points: 520 },
-  { id: 4, name: 'Крутой кошак', rating: 1, points: 520 },
-  { id: 5, name: 'Крутой кошак', rating: 1, points: 520 },
-]
+import { TLeaderboardRequest } from '../../models/LeaderBoardModel'
+import { getTeamLeaderboard } from '../../store/leaderboard/LeaderboardActions'
+import { leaderboardSelectors } from '../../store/leaderboard/LeaderboardSelectors'
+import { LEADERBOARD_CONSTS } from '../../constants/leaderBoard'
 
 const LeaderBoard = () => {
+  const dispatch = useAppDispatch()
+  const leaderboardItems = useAppSelector(leaderboardSelectors.getLeaderbordItems)
+
+  useEffect(() => {
+    const leaderboardRequires: TLeaderboardRequest = {
+      ratingFieldName: LEADERBOARD_CONSTS.ratingFieldName,
+      cursor: LEADERBOARD_CONSTS.cursor,
+      limit: LEADERBOARD_CONSTS.limit,
+    }
+
+    dispatch(getTeamLeaderboard(leaderboardRequires))
+  }, [])
+
   return (
-    <LayoutWithHeader title="Leaderboard">
-      <Wrapper>
-        {mockPlayerList.map(item => (
-          <PlayerItem
-            name={item.name}
-            rating={item.rating}
-            points={item.points}
-            avatarUrl={item.avatarUrl || null}
-            key={item.id}
-          />
-        ))}
-      </Wrapper>
-    </LayoutWithHeader>
+    <Wrapper>
+      {leaderboardItems?.map((item, index) => {
+        const { id, name, points, avatarUrl } = item.data
+        return <PlayerItem numbering={index + 1} name={name} points={points} avatarUrl={avatarUrl} key={id} />
+      })}
+    </Wrapper>
   )
 }
 

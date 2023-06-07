@@ -1,26 +1,17 @@
-import { useEffect, useState } from 'react'
-import { lightTheme, darkTheme } from '../assets/styles/theme'
+import { useAppDispatch, useAppSelector } from './store'
+import { changeTheme } from '../store/theme/ThemeActions'
+import { ThemeVariants } from '../store/theme/ThemeSlice'
+import { Themes } from '../constants/themes'
+import { themeSelectors } from '../store/theme/ThemeSelectors'
 
-const Themes: Record<string, typeof lightTheme> = {
-  light: lightTheme,
-  dark: darkTheme,
-}
 export const useChangeTheme = () => {
-  const [themeName, setTheme] = useState('light')
+  const dispatch = useAppDispatch()
+  const currentTheme = useAppSelector(themeSelectors.getCurrentTheme)
 
-  const setMode = (mode: string) => {
-    window.localStorage.setItem('theme', mode)
-    setTheme(mode)
+  const toggleTheme = () => {
+    const newTheme: ThemeVariants = currentTheme === 'light' ? 'dark' : 'light'
+    dispatch(changeTheme(newTheme))
   }
 
-  const themeToggler = () => {
-    themeName === 'light' ? setMode('dark') : setMode('light')
-  }
-
-  useEffect(() => {
-    const localTheme = window.localStorage.getItem('theme')
-    localTheme && setTheme(localTheme)
-  }, [])
-
-  return { theme: Themes[themeName], themeToggler }
+  return { theme: Themes[currentTheme], toggleTheme }
 }

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { ForwardedRef, forwardRef, FC, InputHTMLAttributes } from 'react'
+import React, { ForwardedRef, forwardRef, FC, InputHTMLAttributes } from 'react'
 import { media } from '../../assets/styles/media'
 import { P4 } from '../../assets/styles/texts'
 
@@ -18,33 +18,33 @@ type Props = {
 const Input: FC<Props> = forwardRef((props, ref) => {
   const { errorOn, errorMessage, typeStyle, ...rest } = props
 
-  const InputStyled =
-    typeStyle === 'form' ? InputFormStyled : InputProfileStyled
+  const InputStyled = typeStyle === 'form' ? InputFormStyled : InputProfileStyled
 
   return (
-    <div>
+    <Wrapper>
       <InputStyled errorOn={errorOn} ref={ref} {...rest} />
       {errorOn && <P4>{errorMessage}</P4>}
-    </div>
+    </Wrapper>
   )
 })
 
+const Wrapper = styled.div`
+  position: relative;
+  max-width: 315px;
+  width: 100%;
+`
 const InputFormStyled = styled.input<{ errorOn?: boolean }>`
-  max-width: 246px;
+  max-width: 300px;
   width: 100%;
   height: 34px;
   background: ${props => props.theme.colors.backgroundInput};
-  border-left: 3px solid
-    ${props =>
-      props.errorOn ? props.theme.colors.error : props.theme.colors.accent};
+  border-left: 3px solid ${props => (props.errorOn ? props.theme.colors.error : props.theme.colors.accent)};
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.05);
   border-radius: 0px 15px 15px 0px;
-  color: ${props =>
-    props.errorOn ? props.theme.text.error : props.theme.text.textInvert};
+  color: ${props => (props.errorOn ? props.theme.text.error : props.theme.text.textInvert)};
   caret-color: ${props => props.theme.text.caretColor};
   padding-left: 10px;
-  transition: width 0.3s;
-  margin-bottom: 4px;
+  margin-bottom: 18px;
 
   ${media.middle} {
     max-width: 279px;
@@ -56,10 +56,8 @@ const InputFormStyled = styled.input<{ errorOn?: boolean }>`
 
   &:hover,
   :focus {
-    transition: 0.3s;
-    border-left: 5px solid
-      ${props =>
-        props.errorOn ? props.theme.colors.error : props.theme.colors.accent};
+    border-left: 5px solid ${props => (props.errorOn ? props.theme.colors.error : props.theme.colors.accent)};
+    padding-left: 8px;
 
     ::placeholder {
       color: ${props => props.theme.text.placeholder};
@@ -79,6 +77,10 @@ const InputFormStyled = styled.input<{ errorOn?: boolean }>`
   + p {
     color: ${props => props.theme.text.error};
     margin: 0;
+    position: absolute;
+    top: 37px;
+    left: 13px;
+    text-align: left;
   }
 `
 
@@ -87,9 +89,9 @@ const InputProfileStyled = styled.input<{ errorOn?: boolean }>`
   height: 22px;
   border-bottom: 1px solid ${props => props.theme.colors.accent};
   background: ${props => props.theme.colors.secondary};
-  color: ${props =>
-    props.errorOn ? props.theme.text.error : props.theme.text.textInvert};
+  color: ${props => (props.errorOn ? props.theme.text.error : props.theme.text.textInvert)};
   caret-color: ${props => props.theme.text.caretColor};
+  margin-bottom: 24px;
 
   &::placeholder {
     color: ${props => props.theme.text.placeholder};
@@ -106,6 +108,9 @@ const InputProfileStyled = styled.input<{ errorOn?: boolean }>`
   + p {
     color: ${props => props.theme.text.error};
     margin: 0;
+    position: absolute;
+    top: 28px;
+    left: 0;
   }
 `
 
