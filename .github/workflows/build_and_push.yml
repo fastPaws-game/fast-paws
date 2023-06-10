@@ -3,7 +3,7 @@ name: Push to GitHub Container Registry
 on:
   push:
     branches:
-      - solomahinmaxim/fpg-104
+      - main
 
 jobs:
   build-and-push:
