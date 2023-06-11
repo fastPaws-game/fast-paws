@@ -1,5 +1,4 @@
-import type { Request, Response, NextFunction } from 'express'
-import axios from 'axios'
+import { Request, Response, NextFunction } from 'express'
 
 const cookieKeys = ['uuid', 'authCookie']
 
@@ -11,13 +10,13 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
       await res.locals.axiosClient.getUser()
       next()
     } else {
+      console.log(req.headers)
       res.status(401).json({ message: 'Пользователь не авторизирован' })
     }
   } catch (e) {
-    if (axios.isAxiosError(e)) {
-      if (e.response?.status !== 200) {
-        res.status(401).json({ message: 'Пользователь не авторизирован' })
-      }
+    //ручка стандартного API https://ya-praktikum.tech/api/v2/auth/user не возвращает AxiosError, кроме того объект ошибки не содержит code, statusCode и т.д. Поэтому приходится ориентироваться именно на строку ошибки
+    if (e instanceof Error && e.message === 'Cookie is not valid') {
+      res.status(401).json({ message: 'Пользователь не авторизированcccccccccccccc' })
     }
     if (!res.headersSent) {
       res.status(500).json({ message: 'Ошибка сервера' })
