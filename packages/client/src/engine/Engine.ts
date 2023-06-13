@@ -83,6 +83,7 @@ export default class Engine {
   private setTooltip: (tooltip: string) => void
   private updateScore: (score: number) => void
   private updateCatched: (id: keyof TCatched) => void
+  private playAudio: (name: string) => void
   private static __instance: Engine
 
   private constructor(handlers: Record<string, (value?: any) => void>) {
@@ -93,6 +94,7 @@ export default class Engine {
     this.setTooltip = handlers.setTooltip
     this.updateScore = handlers.updateScore
     this.updateCatched = handlers.updateCatched
+    this.playAudio = handlers.playAudio
 
     this.canvas = document.getElementById('game_canvas') as HTMLCanvasElement
     this.game.ctx = this.canvas.getContext('2d')
@@ -124,6 +126,7 @@ export default class Engine {
       return
     }
     this.Tooltip.show(reason || (this.target.isBarrier ? 'barrier' : 'animal'))
+    if (this.target.isBarrier) this.playAudio('sound.impact')
 
     this.game.combo = 0
     this.showCombo(this.game.combo)
@@ -144,11 +147,13 @@ export default class Engine {
         if (this.game.combo > 1) {
           this.showCombo(this.game.combo)
           this.fly.throw('Combo:', this.game.combo, this.cat.CatX)
+          this.playAudio('sound.combo')
         }
       }
       const name: AnimalName = this.target.nameCurr as AnimalName
 
       this.updateCatched(name)
+      this.playAudio('sound.catch')
       this.target.nameCurr = 'none'
     }
     this.levelPrepare()
@@ -167,6 +172,7 @@ export default class Engine {
     this.game.definingTrajectory = false
     // Prevent accidentially tapping
     if (this.cat.jumpHeight > GAME.jumpHeightMin + GAME.trajectoryStep * 2) {
+      this.playAudio('sound.jump')
       this.game.action = 'jump'
       this.cat.atPosition = false
       this.cat.jumpStage = -Math.PI
@@ -417,6 +423,7 @@ export default class Engine {
         Engine.__instance.setTooltip = handlers.setTooltip
         Engine.__instance.updateScore = handlers.updateScore
         Engine.__instance.updateCatched = handlers.updateCatched
+        Engine.__instance.playAudio = handlers.playAudio
       }
       return Engine.__instance
     }

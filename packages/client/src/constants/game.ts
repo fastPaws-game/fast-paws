@@ -97,9 +97,9 @@ export const TOOLTIP: Record<Tooltip, string> = {
   firstTimeout: 'The animal can run away',
 }
 
-type TAudio = 'sound' | 'music'
+export type TAudio = 'sound' | 'music'
 // Volume: 0-10
 export const AudioVolume: Record<TAudio, number> = {
-  sound: 10,
+  sound: 7,
   music: 4,
 }

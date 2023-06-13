@@ -23,6 +23,7 @@ type Props = {
 const GamePage: FC<Props> = props => {
   const [pauseVisible, setPauseVisible] = useState(false)
   const [gameOverVisible, setGameOverVisible] = useState(false)
+  const [sound, setSound] = useState(true)
   const [level, setLevel] = useState(0)
   const [combo, setCombo] = useState(1)
   const [tooltip, setTooltip] = useState('')
@@ -31,14 +32,11 @@ const GamePage: FC<Props> = props => {
   const isAuth = useAppSelector(authSelectors.getIsAuth)
   const user = useAppSelector(authSelectors.getUser)
   const score = useAppSelector(GameSelectors.getScore)
-  const { playAudio, createAudio, switchAudio, stopAudio, isOn } = useAudio()
+  const { playAudio, switchAudio, stopAudio } = useAudio((state: boolean) => setSound(state))
 
   useEffect(() => {
-    createAudio('music.mountains')
     playAudio('music.mountains')
-    return () => {
-      stopAudio()
-    }
+    return () => stopAudio()
   }, [])
 
   const audioSwitch = useCallback((state: boolean) => {
@@ -82,9 +80,7 @@ const GamePage: FC<Props> = props => {
   }, [setGameOverVisible])
 
   const handleCloseGame = useCallback(() => {
-    if (!isAuth || !user) {
-      return
-    }
+    if (!isAuth || !user) return
 
     const leaderBoardUpdate = getLeaderboardBody(user, score)
     dispatch(addUserToLeaderboard(leaderBoardUpdate))
@@ -98,9 +94,11 @@ const GamePage: FC<Props> = props => {
     setTooltip,
     updateScore,
     updateCatched,
+    playAudio,
   }
 
   const interfaceLayerProps = {
+    sound,
     level,
     combo,
     tooltip,

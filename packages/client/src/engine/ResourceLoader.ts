@@ -10,7 +10,11 @@ import mouseUrl from '../assets/sprites/mouse-brown.gif'
 import MistyMountains_layer1Url from '../assets/background/MistyMountains/layer_1.png'
 import MistyMountains_layer2Url from '../assets/background/MistyMountains/layer_2.png'
 import MistyMountains_layer3Url from '../assets/background/MistyMountains/layer_3.png'
-import Mountains_musicUrl from '../assets/sounds/bg_mountains.mp3'
+import Mountains_music from '../assets/sounds/bg_mountains.mp3'
+import Sound_catch from '../assets/sounds/catch.ogg'
+import Sound_combo from '../assets/sounds/combo.ogg'
+import Sound_impact from '../assets/sounds/impact.ogg'
+import Sound_jump from '../assets/sounds/jump.ogg'
 
 // @ts-ignore
 import GIF from '../utils/gif.js'
@@ -33,7 +37,7 @@ export type GifObject = {
 
 export class Resource {
   public progress = 0 // 0 - 100 in percents
-  private total = 13 // Resource count
+  private total = 17 // Resource count
   private current = 0
 
   protected static __instance: Resource
@@ -96,7 +100,7 @@ export class Resource {
   private loadAudio = (name: string, url: string): HTMLAudioElement => {
     const newAudio = new Audio(url)
     newAudio.addEventListener('canplaythrough', () => {
-      // console.log('Loaded audio:', name)
+      // console.log(`Loaded audio: ${name}`)
       this.countOne()
     })
     newAudio.onerror = function (err) {
@@ -124,7 +128,11 @@ export class Resource {
       this.loadImg('MistyMountains.layer2', MistyMountains_layer2Url)
       this.loadImg('MistyMountains.layer3', MistyMountains_layer3Url)
 
-      this.loadAudio('music.mountains', Mountains_musicUrl)
+      this.loadAudio('music.mountains', Mountains_music)
+      this.loadAudio('sound.catch', Sound_catch)
+      this.loadAudio('sound.combo', Sound_combo)
+      this.loadAudio('sound.impact', Sound_impact)
+      this.loadAudio('sound.jump', Sound_jump)
     }
   }
 
