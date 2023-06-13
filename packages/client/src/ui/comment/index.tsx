@@ -1,5 +1,6 @@
 import { FC } from 'react'
 import styled from 'styled-components'
+import Button from '../../ui/button'
 import { useAppDispatch, useAppSelector } from '../../hooks/store'
 import { authSelectors } from '../../store/auth/AuthSelectors'
 import { deleteComment } from '../../store/comments/CommentsActions'
@@ -24,16 +25,8 @@ const CommentItem: FC<Props> = props => {
   }
   const dateAndTime = now.toLocaleString('ru-RU', options)
 
-  const handleReply = () => {
-    console.log('Reply')
-  }
-
   const handleDelete = () => {
     dispatch(deleteComment(commentId))
-  }
-
-  const handleUpdate = () => {
-    console.log('ok')
   }
 
   return (
@@ -44,8 +37,6 @@ const CommentItem: FC<Props> = props => {
       </Container>
       <Container>{comment}</Container>
       <Container>
-        <Button onClick={handleReply}>Reply</Button>
-        <Button onClick={handleUpdate}>Update</Button>
         <Button onClick={handleDelete}>Delete</Button>
       </Container>
     </Item>
@@ -69,20 +60,13 @@ const Item = styled.li`
 const Container = styled.div`
   color: ${({ theme }) => theme.text.textInvert};
   font-weight: 600;
+  :last-child {
+    margin-left: auto;
+  }
 `
 
 const Topics = styled.span`
   padding-right: 15px;
-`
-
-const Button = styled.button`
-  width: 5%;
-  background-color: ${({ theme }) => theme.colors.secondary};
-  box-shadow: ${({ theme }) => theme.shadows.topic};
-  border-radius: 16px;
-  color: ${({ theme }) => theme.text.textInvert};
-  font-weight: 600;
-  margin-right: 10px;
 `
 
 export default CommentItem
