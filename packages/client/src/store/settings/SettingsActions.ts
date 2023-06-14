@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import SettingsApi from '../../api/SettingsApi'
 import { ThemeVariants } from './SettingsSlice'
 
-export const changeTheme = createAsyncThunk('theme/changeTheme', async (theme: ThemeVariants, { rejectWithValue }) => {
+export const changeTheme = createAsyncThunk('settings/setTheme', async (theme: ThemeVariants, { rejectWithValue }) => {
   try {
     return await SettingsApi.putTheme(theme)
   } catch (error) {
@@ -10,7 +10,7 @@ export const changeTheme = createAsyncThunk('theme/changeTheme', async (theme: T
   }
 })
 
-export const changeAudio = createAsyncThunk('theme/changeAudio', async (audio: boolean, { rejectWithValue }) => {
+export const changeAudio = createAsyncThunk('settings/setAudio', async (audio: boolean, { rejectWithValue }) => {
   try {
     return await SettingsApi.putAudio(audio)
   } catch (error) {
@@ -18,7 +18,7 @@ export const changeAudio = createAsyncThunk('theme/changeAudio', async (audio: b
   }
 })
 
-export const changeMusic = createAsyncThunk('theme/changeMusic', async (music: number, { rejectWithValue }) => {
+export const changeMusic = createAsyncThunk('settings/setMusic', async (music: number, { rejectWithValue }) => {
   try {
     return await SettingsApi.putMusic(music)
   } catch (error) {
@@ -26,7 +26,7 @@ export const changeMusic = createAsyncThunk('theme/changeMusic', async (music: n
   }
 })
 
-export const changeSound = createAsyncThunk('theme/changeSound', async (soung: number, { rejectWithValue }) => {
+export const changeSound = createAsyncThunk('settings/setSound', async (soung: number, { rejectWithValue }) => {
   try {
     return await SettingsApi.putSoung(soung)
   } catch (error) {

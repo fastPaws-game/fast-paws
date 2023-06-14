@@ -12,20 +12,20 @@ export type ThemeVariants = 'light' | 'dark'
 
 export type TSettings = {
   theme: ThemeVariants
-  audio: boolean // Game audio global
-  music: number // Music volume 0-10
-  sound: number // Sounds volume 0-10
+  audioEnabled: boolean // Game audio global
+  musicVolume: number // Music volume 0-10
+  soundVolume: number // Sounds volume 0-10
   language: string // 'en' | 'ru' | 'de' | 'fr'
-  meters: boolean // Performance meters
+  metersEnabled: boolean // Performance meters
 }
 
 const initialState: TSettings = {
   theme: 'light',
-  audio: true,
-  music: AudioVolume.music,
-  sound: AudioVolume.sound,
+  audioEnabled: true,
+  musicVolume: AudioVolume.music,
+  soundVolume: AudioVolume.sound,
   language: 'en',
-  meters: false,
+  metersEnabled: false,
 }
 
 export const settingsSlice = createSlice({
@@ -35,14 +35,14 @@ export const settingsSlice = createSlice({
     setTheme: (state, action: PayloadAction<TSettings['theme']>) => {
       state.theme = action.payload
     },
-    setAudio: (state, action: PayloadAction<TSettings['audio']>) => {
-      state.audio = action.payload
+    setAudio: (state, action: PayloadAction<TSettings['audioEnabled']>) => {
+      state.audioEnabled = action.payload
     },
-    setMusic: (state, action: PayloadAction<TSettings['music']>) => {
-      state.music = action.payload
+    setMusic: (state, action: PayloadAction<TSettings['musicVolume']>) => {
+      state.musicVolume = action.payload
     },
-    setSound: (state, action: PayloadAction<TSettings['sound']>) => {
-      state.sound = action.payload
+    setSound: (state, action: PayloadAction<TSettings['soundVolume']>) => {
+      state.soundVolume = action.payload
     },
     setLanguage: (state, action: PayloadAction<TSettings['language']>) => {
       state.language = action.payload
@@ -57,5 +57,5 @@ export const settingsSlice = createSlice({
   },
 })
 
-export const { setTheme, setMusic, setSound, setLanguage } = settingsSlice.actions
+export const { setTheme, setAudio, setMusic, setSound, setLanguage } = settingsSlice.actions
 export default settingsSlice.reducer

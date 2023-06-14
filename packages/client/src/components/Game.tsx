@@ -13,9 +13,7 @@ import { authSelectors } from '../store/auth/AuthSelectors'
 import { saveCatched, saveScore } from '../store/game/GameSlice'
 import { TCatched } from '../engine/@engine'
 import { GameSelectors } from '../store/game/GameSelectors'
-import { SettingsSelectors } from '../store/settings/SettingsSelectors'
 import { useAudio } from '../hooks/useAudio'
-import { changeAudio } from '../store/settings/SettingsActions'
 
 type Props = {
   fullScreen: boolean
@@ -23,10 +21,7 @@ type Props = {
 }
 
 const GamePage: FC<Props> = props => {
-  const audioEnabled = useAppSelector(SettingsSelectors.getAudioEnabled)
-  const musicVolume = useAppSelector(SettingsSelectors.getMusicVolume)
-  const soundVolume = useAppSelector(SettingsSelectors.getSoungVolume)
-
+  const { playAudio, switchAudio, stopAudio, audioEnabled } = useAudio((state: boolean) => setSound(state))
   const [pauseVisible, setPauseVisible] = useState(false)
   const [gameOverVisible, setGameOverVisible] = useState(false)
   const [sound, setSound] = useState(audioEnabled)
@@ -37,26 +32,15 @@ const GamePage: FC<Props> = props => {
   const isAuth = useAppSelector(authSelectors.getIsAuth)
   const user = useAppSelector(authSelectors.getUser)
   const score = useAppSelector(GameSelectors.getScore)
-  const { playAudio, switchAudio, stopAudio } = useAudio(
-    {
-      music: musicVolume,
-      sound: soundVolume,
-    },
-    (state: boolean) => setSound(state)
-  )
 
   useEffect(() => {
     playAudio('music.mountains')
     return () => stopAudio()
   }, [])
 
-  const audioSwitch = useCallback(
-    (state: boolean) => {
-      switchAudio(state) // Web api
-      // dispatch(changeAudio(state))	// Settings api (not ready yet)
-    },
-    [dispatch]
-  )
+  const audioSwitch = useCallback((state: boolean) => {
+    switchAudio(state)
+  }, [])
 
   const updateScore = useCallback(
     (score: number) => {
