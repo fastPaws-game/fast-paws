@@ -4,13 +4,13 @@ const cookieKeys = ['uuid', 'authCookie']
 
 export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const hasAuthCookies = cookieKeys.some(key => req.headers.cookie?.includes(key))
+    const reqCookies = req.headers.cookie
+    const hasAuthCookies = cookieKeys?.some(key => reqCookies?.includes(key))
 
     if (hasAuthCookies) {
       await res.locals.axiosClient.getUser()
       next()
     } else {
-      console.log(req.headers)
       res.status(401).json({ message: 'Пользователь не авторизирован' })
     }
   } catch (e) {
