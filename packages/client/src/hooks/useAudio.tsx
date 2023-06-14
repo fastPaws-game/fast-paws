@@ -3,10 +3,10 @@ import { TAudio, AudioVolume } from '../constants/game'
 import Resource from '../engine/ResourceLoader'
 import { getValue } from '../utils/data_utils'
 
-export const useAudio = (audioStatusCallback?: (enabled: boolean) => void) => {
+export const useAudio = (volume?: Record<TAudio, number>, audioStatusCallback?: (enabled: boolean) => void) => {
   const resource = Resource.get()
   const [audioList, setAudioList] = useState<Record<string, HTMLAudioElement>>({})
-  // Help!!! Эти хуки просто перестали работать.
+  // Help!!! Эти хуки просто не работают.
   // const [activeMusic, setActiveMusic] = useState<string | null>(null)
   // const [enabled, setEnabled] = useState(true)
   // Переделал на обычные переменные:
@@ -14,11 +14,11 @@ export const useAudio = (audioStatusCallback?: (enabled: boolean) => void) => {
   let enabled = true
 
   const createAudio = (name: string) => {
-    const AudioType = name.split('.')[0]
+    const AudioType = name.split('.')[0] as TAudio
     if (Object.keys(AudioVolume).includes(AudioType)) {
       const audio = getValue(resource.audio, name) as HTMLAudioElement
       audio.muted = false
-      audio.volume = AudioVolume[AudioType as TAudio] / 10
+      audio.volume = (volume ? volume[AudioType] : AudioVolume[AudioType]) / 10
       audio.loop = AudioType === 'music'
 
       const list = audioList

@@ -13,7 +13,9 @@ import { authSelectors } from '../store/auth/AuthSelectors'
 import { saveCatched, saveScore } from '../store/game/GameSlice'
 import { TCatched } from '../engine/@engine'
 import { GameSelectors } from '../store/game/GameSelectors'
+import { SettingsSelectors } from '../store/settings/SettingsSelectors'
 import { useAudio } from '../hooks/useAudio'
+import { changeAudio } from '../store/settings/SettingsActions'
 
 type Props = {
   fullScreen: boolean
@@ -21,10 +23,14 @@ type Props = {
 }
 
 const GamePage: FC<Props> = props => {
+  const audioEnabled = useAppSelector(SettingsSelectors.getAudioEnabled)
+  console.log(audioEnabled)
+  const musicVolume = useAppSelector(SettingsSelectors.getMusicVolume)
+  const soundVolume = useAppSelector(SettingsSelectors.getSoungVolume)
+
   const [pauseVisible, setPauseVisible] = useState(false)
   const [gameOverVisible, setGameOverVisible] = useState(false)
-  const [sound, setSound] = useState(true)
-  const [level, setLevel] = useState(0)
+  const [sound, setSound] = useState(audioEnabled)
   const [combo, setCombo] = useState(1)
   const [tooltip, setTooltip] = useState('')
 
@@ -32,17 +38,26 @@ const GamePage: FC<Props> = props => {
   const isAuth = useAppSelector(authSelectors.getIsAuth)
   const user = useAppSelector(authSelectors.getUser)
   const score = useAppSelector(GameSelectors.getScore)
-  const { playAudio, switchAudio, stopAudio } = useAudio((state: boolean) => setSound(state))
+  const { playAudio, switchAudio, stopAudio } = useAudio(
+    {
+      music: musicVolume,
+      sound: soundVolume,
+    },
+    (state: boolean) => setSound(state)
+  )
 
   useEffect(() => {
     playAudio('music.mountains')
     return () => stopAudio()
   }, [])
 
-  const audioSwitch = useCallback((state: boolean) => {
-    switchAudio(state)
-    // Api call
-  }, [])
+  const audioSwitch = useCallback(
+    (state: boolean) => {
+      switchAudio(state) // Web api
+      // dispatch(changeAudio(state))	// Settings api (not ready yet)
+    },
+    [dispatch]
+  )
 
   const updateScore = useCallback(
     (score: number) => {
@@ -81,7 +96,6 @@ const GamePage: FC<Props> = props => {
 
   const handleCloseGame = useCallback(() => {
     if (!isAuth || !user) return
-
     const leaderBoardUpdate = getLeaderboardBody(user, score)
     dispatch(addUserToLeaderboard(leaderBoardUpdate))
   }, [score])
@@ -89,7 +103,6 @@ const GamePage: FC<Props> = props => {
   const actionLayerProps = {
     setPauseVisible,
     handleGameOver,
-    setLevel,
     setCombo,
     setTooltip,
     updateScore,
@@ -99,7 +112,6 @@ const GamePage: FC<Props> = props => {
 
   const interfaceLayerProps = {
     sound,
-    level,
     combo,
     tooltip,
     fullScreen: props.fullScreen,

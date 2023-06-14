@@ -10,7 +10,15 @@ export const changeTheme = createAsyncThunk('theme/changeTheme', async (theme: T
   }
 })
 
-export const changeMusic = createAsyncThunk('theme/changeTheme', async (music: number, { rejectWithValue }) => {
+export const changeAudio = createAsyncThunk('theme/changeAudio', async (audio: boolean, { rejectWithValue }) => {
+  try {
+    return await SettingsApi.putAudio(audio)
+  } catch (error) {
+    return rejectWithValue(error)
+  }
+})
+
+export const changeMusic = createAsyncThunk('theme/changeMusic', async (music: number, { rejectWithValue }) => {
   try {
     return await SettingsApi.putMusic(music)
   } catch (error) {
@@ -18,7 +26,7 @@ export const changeMusic = createAsyncThunk('theme/changeTheme', async (music: n
   }
 })
 
-export const changeSoung = createAsyncThunk('theme/changeTheme', async (soung: number, { rejectWithValue }) => {
+export const changeSound = createAsyncThunk('theme/changeSound', async (soung: number, { rejectWithValue }) => {
   try {
     return await SettingsApi.putSoung(soung)
   } catch (error) {
@@ -26,10 +34,13 @@ export const changeSoung = createAsyncThunk('theme/changeTheme', async (soung: n
   }
 })
 
-export const changeLanguage = createAsyncThunk('theme/changeTheme', async (language: string, { rejectWithValue }) => {
-  try {
-    return await SettingsApi.putLanguage(language)
-  } catch (error) {
-    return rejectWithValue(error)
+export const changeLanguage = createAsyncThunk(
+  'theme/changeLanguage',
+  async (language: string, { rejectWithValue }) => {
+    try {
+      return await SettingsApi.putLanguage(language)
+    } catch (error) {
+      return rejectWithValue(error)
+    }
   }
-})
+)

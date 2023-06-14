@@ -78,7 +78,6 @@ export default class Engine {
   private meterStack = new Queue()
   private setPauseVisible: (pause: boolean) => void
   private handleGameOver: () => void
-  private showLevel: (value: number) => void
   private showCombo: (value: number) => void
   private setTooltip: (tooltip: string) => void
   private updateScore: (score: number) => void
@@ -89,7 +88,6 @@ export default class Engine {
   private constructor(handlers: Record<string, (value?: any) => void>) {
     this.setPauseVisible = handlers.setPauseVisible
     this.handleGameOver = handlers.handleGameOver
-    this.showLevel = handlers.setLevel
     this.showCombo = handlers.setCombo
     this.setTooltip = handlers.setTooltip
     this.updateScore = handlers.updateScore
@@ -347,7 +345,6 @@ export default class Engine {
 
     window.clearTimeout(this.game.timer)
     const level = Math.min(Math.floor(Math.max(this.game.score, 0) / GAME.scorePerLevel), 5)
-    this.showLevel(level)
     this.game.SPEED = 0.5 + level * 0.1
     const targets = DIFFICULTY_PER_LEVEL[0] // ToDo change to a level
     const rand = Math.floor(Math.random() * targets.length)
@@ -418,7 +415,6 @@ export default class Engine {
       if (handlers) {
         Engine.__instance.setPauseVisible = handlers.setPauseVisible
         Engine.__instance.handleGameOver = handlers.handleGameOver
-        Engine.__instance.showLevel = handlers.setLevel
         Engine.__instance.showCombo = handlers.setCombo
         Engine.__instance.setTooltip = handlers.setTooltip
         Engine.__instance.updateScore = handlers.updateScore

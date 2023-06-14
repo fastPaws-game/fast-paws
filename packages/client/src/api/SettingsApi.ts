@@ -15,6 +15,16 @@ class SettingsApi {
     })
   }
 
+  public getAudio = () => fetchApiV1.get<boolean>('/audio')
+
+  public putAudio(value: boolean) {
+    return fetchApiV1.put<boolean>('/audio', {
+      body: {
+        value,
+      },
+    })
+  }
+
   public getMusic = () => fetchApiV1.get<number>('/music')
 
   public putMusic(value: number) {

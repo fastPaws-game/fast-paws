@@ -1,13 +1,15 @@
 import { RootState } from '../index'
 
 const getTheme = (state: RootState) => state.settings.theme
-const getMusic = (state: RootState) => state.settings.music
-const getSoung = (state: RootState) => state.settings.sound
+const getAudioEnabled = (state: RootState) => state.settings.audio
+const getMusicVolume = (state: RootState) => state.settings.music
+const getSoungVolume = (state: RootState) => state.settings.sound
 const getLanguage = (state: RootState) => state.settings.language
 
-export const settingsSelectors = {
+export const SettingsSelectors = {
   getTheme,
-  getMusic,
-  getSoung,
+  getAudioEnabled,
+  getMusicVolume,
+  getSoungVolume,
   getLanguage,
 }

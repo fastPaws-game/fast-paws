@@ -1,5 +1,5 @@
 import { ActionReducerMapBuilder } from '@reduxjs/toolkit'
-import { changeTheme, changeMusic, changeSoung, changeLanguage } from './SettingsActions'
+import { changeTheme, changeAudio, changeMusic, changeSound, changeLanguage } from './SettingsActions'
 import { SettingsSlice } from './SettingsSlice'
 import { AudioVolume } from '../../constants/game'
 
@@ -10,6 +10,15 @@ export const buildChangeTheme = (builder: ActionReducerMapBuilder<SettingsSlice>
     })
     .addCase(changeTheme.rejected, state => {
       state.theme = 'dark'
+    })
+
+export const buildChangeAudio = (builder: ActionReducerMapBuilder<SettingsSlice>) =>
+  builder
+    .addCase(changeAudio.fulfilled, (state, action) => {
+      state.audio = action.payload
+    })
+    .addCase(changeAudio.rejected, state => {
+      state.audio = true
     })
 
 export const buildChangeMusic = (builder: ActionReducerMapBuilder<SettingsSlice>) =>
@@ -23,10 +32,10 @@ export const buildChangeMusic = (builder: ActionReducerMapBuilder<SettingsSlice>
 
 export const buildChangeSound = (builder: ActionReducerMapBuilder<SettingsSlice>) =>
   builder
-    .addCase(changeSoung.fulfilled, (state, action) => {
+    .addCase(changeSound.fulfilled, (state, action) => {
       state.sound = action.payload
     })
-    .addCase(changeSoung.rejected, state => {
+    .addCase(changeSound.rejected, state => {
       state.sound = AudioVolume.sound
     })
 
