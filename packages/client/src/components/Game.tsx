@@ -24,7 +24,6 @@ type Props = {
 
 const GamePage: FC<Props> = props => {
   const audioEnabled = useAppSelector(SettingsSelectors.getAudioEnabled)
-  console.log(audioEnabled)
   const musicVolume = useAppSelector(SettingsSelectors.getMusicVolume)
   const soundVolume = useAppSelector(SettingsSelectors.getSoungVolume)
 

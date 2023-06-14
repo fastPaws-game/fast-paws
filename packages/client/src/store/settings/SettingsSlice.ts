@@ -10,39 +10,41 @@ import { AudioVolume } from '../../constants/game'
 
 export type ThemeVariants = 'light' | 'dark'
 
-export type SettingsSlice = {
+export type TSettings = {
   theme: ThemeVariants
-  audio: boolean
-  music: number // 0-10
-  sound: number // 0-10
+  audio: boolean // Game audio global
+  music: number // Music volume 0-10
+  sound: number // Sounds volume 0-10
   language: string // 'en' | 'ru' | 'de' | 'fr'
+  meters: boolean // Performance meters
 }
 
-const initialState: SettingsSlice = {
+const initialState: TSettings = {
   theme: 'light',
   audio: true,
   music: AudioVolume.music,
   sound: AudioVolume.sound,
   language: 'en',
+  meters: false,
 }
 
 export const settingsSlice = createSlice({
   name: 'settings',
   initialState,
   reducers: {
-    setTheme: (state, action: PayloadAction<SettingsSlice['theme']>) => {
+    setTheme: (state, action: PayloadAction<TSettings['theme']>) => {
       state.theme = action.payload
     },
-    setAudio: (state, action: PayloadAction<SettingsSlice['audio']>) => {
+    setAudio: (state, action: PayloadAction<TSettings['audio']>) => {
       state.audio = action.payload
     },
-    setMusic: (state, action: PayloadAction<SettingsSlice['music']>) => {
+    setMusic: (state, action: PayloadAction<TSettings['music']>) => {
       state.music = action.payload
     },
-    setSound: (state, action: PayloadAction<SettingsSlice['sound']>) => {
+    setSound: (state, action: PayloadAction<TSettings['sound']>) => {
       state.sound = action.payload
     },
-    setLanguage: (state, action: PayloadAction<SettingsSlice['language']>) => {
+    setLanguage: (state, action: PayloadAction<TSettings['language']>) => {
       state.language = action.payload
     },
   },

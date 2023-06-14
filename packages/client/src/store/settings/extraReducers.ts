@@ -1,9 +1,9 @@
 import { ActionReducerMapBuilder } from '@reduxjs/toolkit'
 import { changeTheme, changeAudio, changeMusic, changeSound, changeLanguage } from './SettingsActions'
-import { SettingsSlice } from './SettingsSlice'
+import { TSettings } from './SettingsSlice'
 import { AudioVolume } from '../../constants/game'
 
-export const buildChangeTheme = (builder: ActionReducerMapBuilder<SettingsSlice>) =>
+export const buildChangeTheme = (builder: ActionReducerMapBuilder<TSettings>) =>
   builder
     .addCase(changeTheme.fulfilled, (state, action) => {
       state.theme = action.payload.theme
@@ -12,7 +12,7 @@ export const buildChangeTheme = (builder: ActionReducerMapBuilder<SettingsSlice>
       state.theme = 'dark'
     })
 
-export const buildChangeAudio = (builder: ActionReducerMapBuilder<SettingsSlice>) =>
+export const buildChangeAudio = (builder: ActionReducerMapBuilder<TSettings>) =>
   builder
     .addCase(changeAudio.fulfilled, (state, action) => {
       state.audio = action.payload
@@ -21,7 +21,7 @@ export const buildChangeAudio = (builder: ActionReducerMapBuilder<SettingsSlice>
       state.audio = true
     })
 
-export const buildChangeMusic = (builder: ActionReducerMapBuilder<SettingsSlice>) =>
+export const buildChangeMusic = (builder: ActionReducerMapBuilder<TSettings>) =>
   builder
     .addCase(changeMusic.fulfilled, (state, action) => {
       state.music = action.payload
@@ -30,7 +30,7 @@ export const buildChangeMusic = (builder: ActionReducerMapBuilder<SettingsSlice>
       state.music = AudioVolume.music
     })
 
-export const buildChangeSound = (builder: ActionReducerMapBuilder<SettingsSlice>) =>
+export const buildChangeSound = (builder: ActionReducerMapBuilder<TSettings>) =>
   builder
     .addCase(changeSound.fulfilled, (state, action) => {
       state.sound = action.payload
@@ -39,7 +39,7 @@ export const buildChangeSound = (builder: ActionReducerMapBuilder<SettingsSlice>
       state.sound = AudioVolume.sound
     })
 
-export const buildChangeLanguage = (builder: ActionReducerMapBuilder<SettingsSlice>) =>
+export const buildChangeLanguage = (builder: ActionReducerMapBuilder<TSettings>) =>
   builder
     .addCase(changeLanguage.fulfilled, (state, action) => {
       state.language = action.payload

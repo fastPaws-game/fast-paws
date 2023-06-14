@@ -3,49 +3,47 @@ import { TAudio, AudioVolume } from '../constants/game'
 import Resource from '../engine/ResourceLoader'
 import { getValue } from '../utils/data_utils'
 
+// Can play music and sounds using playAudio(name)
+// name must have 'music/sound.audio_name' format
+// and have corresponding Audio objects in ResourceLoader
+// Optional parameters:
+// volume={music: number, sound: number}
+// audioStatusCallback uses to receive information about Audio enabled/disabled state
 export const useAudio = (volume?: Record<TAudio, number>, audioStatusCallback?: (enabled: boolean) => void) => {
   const resource = Resource.get()
   const [audioList, setAudioList] = useState<Record<string, HTMLAudioElement>>({})
-  // Help!!! Эти хуки просто не работают.
-  // const [activeMusic, setActiveMusic] = useState<string | null>(null)
-  // const [enabled, setEnabled] = useState(true)
-  // Переделал на обычные переменные:
   let activeMusic: string | null = null
   let enabled = true
 
   const createAudio = (name: string) => {
-    const AudioType = name.split('.')[0] as TAudio
-    if (Object.keys(AudioVolume).includes(AudioType)) {
+    const audioType = name.split('.')[0] as TAudio
+    if (Object.keys(AudioVolume).includes(audioType)) {
       const audio = getValue(resource.audio, name) as HTMLAudioElement
       audio.muted = false
-      audio.volume = (volume ? volume[AudioType] : AudioVolume[AudioType]) / 10
-      audio.loop = AudioType === 'music'
+      audio.volume = (volume ? volume[audioType] : AudioVolume[audioType]) / 10
+      audio.loop = audioType === 'music'
 
       const list = audioList
       list[name] = audio
       setAudioList(list)
     } else {
-      console.log('Wrong audio name:', name)
+      console.warn('Wrong audio name:', name)
     }
   }
 
   const changeStatus = (state: boolean) => {
     if (audioStatusCallback) audioStatusCallback(state)
-    // setEnabled(state)
     enabled = state
   }
 
   const play = (name: string) => {
     if (!Object.keys(audioList).length || !audioList[name]) return
 
-    const AudioType = name.split('.')[0]
-    if (AudioType === 'music') {
-      // setActiveMusic(name)
+    const audioType = name.split('.')[0]
+    if (audioType === 'music') {
       activeMusic = name
-      // console.log(`set activeMusic: ${name}, ${activeMusic}`)
     }
 
-    // console.log(`Trying to play: ${name}`)
     audioList[name].play().catch((e: Error) => {
       console.warn(e.message)
       changeStatus(false)
@@ -80,11 +78,8 @@ export const useAudio = (volume?: Record<TAudio, number>, audioStatusCallback?: 
       audioList[audio].pause()
       audioList[audio].currentTime = 0
     }
-    // setEnabled(false)
     enabled = false
     activeMusic = null
-    // setActiveMusic(null)
-    // setAudioList({})
   }
 
   return {
