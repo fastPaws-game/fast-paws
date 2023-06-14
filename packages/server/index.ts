@@ -5,6 +5,7 @@ import * as path from 'path'
 import { UserAPIRepository, UserRepository } from './src/repository/UserAPI'
 import dotenv from 'dotenv'
 import cookieParser from 'cookie-parser'
+import helmet from 'helmet'
 import { proxy } from './src/middlewares/proxy'
 import topicsRouter from './src/routes/topics'
 import forumsRouter from './src/routes/forums'
@@ -22,6 +23,20 @@ const PORT = Number(process.env.SERVER_PORT)
 async function startServer() {
   await dbConnect()
   const app = express()
+
+  app.use(
+    helmet({
+      contentSecurityPolicy: {
+        directives: {
+          defaultSrc: ["'self'", 'https://ya-praktikum.tech/*'],
+          scriptSrc: ["'self'", "'unsafe-inline'"],
+          styleSrc: ["'self'", "'unsafe-inline'"],
+          imgSrc: ["'self'", 'data:', 'blob:'],
+          connectSrc: ["'self'", 'ws://localhost:24678', 'http://localhost:24678'],
+        },
+      },
+    })
+  )
 
   app.use(
     cors({
