@@ -60,7 +60,7 @@ const Item = styled.li`
 const Container = styled.div`
   color: ${({ theme }) => theme.text.textInvert};
   font-weight: 600;
-  :last-child {
+  &:last-child {
     margin-left: auto;
   }
 `
