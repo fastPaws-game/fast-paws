@@ -4,6 +4,4 @@ node_modules/
 .vscode
 dist
 tmp
-yarn.lock
-package-lock.json
 .DS_Store
