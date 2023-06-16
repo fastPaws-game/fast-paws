@@ -4,15 +4,15 @@ import { ThemeVariants } from './SettingsSlice'
 
 export const changeTheme = createAsyncThunk('settings/setTheme', async (theme: ThemeVariants, { rejectWithValue }) => {
   try {
-    return await SettingsApi.putTheme(theme)
+    return await SettingsApi.updateTheme(theme)
   } catch (error) {
     return rejectWithValue(error)
   }
 })
 
-export const changeAudio = createAsyncThunk('settings/setAudio', async (audio: boolean, { rejectWithValue }) => {
+export const changeAudioEnabled = createAsyncThunk('settings/setAudio', async (audio: boolean, { rejectWithValue }) => {
   try {
-    return await SettingsApi.putAudio(audio)
+    return await SettingsApi.updateAudio(audio)
   } catch (error) {
     return rejectWithValue(error)
   }
@@ -20,7 +20,7 @@ export const changeAudio = createAsyncThunk('settings/setAudio', async (audio: b
 
 export const changeMusic = createAsyncThunk('settings/setMusic', async (music: number, { rejectWithValue }) => {
   try {
-    return await SettingsApi.putMusic(music)
+    return await SettingsApi.updateMusic(music)
   } catch (error) {
     return rejectWithValue(error)
   }
@@ -28,7 +28,7 @@ export const changeMusic = createAsyncThunk('settings/setMusic', async (music: n
 
 export const changeSound = createAsyncThunk('settings/setSound', async (soung: number, { rejectWithValue }) => {
   try {
-    return await SettingsApi.putSoung(soung)
+    return await SettingsApi.updateSoung(soung)
   } catch (error) {
     return rejectWithValue(error)
   }
@@ -38,7 +38,7 @@ export const changeLanguage = createAsyncThunk(
   'theme/changeLanguage',
   async (language: string, { rejectWithValue }) => {
     try {
-      return await SettingsApi.putLanguage(language)
+      return await SettingsApi.updateLanguage(language)
     } catch (error) {
       return rejectWithValue(error)
     }

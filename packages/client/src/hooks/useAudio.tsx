@@ -42,18 +42,10 @@ export const useAudio = (audioStatusCallback?: (enabled: boolean) => void) => {
   const changeStatus = (state: boolean) => {
     if (audioStatusCallback) audioStatusCallback(state)
     audioEnabled = state
-    dispatch(setAudioEnabled(state)) // TODO: Need to be changed to changeAudio (api in not ready yet)
+    dispatch(setAudioEnabled(state)) // TODO: Need to be changed to changeAudioEnabled (api in not ready yet)
   }
 
-  const play = (name: string) => {
-    if (!Object.keys(audioList).length || !audioList[name]) return
-    audioList[name].play().catch((e: Error) => {
-      console.warn(e.message)
-      changeStatus(false)
-    })
-  }
-
-  const mute = (mute: boolean) => {
+  const muteAll = (mute: boolean) => {
     for (const audio in audioList) {
       audioList[audio].muted = mute
     }
@@ -67,7 +59,12 @@ export const useAudio = (audioStatusCallback?: (enabled: boolean) => void) => {
 
     if (!audioEnabled) return
     if (!audioList[name]) createAudio(name)
-    play(name)
+
+    if (!Object.keys(audioList).length || !audioList[name]) return
+    audioList[name].play().catch((e: Error) => {
+      console.warn(e.message)
+      changeStatus(false)
+    })
   }
 
   const switchAudio = (state: boolean) => {

@@ -20,6 +20,7 @@ export const SpriteSize = {
 export const GAME = {
   version: 20103010, //X XX XX XXX (name release major minor)
   scorePerLevel: 1000,
+  maxLevel: 5,
   initialScore: 20, // Need to prevent 'Game over' after the first fail
   catchRange: 10, // A range where an animal can be catched
   meter: true, //Performance meter

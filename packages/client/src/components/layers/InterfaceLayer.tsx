@@ -31,7 +31,7 @@ type TAction = 'settings' | 'sound' | 'pause' | 'fullscreen'
 
 const InterfaceLayer: FC<Props> = props => {
   const score = useAppSelector(GameSelectors.getScore)
-  const level = Math.min(Math.floor(Math.max(score, 0) / GAME.scorePerLevel), 5)
+  const level = Math.min(Math.floor(Math.max(score, 0) / GAME.scorePerLevel), GAME.maxLevel)
   const catched = useAppSelector(GameSelectors.getCatched)
   const navigate = useNavigate()
 
@@ -56,7 +56,7 @@ const InterfaceLayer: FC<Props> = props => {
     <Layer>
       <HorisontalBlock>
         <ScoreBlock>
-          <Info>Level: {level < 5 ? level + 1 : 'MAX'}</Info>
+          <Info>Level: {level < GAME.maxLevel ? level + 1 : 'MAX'}</Info>
           <Info>Score: {score}</Info>
           <Info type="combo">{props.combo > 1 ? `Combo: x${props.combo}` : ''}</Info>
         </ScoreBlock>

@@ -7,7 +7,7 @@ class SettingsApi {
     return fetchApiV1.get<TTheme>('/theme')
   }
 
-  public putTheme(theme: ThemeVariants) {
+  public updateTheme(theme: ThemeVariants) {
     return fetchApiV1.put<TTheme>('/theme', {
       body: {
         theme,
@@ -17,7 +17,7 @@ class SettingsApi {
 
   public getAudio = () => fetchApiV1.get<boolean>('/audio')
 
-  public putAudio(value: boolean) {
+  public updateAudio(value: boolean) {
     return fetchApiV1.put<boolean>('/audio', {
       body: {
         value,
@@ -27,7 +27,7 @@ class SettingsApi {
 
   public getMusic = () => fetchApiV1.get<number>('/music')
 
-  public putMusic(value: number) {
+  public updateMusic(value: number) {
     return fetchApiV1.put<number>('/music', {
       body: {
         value,
@@ -37,7 +37,7 @@ class SettingsApi {
 
   public getSoung = () => fetchApiV1.get<number>('/sound')
 
-  public putSoung(value: number) {
+  public updateSoung(value: number) {
     return fetchApiV1.put<number>('/sound', {
       body: {
         value,
@@ -47,7 +47,7 @@ class SettingsApi {
 
   public getLanguage = () => fetchApiV1.get<string>('/language')
 
-  public putLanguage(value: string) {
+  public updateLanguage(value: string) {
     return fetchApiV1.put<string>('/language', {
       body: {
         value,
