@@ -4,11 +4,11 @@ type Titles = {
   weight?: string
   base?: boolean
   accent?: boolean
+  mainTitle?: boolean
 }
-
 const BaseTitle = css<Titles>`
-  color: ${({ theme, base, accent }) =>
-    base ? theme.text.textBase : accent ? theme.text.accent : theme.text.textInvert};
+  color: ${({ theme, base, accent, mainTitle }) =>
+    base ? theme.text.textBase : accent ? theme.text.accent : mainTitle ? theme.text.mainTitle : theme.text.textInvert};
   line-height: 120%;
 `
 export const H1 = styled.h1<Titles>`
