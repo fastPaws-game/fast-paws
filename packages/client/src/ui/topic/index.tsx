@@ -1,5 +1,6 @@
 import { FC } from 'react'
 import styled from 'styled-components'
+import Button from '../../ui/button'
 import { useAppDispatch, useAppSelector } from '../../hooks/store'
 import { deleteTopic } from '../../store/topic/TopicActions'
 import Link from '../link'
@@ -22,10 +23,6 @@ const TopicItem: FC<Props> = props => {
     dispatch(deleteTopic(topicId))
   }
 
-  const handleUpdate = () => {
-    console.log('ok')
-  }
-
   return (
     <Item>
       <Container>
@@ -35,7 +32,6 @@ const TopicItem: FC<Props> = props => {
       <Container> {topicContent}</Container>
       <Link to={topicPath}>Comments: {commentsCount}</Link>
       <Container>
-        <Button onClick={handleUpdate}>Update</Button>
         <Button onClick={handleDelete}>Delete</Button>
       </Container>
     </Item>
@@ -59,15 +55,9 @@ const Item = styled.li`
 const Container = styled.div`
   color: ${({ theme }) => theme.text.textInvert};
   font-weight: 600;
+  :last-child {
+    margin-left: auto;
+  }
 `
 
-const Button = styled.button`
-  width: 5%;
-  background-color: ${({ theme }) => theme.colors.secondary};
-  box-shadow: ${({ theme }) => theme.shadows.topic};
-  border-radius: 16px;
-  color: ${({ theme }) => theme.text.textInvert};
-  font-weight: 600;
-  margin-right: 10px;
-`
 export default TopicItem
