@@ -31,7 +31,7 @@ async function startServer() {
           defaultSrc: ["'self'", 'https://ya-praktikum.tech/*'],
           scriptSrc: ["'self'", "'unsafe-inline'"],
           styleSrc: ["'self'", "'unsafe-inline'"],
-          imgSrc: ["'self'", 'data:', 'blob:'],
+          imgSrc: ["'self'", 'data:', 'blob:', 'https://ya-praktikum.tech/'],
           connectSrc: ["'self'", 'ws://localhost:24678', 'http://localhost:24678'],
         },
       },
