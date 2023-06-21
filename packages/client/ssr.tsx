@@ -8,7 +8,7 @@ import { GlobalStyles } from './src/assets/styles/globalStyle'
 import { routes } from './src/router/routes'
 import { matchPath } from 'react-router'
 import { UserRepository, UserService } from './src/services/userService'
-import { ThemeVariants, setTheme } from './src/store/theme/ThemeSlice'
+import { ThemeVariants, setTheme } from './src/store/settings/SettingsSlice'
 import StartSSRPage from './src/pages/StartSSRPage'
 
 // suppress useLayoutEffect (and its warnings) when not running in a browser

@@ -9,7 +9,7 @@ const ParallaxBg: FC = () => {
 
   useEffect(() => {
     document.addEventListener('mousemove', parallax)
-    // return document.removeEventListener("mousemove", parallax)
+    return () => document.removeEventListener('mousemove', parallax)
   }, [])
 
   function parallax(e: MouseEvent) {
@@ -18,7 +18,7 @@ const ParallaxBg: FC = () => {
     const _h = window.innerHeight / 2
     const mouseX = e.clientX
     const mouseY = e.clientY
-    const depth1 = `${50 - (mouseX - _w) * 0.01}% 0`
+    const depth1 = `${50 - (mouseX - _w) * 0.025}% 0`
     const depth2 = `${50 - (mouseX - _w) * 0.05}% ${100 - (mouseY - _h) * 0.005}%`
     const depth3 = `${50 - (mouseX - _w) * 0.1}% 100%`
     elem!.style.backgroundPosition = `${depth3}, ${depth2}, ${depth1}`

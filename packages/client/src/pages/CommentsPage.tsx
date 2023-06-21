@@ -5,8 +5,12 @@ import CommentsList from '../components/CommentsList'
 import CommentForm from '../components/CommentsForm'
 import { useParams } from 'react-router'
 
+type TTopicIdParams = {
+  topicId: string
+}
+
 const CommentPage = () => {
-  const { topicId } = useParams()
+  const { topicId } = useParams<TTopicIdParams>()
 
   return (
     <LayoutWithHeader title="Comments">

@@ -1,31 +1,94 @@
-import { useEffect } from 'react'
-import AudioAPI from '../webAPI/webAudioAPI'
+import { useState } from 'react'
+import { TAudio, AudioVolume } from '../constants/game'
+import Resource from '../engine/ResourceLoader'
+import { getValue } from '../utils/data_utils'
+import { useAppSelector } from './store'
+import { SettingsSelectors } from '../store/settings/SettingsSelectors'
+import { setAudio as setAudioEnabled } from '../store/settings/SettingsSlice'
+import { useAppDispatch } from './store'
 
-const useAudio = (audioRef: React.RefObject<HTMLMediaElement>, audioAPI: AudioAPI) => {
-  const onkeydown = (event: KeyboardEvent) => {
-    if (event.code == 'Space') {
-      audioAPI.play()
+// Can play music and sounds using playAudio(name)
+// name must have 'music/sound.audio_name' format
+// and have corresponding Audio objects in ResourceLoader
+// Optional parameter audioStatusCallback
+// uses to send back information about audioEnabled state
+export const useAudio = (audioStatusCallback?: (enabled: boolean) => void) => {
+  const volume = {
+    music: useAppSelector(SettingsSelectors.getMusicVolume),
+    sound: useAppSelector(SettingsSelectors.getSoungVolume),
+  }
+  const dispatch = useAppDispatch()
+  const resource = Resource.get()
+  const [audioList, setAudioList] = useState<Record<string, HTMLAudioElement>>({})
+  let audioEnabled = useAppSelector(SettingsSelectors.getAudioEnabled)
+  let activeMusic: string | null = null
+
+  const createAudio = (name: string) => {
+    const audioType = name.split('.')[0] as TAudio
+    if (Object.keys(AudioVolume).includes(audioType)) {
+      const audio = getValue(resource.audio, name) as HTMLAudioElement
+      audio.muted = false
+      audio.volume = (volume[audioType] || AudioVolume[audioType]) / 10
+      audio.loop = audioType === 'music'
+
+      const list = audioList
+      list[name] = audio
+      setAudioList(list)
+    } else {
+      console.warn('Wrong audio name:', name)
     }
   }
 
-  const onkeyup = (event: KeyboardEvent) => {
-    if (event.code == 'Space') {
-      audioAPI.pause()
+  const changeStatus = (state: boolean) => {
+    if (audioStatusCallback) audioStatusCallback(state)
+    audioEnabled = state
+    dispatch(setAudioEnabled(state)) // TODO: Need to be changed to changeAudioEnabled (api in not ready yet)
+  }
+
+  const muteAll = (mute: boolean) => {
+    for (const audio in audioList) {
+      audioList[audio].muted = mute
     }
   }
 
-  useEffect(() => {
-    if (audioRef.current) {
-      audioAPI.init(audioRef.current)
+  const playAudio = (name: string) => {
+    const audioType = name.split('.')[0]
+    if (audioType === 'music') {
+      activeMusic = name
     }
 
-    window.addEventListener('keydown', onkeydown)
-    window.addEventListener('keyup', onkeyup)
-    return () => {
-      window.removeEventListener('keydown', onkeydown)
-      window.removeEventListener('keyup', onkeyup)
+    if (!audioEnabled) return
+    if (!audioList[name]) createAudio(name)
+
+    if (!Object.keys(audioList).length || !audioList[name]) return
+    audioList[name].play().catch((e: Error) => {
+      console.warn(e.message)
+      changeStatus(false)
+    })
+  }
+
+  const switchAudio = (state: boolean) => {
+    changeStatus(state)
+
+    if (activeMusic) {
+      if (state) playAudio(activeMusic)
+      else audioList[activeMusic]?.pause()
     }
-  }, [])
+  }
+
+  const stopAudio = () => {
+    for (const audio in audioList) {
+      audioList[audio].pause()
+      audioList[audio].currentTime = 0
+    }
+    activeMusic = null
+  }
+
+  return {
+    createAudio,
+    playAudio,
+    stopAudio,
+    switchAudio,
+    audioEnabled,
+  }
 }
-
-export default useAudio
