@@ -35,13 +35,13 @@ export const settingsSlice = createSlice({
     setTheme: (state, action: PayloadAction<TSettings['theme']>) => {
       state.theme = action.payload
     },
-    setAudio: (state, action: PayloadAction<TSettings['audioEnabled']>) => {
+    setAudioEnabled: (state, action: PayloadAction<TSettings['audioEnabled']>) => {
       state.audioEnabled = action.payload
     },
-    setMusic: (state, action: PayloadAction<TSettings['musicVolume']>) => {
+    setMusicVolume: (state, action: PayloadAction<TSettings['musicVolume']>) => {
       state.musicVolume = action.payload
     },
-    setSound: (state, action: PayloadAction<TSettings['soundVolume']>) => {
+    setSoundVolume: (state, action: PayloadAction<TSettings['soundVolume']>) => {
       state.soundVolume = action.payload
     },
     setLanguage: (state, action: PayloadAction<TSettings['language']>) => {
@@ -57,5 +57,5 @@ export const settingsSlice = createSlice({
   },
 })
 
-export const { setTheme, setAudio, setMusic, setSound, setLanguage } = settingsSlice.actions
+export const { setTheme, setAudioEnabled, setMusicVolume, setSoundVolume, setLanguage } = settingsSlice.actions
 export default settingsSlice.reducer

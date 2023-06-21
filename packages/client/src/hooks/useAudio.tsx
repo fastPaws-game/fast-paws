@@ -4,7 +4,7 @@ import Resource from '../engine/ResourceLoader'
 import { getValue } from '../utils/data_utils'
 import { useAppSelector } from './store'
 import { SettingsSelectors } from '../store/settings/SettingsSelectors'
-import { setAudio as setAudioEnabled } from '../store/settings/SettingsSlice'
+import { setAudioEnabled } from '../store/settings/SettingsSlice'
 import { useAppDispatch } from './store'
 
 // Can play music and sounds using playAudio(name)

@@ -397,7 +397,7 @@ export default class Engine {
   public pause = (state: boolean) => {
     if (this.game.paused == state) return
     this.game.paused = state
-    console.log(`Game: ${this.game.paused ? 'Paused' : 'Continued'}`)
+    // console.log(`Game: ${this.game.paused ? 'Paused' : 'Continued'}`)
 
     if (this.game.paused) {
       this.Events.unRegisterEvents()
