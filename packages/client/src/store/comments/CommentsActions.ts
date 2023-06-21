@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import CommentsApi from '../../api/CommentsApi'
 import { CommentWithoutIdAndCreatedAtAndUpdatedAt } from '../../models/CommentModel'
 
-type Payload = {
+export type CommentUpdPayload = {
   id: number
   content: string
 }
@@ -28,7 +28,7 @@ export const addComment = createAsyncThunk(
 
 export const updateComment = createAsyncThunk(
   'comments/updateComment',
-  async ({ id, content }: Payload, { rejectWithValue }) => {
+  async ({ id, content }: CommentUpdPayload, { rejectWithValue }) => {
     try {
       await CommentsApi.updateComment(id, { content })
 

@@ -62,14 +62,14 @@ const ButtonMainStyled = styled.button<{ size?: string; darkblue?: boolean }>`
 `
 
 const ButtonIconStyled = styled.button<{ size?: string; darkblue?: boolean }>`
-  width: ${props => (props.size === 'big' ? '100px' : '70px')};
-  height: ${props => (props.size === 'big' ? '100px' : '70px')};
+  width: ${props => (props.size === 'big' ? '100px' : props.size === 'middle' ? '70px' : '30px')};
+  height: ${props => (props.size === 'big' ? '100px' : props.size === 'middle' ? '70px' : '30px')};
   border-radius: ${props => props.theme.borders.round};
   border: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: ${props => (props.size === ('big' || 'middle') ? '20px' : '0')};
   transition: 0.3s;
   background-color: ${props => (props.darkblue ? props.theme.colors.tertiary : props.theme.colors.accent)};
   color: ${props => props.theme.text.textBase};

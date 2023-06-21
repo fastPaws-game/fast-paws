@@ -1,8 +1,15 @@
-import { FC } from 'react'
+import { FC, useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { useAppDispatch, useAppSelector } from '../../hooks/store'
 import { authSelectors } from '../../store/auth/AuthSelectors'
 import { deleteComment } from '../../store/comments/CommentsActions'
+import { P2, P3 } from '../../assets/styles/texts'
+import Button from '../button'
+import IconReply from '../../assets/icons/IconReply'
+import IconEdit from '../../assets/icons/IconEdit'
+import IconDelete from '../../assets/icons/IconDelete'
+import EditComment from '../../components/EditComment'
+
 type Props = {
   commentId: number
   comment: string
@@ -23,6 +30,15 @@ const CommentItem: FC<Props> = props => {
     hour12: false,
   }
   const dateAndTime = now.toLocaleString('ru-RU', options)
+  const [modal, setModal] = useState(false)
+
+  const handleClose = useCallback(() => {
+    setModal(false)
+  }, [setModal])
+
+  const handleClick = () => {
+    setModal(true)
+  }
 
   const handleReply = () => {
     console.log('Reply')
@@ -42,12 +58,13 @@ const CommentItem: FC<Props> = props => {
         <Topics>{user?.login}</Topics>
         <Topics>{dateAndTime}</Topics>
       </Container>
-      <Container>{comment}</Container>
-      <Container>
-        <Button onClick={handleReply}>Reply</Button>
-        <Button onClick={handleUpdate}>Update</Button>
-        <Button onClick={handleDelete}>Delete</Button>
-      </Container>
+      <P3>{comment}</P3>
+      <Buttons>
+        <Button icon={<IconReply />} size={'small'} onClick={handleReply} />
+        <Button icon={<IconEdit />} size={'small'} onClick={handleClick} />
+        <Button icon={<IconDelete />} size={'small'} onClick={handleDelete} />
+        {/* <EditComment visible={modal} outSideClickEnable handleClose={handleClose} commentId={Number(commentId)} /> */}
+      </Buttons>
     </Item>
   )
 }
@@ -55,7 +72,7 @@ const CommentItem: FC<Props> = props => {
 const Item = styled.li`
   display: grid;
   grid-template-rows: 1fr 1fr 1fr;
-  gap: 15px;
+  gap: 10px;
   padding: 15px 30px 15px 30px;
   width: 100%;
   background-color: ${({ theme }) => theme.colors.secondary};
@@ -66,23 +83,18 @@ const Item = styled.li`
   }
 `
 
-const Container = styled.div`
+const Container = styled(P2)`
   color: ${({ theme }) => theme.text.textInvert};
   font-weight: 600;
+`
+
+const Buttons = styled.div`
+  display: flex;
+  gap: 10px;
 `
 
 const Topics = styled.span`
   padding-right: 15px;
-`
-
-const Button = styled.button`
-  width: 5%;
-  background-color: ${({ theme }) => theme.colors.secondary};
-  box-shadow: ${({ theme }) => theme.shadows.topic};
-  border-radius: 16px;
-  color: ${({ theme }) => theme.text.textInvert};
-  font-weight: 600;
-  margin-right: 10px;
 `
 
 export default CommentItem

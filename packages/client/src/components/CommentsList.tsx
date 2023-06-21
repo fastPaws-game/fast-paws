@@ -48,7 +48,7 @@ const TopicContainer = styled.div`
   align-items: center;
   justify-content: flex-start;
   width: 90%;
-  height: 100%;
+  max-height: 100%;
   overflow-y: scroll;
   margin: 30px;
 `

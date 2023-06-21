@@ -4,15 +4,17 @@ import CommentsHeader from '../components/CommentsHeader'
 import CommentsList from '../components/CommentsList'
 import CommentForm from '../components/CommentsForm'
 import { useParams } from 'react-router'
+import { topicsSelectors } from '../store/topic/topicSelectors'
+import { useAppSelector } from '../hooks/store'
 
 const CommentPage = () => {
+  const currentTopic = useAppSelector(topicsSelectors.getCurrentTopic)
   const { topicId } = useParams()
 
   return (
-    <LayoutWithHeader title="Comments">
+    <LayoutWithHeader title={currentTopic?.title}>
       <Container>
         <CommentsHeader />
-        <Line />
         <CommentsList topicId={Number(topicId)} />
         <CommentForm topicId={Number(topicId)} />
       </Container>
@@ -25,14 +27,8 @@ const Container = styled.div`
   height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
-`
-
-const Line = styled.div`
-  width: 60%;
-  margin-top: 30px;
-  border-bottom: 2px solid black;
 `
 
 export default CommentPage
