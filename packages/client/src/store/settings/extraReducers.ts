@@ -1,5 +1,5 @@
 import { ActionReducerMapBuilder } from '@reduxjs/toolkit'
-import { changeTheme, changeAudio, changeMusic, changeSound, changeLanguage } from './SettingsActions'
+import { changeTheme, changeAudioEnabled, changeMusic, changeSound, changeLanguage } from './SettingsActions'
 import { TSettings } from './SettingsSlice'
 import { AudioVolume } from '../../constants/game'
 
@@ -14,29 +14,29 @@ export const buildChangeTheme = (builder: ActionReducerMapBuilder<TSettings>) =>
 
 export const buildChangeAudio = (builder: ActionReducerMapBuilder<TSettings>) =>
   builder
-    .addCase(changeAudio.fulfilled, (state, action) => {
-      state.audio = action.payload
+    .addCase(changeAudioEnabled.fulfilled, (state, action) => {
+      state.audioEnabled = action.payload
     })
-    .addCase(changeAudio.rejected, state => {
-      state.audio = true
+    .addCase(changeAudioEnabled.rejected, state => {
+      state.audioEnabled = true
     })
 
 export const buildChangeMusic = (builder: ActionReducerMapBuilder<TSettings>) =>
   builder
     .addCase(changeMusic.fulfilled, (state, action) => {
-      state.music = action.payload
+      state.musicVolume = action.payload
     })
     .addCase(changeMusic.rejected, state => {
-      state.music = AudioVolume.music
+      state.musicVolume = AudioVolume.music
     })
 
 export const buildChangeSound = (builder: ActionReducerMapBuilder<TSettings>) =>
   builder
     .addCase(changeSound.fulfilled, (state, action) => {
-      state.sound = action.payload
+      state.soundVolume = action.payload
     })
     .addCase(changeSound.rejected, state => {
-      state.sound = AudioVolume.sound
+      state.soundVolume = AudioVolume.sound
     })
 
 export const buildChangeLanguage = (builder: ActionReducerMapBuilder<TSettings>) =>
