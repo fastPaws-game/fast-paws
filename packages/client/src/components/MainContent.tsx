@@ -13,7 +13,7 @@ const MainContent = () => {
   return (
     <Root>
       <SwitchTheme />
-      <MainTitle>Fast Paws</MainTitle>
+      <MainTitle mainTitle>Fast Paws</MainTitle>
       <Buttons>
         <Link to={'/game'}>
           <Button size={'big'}>Play</Button>
@@ -35,12 +35,16 @@ const MainContent = () => {
 }
 
 const Root = styled.div`
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
+  position: absolute;
   gap: 75px;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  z-index: 1;
+  z-index: 5;
 `
 
 const Buttons = styled.div`

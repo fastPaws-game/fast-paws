@@ -1,6 +1,8 @@
 import FetchApi from '../utils/fetchApi'
+import isServer from '../utils/isServerChecker'
 
-const redirectUrl = `http://localhost:5000`
+const REDIRECT_URL = !isServer ? window.__REDIRECT_URL__ : null
+const redirectUrl = REDIRECT_URL || 'http://localhost:5000'
 const oauthUrlBase = 'https://oauth.yandex.ru/authorize'
 
 class OAuthApi {

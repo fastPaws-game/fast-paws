@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from 'react'
+import { FC, useCallback, useState, useEffect } from 'react'
 import ActionLayer from './layers/ActionLayer'
 import InterfaceLayer from './layers/InterfaceLayer'
 import BackgroundLayer from './layers/BackgroundLayer'
@@ -13,6 +13,7 @@ import { authSelectors } from '../store/auth/AuthSelectors'
 import { saveCatched, saveScore } from '../store/game/GameSlice'
 import { TCatched } from '../engine/@engine'
 import { GameSelectors } from '../store/game/GameSelectors'
+import { useAudio } from '../hooks/useAudio'
 
 type Props = {
   fullScreen: boolean
@@ -20,9 +21,10 @@ type Props = {
 }
 
 const GamePage: FC<Props> = props => {
+  const { playAudio, switchAudio, stopAudio, audioEnabled } = useAudio((state: boolean) => setSound(state))
   const [pauseVisible, setPauseVisible] = useState(false)
   const [gameOverVisible, setGameOverVisible] = useState(false)
-  const [level, setLevel] = useState(0)
+  const [sound, setSound] = useState(audioEnabled)
   const [combo, setCombo] = useState(1)
   const [tooltip, setTooltip] = useState('')
 
@@ -30,6 +32,15 @@ const GamePage: FC<Props> = props => {
   const isAuth = useAppSelector(authSelectors.getIsAuth)
   const user = useAppSelector(authSelectors.getUser)
   const score = useAppSelector(GameSelectors.getScore)
+
+  useEffect(() => {
+    playAudio('music.mountains')
+    return () => stopAudio()
+  }, [])
+
+  const audioSwitch = useCallback((state: boolean) => {
+    switchAudio(state)
+  }, [])
 
   const updateScore = useCallback(
     (score: number) => {
@@ -67,10 +78,7 @@ const GamePage: FC<Props> = props => {
   }, [setGameOverVisible])
 
   const handleCloseGame = useCallback(() => {
-    if (!isAuth || !user) {
-      return
-    }
-
+    if (!isAuth || !user) return
     const leaderBoardUpdate = getLeaderboardBody(user, score)
     dispatch(addUserToLeaderboard(leaderBoardUpdate))
   }, [score])
@@ -78,20 +86,21 @@ const GamePage: FC<Props> = props => {
   const actionLayerProps = {
     setPauseVisible,
     handleGameOver,
-    setLevel,
     setCombo,
     setTooltip,
     updateScore,
     updateCatched,
+    playAudio,
   }
 
   const interfaceLayerProps = {
-    level,
+    sound,
     combo,
     tooltip,
     fullScreen: props.fullScreen,
     switchFullScreen: props.switchFullScreen,
     handlePause,
+    audioSwitch,
   }
 
   return (

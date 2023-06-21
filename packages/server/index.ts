@@ -5,6 +5,7 @@ import * as path from 'path'
 import { UserAPIRepository, UserRepository } from './src/repository/UserAPI'
 import dotenv from 'dotenv'
 import cookieParser from 'cookie-parser'
+import helmet from 'helmet'
 import { proxy } from './src/middlewares/proxy'
 import topicsRouter from './src/routes/topics'
 import forumsRouter from './src/routes/forums'
@@ -13,6 +14,7 @@ import { dbConnect } from './db'
 import { SERVER_API, PRAKTICUM_API } from './src/constants'
 import themesRouter from './src/routes/themes'
 import { getCurrentThemeMiddleware } from './src/middlewares/getCurrentThemeMiddleware'
+import { authMiddleware } from './src/middlewares/authMiddleware'
 
 const isDev = process.env.NODE_ENV === 'development'
 if (isDev) dotenv.config({ path: '../../.env' })
@@ -24,6 +26,20 @@ async function startServer() {
   const app = express()
 
   app.use(
+    helmet({
+      contentSecurityPolicy: {
+        directives: {
+          defaultSrc: ["'self'", 'https://ya-praktikum.tech/*'],
+          scriptSrc: ["'self'", "'unsafe-inline'"],
+          styleSrc: ["'self'", "'unsafe-inline'"],
+          imgSrc: ["'self'", 'data:', 'blob:', 'https://ya-praktikum.tech/'],
+          connectSrc: ["'self'", 'ws://localhost:24678', 'http://localhost:24678'],
+        },
+      },
+    })
+  )
+
+  app.use(
     cors({
       origin: true,
       credentials: true,
@@ -32,10 +48,17 @@ async function startServer() {
 
   app.use(`${PRAKTICUM_API}/*`, proxy)
   app.use(express.json())
-  app.use(`${SERVER_API}/topics`, topicsRouter)
-  app.use(`${SERVER_API}/forums`, forumsRouter)
-  app.use(`${SERVER_API}/comments`, commentsRouter)
-  app.use(`${SERVER_API}/theme`, cookieParser(), themesRouter)
+  app.use(cookieParser())
+
+  app.use((req, res, next) => {
+    res.locals.axiosClient = new UserAPIRepository(req.headers['cookie'])
+    next()
+  })
+
+  app.use(`${SERVER_API}/topics`, authMiddleware, topicsRouter)
+  app.use(`${SERVER_API}/forums`, authMiddleware, forumsRouter)
+  app.use(`${SERVER_API}/comments`, authMiddleware, commentsRouter)
+  app.use(`${SERVER_API}/theme`, themesRouter)
 
   const distPath = path.dirname(require.resolve('client/dist/index.html'))
   const ssrPath = isDev ? path.dirname(require.resolve('client/index.html')) : ''
@@ -56,7 +79,7 @@ async function startServer() {
     app.use('/assets', express.static(path.resolve(distPath, 'assets')))
   }
 
-  app.use('*', cookieParser(), getCurrentThemeMiddleware, async (req, res, next) => {
+  app.use('*', getCurrentThemeMiddleware, async (req, res, next) => {
     const url = req.originalUrl
 
     try {
@@ -76,10 +99,10 @@ async function startServer() {
       }
 
       const currentTheme = res.locals ? res.locals.currentTheme : null
-      const [initialState, appHtml, css] = await render(url, new UserAPIRepository(req.headers['cookie']), currentTheme)
+      const [initialState, appHtml, css] = await render(url, res.locals.axiosClient, currentTheme)
 
       const initStateSerialized = JSON.stringify(initialState).replace(/</g, '\\u003c')
-      const stateMarkup = `<script>window.__INITIAL_STATE__=${initStateSerialized}</script>`
+      const stateMarkup = `<script>window.__INITIAL_STATE__=${initStateSerialized}; window.__REDIRECT_URL__='${process.env.REDIRECT_URL}'</script>`
 
       const html = template
         .replace('<!--css-outlet-->', css)
