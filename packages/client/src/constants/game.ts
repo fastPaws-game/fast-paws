@@ -18,8 +18,9 @@ export const SpriteSize = {
 
 // Core game constants
 export const GAME = {
-  version: 20102009,
+  version: 20103010, //X XX XX XXX (name release major minor)
   scorePerLevel: 1000,
+  maxLevel: 5,
   initialScore: 20, // Need to prevent 'Game over' after the first fail
   catchRange: 10, // A range where an animal can be catched
   meter: true, //Performance meter
@@ -95,4 +96,11 @@ export const TOOLTIP: Record<Tooltip, string> = {
   firstAnimal: 'Need to jump on target',
   firstBarrier: 'Need to jump over the target',
   firstTimeout: 'The animal can run away',
+}
+
+export type TAudio = 'sound' | 'music'
+// Volume: 0-10
+export const AudioVolume: Record<TAudio, number> = {
+  sound: 7,
+  music: 4,
 }
