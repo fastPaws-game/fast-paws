@@ -1,14 +1,40 @@
 import { useState, FC } from 'react'
 import styled from 'styled-components'
 import { useChangeTheme } from '../hooks/useChangeTheme'
+import IconTheme from '../assets/icons/IconTheme.svg'
 
 interface Props {
   darkblue?: boolean
 }
 
+const SwitchTheme: FC<Props> = ({ darkblue }) => {
+  const { toggleTheme } = useChangeTheme()
+  const [isOn, setIsOn] = useState<boolean>(false)
+
+  const handleClick = () => {
+    setIsOn(!isOn)
+    toggleTheme()
+  }
+  return (
+    <SwitchBlock>
+      <Icon icon={IconTheme} />
+      <SwitchContainer onClick={handleClick} darkblue={darkblue}>
+        <SwitchToggle isOn={isOn} />
+      </SwitchContainer>
+    </SwitchBlock>
+  )
+}
+
+export default SwitchTheme
+
+const SwitchBlock = styled.div`
+  margin: 0 0 0 auto;
+  display: flex;
+  gap: 10px;
+`
+
 const SwitchContainer = styled.div<{ darkblue?: boolean }>`
   display: inline-block;
-  margin: 80px 20px 0 auto;
   width: 48px;
   height: 20px;
   background-color: ${props => (props.darkblue ? props.theme.colors.tertiary : props.theme.colors.accent)};
@@ -26,20 +52,10 @@ const SwitchToggle = styled.div<{ isOn: boolean }>`
   transition: transform 0.2s ease-in-out;
 `
 
-const SwitchTheme: FC<Props> = ({ darkblue }) => {
-  const { toggleTheme } = useChangeTheme()
-  const [isOn, setIsOn] = useState<boolean>(false)
-
-  const handleClick = () => {
-    setIsOn(!isOn)
-    toggleTheme()
-  }
-  return (
-    <SwitchContainer onClick={handleClick} darkblue={darkblue}>
-      <SwitchToggle isOn={isOn} />
-    </SwitchContainer>
-  )
-}
-
-export default SwitchTheme
-7
+const Icon = styled.div<{ icon: string }>`
+  width: 20px;
+  height: 20px;
+  background-color: ${props => props.theme.text.textInvert};
+  mask-size: cover;
+  mask-image: url(${props => props.icon});
+`

@@ -21,9 +21,9 @@ RUN yarn install --production=true
 COPY --from=build /app/packages/client/dist/ /app/node_modules/client/dist/
 COPY --from=build /app/packages/client/dist-ssr/ /app/node_modules/client/dist-ssr/
 
-# COPY --from=build /app/packages/server/utils/wait-for.sh /app/wait-for.sh
-# RUN chmod +x wait-for.sh
-# RUN apt-get -q update && apt-get -qy install netcat
+COPY --from=build /app/packages/server/utils/wait-for.sh /app/wait-for.sh
+RUN chmod +x wait-for.sh
+RUN apt-get -q update && apt-get -qy install netcat
 
 EXPOSE $SERVER_PORT
 

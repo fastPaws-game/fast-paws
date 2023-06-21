@@ -75,7 +75,7 @@ export const darkTheme = {
     success: '#66CDAA',
   },
   text: {
-    textInvert: '#FFF',
+    textInvert: '#000',
     everWhite: '#FFF',
     textBase: '#FFF',
     mainTitle: '#3C4A52',
