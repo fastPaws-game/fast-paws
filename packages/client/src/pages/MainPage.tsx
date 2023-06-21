@@ -3,7 +3,9 @@ import MainContent from '../components/MainContent'
 import { useSearchParams } from 'react-router-dom'
 import { useAppDispatch } from '../hooks/store'
 import { getUser, signInUser } from '../store/auth/AuthActions'
+import BaseLayout from '../layouts/BaseLayout'
 import ParallaxBg from '../components/ParallaxBg'
+import Paws from '../components/Paws'
 
 const MainPage = () => {
   const dispatch = useAppDispatch()
@@ -24,6 +26,7 @@ const MainPage = () => {
   return (
     <>
       <ParallaxBg />
+      <Paws />
       <MainContent />
     </>
   )

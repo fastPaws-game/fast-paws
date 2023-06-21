@@ -1,87 +1,43 @@
 import styled from 'styled-components'
-import React, { FC } from 'react'
-import sky from '../assets/background/MainPage/sky.png'
-import cloud1 from '../assets/background/MainPage/cloud1.png'
-import cloud2 from '../assets/background/MainPage/cloud2.png'
-import cloud3 from '../assets/background/MainPage/cloud3.png'
-import mountines from '../assets/background/MainPage/mountines.png'
-import ground from '../assets/background/MainPage/ground.png'
-import { MouseParallaxContainer, MouseParallaxChild } from 'react-parallax-mouse'
+import React, { FC, useEffect, useRef } from 'react'
+import MistyMountains_layer1Url from '../assets/background/MistyMountains/layer_1.png'
+import MistyMountains_layer2Url from '../assets/background/MistyMountains/layer_2.png'
+import MistyMountains_layer3Url from '../assets/background/MistyMountains/layer_3.png'
 
 const ParallaxBg: FC = () => {
-  return (
-    <>
-      <Sky>
-        <Container globalFactorX={0} globalFactorY={0.3} resetOnLeave>
-          <Mountines factorX={0} factorY={0.5}>
-            <Ground factorX={0} factorY={-0.5} />
-          </Mountines>
-          <Cloud1 factorX={0} factorY={-0.3} />
-          <Cloud2 factorX={0} factorY={0.2} />
-          <Cloud3 factorX={0} factorY={-0.3} />
-        </Container>
-      </Sky>
-    </>
-  )
+  const parallaxElem = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    document.addEventListener('mousemove', parallax)
+    // return document.removeEventListener("mousemove", parallax)
+  }, [])
+
+  function parallax(e: MouseEvent) {
+    const elem = parallaxElem.current
+    const _w = window.innerWidth / 2
+    const _h = window.innerHeight / 2
+    const mouseX = e.clientX
+    const mouseY = e.clientY
+    const depth1 = `${50 - (mouseX - _w) * 0.01}% 0`
+    const depth2 = `${50 - (mouseX - _w) * 0.05}% ${100 - (mouseY - _h) * 0.005}%`
+    const depth3 = `${50 - (mouseX - _w) * 0.1}% 100%`
+    elem!.style.backgroundPosition = `${depth3}, ${depth2}, ${depth1}`
+  }
+
+  return <Parallax ref={parallaxElem} />
 }
 
-const Container = styled(MouseParallaxContainer)`
-  height: 100vh;
-`
-
-const Sky = styled(MouseParallaxChild)`
-  background-image: url(${sky});
-  height: 100vh;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  z-index: 1;
-`
-const Cloud1 = styled(MouseParallaxChild)`
-  height: 110px;
-  width: 201px;
+const Parallax = styled.div`
   position: absolute;
-  top: 15%;
-  left: 5%;
-  background-image: url(${cloud1});
-  z-index: 5;
-`
-
-const Cloud2 = styled(MouseParallaxChild)`
-  height: 126px;
-  width: 321px;
-  position: absolute;
-  top: 20%;
-  left: 25%;
-  background-image: url(${cloud2});
-  z-index: 5;
-`
-
-const Cloud3 = styled(MouseParallaxChild)`
-  height: 92px;
-  width: 560px;
-  position: absolute;
-  top: 15%;
-  right: 2%;
-  background-image: url(${cloud3});
-  z-index: 4;
-`
-
-const Mountines = styled(MouseParallaxChild)`
-  background-image: url(${mountines});
+  top: 0;
+  left: 0;
+  width: 100%;
   height: 100vh;
-  background-repeat: no-repeat;
-  background-size: 100%;
-  background-position: 0 100%;
-  z-index: 2;
-`
-const Ground = styled(MouseParallaxChild)`
-  background-image: url(${ground});
-  height: 100vh;
-  background-repeat: no-repeat;
-  background-size: 100%;
-  background-position: 0 100%;
-  z-index: 3;
+  background-color: #cdeefb;
+  background-image: url(${MistyMountains_layer3Url}), url(${MistyMountains_layer2Url}), url(${MistyMountains_layer1Url});
+  background-size: 90%;
+  background-repeat: repeat-x;
+  background-position: 100% 100%, 100% 100%, 0 0;
 `
 
 export default ParallaxBg
