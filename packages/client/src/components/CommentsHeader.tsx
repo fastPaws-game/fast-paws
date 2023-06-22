@@ -8,11 +8,11 @@ import { deleteTopic } from '../store/topic/TopicActions'
 import Button from '../ui/button'
 import { useNavigate, useParams } from 'react-router'
 import { Routes } from '../constants/routes'
-import FetchApi from '../utils/fetchApi'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import IconEdit from '../assets/icons/IconEdit'
 import IconDelete from '../assets/icons/IconDelete'
 import EditTopicContent from './EditTopicContent'
+import { PRAKTICUM_API } from '../../../server/src/constants'
 
 const CommentHeader = () => {
   const dispatch = useAppDispatch()
@@ -20,8 +20,9 @@ const CommentHeader = () => {
 
   const currentTopic = useAppSelector(topicsSelectors.getCurrentTopic)
   const currentUser = useAppSelector(authSelectors.getUser)
+  const avatarUrl = currentTopic?.userAvatar
+
   const { topicId } = useParams()
-  let [image, setImage] = useState<string>(DefaultAvatar)
 
   const [modal, setModal] = useState(false)
 
@@ -32,20 +33,6 @@ const CommentHeader = () => {
   const handleClick = () => {
     setModal(true)
   }
-
-  useEffect(() => {
-    if (currentTopic) {
-      const path = currentTopic.userAvatar
-      FetchApi.get(`/resources${path}`)
-        .then(() => {
-          image = `/api/v2/resources/${path}`
-          setImage(image)
-        })
-        .catch(() => {
-          setImage(DefaultAvatar)
-        })
-    }
-  }, [currentTopic])
 
   const handleDelete = () => {
     if (topicId && currentTopic && currentUser?.login === currentTopic.user) {
@@ -58,7 +45,7 @@ const CommentHeader = () => {
     <Container>
       <Wrapper>
         <User>
-          <Avatar src={image}></Avatar>
+          <Avatar src={avatarUrl ? `${PRAKTICUM_API}/resources${avatarUrl}` : DefaultAvatar}></Avatar>
           <Name>{currentTopic?.user}</Name>
         </User>
         <Content>{currentTopic?.content}</Content>

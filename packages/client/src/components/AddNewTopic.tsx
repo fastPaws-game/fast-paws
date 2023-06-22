@@ -52,7 +52,7 @@ const AddNewTopic: FC<Props> = props => {
       title: data.title,
       content: data.content,
       forumId: forumId,
-      userAvatar: user.avatar ?? '',
+      userAvatar: user?.avatar ?? '',
       user: user ? user.login : '',
     }
   }

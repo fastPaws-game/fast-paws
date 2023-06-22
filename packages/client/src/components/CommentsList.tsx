@@ -28,6 +28,7 @@ const CommentsList: FC<Props> = props => {
           currentTopic.comments.map(comment => (
             <CommentItem
               key={comment.id}
+              user={comment.user}
               commentId={comment.id}
               comment={comment.content}
               createdAt={comment.createdAt}
