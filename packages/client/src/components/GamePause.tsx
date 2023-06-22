@@ -34,9 +34,9 @@ const GamePause: FC<Props> = props => {
           Exit
         </Button>
         <Footer>
-          <Button icon={<IconForum />} size="small" onClick={handleClick(Routes.FORUM)} darkblue />
-          <Button icon={<IconSettings />} size="small" onClick={handleClick(Routes.SETTINGS)} darkblue />
-          <Button icon={<IconStar />} size="small" onClick={handleClick(Routes.LEADERBOARD)} darkblue />
+          <Button icon={<IconForum />} size="middle" onClick={handleClick(Routes.FORUM)} darkblue />
+          <Button icon={<IconSettings />} size="middle" onClick={handleClick(Routes.SETTINGS)} darkblue />
+          <Button icon={<IconStar />} size="middle" onClick={handleClick(Routes.LEADERBOARD)} darkblue />
         </Footer>
       </Content>
     </Modal>

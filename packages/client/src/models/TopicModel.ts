@@ -6,6 +6,7 @@ export type Topic = {
   title: string
   content: string
   user: string
+  userAvatar: string
   comments: Comment[]
 }
 

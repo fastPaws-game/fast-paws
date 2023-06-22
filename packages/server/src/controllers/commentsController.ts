@@ -85,7 +85,11 @@ class CommentsController {
       }
 
       return res.json({
+        id: updComment.id,
+        user: updComment.user,
         content: updComment.content,
+        createdAt: updComment.createdAt,
+        updatedAt: updComment.updatedAt,
       })
     } catch {
       return res.status(500).json({

@@ -7,7 +7,7 @@ type AddCommentPayload = {
   content: string
 }
 
-type UpdateCommentPayload = {
+export type UpdateCommentPayload = {
   content: string
 }
 

@@ -28,6 +28,7 @@ const CommentsList: FC<Props> = props => {
           currentTopic.comments.map(comment => (
             <CommentItem
               key={comment.id}
+              user={comment.user}
               commentId={comment.id}
               comment={comment.content}
               createdAt={comment.createdAt}
@@ -48,7 +49,7 @@ const TopicContainer = styled.div`
   align-items: center;
   justify-content: flex-start;
   width: 90%;
-  height: 100%;
+  max-height: 100%;
   overflow-y: scroll;
   margin: 30px;
 `

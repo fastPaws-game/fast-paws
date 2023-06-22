@@ -5,19 +5,19 @@ import { H3 } from '../assets/styles/texts'
 import { yupResolver } from '@hookform/resolvers/yup'
 import topicSchema from '../utils/validation/topicSchema'
 import { useAppDispatch, useAppSelector } from '../hooks/store'
-import { addTopic } from '../store/topic/TopicActions'
+import { updateTopic } from '../store/topic/TopicActions'
 import { authSelectors } from '../store/auth/AuthSelectors'
 import Button from '../ui/button'
 import Input, { typeStyleInput } from '../ui/input'
 import TextArea, { typeStyleTextArea } from '../ui/textarea'
 import Popup from './Popup'
-import { TopicWithoutIdAndComments } from '../models/TopicModel'
+import { UpdateTopicPayload } from '../api/TopicApi'
 
 type Props = {
   visible: boolean
   handleClose: () => void
   outSideClickEnable?: boolean
-  forumId: number
+  topicId?: number
 }
 
 type TFormData = {
@@ -25,15 +25,11 @@ type TFormData = {
   content: string
 }
 
-const defaultTopicFormValues = {
-  title: '',
-  content: '',
-}
-
-const AddNewTopic: FC<Props> = props => {
-  const { handleClose, forumId } = props
+const EditTopicContent: FC<Props> = props => {
   const dispatch = useAppDispatch()
   const user = useAppSelector(authSelectors.getUser)
+  const { handleClose, topicId } = props
+  const defaultTopicFormValues = { title: '', content: '' }
 
   const {
     register,
@@ -47,20 +43,24 @@ const AddNewTopic: FC<Props> = props => {
     resolver: yupResolver(topicSchema),
   })
 
-  const prepareDataForTopic = (data: TFormData): TopicWithoutIdAndComments => {
+  const prepareDataForTopic = (data: TFormData): { id: number; data: UpdateTopicPayload } | undefined => {
+    if (!user || !topicId) {
+      return
+    }
+
     return {
-      title: data.title,
-      content: data.content,
-      forumId: forumId,
-      userAvatar: user?.avatar ?? '',
-      user: user ? user.login : '',
+      id: topicId,
+      data: {
+        title: data.title,
+        content: data.content,
+      },
     }
   }
 
   const onSubmit: SubmitHandler<TFormData> = async (data: TFormData) => {
     const preparedData = prepareDataForTopic(data)
     if (preparedData) {
-      dispatch(addTopic(preparedData))
+      dispatch(updateTopic(preparedData))
       reset()
       handleClose()
     }
@@ -69,7 +69,7 @@ const AddNewTopic: FC<Props> = props => {
   return (
     <Popup {...props}>
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <H3>New Topic</H3>
+        <H3>Edit Topic</H3>
         <Input
           placeholder="Topic title"
           typeStyle={typeStyleInput.profile}
@@ -85,7 +85,7 @@ const AddNewTopic: FC<Props> = props => {
           {...register('content')}
         />
         <Button size="small" type="submit" disabled={!isDirty || isSubmitting}>
-          Add topic
+          Edit topic
         </Button>
       </Form>
     </Popup>
@@ -107,4 +107,4 @@ const Form = styled.form`
   }
 `
 
-export default AddNewTopic
+export default EditTopicContent
