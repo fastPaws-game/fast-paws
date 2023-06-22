@@ -21,6 +21,7 @@ interface ITopic {
   title: string
   content: string
   user: string
+  userAvatar: string
 }
 
 type CreationTopic = Optional<ITopic, 'id'>
@@ -53,6 +54,10 @@ export class TopicModel extends Model<ITopic, CreationTopic> {
   @AllowNull(false)
   @Column(DataType.STRING)
   user!: string
+
+  @AllowNull(false)
+  @Column(DataType.STRING)
+  userAvatar!: string
 
   @HasMany(() => CommentModel)
   comments!: CommentModel[]

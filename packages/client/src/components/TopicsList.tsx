@@ -20,6 +20,8 @@ const TopicsList = () => {
               topicPath={`${Routes.FORUM}/${Routes.TOPIC}/${topic.id}`}
               topicContent={topic.content}
               commentsCount={topic.commentsCount}
+              userName={topic.lastMessage?.user}
+              date={topic.lastMessage?.createdAt}
             />
           ))
         ) : (
@@ -36,8 +38,8 @@ const TopicsContainer = styled.div`
   gap: 25px;
   align-items: center;
   justify-content: flex-start;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 80vh;
 `
 
 const ListWrapper = styled.ul`
@@ -46,8 +48,13 @@ const ListWrapper = styled.ul`
   align-items: flex-start;
   gap: 15px;
   list-style-type: none;
+  background-color: ${({ theme }) => theme.colors.secondary};
+  box-shadow: ${({ theme }) => theme.shadows.topic};
+  border-radius: 16px;
   width: 90%;
-  padding: 30px;
+  max-height: 90%;
+  overflow-y: scroll;
+  padding: 10px 20px;
 `
 
 const Title = styled(P1)`
