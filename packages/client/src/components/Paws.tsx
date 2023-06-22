@@ -36,7 +36,7 @@ const Paws: FC = () => {
 
 const walk = keyframes`
   15% {
-    opacity: 1;
+    opacity: 0.6;
   }
   75% {
     opacity: 0;

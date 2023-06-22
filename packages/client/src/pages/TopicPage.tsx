@@ -8,9 +8,13 @@ import { useParams } from 'react-router'
 import { forumSelectors } from '../store/forum/ForumSelectors'
 import { useAppSelector } from '../hooks/store'
 
+type TForumIdParams = {
+  forumId: string
+}
+
 const TopicPage = () => {
   const currentForum = useAppSelector(forumSelectors.getCurrentForum)
-  const { forumId } = useParams()
+  const { forumId } = useParams<TForumIdParams>()
   const [modal, setModal] = useState(false)
 
   const handleClose = useCallback(() => {

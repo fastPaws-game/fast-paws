@@ -20,6 +20,7 @@ declare global {
 
   interface Window {
     __INITIAL_STATE__?: StoreState
+    __REDIRECT_URL__?: string
   }
 
   interface Document {

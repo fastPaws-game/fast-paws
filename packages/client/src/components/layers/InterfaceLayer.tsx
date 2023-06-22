@@ -18,20 +18,21 @@ import { useAppSelector } from '../../hooks/store'
 import { GameSelectors } from '../../store/game/GameSelectors'
 
 type Props = {
-  level: number
+  sound: boolean
   combo: number
   tooltip: string
   fullScreen: boolean
   switchFullScreen: () => void
   handlePause: () => void
+  audioSwitch: (state: boolean) => void
 }
 
 type TAction = 'settings' | 'sound' | 'pause' | 'fullscreen'
 
 const InterfaceLayer: FC<Props> = props => {
   const score = useAppSelector(GameSelectors.getScore)
+  const level = Math.min(Math.floor(Math.max(score, 0) / GAME.scorePerLevel), GAME.maxLevel)
   const catched = useAppSelector(GameSelectors.getCatched)
-  const [sound, setSound] = useState(true)
   const navigate = useNavigate()
 
   const handleClick = (action?: TAction) => () => {
@@ -40,7 +41,7 @@ const InterfaceLayer: FC<Props> = props => {
         navigate('/settings')
         break
       case 'sound':
-        setSound(!sound)
+        props.audioSwitch(!props.sound)
         break
       case 'pause':
         props.handlePause()
@@ -55,7 +56,7 @@ const InterfaceLayer: FC<Props> = props => {
     <Layer>
       <HorisontalBlock>
         <ScoreBlock>
-          <Info>Level: {props.level < 5 ? props.level + 1 : 'MAX'}</Info>
+          <Info>Level: {level < GAME.maxLevel ? level + 1 : 'MAX'}</Info>
           <Info>Score: {score}</Info>
           <Info type="combo">{props.combo > 1 ? `Combo: x${props.combo}` : ''}</Info>
         </ScoreBlock>
@@ -69,7 +70,7 @@ const InterfaceLayer: FC<Props> = props => {
           <IconAnimal icon={IconMouse} />
           <span> {catched.mouse}</span>
         </HorisontalBlock>
-        <UIButton aria-label="button" icon={sound ? IconSoundOn : IconSoundOff} onClick={handleClick('sound')} />
+        <UIButton aria-label="button" icon={props.sound ? IconSoundOn : IconSoundOff} onClick={handleClick('sound')} />
       </HorisontalBlock>
       <GameTip>{props.tooltip}</GameTip>
       <div></div>

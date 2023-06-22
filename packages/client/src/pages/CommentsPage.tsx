@@ -7,9 +7,13 @@ import { useParams } from 'react-router'
 import { topicsSelectors } from '../store/topic/topicSelectors'
 import { useAppSelector } from '../hooks/store'
 
+type TTopicIdParams = {
+  topicId: string
+}
+
 const CommentPage = () => {
   const currentTopic = useAppSelector(topicsSelectors.getCurrentTopic)
-  const { topicId } = useParams()
+  const { topicId } = useParams<TTopicIdParams>()
 
   return (
     <LayoutWithHeader title={currentTopic?.title}>

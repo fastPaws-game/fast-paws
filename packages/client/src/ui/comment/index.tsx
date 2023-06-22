@@ -1,5 +1,6 @@
 import { FC, useCallback, useState } from 'react'
 import styled from 'styled-components'
+import Button from '../../ui/button'
 import { useAppDispatch, useAppSelector } from '../../hooks/store'
 import { authSelectors } from '../../store/auth/AuthSelectors'
 import { deleteComment } from '../../store/comments/CommentsActions'
@@ -40,16 +41,8 @@ const CommentItem: FC<Props> = props => {
     setModal(true)
   }
 
-  const handleReply = () => {
-    console.log('Reply')
-  }
-
   const handleDelete = () => {
     dispatch(deleteComment(commentId))
-  }
-
-  const handleUpdate = () => {
-    console.log('ok')
   }
 
   return (
@@ -86,6 +79,9 @@ const Item = styled.li`
 const Container = styled(P2)`
   color: ${({ theme }) => theme.text.textInvert};
   font-weight: 600;
+  &:last-child {
+    margin-left: auto;
+  }
 `
 
 const Buttons = styled.div`

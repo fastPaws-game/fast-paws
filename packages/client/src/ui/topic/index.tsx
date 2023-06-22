@@ -59,6 +59,9 @@ const LastMessage = styled.div`
 const UserName = styled.p`
   color: ${({ theme }) => theme.text.textInvert};
   font-weight: 600;
+  :last-child {
+    margin-left: auto;
+  }
 `
 
 const DateSpan = styled.span`
@@ -74,4 +77,5 @@ const Button = styled.button`
   font-weight: 600;
   margin-right: 10px;
 `
+
 export default TopicItem
