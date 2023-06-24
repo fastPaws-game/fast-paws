@@ -29,11 +29,12 @@ async function startServer() {
     helmet({
       contentSecurityPolicy: {
         directives: {
-          defaultSrc: ["'self'", 'https://ya-praktikum.tech/*'],
+          defaultSrc: ["'self'"],
           scriptSrc: ["'self'", "'unsafe-inline'"],
           styleSrc: ["'self'", "'unsafe-inline'"],
           imgSrc: ["'self'", 'data:', 'blob:', 'https://ya-praktikum.tech/'],
-          connectSrc: ["'self'", 'ws://localhost:24678', 'http://localhost:24678'],
+          connectSrc: ["'self'", 'ws://localhost:24678', 'http://localhost:24678', 'data:'],
+          fontSrc: ["'self'", 'data:'],
         },
       },
     })
