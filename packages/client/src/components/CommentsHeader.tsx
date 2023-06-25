@@ -1,15 +1,60 @@
 import styled from 'styled-components'
-import { P1 } from '../assets/styles/texts'
-import { useAppSelector } from '../hooks/store'
+import { P1, P2 } from '../assets/styles/texts'
+import { useAppDispatch, useAppSelector } from '../hooks/store'
 import { topicsSelectors } from '../store/topic/topicSelectors'
+import { authSelectors } from '../store/auth/AuthSelectors'
+import DefaultAvatar from '../assets/icons/DefaultAvatar.svg'
+import { deleteTopic } from '../store/topic/TopicActions'
+import Button from '../ui/button'
+import { useNavigate, useParams } from 'react-router'
+import { Routes } from '../constants/routes'
+import { useCallback, useState } from 'react'
+import IconEdit from '../assets/icons/IconEdit'
+import IconDelete from '../assets/icons/IconDelete'
+import EditTopicContent from './EditTopicContent'
+import { PRAKTICUM_API } from '../../../server/src/constants'
 
 const CommentHeader = () => {
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+
   const currentTopic = useAppSelector(topicsSelectors.getCurrentTopic)
+  const currentUser = useAppSelector(authSelectors.getUser)
+  const avatarUrl = currentTopic?.userAvatar
+
+  const { topicId } = useParams()
+
+  const [modal, setModal] = useState(false)
+
+  const handleClose = useCallback(() => {
+    setModal(false)
+  }, [setModal])
+
+  const handleClick = () => {
+    setModal(true)
+  }
+
+  const handleDelete = () => {
+    if (topicId && currentTopic && currentUser?.login === currentTopic.user) {
+      dispatch(deleteTopic(Number(topicId)))
+      navigate(Routes.FORUM)
+    }
+  }
+
   return (
     <Container>
-      <Paragraf>{currentTopic?.user}</Paragraf>
-      <Paragraf>Title: {currentTopic?.title}</Paragraf>
-      <Paragraf>{currentTopic?.content}</Paragraf>
+      <Wrapper>
+        <User>
+          <Avatar src={avatarUrl ? `${PRAKTICUM_API}/resources${avatarUrl}` : DefaultAvatar}></Avatar>
+          <Name>{currentTopic?.user}</Name>
+        </User>
+        <Content>{currentTopic?.content}</Content>
+      </Wrapper>
+      <Buttons>
+        <Button icon={<IconEdit />} size={'small'} onClick={handleClick} />
+        <Button icon={<IconDelete />} size={'small'} onClick={handleDelete} />
+      </Buttons>
+      <EditTopicContent visible={modal} outSideClickEnable handleClose={handleClose} topicId={Number(topicId)} />
     </Container>
   )
 }
@@ -18,7 +63,7 @@ const Container = styled.div`
   width: 90%;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   gap: 15px;
   list-style-type: none;
   padding: 15px 30px;
@@ -28,11 +73,48 @@ const Container = styled.div`
   margin-top: 30px;
 `
 
-const Paragraf = styled(P1)`
+const User = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+`
+
+const Avatar = styled.img`
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  background-color: ${({ theme }) => theme.colors.white};
+  box-shadow: ${({ theme }) => theme.shadows.topic};
+  z-index: 0;
+`
+const Name = styled(P1)`
   text-align: left;
   width: 100%;
   color: ${({ theme }) => theme.text.textInvert};
   font-weight: 600;
+`
+
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 35px;
+`
+
+const Content = styled(P2)`
+  text-align: left;
+  width: 100%;
+  color: ${({ theme }) => theme.text.textInvert};
+  font-weight: 500;
+`
+
+const Buttons = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-left: auto;
 `
 
 export default CommentHeader

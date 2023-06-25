@@ -4,7 +4,7 @@
   "scripts": {
     "bootstrap": "yarn && node init.js && lerna clean --yes && yarn && lerna bootstrap && yarn package-link",
     "bootstrap:prod": "yarn && lerna bootstrap",
-		"build": "rm -rf ./packages/client/dist/ ./packages/client/dist-ssr/ ./packages/server/dist/ && lerna run build",
+    "build": "rm -rf ./packages/client/dist/ ./packages/client/dist-ssr/ ./packages/server/dist/ && lerna run build",
     "dev:client": "lerna run dev --scope=client",
     "dev:server": "lerna run dev --scope=server",
     "dev": "lerna run dev",
@@ -12,9 +12,9 @@
     "lint": "lerna run lint",
     "format": "lerna run format",
     "preview": "lerna run preview",
-    "package-link": "yarn build --scope=client && lerna run link --scope=client && lerna run link:client --scope=server",
+    "package-link": "lerna run build --scope=client && lerna run link --scope=client && lerna run link:client --scope=server",
     "docker": "docker compose -f docker-compose.yml up server",
-		"docker:db": "docker compose -f docker-compose.yml up -d postgres pgadmin"
+    "docker:db": "docker compose -f docker-compose.yml up -d postgres pgadmin"
   },
   "license": "MIT",
   "workspaces": [
@@ -23,9 +23,10 @@
   "engines": {
     "node": ">=15"
   },
-  "devDependencies": {
-  },
   "dependencies": {
-    "lerna": "^5.4.3"
+    "lerna": "^5.4.3",
+    "typescript": "^5.1.3"
+  },
+  "devDependencies": {
   }
 }

@@ -17,7 +17,7 @@ type Props = {
   visible: boolean
   handleClose: () => void
   outSideClickEnable?: boolean
-  forumId?: number
+  forumId: number
 }
 
 type TFormData = {
@@ -31,9 +31,9 @@ const defaultTopicFormValues = {
 }
 
 const AddNewTopic: FC<Props> = props => {
+  const { handleClose, forumId } = props
   const dispatch = useAppDispatch()
   const user = useAppSelector(authSelectors.getUser)
-  const { handleClose, forumId } = props
 
   const {
     register,
@@ -47,23 +47,20 @@ const AddNewTopic: FC<Props> = props => {
     resolver: yupResolver(topicSchema),
   })
 
-  const prepareDataForTopic = (data: TFormData): TopicWithoutIdAndComments | undefined => {
-    if (!user) {
-      return
-    }
-
+  const prepareDataForTopic = (data: TFormData): TopicWithoutIdAndComments => {
     return {
       title: data.title,
       content: data.content,
       forumId: forumId,
-      user: user.login,
+      userAvatar: user?.avatar ?? '',
+      user: user ? user.login : '',
     }
   }
 
   const onSubmit: SubmitHandler<TFormData> = async (data: TFormData) => {
-    const prepeareData = prepareDataForTopic(data)
-    if (prepeareData) {
-      dispatch(addTopic(prepeareData))
+    const preparedData = prepareDataForTopic(data)
+    if (preparedData) {
+      dispatch(addTopic(preparedData))
       reset()
       handleClose()
     }

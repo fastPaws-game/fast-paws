@@ -32,6 +32,7 @@ export const lightTheme = {
   text: {
     textInvert: '#000',
     textBase: '#FFF',
+    mainTitle: '#3C4A52',
     everWhite: '#FFF',
     everBlack: '#000',
     accent: '#E4640A',
@@ -77,6 +78,7 @@ export const darkTheme = {
     textInvert: '#FFF',
     everWhite: '#FFF',
     textBase: '#FFF',
+    mainTitle: '#3C4A52',
     everBlack: '#000',
     accent: '#FFF',
     placeholder: '#F0F0F0',

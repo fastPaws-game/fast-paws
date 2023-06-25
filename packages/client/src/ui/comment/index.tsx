@@ -1,18 +1,23 @@
 import { FC } from 'react'
 import styled from 'styled-components'
-import { useAppDispatch, useAppSelector } from '../../hooks/store'
-import { authSelectors } from '../../store/auth/AuthSelectors'
+import { useAppDispatch } from '../../hooks/store'
 import { deleteComment } from '../../store/comments/CommentsActions'
+import { P2, P3 } from '../../assets/styles/texts'
+import Button from '../button'
+import IconReply from '../../assets/icons/IconReply'
+import IconEdit from '../../assets/icons/IconEdit'
+import IconDelete from '../../assets/icons/IconDelete'
+
 type Props = {
   commentId: number
+  user: string
   comment: string
   createdAt: string
 }
 
 const CommentItem: FC<Props> = props => {
   const dispatch = useAppDispatch()
-  const user = useAppSelector(authSelectors.getUser)
-  const { commentId, comment, createdAt } = props
+  const { commentId, comment, createdAt, user } = props
   const now = new Date(createdAt)
   const options: Intl.DateTimeFormatOptions = {
     year: 'numeric',
@@ -28,26 +33,26 @@ const CommentItem: FC<Props> = props => {
     console.log('Reply')
   }
 
-  const handleDelete = () => {
-    dispatch(deleteComment(commentId))
+  const handleEdit = () => {
+    console.log('Edit')
   }
 
-  const handleUpdate = () => {
-    console.log('ok')
+  const handleDelete = () => {
+    dispatch(deleteComment(commentId))
   }
 
   return (
     <Item>
       <Container>
-        <Topics>{user?.login}</Topics>
+        <Topics>{user}</Topics>
         <Topics>{dateAndTime}</Topics>
       </Container>
-      <Container>{comment}</Container>
-      <Container>
-        <Button onClick={handleReply}>Reply</Button>
-        <Button onClick={handleUpdate}>Update</Button>
-        <Button onClick={handleDelete}>Delete</Button>
-      </Container>
+      <P3>{comment}</P3>
+      <Buttons>
+        <Button icon={<IconReply />} size={'small'} onClick={handleReply} />
+        <Button icon={<IconEdit />} size={'small'} onClick={handleEdit} />
+        <Button icon={<IconDelete />} size={'small'} onClick={handleDelete} />
+      </Buttons>
     </Item>
   )
 }
@@ -55,7 +60,7 @@ const CommentItem: FC<Props> = props => {
 const Item = styled.li`
   display: grid;
   grid-template-rows: 1fr 1fr 1fr;
-  gap: 15px;
+  gap: 10px;
   padding: 15px 30px 15px 30px;
   width: 100%;
   background-color: ${({ theme }) => theme.colors.secondary};
@@ -66,23 +71,21 @@ const Item = styled.li`
   }
 `
 
-const Container = styled.div`
+const Container = styled(P2)`
   color: ${({ theme }) => theme.text.textInvert};
   font-weight: 600;
+  &:last-child {
+    margin-left: auto;
+  }
+`
+
+const Buttons = styled.div`
+  display: flex;
+  gap: 10px;
 `
 
 const Topics = styled.span`
   padding-right: 15px;
-`
-
-const Button = styled.button`
-  width: 5%;
-  background-color: ${({ theme }) => theme.colors.secondary};
-  box-shadow: ${({ theme }) => theme.shadows.topic};
-  border-radius: 16px;
-  color: ${({ theme }) => theme.text.textInvert};
-  font-weight: 600;
-  margin-right: 10px;
 `
 
 export default CommentItem
