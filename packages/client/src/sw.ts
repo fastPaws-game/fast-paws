@@ -12,7 +12,7 @@ declare let self: ServiceWorkerGlobalScope
 precacheAndRoute(self.__WB_MANIFEST.filter((r: PrecacheEntry | string) => (r as PrecacheEntry)?.url !== 'index.html'))
 
 // загрузка данных для игры
-precacheAndRoute(paths.map(url => ({ url, revision: null })))
+//precacheAndRoute(paths.map(url => ({ url, revision: null })))
 
 // clean old assets
 cleanupOutdatedCaches()

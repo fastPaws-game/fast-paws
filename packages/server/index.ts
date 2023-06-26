@@ -15,10 +15,10 @@ import { SERVER_API, PRAKTICUM_API } from './src/constants'
 import themesRouter from './src/routes/themes'
 import { getCurrentThemeMiddleware } from './src/middlewares/getCurrentThemeMiddleware'
 import { authMiddleware } from './src/middlewares/authMiddleware'
+import { registerSWMiddleware } from './src/middlewares/swMiddleware'
 
 const isDev = process.env.NODE_ENV === 'development'
-if (isDev) dotenv.config({ path: '../../.env' })
-else dotenv.config()
+dotenv.config({ path: '../.env' })
 const PORT = Number(process.env.SERVER_PORT)
 
 async function startServer() {
@@ -47,6 +47,20 @@ async function startServer() {
     })
   )
 
+  const distPath = path.dirname(require.resolve('client/dist/index.html'))
+  const ssrPath = isDev ? path.dirname(require.resolve('client/index.html')) : ''
+  const ssrDistPath = require.resolve('client/dist-ssr/client.cjs')
+
+  app.use(registerSWMiddleware)
+  /* eslint-disable @typescript-eslint/no-var-requires */
+  const vite = isDev
+    ? await require('vite').createServer({
+        server: { middlewareMode: true },
+        root: ssrPath,
+        appType: 'custom',
+      })
+    : undefined
+
   app.use(`${PRAKTICUM_API}/*`, proxy)
   app.use(express.json())
   app.use(cookieParser())
@@ -61,23 +75,11 @@ async function startServer() {
   app.use(`${SERVER_API}/comments`, authMiddleware, commentsRouter)
   app.use(`${SERVER_API}/theme`, themesRouter)
 
-  const distPath = path.dirname(require.resolve('client/dist/index.html'))
-  const ssrPath = isDev ? path.dirname(require.resolve('client/index.html')) : ''
-  const ssrDistPath = require.resolve('client/dist-ssr/client.cjs')
-
-  /* eslint-disable @typescript-eslint/no-var-requires */
-  const vite = isDev
-    ? await require('vite').createServer({
-        server: { middlewareMode: true },
-        root: ssrPath,
-        appType: 'custom',
-      })
-    : undefined
-
   if (isDev) {
     app.use(vite!.middlewares)
   } else {
     app.use('/assets', express.static(path.resolve(distPath, 'assets')))
+    app.use('/icons', express.static(path.resolve(distPath, 'icons')))
   }
 
   app.use('*', getCurrentThemeMiddleware, async (req, res, next) => {
@@ -104,11 +106,12 @@ async function startServer() {
 
       const initStateSerialized = JSON.stringify(initialState).replace(/</g, '\\u003c')
       const stateMarkup = `<script>window.__INITIAL_STATE__=${initStateSerialized}; window.__REDIRECT_URL__='${process.env.REDIRECT_URL}'</script>`
-
+      const swRegistration = ` <script id="vite-plugin-pwa:register-sw" src="/registerSW.js" type="module"></script>`
       const html = template
         .replace('<!--css-outlet-->', css)
         .replace('<!--ssr-outlet-->', appHtml)
         .replace('<!--store-data-->', stateMarkup)
+        .replace('<!--sw-->', swRegistration)
 
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
     } catch (err) {
