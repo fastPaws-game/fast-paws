@@ -19,14 +19,12 @@ if (!isServer) {
 export const { store } = createStore(new UserService(new UserAPI()), initialState)
 
 const initialChildren = (
-  <React.StrictMode>
-    <Provider store={store}>
-      <GlobalStyles />
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </Provider>
-  </React.StrictMode>
+  <Provider store={store}>
+    <GlobalStyles />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </Provider>
 )
 const container = document.getElementById('root') as HTMLElement
 
