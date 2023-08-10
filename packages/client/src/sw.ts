@@ -7,6 +7,10 @@ import { ExpirationPlugin } from 'workbox-expiration'
 import { paths } from './constants/swConstants'
 
 const offlinePage = '/404'
+const host = 'http://localhost:5000'
+
+// Создаем регулярное выражение с использованием полученного хоста
+const hostRegex = new RegExp(`^https?://${host}(/|$)`)
 
 declare let self: ServiceWorkerGlobalScope
 
@@ -65,7 +69,7 @@ precacheAndRoute([
 
 // Обработка страниц '/\/game|\/main|\/forum/'
 registerRoute(
-  /\/game|\/main|\/forum/,
+  /\/game|\/main|\/forum|^https?:\/|hostRegex/,
   async ({ event }) => {
     try {
       // Попытка загрузки страницы из сети
@@ -100,21 +104,21 @@ registerRoute(
 )
 
 // Обработка всех остальных страниц
-registerRoute(
+/*registerRoute(
   ({ event }) => true, // Подходит для всех запросов
   async ({ event }) => {
     // Проверяем наличие страницы оффлайн-режима в кэше и возвращаем ее
-    const cache = await caches.open('cache-pages')
-    const cachedOfflineResponse = await cache.match(offlinePage)
+    const cache = await caches.open('cache-pages');
+    const cachedOfflineResponse = await cache.match(offlinePage);
     if (cachedOfflineResponse) {
-      return cachedOfflineResponse
+      return cachedOfflineResponse;
     }
 
     // Если страница оффлайн-режима не найдена в кэше, возвращаем ответ с кодом 404
-    return new Response('Страница не найдена', { status: 404 })
+    return new Response('Страница не найдена', { status: 404 });
   },
   'GET'
-)
+);*/
 
 // Установка таймера на выполнение сетевого запроса
 registerRoute(
@@ -122,12 +126,14 @@ registerRoute(
   new NetworkFirst({
     networkTimeoutSeconds: 3,
     cacheName: 'api-response',
-    plugins: [
-      new ExpirationPlugin({
-        maxEntries: 50,
-        maxAgeSeconds: 5 * 60, // 5 минут
-      }),
-    ],
+  }),
+  'GET'
+)
+registerRoute(
+  /.*\.(?:js)/,
+  new NetworkFirst({
+    networkTimeoutSeconds: 3,
+    cacheName: 'js',
   }),
   'GET'
 )

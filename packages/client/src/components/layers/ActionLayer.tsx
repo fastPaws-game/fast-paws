@@ -38,7 +38,7 @@ const ActionLayer: FunctionComponent<Props> = props => {
 
 const Wrapper = styled.div`
   z-index: 2;
-  width: 100%;
+  width: auto;
   height: 100%;
   position: absolute;
   left: 0;

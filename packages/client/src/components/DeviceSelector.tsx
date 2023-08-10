@@ -45,6 +45,9 @@ const DeviceSelector = () => {
     // Switching full screen have delayed animation
     setTimeout(setDimensions, 150)
   }
+  useEffect(() => {
+    screen.orientation.lock('landscape')
+  }, [])
 
   useEffect(() => {
     const isFullscreenMode =

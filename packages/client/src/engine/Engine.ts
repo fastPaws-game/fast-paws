@@ -318,7 +318,7 @@ export default class Engine {
       const duration = Math.floor(measure.duration * 1000)
       if (duration > 0) this.meterStack.enqueue(duration)
       this.game.ctx!.fillStyle = 'black'
-      this.game.ctx!.fillText(`mms/frame: ${this.meterStack.average(10)}`, 580, 18)
+      this.game.ctx!.fillText(`mms/frame: ${this.meterStack.average(10)}`, 100, 18)
     }
   }
 

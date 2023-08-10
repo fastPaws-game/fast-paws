@@ -18,7 +18,8 @@ import { authMiddleware } from './src/middlewares/authMiddleware'
 import { registerSWMiddleware } from './src/middlewares/swMiddleware'
 
 const isDev = process.env.NODE_ENV === 'development'
-dotenv.config({ path: '../.env' })
+if (isDev) dotenv.config({ path: '../../.env' })
+else dotenv.config()
 const PORT = Number(process.env.SERVER_PORT)
 
 async function startServer() {

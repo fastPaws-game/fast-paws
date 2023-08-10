@@ -1,9 +1,14 @@
 import React, { FC, PropsWithChildren } from 'react'
 import styled from 'styled-components'
+import PageWrapper from '../pages/PageWrapper'
 
 const BaseLayout: FC<PropsWithChildren> = props => {
   const { children } = props
-  return <Root>{children}</Root>
+  return (
+    <Root>
+      <PageWrapper>{children}</PageWrapper>
+    </Root>
+  )
 }
 
 const Root = styled.div`
