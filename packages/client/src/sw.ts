@@ -1,24 +1,15 @@
-import { cleanupOutdatedCaches, precacheAndRoute, PrecacheEntry } from 'workbox-precaching'
+import { precacheAndRoute, PrecacheEntry } from 'workbox-precaching'
 import { clientsClaim, skipWaiting } from 'workbox-core'
 import { registerRoute } from 'workbox-routing'
 import { NetworkFirst, StaleWhileRevalidate, CacheFirst } from 'workbox-strategies'
 import { CacheableResponsePlugin } from 'workbox-cacheable-response'
-import { ExpirationPlugin } from 'workbox-expiration'
-import { paths } from './constants/swConstants'
 
 const offlinePage = '/404'
-const host = 'http://localhost:5000'
-
-// Создаем регулярное выражение с использованием полученного хоста
-const hostRegex = new RegExp(`^https?://${host}(/|$)`)
 
 declare let self: ServiceWorkerGlobalScope
 
 // self.__WB_MANIFEST - точка внедрения по умолчанию
 precacheAndRoute(self.__WB_MANIFEST.filter((r: PrecacheEntry | string) => (r as PrecacheEntry)?.url !== 'index.html'))
-
-// Предзагрузка и кэширование данных для игры
-precacheAndRoute(paths.map(url => ({ url, revision: null })))
 
 // Кеширование файлов со шрифтами с помощью стратегии `cache-first` на 1 год
 registerRoute(
@@ -35,22 +26,9 @@ registerRoute(
 
 // Кеширование картинок с помощью стратегии `stale-while-revalidate`
 registerRoute(
-  /.*\.(?:png|jpg|svg|gif)/,
+  /.*\.(?:png|jpg|svg|gif|ogg|mp3)/,
   new StaleWhileRevalidate({
     cacheName: 'images',
-    plugins: [
-      new CacheableResponsePlugin({
-        statuses: [0, 200],
-      }),
-    ],
-  })
-)
-
-// Кеширование звуковых файлов с помощью стратегии `stale-while-revalidate`
-registerRoute(
-  /.*\.(?:ogg|mp3)/,
-  new StaleWhileRevalidate({
-    cacheName: 'sounds',
     plugins: [
       new CacheableResponsePlugin({
         statuses: [0, 200],
@@ -69,7 +47,7 @@ precacheAndRoute([
 
 // Обработка страниц '/\/game|\/main|\/forum/'
 registerRoute(
-  /\/game|\/main|\/forum|^https?:\/|hostRegex/,
+  /\/game|\/main|\/forum|\//,
   async ({ event }) => {
     try {
       // Попытка загрузки страницы из сети
@@ -102,41 +80,25 @@ registerRoute(
   },
   'GET'
 )
-
-// Обработка всех остальных страниц
-/*registerRoute(
-  ({ event }) => true, // Подходит для всех запросов
-  async ({ event }) => {
-    // Проверяем наличие страницы оффлайн-режима в кэше и возвращаем ее
-    const cache = await caches.open('cache-pages');
-    const cachedOfflineResponse = await cache.match(offlinePage);
-    if (cachedOfflineResponse) {
-      return cachedOfflineResponse;
-    }
-
-    // Если страница оффлайн-режима не найдена в кэше, возвращаем ответ с кодом 404
-    return new Response('Страница не найдена', { status: 404 });
-  },
-  'GET'
-);*/
-
-// Установка таймера на выполнение сетевого запроса
 registerRoute(
-  new RegExp('/api/*'),
+  new RegExp('/*'),
   new NetworkFirst({
-    networkTimeoutSeconds: 3,
+    networkTimeoutSeconds: 10,
     cacheName: 'api-response',
   }),
   'GET'
 )
-registerRoute(
-  /.*\.(?:js)/,
-  new NetworkFirst({
-    networkTimeoutSeconds: 3,
-    cacheName: 'js',
-  }),
-  'GET'
-)
 
+registerRoute(
+  /.*\.(?:js|ts|tsx)/,
+  new CacheFirst({
+    cacheName: 'scripts',
+    plugins: [
+      new CacheableResponsePlugin({
+        statuses: [0, 200],
+      }),
+    ],
+  })
+)
 skipWaiting()
 clientsClaim()
