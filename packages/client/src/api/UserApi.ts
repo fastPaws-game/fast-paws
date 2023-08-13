@@ -17,8 +17,8 @@ export class UserAPI implements UserRepository {
     return FetchApi.put('/user/password', { body })
   }
 
-  public updateUserAvatar(body: FormData) {
-    return FetchApi.put<TUser>('/user/profile/avatar', { body })
+  public updateUserAvatar(data: File | Blob) {
+    return FetchApi.put<TUser>('/user/profile/avatar', {}, data)
   }
 }
 

@@ -17,9 +17,7 @@ const ProfileAvatar: FC = () => {
 
     if (file) {
       setImage(URL.createObjectURL(file))
-      const formData = new FormData()
-      formData.append('avatar', file)
-      dispatch(updateAvatar(formData))
+      dispatch(updateAvatar(file))
     }
   }, [fileInputRef])
 

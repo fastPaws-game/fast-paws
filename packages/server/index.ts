@@ -5,7 +5,7 @@ import * as path from 'path'
 import { UserAPIRepository, UserRepository } from './src/repository/UserAPI'
 import dotenv from 'dotenv'
 import cookieParser from 'cookie-parser'
-import helmet from 'helmet'
+//import helmet from 'helmet'
 import { proxy } from './src/middlewares/proxy'
 import topicsRouter from './src/routes/topics'
 import forumsRouter from './src/routes/forums'
@@ -26,7 +26,7 @@ async function startServer() {
   await dbConnect()
   const app = express()
 
-  app.use(
+  /* app.use(
     helmet({
       contentSecurityPolicy: {
         directives: {
@@ -39,7 +39,7 @@ async function startServer() {
         },
       },
     })
-  )
+  )*/
 
   app.use(
     cors({

@@ -16,7 +16,7 @@ export const updateUser = createAsyncThunk('user/updateUser', async (body: TProf
   }
 })
 
-export const updateAvatar = createAsyncThunk('user/updateAvatar', async (data: FormData, { rejectWithValue }) => {
+export const updateAvatar = createAsyncThunk('user/updateAvatar', async (data: File | Blob, { rejectWithValue }) => {
   try {
     return await UserApi.updateUserAvatar(data)
   } catch (e) {

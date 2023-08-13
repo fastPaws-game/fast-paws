@@ -7,10 +7,10 @@ const enum METHODS {
 }
 
 type Options = {
-  body?: Record<string, unknown> | FormData
+  body?: Record<string, unknown>
 }
 
-type Request = <T>(url: string, options?: Options) => Promise<T>
+type Request = <T>(url: string, options?: Options, data?: File | Blob) => Promise<T>
 
 export class FetchApi {
   static getURL = () => {
@@ -37,8 +37,8 @@ export class FetchApi {
     return await baseFetch(this.API_URL + url, METHODS.DELETE)
   }
 
-  public put: Request = async (url: string, options = {}) => {
-    return await baseFetch(this.API_URL + url, METHODS.PUT, options.body)
+  public put: Request = async (url: string, options = {}, data?: File | Blob) => {
+    return await baseFetch(this.API_URL + url, METHODS.PUT, options.body, data)
   }
 
   public patch: Request = async (url: string, options = {}) => {
@@ -52,21 +52,28 @@ export { FetchForumApi }
 export const fetchApiV1 = new FetchApi('/api/v1')
 export default new FetchApi('/api/v2')
 
-const baseFetch = async (url: string, method: METHODS, body?: Record<string, any> | FormData) => {
-  const isFormData = body instanceof FormData
+const baseFetch = async (url: string, method: METHODS, body?: Record<string, any>, data?: File | Blob) => {
+  const isFormData = !!data
   let bodyFetch: string | FormData = JSON.stringify(body)
   if (isFormData) {
-    bodyFetch = body
+    bodyFetch = new FormData()
+    bodyFetch.append('avatar', data)
   }
 
-  const response = await fetch(url, {
-    headers: {
-      'Content-Type': isFormData ? 'multipart/form-data' : 'application/json',
-    },
-    credentials: 'include',
-    method,
-    body: bodyFetch,
-  })
+  const response = isFormData
+    ? await fetch(url, {
+        credentials: 'include',
+        method,
+        body: bodyFetch,
+      })
+    : await fetch(url, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        method,
+        body: bodyFetch,
+      })
 
   let result
 

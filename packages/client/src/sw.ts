@@ -81,7 +81,7 @@ registerRoute(
   'GET'
 )
 registerRoute(
-  new RegExp('/*'),
+  new RegExp('/api/*'),
   new NetworkFirst({
     networkTimeoutSeconds: 10,
     cacheName: 'api-response',
