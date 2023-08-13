@@ -6,5 +6,5 @@ export type TProfile = {
   email: string
   phone: string
   avatar?: string
-  fileAvatar: any
+  fileAvatar?: any
 }
