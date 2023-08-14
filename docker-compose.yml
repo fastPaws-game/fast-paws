@@ -11,8 +11,8 @@ services:
       - '80:80'
       - '443:443'
     volumes:
-      - /home/ilphat/nginx/nginx.conf:/etc/nginx/nginx.conf
-      - /home/ilphat/nginx/conf:/etc/nginx/conf.d
+      - /root/fastpaws/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - /root/fastpaws/nginx/conf:/etc/nginx/conf.d
       - /etc/letsencrypt:/etc/letsencrypt
     networks:
       - fastpaws
